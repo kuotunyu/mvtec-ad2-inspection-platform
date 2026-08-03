@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import math
 from enum import StrEnum
+from pathlib import Path
 
 from pydantic import field_validator
 
@@ -25,7 +26,7 @@ class PredictionRecord(ContractModel):
     anomaly_score: float
     anomaly_map_sha256: Sha256
     model_bundle_id: str
-    input_path: str | None = None
+    input_path: Path | None = None
 
     @field_validator("anomaly_score")
     @classmethod

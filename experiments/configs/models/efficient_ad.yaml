@@ -1,0 +1,26 @@
+schema_version: "1.0.0"
+family: efficient_ad
+anomalib_version: "2.5.0"
+model_name: EfficientAd
+backbone: small
+input_size: [256, 256]
+batch_size: 1
+precision: 32-true
+trainer_limits:
+  max_epochs: 100
+  max_steps: null
+seed: null
+preprocessing:
+  resize: [256, 256]
+  normalization: none
+  interpolation: bilinear
+checkpoint_policy:
+  mode: best
+  save_top_k: 1
+export_mode: torch
+family_options:
+  model_size: small
+  lr: 0.0001
+  weight_decay: 0.00001
+  padding: false
+  pad_maps: true

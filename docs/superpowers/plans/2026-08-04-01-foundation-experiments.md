@@ -294,7 +294,7 @@ git commit -m "feat(eval): freeze anomaly metric contracts"
 - Produces: `AnomalyExperimentAdapter.fit(context: FitContext) -> FitArtifact`, `predict(context: PredictContext) -> PredictionArtifact`, and `export_bundle(context: ExportContext) -> ModelBundleManifest`.
 - `create_adapter(family: ModelFamily, config: ModelConfig) -> AnomalyExperimentAdapter` is the only construction entry point.
 
-- [ ] **Step 1: Write adapter contract tests with a fake implementation**
+- [x] **Step 1: Write adapter contract tests with a fake implementation**
 
 ```python
 def test_prediction_artifact_preserves_input_order(fake_adapter: FakeAdapter, sample_batch: list[Path]) -> None:
@@ -307,24 +307,24 @@ def test_factory_rejects_unapproved_family() -> None:
         create_adapter("ganomaly", config={})
 ```
 
-- [ ] **Step 2: Run adapter tests and confirm failure**
+- [x] **Step 2: Run adapter tests and confirm failure**
 
 Run: `uv run pytest tests/unit/models/test_factory.py -q`
 Expected: FAIL because adapter contracts do not exist.
 
-- [ ] **Step 3: Implement the common adapter and model factory**
+- [x] **Step 3: Implement the common adapter and model factory**
 
 Use explicit typed contexts; adapters may translate to Anomalib but must return project-owned contracts. Centralize seed setting, deterministic flags, preprocessing identity, device identity, environment capture, and output validation in the base class.
 
-- [ ] **Step 4: Add one pinned YAML config per family**
+- [x] **Step 4: Add one pinned YAML config per family**
 
 Each file must state Anomalib version, backbone/model name, input size, batch size, precision, trainer limits, `seed: null` to require runtime injection of an approved formal seed, preprocessing, checkpoint policy, and export mode. Resolve each YAML into a canonical `ModelConfig` before execution and store its hash.
 
-- [ ] **Step 5: Implement PatchCore, EfficientAD, and Dinomaly adapters**
+- [x] **Step 5: Implement PatchCore, EfficientAD, and Dinomaly adapters**
 
 Verify actual Anomalib 2.5.0 APIs in the installed environment before finalizing the translation layer. Keep any compatibility shim inside its family adapter and cover it with a regression test. Do not fork upstream model internals merely to improve results.
 
-- [ ] **Step 6: Add dataset-split guards**
+- [x] **Step 6: Add dataset-split guards**
 
 ```python
 def assert_fit_split(paths: Sequence[Path]) -> None:
@@ -334,13 +334,13 @@ def assert_fit_split(paths: Sequence[Path]) -> None:
 
 Use manifest identities rather than substring checks in production; the snippet expresses the required failure behavior.
 
-- [ ] **Step 7: Run offline adapter tests and one marked GPU smoke per family**
+- [x] **Step 7: Run offline adapter tests and one marked GPU smoke per family**
 
 Run: `uv run pytest tests/unit/models tests/ml_integrity/test_model_adapter_contract.py -q`
 Run after GPU preflight: `uv run pytest -m gpu tests/integration/test_model_gpu_smoke.py -q`
 Expected: offline gates pass; each smoke produces finite scores, correctly shaped maps, and a loadable checkpoint/bundle.
 
-- [ ] **Step 8: Commit adapters and frozen configs**
+- [x] **Step 8: Commit adapters and frozen configs**
 
 ```powershell
 git add experiments/models experiments/configs experiments/train.py experiments/predict.py tests

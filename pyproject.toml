@@ -16,15 +16,19 @@ dependencies = [
 ml = [
   "anomalib==2.5.0",
   "numpy>=2.2,<3",
+  "pyyaml>=6.0,<7",
   "scikit-learn>=1.6,<2",
   "scipy>=1.15,<2",
   "tifffile>=2025,<2027",
+  "torch==2.13.0",
+  "torchvision==0.28.0",
 ]
 
 [dependency-groups]
 dev = [
   "mypy>=1.16,<2",
   "numpy>=2.2,<3",
+  "pyyaml>=6.0,<7",
   "pytest>=8.4,<9",
   "pytest-cov>=6.2,<7",
   "ruff>=0.12,<1",
@@ -35,6 +39,19 @@ dev = [
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/inspection_platform", "experiments"]
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cu130", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
+]
+torchvision = [
+  { index = "pytorch-cu130", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
 
 [tool.pytest.ini_options]
 addopts = "-ra --strict-config --strict-markers"
