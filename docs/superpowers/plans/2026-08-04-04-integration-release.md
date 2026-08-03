@@ -65,7 +65,7 @@ def test_contract_chain_rejects_identity_drift(valid_chain: EvidenceChain, mutat
 
 - [ ] **Step 2: Run integrity tests and confirm failure**
 
-Run: `uv run pytest tests/ml_integrity/test_contract_chain.py -q`  
+Run: `uv run pytest tests/ml_integrity/test_contract_chain.py -q`
 Expected: FAIL because the verifier and demo bundle do not exist.
 
 - [ ] **Step 3: Create visibly synthetic public demo fixtures**
@@ -78,8 +78,8 @@ The mock bundle has the same manifest shape as a real champion but records `runt
 
 - [ ] **Step 5: Run deterministic and tamper gates**
 
-Run: `uv run python scripts/build_demo_bundle.py --output "$env:INSPECTION_MODEL_ROOT"` twice and compare manifests.  
-Run: `uv run pytest tests/ml_integrity/test_contract_chain.py tests/integration/test_demo_bundle.py -q`  
+Run: `uv run python scripts/build_demo_bundle.py --output "$env:INSPECTION_MODEL_ROOT"` twice and compare manifests.
+Run: `uv run pytest tests/ml_integrity/test_contract_chain.py tests/integration/test_demo_bundle.py -q`
 Expected: byte-stable manifests and all valid/tampered cases pass.
 
 - [ ] **Step 6: Commit only synthetic fixtures and tooling**
@@ -120,7 +120,7 @@ def test_context_excludes_private_material() -> None:
 
 - [ ] **Step 2: Run container tests and confirm failure**
 
-Run: `uv run pytest tests/container/test_image_contract.py -q`  
+Run: `uv run pytest tests/container/test_image_contract.py -q`
 Expected: FAIL because Docker files do not exist.
 
 - [ ] **Step 3: Implement deterministic multi-stage images**
@@ -133,13 +133,13 @@ API waits for migrations and exposes liveness/readiness. Worker waits for databa
 
 - [ ] **Step 5: Build and run the CPU smoke**
 
-Run: `powershell -ExecutionPolicy Bypass -File scripts/docker_smoke.ps1`  
+Run: `powershell -ExecutionPolicy Bypass -File scripts/docker_smoke.ps1`
 Expected: clean-context builds succeed, images run non-root, API becomes ready, worker heartbeat appears, a synthetic job completes, JSON report hashes verify, containers stop cleanly, and no repository files change.
 
 - [ ] **Step 6: Inspect image contents and commit packaging**
 
-Run: `uv run pytest tests/container/test_image_contract.py -q`  
-Run: scan both image file lists for `.git`, `.env`, MVTec names, checkpoints, raw runs, source maps, and local paths.  
+Run: `uv run pytest tests/container/test_image_contract.py -q`
+Run: scan both image file lists for `.git`, `.env`, MVTec names, checkpoints, raw runs, source maps, and local paths.
 Expected: none found.
 
 ```powershell
@@ -171,7 +171,7 @@ The browser creates the batch, watches progress, opens source/map/overlay, resol
 
 - [ ] **Step 4: Run repeated clean system gates**
 
-Run: `powershell -ExecutionPolicy Bypass -File scripts/run_system_tests.ps1 -Repeat 3`  
+Run: `powershell -ExecutionPolicy Bypass -File scripts/run_system_tests.ps1 -Repeat 3`
 Expected: three isolated runs pass; each cleans only its named temporary containers/volumes and leaves the worktree unchanged.
 
 - [ ] **Step 5: Commit system verification**
@@ -193,7 +193,7 @@ git commit -m "test(system): verify resilient inspection workflow"
 - Create: `docs/SECURITY.md`
 
 **Interfaces:**
-- `security_scan.py --root <path>` emits a machine-readable report and nonzero exit on high-severity findings.
+- `security_scan.py --root PATH` emits a machine-readable report and nonzero exit on high-severity findings.
 - `verify_public_boundary.py --git-tree HEAD` inspects tracked files and built distributions/images.
 
 - [ ] **Step 1: Add adversarial API and archive tests**
@@ -214,9 +214,9 @@ Scan tracked files, wheel, sdist, frontend dist, Docker contexts, and image inve
 
 - [ ] **Step 5: Run the security gate**
 
-Run: `uv run pytest tests/security -q`  
-Run: `uv run python scripts/security_scan.py --root .`  
-Run: `uv run python scripts/verify_public_boundary.py --git-tree HEAD`  
+Run: `uv run pytest tests/security -q`
+Run: `uv run python scripts/security_scan.py --root .`
+Run: `uv run python scripts/verify_public_boundary.py --git-tree HEAD`
 Expected: all adversarial tests pass and scanners report zero high-severity violations.
 
 - [ ] **Step 6: Commit hardening**
@@ -260,7 +260,7 @@ def test_docs_never_call_review_a_defect(public_docs: list[Path]) -> None:
 
 - [ ] **Step 2: Run publication tests and confirm failure**
 
-Run: `uv run pytest tests/publication -q`  
+Run: `uv run pytest tests/publication -q`
 Expected: FAIL because documentation and verifier do not exist.
 
 - [ ] **Step 3: Write the README around one interview narrative**
@@ -281,9 +281,9 @@ Render architecture and workflow from text-controlled sources. Capture the five 
 
 - [ ] **Step 7: Run documentation gates and commit**
 
-Run: `uv run python scripts/render_docs_assets.py --check`  
-Run: `uv run pytest tests/publication -q`  
-Run: `uv run python scripts/verify_claims.py`  
+Run: `uv run python scripts/render_docs_assets.py --check`
+Run: `uv run pytest tests/publication -q`
+Run: `uv run python scripts/verify_claims.py`
 Expected: all links, assets, licenses, numeric claims, and prohibited-phrase checks pass.
 
 ```powershell
@@ -303,7 +303,7 @@ git commit -m "docs: present industrial inspection evidence"
 
 **Interfaces:**
 - CI jobs: `python`, `frontend`, `publication`, `docker`, and `system`.
-- `verify_release.py --source <committed-export>` creates a JSON release-verification report.
+- `verify_release.py --source PATH` creates a JSON release-verification report from a committed export directory.
 
 - [ ] **Step 1: Write clean-export failure tests**
 
@@ -319,7 +319,7 @@ Export tracked files from `HEAD` into a fresh temporary directory, install Pytho
 
 - [ ] **Step 4: Run the complete local CPU release gate**
 
-Run: `powershell -ExecutionPolicy Bypass -File scripts/clean_export.ps1`  
+Run: `powershell -ExecutionPolicy Bypass -File scripts/clean_export.ps1`
 Expected: a fresh committed export passes installs, quality, tests, frontend build, Python build, wheel smoke, sdist scan, Docker build/health, system workflow, claims, and public-boundary verification.
 
 - [ ] **Step 5: Commit CI and release verification**
@@ -355,9 +355,9 @@ Write aggregate results only, including environment/config identities and confid
 
 - [ ] **Step 5: Run regression gates and commit sanitized evidence**
 
-Run: `uv run pytest tests/gpu/test_real_bundle_serving.py -m gpu -q`  
-Run: `uv run python scripts/benchmark_serving.py --registry "$env:INSPECTION_MODEL_ROOT" --output docs/assets/evidence/serving-benchmark.json`  
-Run: `uv run python scripts/verify_claims.py`  
+Run: `uv run pytest tests/gpu/test_real_bundle_serving.py -m gpu -q`
+Run: `uv run python scripts/benchmark_serving.py --registry "$env:INSPECTION_MODEL_ROOT" --output docs/assets/evidence/serving-benchmark.json`
+Run: `uv run python scripts/verify_claims.py`
 Expected: all category bundles pass and the sanitized artifact matches documentation.
 
 ```powershell

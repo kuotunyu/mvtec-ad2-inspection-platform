@@ -71,7 +71,7 @@ def test_job_creation_and_audit_are_atomic(repositories: Repositories) -> None:
 
 - [ ] **Step 2: Run the focused tests and confirm missing modules fail**
 
-Run: `uv run pytest tests/unit/db -q`  
+Run: `uv run pytest tests/unit/db -q`
 Expected: FAIL because settings, tables, and repositories do not exist.
 
 - [ ] **Step 3: Implement fail-closed settings and the initial migration**
@@ -92,8 +92,8 @@ Resolve configured roots, create only their immediate directories, reject a root
 
 - [ ] **Step 4: Run migrations and database verification**
 
-Run: `uv run alembic upgrade head` with a temporary database URL.  
-Run: `uv run pytest tests/unit/db -q`  
+Run: `uv run alembic upgrade head` with a temporary database URL.
+Run: `uv run pytest tests/unit/db -q`
 Expected: migration and all database tests pass.
 
 - [ ] **Step 5: Commit the database foundation**
@@ -114,7 +114,7 @@ git commit -m "feat(backend): add durable inspection database"
 - Test: `tests/integration/jobs/test_leases.py`
 
 **Interfaces:**
-- Produces `JobStatus`, `transition_job(job_id, expected, target)`, `claim_next_job(worker_id, now)`, `renew_lease(...)`, and `recover_expired_leases(now)`.
+- Produces `JobStatus`, `transition_job(job_id, expected, target)`, `claim_next_job(worker_id, now)`, `renew_lease(job_id: str, worker_id: str, now: datetime) -> bool`, and `recover_expired_leases(now)`.
 - Allowed terminal states: `COMPLETED`, `COMPLETED_WITH_ERRORS`, `FAILED`, and `CANCELLED`.
 
 - [ ] **Step 1: Specify all legal and illegal transitions in tests**
@@ -135,7 +135,7 @@ def test_completed_job_cannot_restart() -> None:
 
 - [ ] **Step 2: Run state tests and confirm failure**
 
-Run: `uv run pytest tests/unit/jobs/test_states.py -q`  
+Run: `uv run pytest tests/unit/jobs/test_states.py -q`
 Expected: FAIL because the transition table is absent.
 
 - [ ] **Step 3: Implement compare-and-set transitions and lease claims**
@@ -144,7 +144,7 @@ Claim one queued or expired-running job in a short transaction. Store `worker_id
 
 - [ ] **Step 4: Prove two workers cannot own the same job**
 
-Run: `uv run pytest tests/integration/jobs/test_leases.py -q`  
+Run: `uv run pytest tests/integration/jobs/test_leases.py -q`
 Expected: both concurrent claimers complete, exactly one receives the job, and expired-lease recovery is idempotent.
 
 - [ ] **Step 5: Commit lifecycle and leases**
@@ -169,7 +169,7 @@ git commit -m "feat(worker): add leased job state machine"
 - Test: `tests/integration/ingestion/test_service.py`
 
 **Interfaces:**
-- Produces `validate_image(stream, limits) -> ValidatedImage`, `iterate_safe_archive(stream, limits)`, `ArtifactStore.put_stream(...) -> ArtifactRef`, and `IngestionService.create_job(...) -> JobRead`.
+- Produces `validate_image(stream, limits) -> ValidatedImage`, `iterate_safe_archive(stream, limits)`, `ArtifactStore.put_stream(stream: BinaryIO, media_type: str) -> ArtifactRef`, and `IngestionService.create_job(category: str, uploads: Sequence[UploadStream]) -> JobRead`.
 - Accept PNG, JPEG, and WebP only after successful decoder verification and re-open.
 
 - [ ] **Step 1: Write adversarial ingestion tests**
@@ -187,7 +187,7 @@ def test_image_rejects_header_only_spoof() -> None:
 
 - [ ] **Step 2: Run ingestion tests and confirm failure**
 
-Run: `uv run pytest tests/unit/ingestion -q`  
+Run: `uv run pytest tests/unit/ingestion -q`
 Expected: FAIL because validation and storage are absent.
 
 - [ ] **Step 3: Implement bounded streaming, decode verification, and safe archives**
@@ -200,7 +200,7 @@ If database creation fails, remove only newly created unreferenced temporary art
 
 - [ ] **Step 5: Run security and integration tests**
 
-Run: `uv run pytest tests/unit/ingestion tests/integration/ingestion -q`  
+Run: `uv run pytest tests/unit/ingestion tests/integration/ingestion -q`
 Expected: all valid image, zip, tar, limit, duplicate, rollback, and deduplication cases pass.
 
 - [ ] **Step 6: Commit secure ingestion**
@@ -245,7 +245,7 @@ def test_runtime_rejects_prediction_contract_mismatch(valid_bundle: BundleFixtur
 
 - [ ] **Step 2: Run focused tests and confirm failure**
 
-Run: `uv run pytest tests/unit/registry tests/unit/inference -q`  
+Run: `uv run pytest tests/unit/registry tests/unit/inference -q`
 Expected: FAIL because registry and runtime boundaries do not exist.
 
 - [ ] **Step 3: Implement verification-first registration and a deterministic mock**
@@ -258,7 +258,7 @@ Load a bundle lazily in the worker, validate category, preprocessing, threshold,
 
 - [ ] **Step 5: Verify clean-process loading**
 
-Run: `uv run pytest tests/integration/inference/test_bundle_loading.py -q`  
+Run: `uv run pytest tests/integration/inference/test_bundle_loading.py -q`
 Expected: valid mock and fixture bundles load; tampered, incompatible, wrong-category, and missing-file bundles fail closed.
 
 - [ ] **Step 6: Commit the model-serving boundary**
@@ -299,7 +299,7 @@ def test_one_bad_image_yields_partial_completion(worker_fixture: WorkerFixture) 
 
 - [ ] **Step 2: Run worker tests and confirm failure**
 
-Run: `uv run pytest tests/unit/worker -q`  
+Run: `uv run pytest tests/unit/worker -q`
 Expected: FAIL because the runner does not exist.
 
 - [ ] **Step 3: Implement per-image atomic inference and heartbeat renewal**
@@ -312,7 +312,7 @@ A corrupt individual input becomes an image-level error and permits `COMPLETED_W
 
 - [ ] **Step 5: Verify recovery and concurrency**
 
-Run: `uv run pytest tests/unit/worker tests/integration/worker -q`  
+Run: `uv run pytest tests/unit/worker tests/integration/worker -q`
 Expected: crash/restart, expired lease, cancellation, partial completion, and repeated `run_once` tests pass without duplicate predictions.
 
 - [ ] **Step 6: Commit the worker**
@@ -362,7 +362,7 @@ def test_review_requires_expected_revision(client: TestClient, reviewable_image:
 
 - [ ] **Step 2: Run API tests and confirm failure**
 
-Run: `uv run pytest tests/api -q`  
+Run: `uv run pytest tests/api -q`
 Expected: FAIL because the application routes do not exist.
 
 - [ ] **Step 3: Implement routes, pagination, and stable error envelopes**
@@ -371,8 +371,8 @@ Use bounded page sizes and structured errors `{code, message, request_id}`. Sani
 
 - [ ] **Step 4: Export and verify the OpenAPI document**
 
-Run: `uv run python scripts/export_openapi.py --output apps/web/openapi.json` after creating the script beside the API work.  
-Run: `uv run pytest tests/api -q`  
+Run: `uv run python scripts/export_openapi.py --output apps/web/openapi.json` after creating the script beside the API work.
+Run: `uv run pytest tests/api -q`
 Expected: API tests pass and OpenAPI contains the documented v1 routes with no internal path fields.
 
 - [ ] **Step 5: Commit the API**
@@ -418,7 +418,7 @@ def test_report_json_is_byte_stable(report_builder: ReportBuilder) -> None:
 
 - [ ] **Step 2: Run focused tests and confirm failure**
 
-Run: `uv run pytest tests/unit/reviews tests/unit/reports -q`  
+Run: `uv run pytest tests/unit/reviews tests/unit/reports -q`
 Expected: FAIL because review and report services do not exist.
 
 - [ ] **Step 3: Implement optimistic review revisions and evidence reports**
@@ -431,7 +431,7 @@ Expose job counts, queue age, image outcomes, inference latency, job duration, w
 
 - [ ] **Step 5: Run report, retention, and metric gates**
 
-Run: `uv run pytest tests/unit/reviews tests/unit/reports tests/unit/test_retention.py tests/api/test_metrics.py -q`  
+Run: `uv run pytest tests/unit/reviews tests/unit/reports tests/unit/test_retention.py tests/api/test_metrics.py -q`
 Expected: all tests pass, including XSS strings, CSV formulas, concurrent reviews, missing artifacts, and repeat deletion.
 
 - [ ] **Step 6: Commit product evidence and operations**
@@ -454,15 +454,15 @@ The test creates a mixed batch, lets the worker complete it, records a human rev
 
 - [ ] **Step 2: Run all CPU backend tests**
 
-Run: `uv run pytest tests/unit tests/api tests/integration -m "not gpu and not dataset and not slow" --cov=inspection_platform --cov-report=term-missing --cov-fail-under=85`  
+Run: `uv run pytest tests/unit tests/api tests/integration -m "not gpu and not dataset and not slow" --cov=inspection_platform --cov-report=term-missing --cov-fail-under=85`
 Expected: PASS with at least 85% project coverage.
 
 - [ ] **Step 3: Run static quality and schema gates**
 
-Run: `uv run ruff format --check .`  
-Run: `uv run ruff check .`  
-Run: `uv run mypy src experiments scripts`  
-Run: `uv run python scripts/verify_backend.py`  
+Run: `uv run ruff format --check .`
+Run: `uv run ruff check .`
+Run: `uv run mypy src experiments scripts`
+Run: `uv run python scripts/verify_backend.py`
 Expected: all pass; verifier checks migration head, OpenAPI export freshness, stable error codes, and absence of path fields.
 
 - [ ] **Step 4: Commit backend verification**

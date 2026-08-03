@@ -80,7 +80,7 @@ def test_model_bundle_rejects_unknown_schema_major() -> None:
 
 - [ ] **Step 2: Run the focused tests and confirm missing imports fail**
 
-Run: `uv run pytest tests/unit/contracts/test_contracts.py -q`  
+Run: `uv run pytest tests/unit/contracts/test_contracts.py -q`
 Expected: FAIL because the package and models do not exist.
 
 - [ ] **Step 3: Create the package metadata and minimal typed contracts**
@@ -105,11 +105,11 @@ Configure Python `>=3.12,<3.13`, the `dev` dependency group, Ruff, mypy strict m
 
 - [ ] **Step 4: Run contract, format, lint, and type gates**
 
-Run: `uv sync --group dev`  
-Run: `uv run pytest tests/unit/contracts/test_contracts.py -q`  
-Run: `uv run ruff format --check .`  
-Run: `uv run ruff check .`  
-Run: `uv run mypy src experiments`  
+Run: `uv sync --group dev`
+Run: `uv run pytest tests/unit/contracts/test_contracts.py -q`
+Run: `uv run ruff format --check .`
+Run: `uv run ruff check .`
+Run: `uv run mypy src experiments`
 Expected: all commands pass.
 
 - [ ] **Step 5: Commit the foundation**
@@ -134,7 +134,7 @@ git commit -m "build: establish typed project contracts"
 
 **Interfaces:**
 - Produces: `download_archive(source: DatasetSource, destination: Path) -> Path`, `extract_archive(archive: Path, destination: Path) -> Path`, and `build_dataset_manifest(root: Path) -> DatasetManifest`.
-- CLI: `python -m experiments.data.cli prepare --root <external-root>`.
+- CLI: `python -m experiments.data.cli prepare --root PATH`, where `PATH` is an external dataset directory.
 
 - [ ] **Step 1: Write downloader tests using a local range-capable HTTP fixture**
 
@@ -155,7 +155,7 @@ def test_download_removes_bad_complete_archive(http_dataset_server: DatasetServe
 
 - [ ] **Step 2: Run downloader tests and confirm failure**
 
-Run: `uv run pytest tests/unit/data/test_download.py -q`  
+Run: `uv run pytest tests/unit/data/test_download.py -q`
 Expected: FAIL because acquisition functions do not exist.
 
 - [ ] **Step 3: Implement `.part` download, Range handling, and fail-closed verification**
@@ -192,12 +192,12 @@ Reject absolute paths, `..`, symlinks, hardlinks, device entries, and extraction
 
 - [ ] **Step 6: Run offline data tests**
 
-Run: `uv run pytest tests/unit/data tests/ml_integrity/test_dataset_manifest.py -q`  
+Run: `uv run pytest tests/unit/data tests/ml_integrity/test_dataset_manifest.py -q`
 Expected: PASS without downloading the real archive.
 
 - [ ] **Step 7: Run the formal acquisition only when adequate disk is confirmed**
 
-Run: `uv run python -m experiments.data.cli prepare --root "$env:MVTECAD2_DATA_ROOT"`  
+Run: `uv run python -m experiments.data.cli prepare --root "$env:MVTECAD2_DATA_ROOT"`
 Expected: resumable download, exact byte/hash verification, safe extraction, and a manifest summary for eight categories. If another formal GPU job is active, dataset download may proceed only when it does not disturb that experiment's disk or network contract.
 
 - [ ] **Step 8: Commit the acquisition pipeline without data**
@@ -221,7 +221,7 @@ git commit -m "feat(data): add verified MVTec AD 2 acquisition"
 - Test: `tests/ml_integrity/test_metric_contract.py`
 
 **Interfaces:**
-- Produces: `conformal_upper_threshold(scores: NDArrayFloat, alpha: float = 0.01) -> ThresholdResult`, `compute_image_metrics(...) -> ImageMetrics`, `compute_pixel_metrics(...) -> PixelMetrics`, and `paired_bootstrap_delta(...) -> ConfidenceInterval`.
+- Produces: `conformal_upper_threshold(scores: NDArrayFloat, alpha: float = 0.01) -> ThresholdResult`, `compute_image_metrics(labels: NDArrayInt, scores: NDArrayFloat) -> ImageMetrics`, `compute_pixel_metrics(masks: NDArrayBool, maps: NDArrayFloat) -> PixelMetrics`, and `paired_bootstrap_delta(left: NDArrayFloat, right: NDArrayFloat, seed: int, resamples: int = 10_000) -> ConfidenceInterval`.
 - Metric artifacts include `metric_contract_version="1.0.0"` and refuse mixed prediction-contract versions.
 
 - [ ] **Step 1: Write exact conformal-order-statistic tests**
@@ -239,7 +239,7 @@ def test_threshold_ties_are_review() -> None:
 
 - [ ] **Step 2: Run focused tests and confirm failure**
 
-Run: `uv run pytest tests/unit/metrics/test_thresholds.py -q`  
+Run: `uv run pytest tests/unit/metrics/test_thresholds.py -q`
 Expected: FAIL because the functions are missing.
 
 - [ ] **Step 3: Implement validation-only threshold calibration**
@@ -264,7 +264,7 @@ The official-compatible adapter must compute pixel AU-PRO through FPR `0.30`, re
 
 - [ ] **Step 6: Run metric gates**
 
-Run: `uv run pytest tests/unit/metrics tests/ml_integrity/test_metric_contract.py -q`  
+Run: `uv run pytest tests/unit/metrics tests/ml_integrity/test_metric_contract.py -q`
 Expected: PASS with deterministic bootstrap outputs.
 
 - [ ] **Step 7: Commit the metric contract**
@@ -309,7 +309,7 @@ def test_factory_rejects_unapproved_family() -> None:
 
 - [ ] **Step 2: Run adapter tests and confirm failure**
 
-Run: `uv run pytest tests/unit/models/test_factory.py -q`  
+Run: `uv run pytest tests/unit/models/test_factory.py -q`
 Expected: FAIL because adapter contracts do not exist.
 
 - [ ] **Step 3: Implement the common adapter and model factory**
@@ -336,8 +336,8 @@ Use manifest identities rather than substring checks in production; the snippet 
 
 - [ ] **Step 7: Run offline adapter tests and one marked GPU smoke per family**
 
-Run: `uv run pytest tests/unit/models tests/ml_integrity/test_model_adapter_contract.py -q`  
-Run after GPU preflight: `uv run pytest -m gpu tests/integration/test_model_gpu_smoke.py -q`  
+Run: `uv run pytest tests/unit/models tests/ml_integrity/test_model_adapter_contract.py -q`
+Run after GPU preflight: `uv run pytest -m gpu tests/integration/test_model_gpu_smoke.py -q`
 Expected: offline gates pass; each smoke produces finite scores, correctly shaped maps, and a loadable checkpoint/bundle.
 
 - [ ] **Step 8: Commit adapters and frozen configs**
@@ -379,7 +379,7 @@ def test_changed_config_never_reuses_checkpoint(run_store: RunStore, spec: RunSp
 
 - [ ] **Step 2: Run orchestration tests and confirm failure**
 
-Run: `uv run pytest tests/unit/orchestration tests/integration/test_supervisor_resume.py -q`  
+Run: `uv run pytest tests/unit/orchestration tests/integration/test_supervisor_resume.py -q`
 Expected: FAIL because supervisor modules are missing.
 
 - [ ] **Step 3: Implement atomic queue expansion and evidence directories**
@@ -400,7 +400,7 @@ Inject exit codes, truncated JSON, expired leases, a completed checkpoint, and a
 
 - [ ] **Step 7: Run supervisor tests**
 
-Run: `uv run pytest tests/unit/orchestration tests/integration/test_supervisor_resume.py -q`  
+Run: `uv run pytest tests/unit/orchestration tests/integration/test_supervisor_resume.py -q`
 Expected: PASS without a GPU.
 
 - [ ] **Step 8: Commit the supervisor**
@@ -441,7 +441,7 @@ def test_latency_within_five_percent_prefers_lower_vram() -> None:
 
 - [ ] **Step 2: Run selection tests and confirm failure**
 
-Run: `uv run pytest tests/unit/selection/test_champions.py -q`  
+Run: `uv run pytest tests/unit/selection/test_champions.py -q`
 Expected: FAIL because selection code is missing.
 
 - [ ] **Step 3: Implement one-way public gate and selection logic**
@@ -450,16 +450,16 @@ Require a signed/frozen-stage manifest listing all valid stage-1 runs before pub
 
 - [ ] **Step 4: Run stage 1 and freeze per-category contenders**
 
-Run: `uv run python -m experiments.run_matrix --stage screening --data-root "$env:MVTECAD2_DATA_ROOT" --runs-root "$env:MVTECAD2_RUNS_ROOT"`  
-Run: `uv run python -m experiments.evaluate_public --stage screening`  
-Run: `uv run python -m experiments.select_contenders`  
+Run: `uv run python -m experiments.run_matrix --stage screening --data-root "$env:MVTECAD2_DATA_ROOT" --runs-root "$env:MVTECAD2_RUNS_ROOT"`
+Run: `uv run python -m experiments.evaluate_public --stage screening`
+Run: `uv run python -m experiments.select_contenders`
 Expected: 24 valid seed-42 runs and exactly two contenders per category with recorded rationale.
 
 - [ ] **Step 5: Run replication stage and freeze champions**
 
-Run: `uv run python -m experiments.run_matrix --stage replication ...`  
-Run: `uv run python -m experiments.evaluate_public --stage replication`  
-Run: `uv run python -m experiments.select_champions`  
+Run: `uv run python -m experiments.run_matrix --stage replication --data-root "$env:MVTECAD2_DATA_ROOT" --runs-root "$env:MVTECAD2_RUNS_ROOT"`
+Run: `uv run python -m experiments.evaluate_public --stage replication`
+Run: `uv run python -m experiments.select_champions`
 Expected: seed `17/42/2026` evidence for both contenders in every category and one frozen champion per category.
 
 - [ ] **Step 6: Generate the canonical aggregate report**
@@ -468,7 +468,7 @@ Render Markdown/figures only from `public_benchmark.json` and `champions.json`. 
 
 - [ ] **Step 7: Run selection and public-gate tests**
 
-Run: `uv run pytest tests/unit/selection tests/ml_integrity/test_public_gate.py -q`  
+Run: `uv run pytest tests/unit/selection tests/ml_integrity/test_public_gate.py -q`
 Expected: PASS.
 
 - [ ] **Step 8: Commit code, frozen aggregate evidence, and reports**
@@ -509,7 +509,7 @@ def test_submission_contains_every_manifest_image_once(private_manifest: Private
 
 - [ ] **Step 2: Run submission tests and confirm failure**
 
-Run: `uv run pytest tests/unit/submission tests/ml_integrity/test_private_boundary.py -q`  
+Run: `uv run pytest tests/unit/submission tests/ml_integrity/test_private_boundary.py -q`
 Expected: FAIL because the builder is missing.
 
 - [ ] **Step 3: Integrate checksum-verified official code utilities**
@@ -522,13 +522,13 @@ Resolve only frozen champion bundles. Preserve official image identifiers, valid
 
 - [ ] **Step 5: Run private-boundary and format tests**
 
-Run: `uv run pytest tests/unit/submission tests/ml_integrity/test_private_boundary.py -q`  
+Run: `uv run pytest tests/unit/submission tests/ml_integrity/test_private_boundary.py -q`
 Expected: PASS without exposing private predictions.
 
 - [ ] **Step 6: Generate but do not submit formal bundles**
 
-Run: `uv run python -m experiments.submission.build --test-type private --output-root "$env:MVTECAD2_SUBMISSION_ROOT"`  
-Run: `uv run python -m experiments.submission.build --test-type private_mixed --output-root "$env:MVTECAD2_SUBMISSION_ROOT"`  
+Run: `uv run python -m experiments.submission.build --test-type private --output-root "$env:MVTECAD2_SUBMISSION_ROOT"`
+Run: `uv run python -m experiments.submission.build --test-type private_mixed --output-root "$env:MVTECAD2_SUBMISSION_ROOT"`
 Expected: two official-validator-passing archives, two checksum files, and a redacted summary.
 
 - [ ] **Step 7: Commit only code and redacted summary schema**
@@ -564,11 +564,11 @@ Document environment variables, acquisition, smoke, screening, replication, resu
 
 - [ ] **Step 4: Run all foundation gates**
 
-Run: `uv run pytest -m "not gpu and not dataset" -q`  
-Run: `uv run ruff format --check .`  
-Run: `uv run ruff check .`  
-Run: `uv run mypy src experiments`  
-Run: `uv run python scripts/verify_experiments.py`  
+Run: `uv run pytest -m "not gpu and not dataset" -q`
+Run: `uv run ruff format --check .`
+Run: `uv run ruff check .`
+Run: `uv run mypy src experiments`
+Run: `uv run python scripts/verify_experiments.py`
 Expected: code gates pass; verifier reports `PENDING EXTERNAL SUBMISSION` until official results exist.
 
 - [ ] **Step 5: Commit the verified handoff**

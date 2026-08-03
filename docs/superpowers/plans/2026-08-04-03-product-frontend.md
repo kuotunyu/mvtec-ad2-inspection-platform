@@ -69,7 +69,7 @@ it("maps the backend error envelope and keeps the request id", async () => {
 
 - [ ] **Step 2: Run the client test and confirm the missing project fails**
 
-Run: `cd apps/web; npm test -- --run src/api/client.test.ts`  
+Run: `cd apps/web; npm test -- --run src/api/client.test.ts`
 Expected: FAIL because package configuration and client do not exist.
 
 - [ ] **Step 3: Create strict TypeScript configuration and deterministic generation**
@@ -82,10 +82,10 @@ Use same-origin `/api`, JSON parsing with content-type validation, abort signals
 
 - [ ] **Step 5: Run frontend foundation gates**
 
-Run: `cd apps/web; npm ci`  
-Run: `cd apps/web; npm run api:check`  
-Run: `cd apps/web; npm run typecheck`  
-Run: `cd apps/web; npm test -- --run src/api/client.test.ts`  
+Run: `cd apps/web; npm ci`
+Run: `cd apps/web; npm run api:check`
+Run: `cd apps/web; npm run typecheck`
+Run: `cd apps/web; npm test -- --run src/api/client.test.ts`
 Expected: all pass.
 
 - [ ] **Step 6: Commit the frontend foundation**
@@ -126,7 +126,7 @@ it("does not communicate review state by color alone", () => {
 
 - [ ] **Step 2: Run shell tests and confirm failure**
 
-Run: `cd apps/web; npm test -- --run src/app/App.test.tsx src/components/StatusBadge.test.tsx`  
+Run: `cd apps/web; npm test -- --run src/app/App.test.tsx src/components/StatusBadge.test.tsx`
 Expected: FAIL because shell and components do not exist.
 
 - [ ] **Step 3: Implement the industrial visual system**
@@ -139,7 +139,7 @@ Desktop uses persistent left navigation and a wide evidence canvas; narrow scree
 
 - [ ] **Step 5: Verify shell behavior and accessibility**
 
-Run: `cd apps/web; npm test -- --run src/app src/components/StatusBadge.test.tsx`  
+Run: `cd apps/web; npm test -- --run src/app src/components/StatusBadge.test.tsx`
 Expected: navigation, active route, keyboard focus, reduced motion, and semantic status tests pass.
 
 - [ ] **Step 6: Commit the shell**
@@ -180,7 +180,7 @@ it("creates a job and navigates to progress", async () => {
 
 - [ ] **Step 2: Run page tests and confirm failure**
 
-Run: `cd apps/web; npm test -- --run src/pages/Dashboard.test.tsx src/pages/NewInspection.test.tsx`  
+Run: `cd apps/web; npm test -- --run src/pages/Dashboard.test.tsx src/pages/NewInspection.test.tsx`
 Expected: FAIL because both pages are absent.
 
 - [ ] **Step 3: Implement honest dashboard summaries**
@@ -193,7 +193,7 @@ Support drag/drop and standard file input. Show filename, size, local validation
 
 - [ ] **Step 5: Run page and accessibility tests**
 
-Run: `cd apps/web; npm test -- --run src/pages/Dashboard.test.tsx src/pages/NewInspection.test.tsx`  
+Run: `cd apps/web; npm test -- --run src/pages/Dashboard.test.tsx src/pages/NewInspection.test.tsx`
 Expected: loading, empty, partial error, upload, duplicate submit, keyboard, and screen-reader status cases pass.
 
 - [ ] **Step 6: Commit Dashboard and ingestion UI**
@@ -232,7 +232,7 @@ it("keeps successful results visible when one image failed", async () => {
 
 - [ ] **Step 2: Run tests and confirm failure**
 
-Run: `cd apps/web; npm test -- --run src/pages/JobDetail.test.tsx src/components/HeatmapCompare.test.tsx`  
+Run: `cd apps/web; npm test -- --run src/pages/JobDetail.test.tsx src/components/HeatmapCompare.test.tsx`
 Expected: FAIL because the evidence page is absent.
 
 - [ ] **Step 3: Implement bounded progress polling and terminal refresh**
@@ -245,7 +245,7 @@ Cards display exact score, exact threshold, textual outcome, processing duration
 
 - [ ] **Step 5: Verify partial, cancelled, and failed jobs**
 
-Run: `cd apps/web; npm test -- --run src/pages/JobDetail.test.tsx src/components`  
+Run: `cd apps/web; npm test -- --run src/pages/JobDetail.test.tsx src/components`
 Expected: terminal states, missing artifacts, stale polling, slider keyboard control, and accessible dialog tests pass.
 
 - [ ] **Step 6: Commit job evidence UI**
@@ -290,7 +290,7 @@ it("refreshes after a revision conflict", async () => {
 
 - [ ] **Step 2: Run review tests and confirm failure**
 
-Run: `cd apps/web; npm test -- --run src/pages/ReviewQueue.test.tsx src/components/DecisionBar.test.tsx`  
+Run: `cd apps/web; npm test -- --run src/pages/ReviewQueue.test.tsx src/components/DecisionBar.test.tsx`
 Expected: FAIL because review components do not exist.
 
 - [ ] **Step 3: Implement a deliberate review workflow**
@@ -303,7 +303,7 @@ On `409`, retain the unsaved note, fetch current history, and ask the user to re
 
 - [ ] **Step 5: Run review and accessibility gates**
 
-Run: `cd apps/web; npm test -- --run src/pages/ReviewQueue.test.tsx src/components/DecisionBar.test.tsx src/components/ReviewHistory.test.tsx`  
+Run: `cd apps/web; npm test -- --run src/pages/ReviewQueue.test.tsx src/components/DecisionBar.test.tsx src/components/ReviewHistory.test.tsx`
 Expected: decision, confirmation, shortcut scope, focus, conflict, retry, and history tests pass.
 
 - [ ] **Step 6: Commit human review UI**
@@ -340,7 +340,7 @@ it("labels an unevaluated private gate instead of inferring success", async () =
 
 - [ ] **Step 2: Run evidence tests and confirm failure**
 
-Run: `cd apps/web; npm test -- --run src/pages/ModelEvidence.test.tsx src/components/ChampionMatrix.test.tsx`  
+Run: `cd apps/web; npm test -- --run src/pages/ModelEvidence.test.tsx src/components/ChampionMatrix.test.tsx`
 Expected: FAIL because the evidence page is absent.
 
 - [ ] **Step 3: Implement provenance-first evidence presentation**
@@ -353,7 +353,7 @@ State noncommercial dataset constraints, no defect-type classification, no autom
 
 - [ ] **Step 5: Verify evidence rendering**
 
-Run: `cd apps/web; npm test -- --run src/pages/ModelEvidence.test.tsx src/components/ChampionMatrix.test.tsx`  
+Run: `cd apps/web; npm test -- --run src/pages/ModelEvidence.test.tsx src/components/ChampionMatrix.test.tsx`
 Expected: public-only, private pass, mixed-lighting no-go, missing artifact, and responsive table cases pass.
 
 - [ ] **Step 6: Commit model evidence UI**
@@ -392,14 +392,14 @@ Run axe on all five pages in representative states, keyboard-traverse upload and
 
 - [ ] **Step 5: Run the clean frontend gate**
 
-Run: `cd apps/web; npm ci`  
-Run: `cd apps/web; npm run api:check`  
-Run: `cd apps/web; npm run lint`  
-Run: `cd apps/web; npm run typecheck`  
-Run: `cd apps/web; npm test -- --run --coverage`  
-Run: `cd apps/web; npm run build`  
-Run: `cd apps/web; npm run verify:public-assets`  
-Run: `cd apps/web; npm run e2e` against the Plan 02 mock backend.  
+Run: `cd apps/web; npm ci`
+Run: `cd apps/web; npm run api:check`
+Run: `cd apps/web; npm run lint`
+Run: `cd apps/web; npm run typecheck`
+Run: `cd apps/web; npm test -- --run --coverage`
+Run: `cd apps/web; npm run build`
+Run: `cd apps/web; npm run verify:public-assets`
+Run: `cd apps/web; npm run e2e` against the Plan 02 mock backend.
 Expected: every command passes with no console errors, failed requests, accessibility violations, or prohibited assets.
 
 - [ ] **Step 6: Commit frontend verification**
