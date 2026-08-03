@@ -9,6 +9,7 @@ description = "Reproducible MVTec AD 2 benchmarking and industrial inspection wo
 requires-python = ">=3.12,<3.13"
 dependencies = [
   "pydantic>=2.11,<3",
+  "truststore>=0.10.4,<0.11",
 ]
 
 [project.optional-dependencies]
@@ -25,7 +26,7 @@ dev = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/inspection_platform"]
+packages = ["src/inspection_platform", "experiments"]
 
 [tool.pytest.ini_options]
 addopts = "-ra --strict-config --strict-markers"

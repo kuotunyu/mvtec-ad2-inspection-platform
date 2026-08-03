@@ -136,7 +136,7 @@ git commit -m "build: establish typed project contracts"
 - Produces: `download_archive(source: DatasetSource, destination: Path) -> Path`, `extract_archive(archive: Path, destination: Path) -> Path`, and `build_dataset_manifest(root: Path) -> DatasetManifest`.
 - CLI: `python -m experiments.data.cli prepare --root PATH`, where `PATH` is an external dataset directory.
 
-- [ ] **Step 1: Write downloader tests using a local range-capable HTTP fixture**
+- [x] **Step 1: Write downloader tests using a local range-capable HTTP fixture**
 
 ```python
 def test_download_resumes_partial_file(http_dataset_server: DatasetServer, tmp_path: Path) -> None:
@@ -153,12 +153,12 @@ def test_download_removes_bad_complete_archive(http_dataset_server: DatasetServe
         download_archive(http_dataset_server.source, target, max_attempts=1)
 ```
 
-- [ ] **Step 2: Run downloader tests and confirm failure**
+- [x] **Step 2: Run downloader tests and confirm failure**
 
 Run: `uv run pytest tests/unit/data/test_download.py -q`
 Expected: FAIL because acquisition functions do not exist.
 
-- [ ] **Step 3: Implement `.part` download, Range handling, and fail-closed verification**
+- [x] **Step 3: Implement `.part` download, Range handling, and fail-closed verification**
 
 ```python
 MVTECAD2_SOURCE = DatasetSource(
@@ -171,7 +171,7 @@ MVTECAD2_SOURCE = DatasetSource(
 
 If a server ignores Range and returns `200`, truncate the partial file before writing. Stream to disk, flush, verify size and SHA-256, then atomically rename `.part` to the final archive. Never log tokens, cookies, or response bodies.
 
-- [ ] **Step 4: Write malicious tar and dataset-structure tests**
+- [x] **Step 4: Write malicious tar and dataset-structure tests**
 
 ```python
 @pytest.mark.parametrize("member", ["../escape", "/absolute", "ok/../../escape"])
@@ -186,21 +186,21 @@ def test_manifest_requires_all_official_splits(valid_dataset_tree: Path) -> None
         build_dataset_manifest(valid_dataset_tree)
 ```
 
-- [ ] **Step 5: Implement safe extraction and manifest creation**
+- [x] **Step 5: Implement safe extraction and manifest creation**
 
 Reject absolute paths, `..`, symlinks, hardlinks, device entries, and extraction outside a temporary sibling directory. Validate all eight categories and required split folders, inventory PNG files and public masks, then atomically rename the verified tree into place. Write the manifest outside the dataset and include its canonical SHA-256.
 
-- [ ] **Step 6: Run offline data tests**
+- [x] **Step 6: Run offline data tests**
 
 Run: `uv run pytest tests/unit/data tests/ml_integrity/test_dataset_manifest.py -q`
 Expected: PASS without downloading the real archive.
 
-- [ ] **Step 7: Run the formal acquisition only when adequate disk is confirmed**
+- [x] **Step 7: Run the formal acquisition only when adequate disk is confirmed**
 
 Run: `uv run python -m experiments.data.cli prepare --root "$env:MVTECAD2_DATA_ROOT"`
 Expected: resumable download, exact byte/hash verification, safe extraction, and a manifest summary for eight categories. If another formal GPU job is active, dataset download may proceed only when it does not disturb that experiment's disk or network contract.
 
-- [ ] **Step 8: Commit the acquisition pipeline without data**
+- [x] **Step 8: Commit the acquisition pipeline without data**
 
 ```powershell
 git add experiments/data tests/unit/data tests/ml_integrity/test_dataset_manifest.py
