@@ -364,7 +364,7 @@ git commit -m "feat(models): add frozen anomaly model adapters"
 - Produces: `expand_stage(stage: ExperimentStage) -> list[RunSpec]`, `GpuLease.acquire(owner: str)`, and `Supervisor.run(queue: Sequence[RunSpec]) -> SupervisorSummary`.
 - Each run directory contains `spec.json`, `record.json`, `heartbeat.jsonl`, `checkpoints/`, `predictions/`, and `metrics/`.
 
-- [ ] **Step 1: Write queue identity and resume tests**
+- [x] **Step 1: Write queue identity and resume tests**
 
 ```python
 def test_completed_matching_run_is_skipped(run_store: RunStore, spec: RunSpec) -> None:
@@ -377,33 +377,33 @@ def test_changed_config_never_reuses_checkpoint(run_store: RunStore, spec: RunSp
     assert Supervisor(run_store).plan([changed]).resumed == []
 ```
 
-- [ ] **Step 2: Run orchestration tests and confirm failure**
+- [x] **Step 2: Run orchestration tests and confirm failure**
 
 Run: `uv run pytest tests/unit/orchestration tests/integration/test_supervisor_resume.py -q`
 Expected: FAIL because supervisor modules are missing.
 
-- [ ] **Step 3: Implement atomic queue expansion and evidence directories**
+- [x] **Step 3: Implement atomic queue expansion and evidence directories**
 
 Stage 1 expands `3 families × 8 categories × seed 42`. Stage 2 reads the frozen per-category contender artifact and expands only seeds `17` and `2026`; it reuses valid seed-42 runs. Sort runs deterministically by category, family, then seed.
 
-- [ ] **Step 4: Implement the GPU lease and compute-workload preflight**
+- [x] **Step 4: Implement the GPU lease and compute-workload preflight**
 
 Use atomic exclusive file creation with owner PID, process start time, repository identity, and heartbeat. A lease is stale only when both heartbeat is expired and the recorded process identity is gone. Supplement the lease with NVML or `nvidia-smi` compute-process inspection; ignore ordinary WDDM desktop graphics entries, but refuse to start when another Python/WSL/CUDA compute workload is active. Preserve diagnostic output without killing processes.
 
-- [ ] **Step 5: Implement heartbeat, stop rules, and one OOM downgrade**
+- [x] **Step 5: Implement heartbeat, stop rules, and one OOM downgrade**
 
 The only automatic config mutation is the model config's predeclared `oom_fallback_batch_size`; record the mutation as a separate attempt under the same run. Checksum mismatch, non-finite output, invalid shape, corrupt checkpoint, free disk below 80 GiB, or a second OOM fails the run and stops the formal queue.
 
-- [ ] **Step 6: Test crash and resume behavior with fake subprocesses**
+- [x] **Step 6: Test crash and resume behavior with fake subprocesses**
 
 Inject exit codes, truncated JSON, expired leases, a completed checkpoint, and a mismatched hash. Assert that completed work is preserved, resumable work resumes, invalid work is quarantined, and no incompatible directory is overwritten.
 
-- [ ] **Step 7: Run supervisor tests**
+- [x] **Step 7: Run supervisor tests**
 
 Run: `uv run pytest tests/unit/orchestration tests/integration/test_supervisor_resume.py -q`
 Expected: PASS without a GPU.
 
-- [ ] **Step 8: Commit the supervisor**
+- [x] **Step 8: Commit the supervisor**
 
 ```powershell
 git add experiments/orchestration experiments/run_matrix.py tests

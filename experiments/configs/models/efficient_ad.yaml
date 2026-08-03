@@ -5,6 +5,7 @@ model_name: EfficientAd
 backbone: small
 input_size: [256, 256]
 batch_size: 1
+oom_fallback_batch_size: null
 precision: 32-true
 trainer_limits:
   max_epochs: 100

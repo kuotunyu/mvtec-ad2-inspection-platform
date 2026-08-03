@@ -35,11 +35,29 @@ class RunRecord(ContractModel):
     attempt: Annotated[int, Field(ge=1)] = 1
     artifacts: dict[str, Sha256] = Field(default_factory=dict)
     error: str | None = None
+    code_revision: str | None = None
+    config_sha256: Sha256 | None = None
+    environment_lock_sha256: Sha256 | None = None
+    model_revision: str | None = None
+    started_at: Annotated[float, Field(ge=0)] | None = None
+    finished_at: Annotated[float, Field(ge=0)] | None = None
+    latency_ms: Annotated[float, Field(ge=0)] | None = None
+    peak_vram_mib: Annotated[float, Field(ge=0)] | None = None
+    exit_code: int | None = None
 
     @model_validator(mode="after")
     def require_failure_reason(self) -> RunRecord:
-        if self.status == "failed" and not self.error:
-            raise ValueError("error is required when a run has failed")
-        if self.status != "failed" and self.error:
-            raise ValueError("error is allowed only when a run has failed")
+        terminal_with_reason = self.status in {"failed", "stopped"}
+        if terminal_with_reason and not self.error:
+            raise ValueError("error is required when a run has failed or stopped")
+        if not terminal_with_reason and self.error:
+            raise ValueError("error is allowed only when a run has failed or stopped")
+        if (
+            self.started_at is not None
+            and self.finished_at is not None
+            and self.finished_at < self.started_at
+        ):
+            raise ValueError("finished_at must not precede started_at")
+        if self.status == "completed" and self.exit_code not in {None, 0}:
+            raise ValueError("a completed run cannot have a non-zero exit_code")
         return self

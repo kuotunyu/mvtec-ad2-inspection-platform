@@ -33,6 +33,8 @@ def test_frozen_model_config_is_complete_and_canonical(
     assert first.seed is None
     assert first.input_size == first.preprocessing.resize
     assert first.batch_size > 0
+    if first.oom_fallback_batch_size is not None:
+        assert first.oom_fallback_batch_size < first.batch_size
     assert first.trainer_limits.max_epochs > 0
     assert first.checkpoint_policy.save_top_k == 1
     assert first.export_mode == "torch"

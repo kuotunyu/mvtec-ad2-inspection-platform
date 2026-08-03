@@ -5,6 +5,7 @@ model_name: Patchcore
 backbone: wide_resnet50_2
 input_size: [512, 512]
 batch_size: 1
+oom_fallback_batch_size: null
 precision: 32-true
 trainer_limits:
   max_epochs: 1

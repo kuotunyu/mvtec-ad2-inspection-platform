@@ -25,6 +25,7 @@ def smoke_config(family: str) -> ModelConfig:
     size = {"patchcore": 64, "efficient_ad": 256, "dinomaly": 112}[family]
     payload["input_size"] = (size, size)
     payload["batch_size"] = 1
+    payload["oom_fallback_batch_size"] = None
     payload["trainer_limits"] = {"max_epochs": 1, "max_steps": 1}
     preprocessing = dict(payload["preprocessing"])
     preprocessing["resize"] = (size, size)

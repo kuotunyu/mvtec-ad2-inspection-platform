@@ -8,6 +8,7 @@ version = "0.1.0"
 description = "Reproducible MVTec AD 2 benchmarking and industrial inspection workstation"
 requires-python = ">=3.12,<3.13"
 dependencies = [
+  "psutil>=7.0,<8",
   "pydantic>=2.11,<3",
   "truststore>=0.10.4,<0.11",
 ]

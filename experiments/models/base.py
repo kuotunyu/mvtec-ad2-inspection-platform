@@ -81,6 +81,7 @@ class ModelConfig(ContractModel):
     backbone: str | None
     input_size: Annotated[tuple[int, int], Field(min_length=2, max_length=2)]
     batch_size: Annotated[int, Field(gt=0)]
+    oom_fallback_batch_size: Annotated[int | None, Field(gt=0)] = None
     precision: Literal["32-true", "16-mixed", "bf16-mixed"]
     trainer_limits: TrainerLimits
     seed: None = None
@@ -95,6 +96,11 @@ class ModelConfig(ContractModel):
             raise ValueError("input_size dimensions must be positive")
         if self.input_size != self.preprocessing.resize:
             raise ValueError("input_size must match preprocessing resize")
+        if (
+            self.oom_fallback_batch_size is not None
+            and self.oom_fallback_batch_size > self.batch_size
+        ):
+            raise ValueError("oom_fallback_batch_size must not exceed batch_size")
         if self.family == "efficient_ad":
             if self.batch_size != 1:
                 raise ValueError("EfficientAD requires batch_size 1 in Anomalib 2.5.0")
@@ -133,6 +139,7 @@ class FitContext:
     output_dir: Path
     device: str
     auxiliary_data_roots: Mapping[str, Path] = dataclass_field(default_factory=dict)
+    resume_checkpoint: Path | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -506,7 +513,12 @@ class AnomalibEngineAdapter(AnomalyExperimentAdapter, ABC):
             device=context.device,
             callbacks=[checkpoint_callback],
         )
-        engine.fit(model=model, datamodule=datamodule)
+        resume_checkpoint = (
+            context.resume_checkpoint.expanduser().resolve(strict=True)
+            if context.resume_checkpoint is not None
+            else None
+        )
+        engine.fit(model=model, datamodule=datamodule, ckpt_path=resume_checkpoint)
         checkpoint = self._checkpoint_candidate(checkpoint_callback)
         if checkpoint is None:
             candidates = tuple(sorted(checkpoint_dir.glob("*.ckpt")))

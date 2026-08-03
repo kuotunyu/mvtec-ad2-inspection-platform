@@ -5,6 +5,7 @@ model_name: Dinomaly
 backbone: dinov2reg_vit_base_14
 input_size: [448, 448]
 batch_size: 4
+oom_fallback_batch_size: 1
 precision: 32-true
 trainer_limits:
   max_epochs: 100
