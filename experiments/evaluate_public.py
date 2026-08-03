@@ -20,7 +20,12 @@ from experiments.data.manifest import REQUIRED_CATEGORIES
 from experiments.metrics.artifacts import ImageMetrics, PixelMetrics, ThresholdResult
 from experiments.metrics.image import compute_image_metrics
 from experiments.metrics.pixel import compute_pixel_metrics
-from experiments.models.base import FitArtifact, ModelConfig, PredictionArtifact
+from experiments.models.base import (
+    FitArtifact,
+    ModelConfig,
+    PredictionArtifact,
+    PreprocessingConfig,
+)
 from experiments.models.factory import create_adapter
 from experiments.orchestration.gpu_lock import GpuLease
 from experiments.orchestration.queue import APPROVED_FAMILIES, ExperimentStage, expand_stage
@@ -551,9 +556,34 @@ def _resize_array(
     return np.asarray(resized, dtype=np.float64)
 
 
+def _restore_preprocessing_geometry(
+    anomaly_map: NDArray[np.generic],
+    preprocessing: PreprocessingConfig,
+    output_size: tuple[int, int],
+) -> NDArray[np.float64]:
+    expected_shape = preprocessing.center_crop or preprocessing.resize
+    if anomaly_map.shape != expected_shape:
+        raise PublicGateError("public anomaly map differs from its frozen preprocessing shape")
+    restored = np.asarray(anomaly_map, dtype=np.float32)
+    if preprocessing.center_crop is not None:
+        resize_height, resize_width = preprocessing.resize
+        crop_height, crop_width = preprocessing.center_crop
+        frame = np.full(
+            preprocessing.resize,
+            float(restored.min()),
+            dtype=np.float32,
+        )
+        top = round((resize_height - crop_height) / 2.0)
+        left = round((resize_width - crop_width) / 2.0)
+        frame[top : top + crop_height, left : left + crop_width] = restored
+        restored = frame
+    return _resize_array(restored, output_size, nearest=False)
+
+
 def _metric_arrays(
     artifact: PredictionArtifact,
     *,
+    preprocessing: PreprocessingConfig,
     evaluation_size: tuple[int, int] = (256, 256),
 ) -> tuple[
     NDArray[np.int64],
@@ -592,7 +622,7 @@ def _metric_arrays(
         labels.append(label)
         scores.append(record.anomaly_score)
         masks.append(mask)
-        maps.append(_resize_array(anomaly_map, evaluation_size, nearest=False))
+        maps.append(_restore_preprocessing_geometry(anomaly_map, preprocessing, evaluation_size))
     return (
         np.asarray(labels, dtype=np.int64),
         np.asarray(scores, dtype=np.float64),
@@ -694,7 +724,10 @@ def _evaluate_run(
     elapsed_ms = (time.perf_counter() - started) * 1000.0
     if not prediction.device_latency_ms:
         raise PublicGateError("public prediction lacks frozen per-image device latency")
-    labels, scores, masks, maps = _metric_arrays(prediction)
+    labels, scores, masks, maps = _metric_arrays(
+        prediction,
+        preprocessing=config.preprocessing,
+    )
     metrics = compute_public_run_metrics(
         labels=labels,
         scores=scores,

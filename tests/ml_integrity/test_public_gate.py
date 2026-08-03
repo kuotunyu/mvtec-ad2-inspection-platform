@@ -4,20 +4,24 @@ from pathlib import Path
 
 import numpy as np
 import pytest
+from PIL import Image
 
 from experiments.evaluate_public import (
     PublicGateError,
     PublicRunMetrics,
+    _metric_arrays,
+    _restore_preprocessing_geometry,
     compute_public_run_metrics,
     freeze_screening_stage,
     open_public_gate,
     verify_public_gate,
     write_frozen_stage,
 )
+from experiments.models.base import ArtifactFile, PredictionArtifact, PreprocessingConfig
 from experiments.orchestration.queue import ExperimentStage, expand_stage
 from experiments.orchestration.supervisor import RunStore
 from experiments.run_matrix import PRE_GATE_PREDICTION_SPLITS
-from inspection_platform.contracts import RunSpec
+from inspection_platform.contracts import PredictionRecord, RunSpec, sha256_file
 
 
 def screening_specs() -> list[RunSpec]:
@@ -118,3 +122,75 @@ def test_public_metrics_freeze_quality_operating_point_and_gpu_latency() -> None
     assert metrics.gpu_latency.p50_ms == 10.0
     assert metrics.gpu_latency.p95_ms == pytest.approx(11.8)
     assert metrics.gpu_latency.throughput_images_per_second == 100.0
+
+
+def test_metric_arrays_restore_center_crop_to_full_frame(tmp_path: Path) -> None:
+    image_path = tmp_path / "can" / "test_public" / "bad" / "000.png"
+    mask_path = tmp_path / "can" / "test_public" / "ground_truth" / "bad" / "000_mask.png"
+    map_path = tmp_path / "000.npy"
+    image_path.parent.mkdir(parents=True)
+    mask_path.parent.mkdir(parents=True)
+    Image.fromarray(np.zeros((4, 4, 3), dtype=np.uint8)).save(image_path)
+    Image.fromarray(np.zeros((4, 4), dtype=np.uint8)).save(mask_path)
+    np.save(map_path, np.array([[1.0, 1.0], [1.0, 0.0]], dtype=np.float32))
+    map_sha256 = sha256_file(map_path)
+    artifact = PredictionArtifact(
+        family="dinomaly",
+        category="can",
+        split="test_public",
+        config_sha256="a" * 64,
+        records=(
+            PredictionRecord(
+                input_id="000:000.png",
+                input_sha256=sha256_file(image_path),
+                category="can",
+                anomaly_score=1.0,
+                anomaly_map_sha256=map_sha256,
+                model_bundle_id="run:test",
+                input_path=image_path,
+            ),
+        ),
+        anomaly_maps=(
+            ArtifactFile(path=map_path, sha256=map_sha256, size=map_path.stat().st_size),
+        ),
+    )
+
+    _, _, _, maps = _metric_arrays(
+        artifact,
+        preprocessing=PreprocessingConfig(
+            resize=(4, 4),
+            center_crop=(2, 2),
+            normalization="imagenet",
+        ),
+        evaluation_size=(4, 4),
+    )
+
+    np.testing.assert_array_equal(
+        maps,
+        np.array(
+            [
+                [
+                    [0.0, 0.0, 0.0, 0.0],
+                    [0.0, 1.0, 1.0, 0.0],
+                    [0.0, 1.0, 0.0, 0.0],
+                    [0.0, 0.0, 0.0, 0.0],
+                ]
+            ],
+            dtype=np.float64,
+        ),
+    )
+
+
+def test_geometry_restore_rejects_map_outside_frozen_preprocessing_shape() -> None:
+    preprocessing = PreprocessingConfig(
+        resize=(4, 4),
+        center_crop=(2, 2),
+        normalization="imagenet",
+    )
+
+    with pytest.raises(PublicGateError, match="frozen preprocessing shape"):
+        _restore_preprocessing_geometry(
+            np.zeros((1, 2), dtype=np.float32),
+            preprocessing,
+            (4, 4),
+        )
