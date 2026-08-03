@@ -59,7 +59,7 @@
 - Later tasks consume these exact Pydantic models; schema versions are string literals and reject unknown major versions.
 - `RunSpec.model_family` accepts exactly `patchcore`, `efficient_ad`, or `dinomaly`. `ModelBundleManifest` additionally separates `runtime_kind: Literal["anomalib", "mock"]` from `model_family`: a real bundle requires one of those three families, while a mock bundle requires `model_family=None` and `evaluation_scope="synthetic-ci-only"`.
 
-- [ ] **Step 1: Write contract tests before project code**
+- [x] **Step 1: Write contract tests before project code**
 
 ```python
 def test_run_spec_hash_is_order_independent() -> None:
@@ -78,12 +78,12 @@ def test_model_bundle_rejects_unknown_schema_major() -> None:
         )
 ```
 
-- [ ] **Step 2: Run the focused tests and confirm missing imports fail**
+- [x] **Step 2: Run the focused tests and confirm missing imports fail**
 
 Run: `uv run pytest tests/unit/contracts/test_contracts.py -q`
 Expected: FAIL because the package and models do not exist.
 
-- [ ] **Step 3: Create the package metadata and minimal typed contracts**
+- [x] **Step 3: Create the package metadata and minimal typed contracts**
 
 ```python
 SCHEMA_VERSION = "1.0.0"
@@ -103,7 +103,7 @@ class RunSpec(BaseModel):
 
 Configure Python `>=3.12,<3.13`, the `dev` dependency group, Ruff, mypy strict mode for project modules, and pytest markers `gpu`, `dataset`, and `slow`. Put training dependencies in a separate `ml` extra so the later CPU product image does not inherit them.
 
-- [ ] **Step 4: Run contract, format, lint, and type gates**
+- [x] **Step 4: Run contract, format, lint, and type gates**
 
 Run: `uv sync --group dev`
 Run: `uv run pytest tests/unit/contracts/test_contracts.py -q`
@@ -112,7 +112,7 @@ Run: `uv run ruff check .`
 Run: `uv run mypy src experiments`
 Expected: all commands pass.
 
-- [ ] **Step 5: Commit the foundation**
+- [x] **Step 5: Commit the foundation**
 
 ```powershell
 git add pyproject.toml uv.lock .gitignore .env.example src tests

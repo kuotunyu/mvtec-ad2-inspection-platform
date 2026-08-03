@@ -1,0 +1,45 @@
+# Python environments and caches
+/.venv/
+__pycache__/
+*.py[cod]
+/.pytest_cache/
+/.mypy_cache/
+/.ruff_cache/
+/.coverage
+/htmlcov/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+
+# Large or runtime-only material
+/data/
+/datasets/
+/runtime/
+/artifacts/
+/checkpoints/
+/runs/
+/uploads/
+/weights/
+/submissions/
+*.ckpt
+*.onnx
+*.part
+*.pt
+*.pth
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# Frontend and packaging outputs
+/apps/web/node_modules/
+/apps/web/dist/
+/dist/
+*.egg-info/
+
+# Editors and operating systems
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
