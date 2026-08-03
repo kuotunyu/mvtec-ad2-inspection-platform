@@ -15,14 +15,22 @@ dependencies = [
 [project.optional-dependencies]
 ml = [
   "anomalib==2.5.0",
+  "numpy>=2.2,<3",
+  "scikit-learn>=1.6,<2",
+  "scipy>=1.15,<2",
+  "tifffile>=2025,<2027",
 ]
 
 [dependency-groups]
 dev = [
   "mypy>=1.16,<2",
+  "numpy>=2.2,<3",
   "pytest>=8.4,<9",
   "pytest-cov>=6.2,<7",
   "ruff>=0.12,<1",
+  "scikit-learn>=1.6,<2",
+  "scipy>=1.15,<2",
+  "tifffile>=2025,<2027",
 ]
 
 [tool.hatch.build.targets.wheel]

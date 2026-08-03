@@ -777,20 +777,32 @@ dependencies = [
 [package.optional-dependencies]
 ml = [
     { name = "anomalib" },
+    { name = "numpy" },
+    { name = "scikit-learn" },
+    { name = "scipy" },
+    { name = "tifffile" },
 ]
 
 [package.dev-dependencies]
 dev = [
     { name = "mypy" },
+    { name = "numpy" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "ruff" },
+    { name = "scikit-learn" },
+    { name = "scipy" },
+    { name = "tifffile" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "anomalib", marker = "extra == 'ml'", specifier = "==2.5.0" },
+    { name = "numpy", marker = "extra == 'ml'", specifier = ">=2.2,<3" },
     { name = "pydantic", specifier = ">=2.11,<3" },
+    { name = "scikit-learn", marker = "extra == 'ml'", specifier = ">=1.6,<2" },
+    { name = "scipy", marker = "extra == 'ml'", specifier = ">=1.15,<2" },
+    { name = "tifffile", marker = "extra == 'ml'", specifier = ">=2025,<2027" },
     { name = "truststore", specifier = ">=0.10.4,<0.11" },
 ]
 provides-extras = ["ml"]
@@ -798,9 +810,13 @@ provides-extras = ["ml"]
 [package.metadata.requires-dev]
 dev = [
     { name = "mypy", specifier = ">=1.16,<2" },
+    { name = "numpy", specifier = ">=2.2,<3" },
     { name = "pytest", specifier = ">=8.4,<9" },
     { name = "pytest-cov", specifier = ">=6.2,<7" },
     { name = "ruff", specifier = ">=0.12,<1" },
+    { name = "scikit-learn", specifier = ">=1.6,<2" },
+    { name = "scipy", specifier = ">=1.15,<2" },
+    { name = "tifffile", specifier = ">=2025,<2027" },
 ]
 
 [[package]]

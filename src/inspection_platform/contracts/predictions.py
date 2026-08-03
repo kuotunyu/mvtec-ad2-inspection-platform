@@ -1,11 +1,19 @@
 from __future__ import annotations
 
 import math
+from enum import StrEnum
 
 from pydantic import field_validator
 
 from inspection_platform.contracts._base import ContractModel
 from inspection_platform.contracts.dataset import MVTecAD2Category, Sha256
+
+
+class InspectionDecision(StrEnum):
+    """Human-review routing outcome derived from frozen model evidence."""
+
+    PASS = "PASS"
+    REVIEW = "REVIEW"
 
 
 class PredictionRecord(ContractModel):

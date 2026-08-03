@@ -224,7 +224,7 @@ git commit -m "feat(data): add verified MVTec AD 2 acquisition"
 - Produces: `conformal_upper_threshold(scores: NDArrayFloat, alpha: float = 0.01) -> ThresholdResult`, `compute_image_metrics(labels: NDArrayInt, scores: NDArrayFloat) -> ImageMetrics`, `compute_pixel_metrics(masks: NDArrayBool, maps: NDArrayFloat) -> PixelMetrics`, and `paired_bootstrap_delta(left: NDArrayFloat, right: NDArrayFloat, seed: int, resamples: int = 10_000) -> ConfidenceInterval`.
 - Metric artifacts include `metric_contract_version="1.0.0"` and refuse mixed prediction-contract versions.
 
-- [ ] **Step 1: Write exact conformal-order-statistic tests**
+- [x] **Step 1: Write exact conformal-order-statistic tests**
 
 ```python
 def test_conformal_threshold_uses_finite_sample_rank() -> None:
@@ -237,12 +237,12 @@ def test_threshold_ties_are_review() -> None:
     assert decision_for_score(score=0.7, threshold=0.7) is InspectionDecision.REVIEW
 ```
 
-- [ ] **Step 2: Run focused tests and confirm failure**
+- [x] **Step 2: Run focused tests and confirm failure**
 
 Run: `uv run pytest tests/unit/metrics/test_thresholds.py -q`
 Expected: FAIL because the functions are missing.
 
-- [ ] **Step 3: Implement validation-only threshold calibration**
+- [x] **Step 3: Implement validation-only threshold calibration**
 
 ```python
 def conformal_upper_threshold(scores: NDArrayFloat, alpha: float = 0.01) -> ThresholdResult:
@@ -254,20 +254,20 @@ def conformal_upper_threshold(scores: NDArrayFloat, alpha: float = 0.01) -> Thre
 
 Reject empty, non-finite, non-one-dimensional, or out-of-range-alpha inputs.
 
-- [ ] **Step 4: Add hand-computed image, pixel, AU-PRO, and paired-bootstrap fixtures**
+- [x] **Step 4: Add hand-computed image, pixel, AU-PRO, and paired-bootstrap fixtures**
 
 Use tiny arrays with manually calculable answers, constant-score cases, all-normal cases, and invalid mask shapes. Seed bootstrap resampling explicitly and record resample count.
 
-- [ ] **Step 5: Implement metrics and compare AU-PRO against official utilities**
+- [x] **Step 5: Implement metrics and compare AU-PRO against official utilities**
 
 The official-compatible adapter must compute pixel AU-PRO through FPR `0.30`, retain per-category values, and fail if image/mask order differs. Run a parity test against the downloaded official code utilities on synthetic masks; store the allowed numeric tolerance in the test.
 
-- [ ] **Step 6: Run metric gates**
+- [x] **Step 6: Run metric gates**
 
 Run: `uv run pytest tests/unit/metrics tests/ml_integrity/test_metric_contract.py -q`
 Expected: PASS with deterministic bootstrap outputs.
 
-- [ ] **Step 7: Commit the metric contract**
+- [x] **Step 7: Commit the metric contract**
 
 ```powershell
 git add experiments/metrics tests/unit/metrics tests/ml_integrity/test_metric_contract.py
