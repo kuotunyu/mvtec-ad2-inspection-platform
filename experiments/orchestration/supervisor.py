@@ -136,9 +136,7 @@ class SubprocessExecutor:
                             run_identity=request.spec.identity,
                             attempt=request.attempt,
                             current_checkpoint=(
-                                request.resume_checkpoint.relative_to(
-                                    request.run_dir
-                                ).as_posix()
+                                request.resume_checkpoint.relative_to(request.run_dir).as_posix()
                                 if request.resume_checkpoint is not None
                                 else None
                             ),
@@ -306,14 +304,8 @@ class RunStore:
         if record.status == "failed":
             return "failed"
         if record.status == "completed":
-            return (
-                "completed"
-                if self._artifacts_valid(run_dir, record.artifacts)
-                else "invalid"
-            )
-        checkpoint_keys = tuple(
-            key for key in record.artifacts if key.startswith("checkpoints/")
-        )
+            return "completed" if self._artifacts_valid(run_dir, record.artifacts) else "invalid"
+        checkpoint_keys = tuple(key for key in record.artifacts if key.startswith("checkpoints/"))
         if checkpoint_keys and self._artifacts_valid(run_dir, record.artifacts):
             return "resumable"
         return "pending"
@@ -323,9 +315,7 @@ class RunStore:
         record = self.load_record(run_dir)
         if not self._artifacts_valid(run_dir, record.artifacts):
             return None
-        checkpoint_keys = sorted(
-            key for key in record.artifacts if key.startswith("checkpoints/")
-        )
+        checkpoint_keys = sorted(key for key in record.artifacts if key.startswith("checkpoints/"))
         return run_dir / checkpoint_keys[-1] if checkpoint_keys else None
 
     def quarantine(self, spec: RunSpec) -> Path:
@@ -387,9 +377,7 @@ class Supervisor:
         self.gpu_probe = gpu_probe
         self.code_revision = code_revision
         self.environment_lock_sha256 = environment_lock_sha256
-        self.model_revision = model_revision or (
-            lambda spec: f"anomalib:2.5.0/{spec.model_family}"
-        )
+        self.model_revision = model_revision or (lambda spec: f"anomalib:2.5.0/{spec.model_family}")
         self.clock = clock
 
     def plan(self, queue: Sequence[RunSpec]) -> SupervisorPlan:
@@ -460,9 +448,7 @@ class Supervisor:
                 error=message,
                 code_revision=self.code_revision,
                 config_sha256=(
-                    self._config_sha256(effective_config)
-                    if effective_config is not None
-                    else None
+                    self._config_sha256(effective_config) if effective_config is not None else None
                 ),
                 environment_lock_sha256=self.environment_lock_sha256,
                 model_revision=self.model_revision(spec),
@@ -536,9 +522,7 @@ class Supervisor:
                 run_dir=run_dir,
                 resume_checkpoint=resume_checkpoint,
                 heartbeat=heartbeat,
-                lease_heartbeat=(
-                    lease_handle.heartbeat if lease_handle is not None else None
-                ),
+                lease_heartbeat=(lease_handle.heartbeat if lease_handle is not None else None),
             )
             try:
                 result = self.runner(request)

@@ -75,9 +75,7 @@ def _default_process_matches(pid: int, process_started_at: float) -> bool:
         import psutil  # type: ignore[import-untyped]
 
         process = psutil.Process(pid)
-        return bool(
-            process.is_running() and abs(process.create_time() - process_started_at) < 1.0
-        )
+        return bool(process.is_running() and abs(process.create_time() - process_started_at) < 1.0)
     except (ImportError, OSError):
         return False
     except Exception as error:
@@ -214,9 +212,7 @@ class GpuLease:
             except FileExistsError:
                 existing = self._load()
                 expired = now - existing.heartbeat_at > self.ttl_seconds
-                process_gone = not self.process_matches(
-                    existing.pid, existing.process_started_at
-                )
+                process_gone = not self.process_matches(existing.pid, existing.process_started_at)
                 if not (expired and process_gone):
                     raise LeaseUnavailableError(
                         "GPU lease is held by "
@@ -238,9 +234,7 @@ class GpuLease:
             diagnostic = self.compute_probe()
             conflicts = find_conflicting_compute_processes(diagnostic, own_pid=self.pid)
             if conflicts:
-                names = ", ".join(
-                    f"pid={item.pid} {item.process_name}" for item in conflicts
-                )
+                names = ", ".join(f"pid={item.pid} {item.process_name}" for item in conflicts)
                 raise LeaseUnavailableError(
                     f"conflicting GPU compute workload detected: {names}\n{diagnostic}"
                 )

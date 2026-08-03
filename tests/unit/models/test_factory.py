@@ -56,6 +56,7 @@ class FakeAdapter(AnomalyExperimentAdapter):
                 input_path=image,
                 anomaly_score=float(index + 1),
                 anomaly_map=np.full((2, 2), index + 1, dtype=np.float32),
+                device_latency_ms=float(index + 10),
             )
             for index, image in enumerate(context.images)
         ]
@@ -95,6 +96,7 @@ def test_prediction_artifact_preserves_input_order(
     assert [item.input_path for item in artifact.records] == sample_batch
     assert all(item.anomaly_map_sha256 for item in artifact.records)
     assert all(item.path.suffix == ".npy" for item in artifact.anomaly_maps)
+    assert artifact.device_latency_ms == (10.0, 11.0)
 
 
 def test_prediction_artifact_rejects_adapter_reordering(

@@ -44,8 +44,7 @@ def expand_stage(stage: ExperimentStage) -> list[RunSpec]:
     seeds: tuple[int, ...]
     if stage.name == "screening":
         selected = {
-            cast(MVTecAD2Category, category): APPROVED_FAMILIES
-            for category in REQUIRED_CATEGORIES
+            cast(MVTecAD2Category, category): APPROVED_FAMILIES for category in REQUIRED_CATEGORIES
         }
         seeds = (42,)
     else:

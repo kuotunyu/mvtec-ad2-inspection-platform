@@ -130,6 +130,8 @@ def test_model_gpu_fit_predict_export_smoke(family: str, tmp_path: Path) -> None
     )
 
     assert len(prediction_artifact.records) == 1
+    assert len(prediction_artifact.device_latency_ms) == 1
+    assert prediction_artifact.device_latency_ms[0] > 0
     assert np.isfinite(prediction_artifact.records[0].anomaly_score)
     anomaly_map = np.load(prediction_artifact.anomaly_maps[0].path, allow_pickle=False)
     assert anomaly_map.shape == expected_map_shape

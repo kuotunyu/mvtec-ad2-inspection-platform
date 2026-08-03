@@ -91,9 +91,7 @@ def test_run_resumes_only_the_matching_verified_checkpoint(tmp_path: Path) -> No
     checkpoint = store.write_checkpoint(spec)
     runner = SuccessfulRunner()
 
-    summary = Supervisor(store, runner=runner, disk_probe=lambda _path: 100 * 1024**3).run(
-        [spec]
-    )
+    summary = Supervisor(store, runner=runner, disk_probe=lambda _path: 100 * 1024**3).run([spec])
 
     assert summary.completed == [spec.identity]
     assert summary.resumed == [spec.identity]
@@ -119,9 +117,7 @@ def test_first_oom_uses_only_predeclared_fallback_as_a_second_attempt(
             artifacts={"metrics/result.json": sha256_file(result)},
         )
 
-    summary = Supervisor(store, runner=runner, disk_probe=lambda _path: 100 * 1024**3).run(
-        [spec]
-    )
+    summary = Supervisor(store, runner=runner, disk_probe=lambda _path: 100 * 1024**3).run([spec])
 
     assert summary.completed == [spec.identity]
     assert [request.attempt for request in requests] == [1, 2]
@@ -156,9 +152,9 @@ def test_second_oom_fails_run_and_stops_remaining_queue(tmp_path: Path) -> None:
         calls += 1
         return ExecutionResult(exit_code=0)
 
-    rerun = Supervisor(
-        store, runner=must_not_run, disk_probe=lambda _path: 100 * 1024**3
-    ).run([first])
+    rerun = Supervisor(store, runner=must_not_run, disk_probe=lambda _path: 100 * 1024**3).run(
+        [first]
+    )
     assert rerun.failed == [first.identity]
     assert calls == 0
 
@@ -182,9 +178,7 @@ def test_retryable_subprocess_crash_is_stopped_then_runs_fresh_on_restart(
     assert first.failed == [spec.identity]
     assert store.load_record(store.run_dir(spec)).status == "stopped"
     runner = SuccessfulRunner()
-    second = Supervisor(
-        store, runner=runner, disk_probe=lambda _path: 100 * 1024**3
-    ).run([spec])
+    second = Supervisor(store, runner=runner, disk_probe=lambda _path: 100 * 1024**3).run([spec])
     assert second.completed == [spec.identity]
     assert len(runner.requests) == 1
 
@@ -201,9 +195,7 @@ def test_runner_checksum_mismatch_is_quarantined_and_stops_queue(tmp_path: Path)
             artifacts={"metrics/result.json": "f" * 64},
         )
 
-    summary = Supervisor(store, runner=runner, disk_probe=lambda _path: 100 * 1024**3).run(
-        [spec]
-    )
+    summary = Supervisor(store, runner=runner, disk_probe=lambda _path: 100 * 1024**3).run([spec])
 
     assert summary.failed == [spec.identity]
     assert summary.quarantined == [spec.identity]
@@ -218,9 +210,7 @@ def test_truncated_record_is_quarantined_before_fresh_execution(tmp_path: Path) 
     (run_dir / "record.json").write_text("{", encoding="utf-8")
     runner = SuccessfulRunner()
 
-    summary = Supervisor(store, runner=runner, disk_probe=lambda _path: 100 * 1024**3).run(
-        [spec]
-    )
+    summary = Supervisor(store, runner=runner, disk_probe=lambda _path: 100 * 1024**3).run([spec])
 
     assert summary.quarantined == [spec.identity]
     assert summary.completed == [spec.identity]

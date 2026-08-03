@@ -425,7 +425,7 @@ git commit -m "feat(experiments): add resumable GPU supervisor"
 - Produces: `public_benchmark.json`, `contenders.json`, `champions.json`, `benchmark.md`, and figures generated from the JSON.
 - `select_champion(candidates: Sequence[CandidateEvidence]) -> SelectionDecision` encodes the approved AU-PRO, AUROC, latency, VRAM, and size tie-break sequence.
 
-- [ ] **Step 1: Write synthetic selection cases for every tie-break**
+- [x] **Step 1: Write synthetic selection cases for every tie-break**
 
 ```python
 def test_unresolved_quality_prefers_lower_latency() -> None:
@@ -439,12 +439,12 @@ def test_latency_within_five_percent_prefers_lower_vram() -> None:
     assert decision.winner == "a"
 ```
 
-- [ ] **Step 2: Run selection tests and confirm failure**
+- [x] **Step 2: Run selection tests and confirm failure**
 
 Run: `uv run pytest tests/unit/selection/test_champions.py -q`
 Expected: FAIL because selection code is missing.
 
-- [ ] **Step 3: Implement one-way public gate and selection logic**
+- [x] **Step 3: Implement one-way public gate and selection logic**
 
 Require a signed/frozen-stage manifest listing all valid stage-1 runs before public evaluation starts. Write a gate event with timestamp and hashes. Refuse config changes or missing candidates after this event; corrections require a new explicit experiment version rather than mutating prior evidence.
 

@@ -1,0 +1,192 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mvtec-ad2-inspection.local/schemas/benchmark.schema.json",
+  "title": "MVTec AD 2 canonical public benchmark",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "experiment_version",
+    "dataset_manifest_sha256",
+    "public_gate_identity",
+    "evaluation_size",
+    "runs",
+    "screening_macro",
+    "canonical_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "experiment_version": {"type": "string", "minLength": 1},
+    "dataset_manifest_sha256": {"$ref": "#/$defs/sha256"},
+    "public_gate_identity": {"$ref": "#/$defs/sha256"},
+    "evaluation_size": {
+      "type": "array",
+      "prefixItems": [{"const": 256}, {"const": 256}],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "runs": {
+      "type": "array",
+      "minItems": 24,
+      "items": {"$ref": "#/$defs/run"}
+    },
+    "screening_macro": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {"$ref": "#/$defs/screeningMacro"}
+    },
+    "canonical_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "metric": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+    "macroMetric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "mean", "lower", "upper", "confidence_level", "bootstrap_seed", "bootstrap_resamples"],
+      "properties": {
+        "schema_version": {"const": "1.0.0"},
+        "mean": {"type": "number", "minimum": 0, "maximum": 1},
+        "lower": {"type": "number", "minimum": 0, "maximum": 1},
+        "upper": {"type": "number", "minimum": 0, "maximum": 1},
+        "confidence_level": {"const": 0.95},
+        "bootstrap_seed": {"type": "integer"},
+        "bootstrap_resamples": {"type": "integer", "minimum": 1}
+      }
+    },
+    "screeningMacro": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "family", "au_pro", "image_auroc", "run_identities"],
+      "properties": {
+        "schema_version": {"const": "1.0.0"},
+        "family": {"enum": ["patchcore", "efficient_ad", "dinomaly"]},
+        "au_pro": {"$ref": "#/$defs/macroMetric"},
+        "image_auroc": {"$ref": "#/$defs/macroMetric"},
+        "run_identities": {
+          "type": "array",
+          "minItems": 8,
+          "maxItems": 8,
+          "items": {"$ref": "#/$defs/sha256"}
+        }
+      }
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "stage",
+        "run_identity",
+        "family",
+        "category",
+        "seed",
+        "dataset_manifest_sha256",
+        "code_revision",
+        "config_sha256",
+        "environment_lock_sha256",
+        "model_revision",
+        "checkpoint_sha256",
+        "threshold_artifact_sha256",
+        "prediction_artifact_sha256",
+        "prediction_locator",
+        "run_record_sha256",
+        "metrics"
+      ],
+      "properties": {
+        "schema_version": {"const": "1.0.0"},
+        "stage": {"enum": ["screening", "replication"]},
+        "run_identity": {"$ref": "#/$defs/sha256"},
+        "family": {"enum": ["patchcore", "efficient_ad", "dinomaly"]},
+        "category": {"enum": ["can", "fabric", "fruit_jelly", "rice", "sheet_metal", "vial", "wallplugs", "walnuts"]},
+        "seed": {"type": "integer"},
+        "dataset_manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "code_revision": {"type": "string", "minLength": 1},
+        "config_sha256": {"$ref": "#/$defs/sha256"},
+        "environment_lock_sha256": {"$ref": "#/$defs/sha256"},
+        "model_revision": {"type": "string", "minLength": 1},
+        "checkpoint_sha256": {"$ref": "#/$defs/sha256"},
+        "threshold_artifact_sha256": {"$ref": "#/$defs/sha256"},
+        "prediction_artifact_sha256": {"$ref": "#/$defs/sha256"},
+        "prediction_locator": {"type": "string", "minLength": 1},
+        "run_record_sha256": {"$ref": "#/$defs/sha256"},
+        "metrics": {"$ref": "#/$defs/metrics"}
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "evaluation_size", "image", "pixel", "operating", "gpu_latency", "peak_vram_mib", "artifact_size_bytes", "per_image_failure_rate"],
+      "properties": {
+        "schema_version": {"const": "1.0.0"},
+        "evaluation_size": {"type": "array", "prefixItems": [{"const": 256}, {"const": 256}], "minItems": 2, "maxItems": 2},
+        "image": {"$ref": "#/$defs/imageMetrics"},
+        "pixel": {"$ref": "#/$defs/pixelMetrics"},
+        "operating": {"$ref": "#/$defs/operatingMetrics"},
+        "gpu_latency": {"$ref": "#/$defs/latencyMetrics"},
+        "peak_vram_mib": {"type": "number", "exclusiveMinimum": 0},
+        "artifact_size_bytes": {"type": "integer", "minimum": 1},
+        "per_image_failure_rate": {"const": 0.0}
+      }
+    },
+    "imageMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "metric_contract_version", "auroc", "average_precision", "normal_count", "anomaly_count"],
+      "properties": {
+        "schema_version": {"const": "1.0.0"},
+        "metric_contract_version": {"const": "1.0.0"},
+        "auroc": {"$ref": "#/$defs/metric"},
+        "average_precision": {"$ref": "#/$defs/metric"},
+        "normal_count": {"type": "integer", "minimum": 0},
+        "anomaly_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "pixelMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "metric_contract_version", "auroc", "average_precision", "au_pro", "pro_fpr_limit", "normal_pixel_count", "anomaly_pixel_count", "region_count"],
+      "properties": {
+        "schema_version": {"const": "1.0.0"},
+        "metric_contract_version": {"const": "1.0.0"},
+        "auroc": {"$ref": "#/$defs/metric"},
+        "average_precision": {"$ref": "#/$defs/metric"},
+        "au_pro": {"$ref": "#/$defs/metric"},
+        "pro_fpr_limit": {"const": 0.3},
+        "normal_pixel_count": {"type": "integer", "minimum": 0},
+        "anomaly_pixel_count": {"type": "integer", "minimum": 0},
+        "region_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "operatingMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "threshold", "public_normal_false_review_rate", "public_anomaly_recall", "public_review_precision", "public_review_f1", "expected_reviews_per_1000_normal"],
+      "properties": {
+        "schema_version": {"const": "1.0.0"},
+        "threshold": {"type": "number"},
+        "public_normal_false_review_rate": {"$ref": "#/$defs/metric"},
+        "public_anomaly_recall": {"$ref": "#/$defs/metric"},
+        "public_review_precision": {"$ref": "#/$defs/metric"},
+        "public_review_f1": {"$ref": "#/$defs/metric"},
+        "expected_reviews_per_1000_normal": {"type": "number", "minimum": 0, "maximum": 1000}
+      }
+    },
+    "latencyMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "device", "batch_size", "samples", "p50_ms", "p95_ms", "throughput_images_per_second", "setup_latency_ms"],
+      "properties": {
+        "schema_version": {"const": "1.0.0"},
+        "device": {"const": "gpu"},
+        "batch_size": {"const": 1},
+        "samples": {"type": "integer", "minimum": 1},
+        "p50_ms": {"type": "number", "exclusiveMinimum": 0},
+        "p95_ms": {"type": "number", "exclusiveMinimum": 0},
+        "throughput_images_per_second": {"type": "number", "exclusiveMinimum": 0},
+        "setup_latency_ms": {"type": "number", "minimum": 0}
+      }
+    }
+  }
+}

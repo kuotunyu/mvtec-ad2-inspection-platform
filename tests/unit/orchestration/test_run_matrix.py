@@ -6,7 +6,13 @@ from pathlib import Path
 import pytest
 
 from experiments.orchestration.queue import expand_stage
-from experiments.run_matrix import CONFIG_ROOT, _freeze_queue, build_stage, main
+from experiments.run_matrix import (
+    CONFIG_ROOT,
+    _freeze_queue,
+    _resolve_imagenette_root,
+    build_stage,
+    main,
+)
 from inspection_platform.contracts import DatasetManifest
 
 
@@ -81,3 +87,13 @@ def test_frozen_queue_is_idempotent_and_never_overwritten(tmp_path: Path) -> Non
     with pytest.raises(ValueError, match="frozen queue"):
         _freeze_queue(root, stage=stage, queue=queue, code_revision="b" * 40)
     assert first.read_bytes() == original
+
+
+def test_formal_worker_resolves_imagenette_from_environment(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    imagenette = tmp_path / "imagenette"
+    imagenette.mkdir()
+    monkeypatch.setenv("MVTECAD2_IMAGENETTE_ROOT", str(imagenette))
+
+    assert _resolve_imagenette_root(None) == imagenette.resolve()

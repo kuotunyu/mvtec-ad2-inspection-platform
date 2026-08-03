@@ -7,6 +7,7 @@ import platform
 import random
 import shutil
 import tempfile
+import time
 from abc import ABC, abstractmethod
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
@@ -170,6 +171,7 @@ class RawPrediction:
     input_path: Path
     anomaly_score: float
     anomaly_map: NDArray[np.float32] | NDArray[np.float64]
+    device_latency_ms: float | None = None
 
 
 class ArtifactFile(ContractModel):
@@ -196,6 +198,7 @@ class PredictionArtifact(ContractModel):
     config_sha256: Sha256
     records: tuple[PredictionRecord, ...]
     anomaly_maps: tuple[ArtifactFile, ...]
+    device_latency_ms: tuple[Annotated[float, Field(gt=0.0, allow_inf_nan=False)], ...] = ()
 
     @model_validator(mode="after")
     def require_aligned_artifacts(self) -> Self:
@@ -204,6 +207,8 @@ class PredictionArtifact(ContractModel):
         for record, anomaly_map in zip(self.records, self.anomaly_maps, strict=True):
             if record.anomaly_map_sha256 != anomaly_map.sha256:
                 raise ValueError("prediction record and anomaly-map hash differ")
+        if self.device_latency_ms and len(self.device_latency_ms) != len(self.records):
+            raise ValueError("device latency samples must align with prediction records")
         return self
 
 
@@ -319,6 +324,7 @@ class AnomalyExperimentAdapter(ABC):
         )
         records: list[PredictionRecord] = []
         maps: list[ArtifactFile] = []
+        device_latencies: list[float] = []
         try:
             for index, (requested, raw) in enumerate(
                 zip(context.images, raw_predictions, strict=True)
@@ -327,6 +333,10 @@ class AnomalyExperimentAdapter(ABC):
                     raise AdapterContractError("adapter changed prediction input order")
                 if not math.isfinite(raw.anomaly_score):
                     raise AdapterContractError("adapter returned a non-finite anomaly score")
+                if raw.device_latency_ms is not None:
+                    if not math.isfinite(raw.device_latency_ms) or raw.device_latency_ms <= 0:
+                        raise AdapterContractError("adapter returned an invalid device latency")
+                    device_latencies.append(raw.device_latency_ms)
                 anomaly_map = np.asarray(raw.anomaly_map, dtype=np.float32)
                 if anomaly_map.ndim != 2 or not np.isfinite(anomaly_map).all():
                     raise AdapterContractError("adapter returned an invalid anomaly map")
@@ -364,6 +374,8 @@ class AnomalyExperimentAdapter(ABC):
                 shutil.rmtree(temporary)
             raise
 
+        if device_latencies and len(device_latencies) != len(records):
+            raise AdapterContractError("adapter returned incomplete device latency samples")
         return PredictionArtifact(
             family=self.family,
             category=context.category,
@@ -371,6 +383,7 @@ class AnomalyExperimentAdapter(ABC):
             config_sha256=self.config.identity,
             records=tuple(records),
             anomaly_maps=tuple(maps),
+            device_latency_ms=tuple(device_latencies),
         )
 
     def export_bundle(self, context: ExportContext) -> ModelBundleManifest:
@@ -561,7 +574,9 @@ class AnomalibEngineAdapter(AnomalyExperimentAdapter, ABC):
         return array
 
     def _predict_model(self, context: PredictContext) -> Sequence[RawPrediction]:
+        import torch
         from anomalib.data import PredictDataset
+        from lightning.pytorch import Callback
 
         checkpoint = context.checkpoint_path or self._checkpoint_path
         if checkpoint is None:
@@ -584,8 +599,31 @@ class AnomalibEngineAdapter(AnomalyExperimentAdapter, ABC):
             def collate_fn(self) -> Any:
                 return self._datasets[0].collate_fn
 
+        class DeviceTimer(Callback):
+            def __init__(self) -> None:
+                self.started_at = 0.0
+                self.samples_ms: list[float] = []
+
+            @staticmethod
+            def _synchronize() -> None:
+                if context.device.startswith("cuda"):
+                    torch.cuda.synchronize(int(context.device.split(":", maxsplit=1)[1]))
+
+            def on_predict_batch_start(self, *_args: Any, **_kwargs: Any) -> None:
+                self._synchronize()
+                self.started_at = time.perf_counter()
+
+            def on_predict_batch_end(self, *_args: Any, **_kwargs: Any) -> None:
+                self._synchronize()
+                self.samples_ms.append((time.perf_counter() - self.started_at) * 1000.0)
+
+        timer = DeviceTimer()
         model = self._build_model(context.auxiliary_data_roots)
-        engine = self._engine(root=context.output_dir.parent, device=context.device)
+        engine = self._engine(
+            root=context.output_dir.parent,
+            device=context.device,
+            callbacks=[timer],
+        )
         dataset = OrderedPredictDataset(context.images, self.config.input_size)
         predictions = engine.predict(
             model=model,
@@ -594,13 +632,16 @@ class AnomalibEngineAdapter(AnomalyExperimentAdapter, ABC):
             ckpt_path=checkpoint,
         )
         items = self._prediction_items(predictions)
+        if len(timer.samples_ms) != len(items):
+            raise AdapterContractError("device latency count differs from prediction count")
         return tuple(
             RawPrediction(
                 input_path=Path(item.image_path),
                 anomaly_score=self._scalar(item.pred_score, name="prediction score"),
                 anomaly_map=self._map(item.anomaly_map),
+                device_latency_ms=latency_ms,
             )
-            for item in items
+            for item, latency_ms in zip(items, timer.samples_ms, strict=True)
         )
 
     def _export_model(self, context: ExportContext) -> Sequence[Path]:

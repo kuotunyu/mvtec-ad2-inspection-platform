@@ -51,12 +51,22 @@ from inspection_platform.contracts import (
 from inspection_platform.contracts.dataset import MVTecAD2Category
 
 CONFIG_ROOT = Path(__file__).resolve().parent / "configs" / "models"
+PRE_GATE_PREDICTION_SPLITS: tuple[str, ...] = ("validation",)
+
+
+def _resolve_imagenette_root(explicit: Path | None) -> Path | None:
+    value = explicit or (
+        Path(environment_value)
+        if (environment_value := os.environ.get("MVTECAD2_IMAGENETTE_ROOT"))
+        else None
+    )
+    return value.expanduser().resolve(strict=True) if value is not None else None
 
 
 def _canonical_json_hash(payload: Mapping[str, Any]) -> str:
-    encoded = json.dumps(
-        payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")
-    ).encode("utf-8")
+    encoded = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode(
+        "utf-8"
+    )
     return hashlib.sha256(encoded).hexdigest()
 
 
@@ -89,9 +99,7 @@ def _freeze_queue(
         "schema_version": "1.0.0",
         "stage": stage.model_dump(mode="json", exclude_computed_fields=True),
         "code_revision": code_revision,
-        "runs": [
-            spec.model_dump(mode="json", exclude_computed_fields=True) for spec in queue
-        ],
+        "runs": [spec.model_dump(mode="json", exclude_computed_fields=True) for spec in queue],
     }
     payload["canonical_sha256"] = _canonical_json_hash(payload)
     path = root / f"queue-{stage.name}.json"
@@ -144,9 +152,7 @@ def build_stage(
     if name == "replication":
         if contenders_path is None:
             raise ValueError("replication stage requires --contenders")
-        contenders = _load_contenders(
-            contenders_path, dataset_manifest_sha256=manifest.identity
-        )
+        contenders = _load_contenders(contenders_path, dataset_manifest_sha256=manifest.identity)
     return ExperimentStage.model_validate(
         {
             "name": name,
@@ -187,9 +193,7 @@ def _load_run_spec(path: Path) -> RunSpec:
     return spec
 
 
-def _verified_fit_artifact(
-    path: Path, *, spec: RunSpec, config: ModelConfig
-) -> FitArtifact | None:
+def _verified_fit_artifact(path: Path, *, spec: RunSpec, config: ModelConfig) -> FitArtifact | None:
     if not path.is_file():
         return None
     artifact = FitArtifact.model_validate_json(path.read_text(encoding="utf-8"))
@@ -241,9 +245,7 @@ def _predict_or_reuse(
     auxiliary_roots: Mapping[str, Path],
 ) -> PredictionArtifact:
     artifact_path = predictions_root / f"{split}.json"
-    existing = _verified_prediction_artifact(
-        artifact_path, spec=spec, config=config, split=split
-    )
+    existing = _verified_prediction_artifact(artifact_path, spec=spec, config=config, split=split)
     if existing is not None:
         return existing
     output_dir = predictions_root / f"{split}-maps"
@@ -270,17 +272,9 @@ def _predict_or_reuse(
 
 def _worker_artifacts(run_dir: Path, attempt_config: Path) -> dict[str, str]:
     roots = tuple(run_dir / name for name in ("checkpoints", "predictions", "metrics"))
-    files = [
-        path
-        for root in roots
-        for path in root.rglob("*")
-        if path.is_file()
-    ]
+    files = [path for root in roots for path in root.rglob("*") if path.is_file()]
     files.append(attempt_config)
-    return {
-        path.relative_to(run_dir).as_posix(): sha256_file(path)
-        for path in sorted(files)
-    }
+    return {path.relative_to(run_dir).as_posix(): sha256_file(path) for path in sorted(files)}
 
 
 def _classify_worker_error(error: BaseException) -> str:
@@ -330,9 +324,7 @@ def execute_worker(args: argparse.Namespace) -> int:
 
         adapter = create_adapter(spec.model_family, config)
         fit_artifact_path = run_dir / "checkpoints" / "fit-artifact.json"
-        fit_artifact = _verified_fit_artifact(
-            fit_artifact_path, spec=spec, config=config
-        )
+        fit_artifact = _verified_fit_artifact(fit_artifact_path, spec=spec, config=config)
         if fit_artifact is None:
             attempt_root = args.attempt_config.parent
             fit_dir = attempt_root / "fit"
@@ -372,37 +364,24 @@ def execute_worker(args: argparse.Namespace) -> int:
             write_contract(fit_artifact_path, fit_artifact)
         checkpoint = fit_artifact.checkpoint.path
 
-        validation = _predict_or_reuse(
-            adapter=adapter,
-            spec=spec,
-            config=config,
-            checkpoint=checkpoint,
-            images=_manifest_images(
-                data_root,
-                manifest,
-                prefix=f"{spec.category}/validation/good/",
-            ),
-            split="validation",
-            predictions_root=run_dir / "predictions",
-            device=args.device,
-            auxiliary_roots=auxiliary_roots,
-        )
-        public = _predict_or_reuse(
-            adapter=adapter,
-            spec=spec,
-            config=config,
-            checkpoint=checkpoint,
-            images=_manifest_images(
-                data_root,
-                manifest,
-                prefix=f"{spec.category}/test_public/",
-                exclude_ground_truth=True,
-            ),
-            split="test_public",
-            predictions_root=run_dir / "predictions",
-            device=args.device,
-            auxiliary_roots=auxiliary_roots,
-        )
+        pre_gate_predictions: dict[str, PredictionArtifact] = {}
+        for split in PRE_GATE_PREDICTION_SPLITS:
+            pre_gate_predictions[split] = _predict_or_reuse(
+                adapter=adapter,
+                spec=spec,
+                config=config,
+                checkpoint=checkpoint,
+                images=_manifest_images(
+                    data_root,
+                    manifest,
+                    prefix=f"{spec.category}/validation/good/",
+                ),
+                split=split,
+                predictions_root=run_dir / "predictions",
+                device=args.device,
+                auxiliary_roots=auxiliary_roots,
+            )
+        validation = pre_gate_predictions["validation"]
         scores = np.asarray(
             [record.anomaly_score for record in validation.records], dtype=np.float64
         )
@@ -422,15 +401,9 @@ def execute_worker(args: argparse.Namespace) -> int:
             "schema_version": "1.0.0",
             "run_identity": spec.identity,
             "fit_artifact_sha256": sha256_file(fit_artifact_path),
-            "validation_artifact_sha256": sha256_file(
-                run_dir / "predictions" / "validation.json"
-            ),
-            "public_artifact_sha256": sha256_file(
-                run_dir / "predictions" / "test_public.json"
-            ),
+            "validation_artifact_sha256": sha256_file(run_dir / "predictions" / "validation.json"),
             "threshold_artifact_sha256": sha256_file(threshold_path),
             "validation_count": len(validation.records),
-            "public_count": len(public.records),
         }
         if output_path.exists():
             if json.loads(output_path.read_text(encoding="utf-8")) != output_payload:
@@ -569,11 +542,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         else data_root.parent / f"{data_root.name}.manifest.json"
     )
     manifest = load_dataset_manifest(manifest_path)
+    contenders_path = args.contenders
+    if args.stage == "replication" and contenders_path is None:
+        contenders_path = runs_root / "evidence" / "contenders.json"
     stage = build_stage(
         name=args.stage,
         config_root=args.config_root.expanduser().resolve(strict=True),
         manifest=manifest,
-        contenders_path=args.contenders,
+        contenders_path=contenders_path,
     )
     queue = expand_stage(stage)
     if args.dry_run:
@@ -591,6 +567,7 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     code_revision = _git_revision(repository)
     environment_lock_sha256 = sha256_file(repository / "uv.lock")
+    imagenette_root = _resolve_imagenette_root(args.imagenette_root)
     lock_path = (
         args.gpu_lock.expanduser().resolve()
         if args.gpu_lock is not None
@@ -609,7 +586,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             data_root=data_root,
             dataset_manifest=manifest_path,
             device=args.device,
-            imagenette_root=args.imagenette_root,
+            imagenette_root=imagenette_root,
         )
     )
     summary = Supervisor(
