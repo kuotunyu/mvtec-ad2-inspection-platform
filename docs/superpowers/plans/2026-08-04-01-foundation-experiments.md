@@ -448,30 +448,30 @@ Expected: FAIL because selection code is missing.
 
 Require a signed/frozen-stage manifest listing all valid stage-1 runs before public evaluation starts. Write a gate event with timestamp and hashes. Refuse config changes or missing candidates after this event; corrections require a new explicit experiment version rather than mutating prior evidence.
 
-- [ ] **Step 4: Run stage 1 and freeze per-category contenders**
+- [x] **Step 4: Run stage 1 and freeze per-category contenders**
 
 Run: `uv run python -m experiments.run_matrix --stage screening --data-root "$env:MVTECAD2_DATA_ROOT" --runs-root "$env:MVTECAD2_RUNS_ROOT"`
 Run: `uv run python -m experiments.evaluate_public --stage screening`
 Run: `uv run python -m experiments.select_contenders`
 Expected: 24 valid seed-42 runs and exactly two contenders per category with recorded rationale.
 
-- [ ] **Step 5: Run replication stage and freeze champions**
+- [x] **Step 5: Run replication stage and freeze champions**
 
 Run: `uv run python -m experiments.run_matrix --stage replication --data-root "$env:MVTECAD2_DATA_ROOT" --runs-root "$env:MVTECAD2_RUNS_ROOT"`
 Run: `uv run python -m experiments.evaluate_public --stage replication`
 Run: `uv run python -m experiments.select_champions`
 Expected: seed `17/42/2026` evidence for both contenders in every category and one frozen champion per category.
 
-- [ ] **Step 6: Generate the canonical aggregate report**
+- [x] **Step 6: Generate the canonical aggregate report**
 
 Render Markdown/figures only from `public_benchmark.json` and `champions.json`. Validate JSON schemas and fail if a number in Markdown is not traceable to an artifact path and hash.
 
-- [ ] **Step 7: Run selection and public-gate tests**
+- [x] **Step 7: Run selection and public-gate tests**
 
 Run: `uv run pytest tests/unit/selection tests/ml_integrity/test_public_gate.py -q`
 Expected: PASS.
 
-- [ ] **Step 8: Commit code, frozen aggregate evidence, and reports**
+- [x] **Step 8: Commit code, frozen aggregate evidence, and reports**
 
 Do not commit raw predictions, checkpoints, private outputs, or MVTec images.
 

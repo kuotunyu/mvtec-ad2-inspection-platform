@@ -1,0 +1,485 @@
+{
+  "canonical_sha256": "813c9822d951a011706f8ecbcd35ea1531474be5a73039053f70270a9d7f05f2",
+  "champions": {
+    "can": "patchcore",
+    "fabric": "dinomaly",
+    "fruit_jelly": "dinomaly",
+    "rice": "dinomaly",
+    "sheet_metal": "dinomaly",
+    "vial": "patchcore",
+    "wallplugs": "patchcore",
+    "walnuts": "patchcore"
+  },
+  "contenders_sha256": "73550a2056e6b18b0d16af0df4f803ded68699e873eba450dc33084f75be4cbd",
+  "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+  "decisions": [
+    {
+      "bootstrap_resamples": 10000,
+      "bootstrap_seed": 42,
+      "candidates": [
+        {
+          "artifact_size_bytes": 1136661491,
+          "au_pro": 0.3080508975777805,
+          "au_pro_delta_ci_vs_other": [
+            0.004129571181303804,
+            0.010808606054459269
+          ],
+          "family": "patchcore",
+          "gpu_p95_latency_ms": 105.35707500001763,
+          "image_auroc": 0.5108024691358025,
+          "image_auroc_delta_ci_vs_other": [
+            -0.006018518518518534,
+            -0.003395061728395099
+          ],
+          "peak_vram_mib": 2146.337890625,
+          "run_identities": [
+            "3147a91e6d2c6536494edfa04985ba23490604f86f4c3e685a1ab18e94655b58",
+            "597dbe614d9aa98fd8939b0626aaf61def78fa4abac1b25755aeb5b5c980e81a",
+            "dc06f3aff0c13e17d1e9e4f9e59190121154e36c5b516fbe1527f759f841b57c"
+          ],
+          "schema_version": "1.0.0"
+        },
+        {
+          "artifact_size_bytes": 1329040463,
+          "au_pro": 0.2994767738847048,
+          "au_pro_delta_ci_vs_other": [
+            -0.010808606054459269,
+            -0.004129571181303804
+          ],
+          "family": "dinomaly",
+          "gpu_p95_latency_ms": 76.47347000008719,
+          "image_auroc": 0.5150720164609054,
+          "image_auroc_delta_ci_vs_other": [
+            0.003395061728395099,
+            0.006018518518518534
+          ],
+          "peak_vram_mib": 659.86669921875,
+          "run_identities": [
+            "959be543842f678e3cda3ff1bc1430bb4dc3d407b3711b1a2de9236906de9aaf",
+            "fcc4b2c90275cd585b79adb1e33be05cfc18222d41af235dfcba22bab3016cd3",
+            "46e4689fb88bbcf7889bf48002e17dae6b5d131ceaf65330b6f175e02f7b2cdd"
+          ],
+          "schema_version": "1.0.0"
+        }
+      ],
+      "category": "can",
+      "decision": {
+        "loser": "dinomaly",
+        "reason": "significant_higher_au_pro",
+        "schema_version": "1.0.0",
+        "winner": "patchcore"
+      },
+      "schema_version": "1.0.0"
+    },
+    {
+      "bootstrap_resamples": 10000,
+      "bootstrap_seed": 42,
+      "candidates": [
+        {
+          "artifact_size_bytes": 1329034063,
+          "au_pro": 0.6734912451934066,
+          "au_pro_delta_ci_vs_other": [
+            0.06625069487981794,
+            0.1091152512667436
+          ],
+          "family": "dinomaly",
+          "gpu_p95_latency_ms": 88.82657499992774,
+          "image_auroc": 0.7118406285072951,
+          "image_auroc_delta_ci_vs_other": [
+            -0.08417508417508412,
+            -0.0185185185185186
+          ],
+          "peak_vram_mib": 659.86669921875,
+          "run_identities": [
+            "8c8de411b36904e7be61eebe0b6942876a2615690f1f26e6f43a519cbb47b954",
+            "b96429546f4bb46d528156e305cee5efd18be8e1f96513ba615d867879572a1f",
+            "4ff70550f063b796ddf9e4dba253281505d6b0dc80f00c97783c1db27b810857"
+          ],
+          "schema_version": "1.0.0"
+        },
+        {
+          "artifact_size_bytes": 1073746931,
+          "au_pro": 0.5890115588513934,
+          "au_pro_delta_ci_vs_other": [
+            -0.1091152512667436,
+            -0.06625069487981794
+          ],
+          "family": "patchcore",
+          "gpu_p95_latency_ms": 108.69982500008746,
+          "image_auroc": 0.7649270482603816,
+          "image_auroc_delta_ci_vs_other": [
+            0.0185185185185186,
+            0.08417508417508412
+          ],
+          "peak_vram_mib": 2027.298828125,
+          "run_identities": [
+            "97c84392dff5564abb7f96308798f79383b71bf5223788898b689e4c6536b2f8",
+            "d6c6b6bbf7fec007b0f73ecea42bb6e0115d4bf105ba31619cc413454d58c8f3",
+            "dba7e08fd4bd353ea8ed19a8590024fed0fa4907c2bbf9b4fbef741a0d0124c6"
+          ],
+          "schema_version": "1.0.0"
+        }
+      ],
+      "category": "fabric",
+      "decision": {
+        "loser": "patchcore",
+        "reason": "significant_higher_au_pro",
+        "schema_version": "1.0.0",
+        "winner": "dinomaly"
+      },
+      "schema_version": "1.0.0"
+    },
+    {
+      "bootstrap_resamples": 10000,
+      "bootstrap_seed": 42,
+      "candidates": [
+        {
+          "artifact_size_bytes": 1329000079,
+          "au_pro": 0.7270614441583673,
+          "au_pro_delta_ci_vs_other": [
+            0.0032385057637636105,
+            0.015577813544192076
+          ],
+          "family": "dinomaly",
+          "gpu_p95_latency_ms": 64.84396998857845,
+          "image_auroc": 0.7855555555555555,
+          "image_auroc_delta_ci_vs_other": [
+            -0.14583333333333348,
+            -0.12416666666666665
+          ],
+          "peak_vram_mib": 659.29345703125,
+          "run_identities": [
+            "de31a953ae314b31a6c9923d5b6a24b87b1f71c0aa4abc99b607e06b21755e5c",
+            "8a3b687e9da2e93e7f407aa0496cee17482302ce02faf1343e785e6d6e33bcde",
+            "f434284473c1de94e916147b1591a30c1a15253f304e2b4362c1130a1fea913a"
+          ],
+          "schema_version": "1.0.0"
+        },
+        {
+          "artifact_size_bytes": 761687027,
+          "au_pro": 0.7183127421938752,
+          "au_pro_delta_ci_vs_other": [
+            -0.015577813544192076,
+            -0.0032385057637636105
+          ],
+          "family": "patchcore",
+          "gpu_p95_latency_ms": 81.86607500009586,
+          "image_auroc": 0.9211111111111111,
+          "image_auroc_delta_ci_vs_other": [
+            0.12416666666666665,
+            0.14583333333333348
+          ],
+          "peak_vram_mib": 1432.50732421875,
+          "run_identities": [
+            "0b42fd123f5af9b467017d27be13db1dbadbdbfc20cb4f39605f06216067772c",
+            "7c7ed4bbdfdcbd94ae1d12ce240bb711efda00eb7cbe20ad821e7e9a6c0d220c",
+            "dbe69bf70290388453b4d1726e4d5f5ed9b9dfed6c2c89c7be7e41f975a1e487"
+          ],
+          "schema_version": "1.0.0"
+        }
+      ],
+      "category": "fruit_jelly",
+      "decision": {
+        "loser": "patchcore",
+        "reason": "significant_higher_au_pro",
+        "schema_version": "1.0.0",
+        "winner": "dinomaly"
+      },
+      "schema_version": "1.0.0"
+    },
+    {
+      "bootstrap_resamples": 10000,
+      "bootstrap_seed": 42,
+      "candidates": [
+        {
+          "artifact_size_bytes": 1329014287,
+          "au_pro": 0.6767536688976198,
+          "au_pro_delta_ci_vs_other": [
+            0.17446667861859902,
+            0.21363608338560028
+          ],
+          "family": "dinomaly",
+          "gpu_p95_latency_ms": 84.86293000001977,
+          "image_auroc": 0.6821428571428573,
+          "image_auroc_delta_ci_vs_other": [
+            -0.020634920634920673,
+            0.03809523809523807
+          ],
+          "peak_vram_mib": 659.86669921875,
+          "run_identities": [
+            "fb47a348c19f0def019df9b48c81255fc660371f4b2e16b82f2a0c0862bac403",
+            "d47baf7b7871fc45185753bee4a526ead9194847200612e48c241c2511aab726",
+            "eff5d6760d83c14ee03159642896aa61f575a03b8039063fff7e12070f41dfae"
+          ],
+          "schema_version": "1.0.0"
+        },
+        {
+          "artifact_size_bytes": 887516147,
+          "au_pro": 0.48073073856325726,
+          "au_pro_delta_ci_vs_other": [
+            -0.21363608338560028,
+            -0.17446667861859902
+          ],
+          "family": "patchcore",
+          "gpu_p95_latency_ms": 98.60265999595863,
+          "image_auroc": 0.6716931216931217,
+          "image_auroc_delta_ci_vs_other": [
+            -0.03809523809523807,
+            0.020634920634920673
+          ],
+          "peak_vram_mib": 1673.58544921875,
+          "run_identities": [
+            "f2c23e81227c2c4def3404043e6059784b76724048ee17a6de499490851ed481",
+            "7179e031e1f41849866b581a0cc9261e5e3a598548359db93fc09d33e53ef3b5",
+            "73f5bed939e7a42edff068c8e352a7ee354ef199825a58d9f1a96d9cfece5623"
+          ],
+          "schema_version": "1.0.0"
+        }
+      ],
+      "category": "rice",
+      "decision": {
+        "loser": "patchcore",
+        "reason": "significant_higher_au_pro",
+        "schema_version": "1.0.0",
+        "winner": "dinomaly"
+      },
+      "schema_version": "1.0.0"
+    },
+    {
+      "bootstrap_resamples": 10000,
+      "bootstrap_seed": 42,
+      "candidates": [
+        {
+          "artifact_size_bytes": 1328966031,
+          "au_pro": 0.4953090974448246,
+          "au_pro_delta_ci_vs_other": [
+            0.0954569707235004,
+            0.10747399392439355
+          ],
+          "family": "dinomaly",
+          "gpu_p95_latency_ms": 73.68834999215323,
+          "image_auroc": 0.7703703703703705,
+          "image_auroc_delta_ci_vs_other": [
+            0.07222222222222219,
+            0.09398148148148155
+          ],
+          "peak_vram_mib": 659.29345703125,
+          "run_identities": [
+            "07ec8896cd3258251575d9369564567d13fc5a229c1e46b860dcd0b04d82bb7a",
+            "fe366c4598620920e434af345569ffcd30941dd1621379249eb4e8a44d89cac7",
+            "6683a098b5612b26d5a31778eb45a4f831a4d3f53d51ae7aa20222286a22da25"
+          ],
+          "schema_version": "1.0.0"
+        },
+        {
+          "artifact_size_bytes": 444601331,
+          "au_pro": 0.3934063852121952,
+          "au_pro_delta_ci_vs_other": [
+            -0.10747399392439355,
+            -0.0954569707235004
+          ],
+          "family": "patchcore",
+          "gpu_p95_latency_ms": 72.46247998991748,
+          "image_auroc": 0.6891975308641975,
+          "image_auroc_delta_ci_vs_other": [
+            -0.09398148148148155,
+            -0.07222222222222219
+          ],
+          "peak_vram_mib": 826.908203125,
+          "run_identities": [
+            "efcc45542944e220ffb2865a4da672bc4e9cbe59feaeaae8d00303bd5cdac6ec",
+            "fb22267b01354c9d534cbc322b239a1493c45b86936abb4cf0d917e2482c2ca4",
+            "c9ecd793e16ac8497739846ef003d194851af3896d80d72778d6d9fb60d0d0ae"
+          ],
+          "schema_version": "1.0.0"
+        }
+      ],
+      "category": "sheet_metal",
+      "decision": {
+        "loser": "patchcore",
+        "reason": "significant_higher_au_pro",
+        "schema_version": "1.0.0",
+        "winner": "dinomaly"
+      },
+      "schema_version": "1.0.0"
+    },
+    {
+      "bootstrap_resamples": 10000,
+      "bootstrap_seed": 42,
+      "candidates": [
+        {
+          "artifact_size_bytes": 832152563,
+          "au_pro": 0.924167567224044,
+          "au_pro_delta_ci_vs_other": [
+            0.007121546185984151,
+            0.011060356519665193
+          ],
+          "family": "patchcore",
+          "gpu_p95_latency_ms": 74.25438499049051,
+          "image_auroc": 0.8687528344671201,
+          "image_auroc_delta_ci_vs_other": [
+            0.026666666666666727,
+            0.060136054421768725
+          ],
+          "peak_vram_mib": 1566.34423828125,
+          "run_identities": [
+            "41be15f350a3cd6e198810074bc7bf56e69e14550cab0b15d81f3067204af948",
+            "8752351992b83b368586fc84dca669a2679dfa7d6f5b1df3b33190f342222a8d",
+            "453d50f7a0df250776a0cab3d8b096aa194b49a57e88425ca87e46bf5521b542"
+          ],
+          "schema_version": "1.0.0"
+        },
+        {
+          "artifact_size_bytes": 1329007823,
+          "au_pro": 0.9156166807234877,
+          "au_pro_delta_ci_vs_other": [
+            -0.011060356519665193,
+            -0.007121546185984151
+          ],
+          "family": "dinomaly",
+          "gpu_p95_latency_ms": 38.67699001420988,
+          "image_auroc": 0.8240362811791382,
+          "image_auroc_delta_ci_vs_other": [
+            -0.060136054421768725,
+            -0.026666666666666727
+          ],
+          "peak_vram_mib": 659.29345703125,
+          "run_identities": [
+            "35ef2ef8f1fbb109de2b1ebc16a0debf440a68d5a1822ac13acdcf0e189cd70a",
+            "792221b53b1231f5ce22c57c1b565c9efcb12a8e91f04eb85273b404ba05f69e",
+            "168e3d5e61e5219baa2f9371e108f3d519dedc27a0bd54b620998c49b809b291"
+          ],
+          "schema_version": "1.0.0"
+        }
+      ],
+      "category": "vial",
+      "decision": {
+        "loser": "dinomaly",
+        "reason": "significant_higher_au_pro",
+        "schema_version": "1.0.0",
+        "winner": "patchcore"
+      },
+      "schema_version": "1.0.0"
+    },
+    {
+      "bootstrap_resamples": 10000,
+      "bootstrap_seed": 42,
+      "candidates": [
+        {
+          "artifact_size_bytes": 837184499,
+          "au_pro": 0.532096670411189,
+          "au_pro_delta_ci_vs_other": [
+            0.20454602737955863,
+            0.20937871262955995
+          ],
+          "family": "patchcore",
+          "gpu_p95_latency_ms": 82.25276000007398,
+          "image_auroc": 0.5791975308641976,
+          "image_auroc_delta_ci_vs_other": [
+            0.1262962962962963,
+            0.14314814814814814
+          ],
+          "peak_vram_mib": 1577.55419921875,
+          "run_identities": [
+            "437a3d6f63e9ce551bc6710738cbaab22121f5b3bc592dace57dacfcec636d97",
+            "6ffd7c77dc95549ae174f324c19684a44a90808029672390c07cc72df9874972",
+            "e2517d5a507bf2a0da8e99af47a485fd88c0d900d4d8773966750afad8d7009f"
+          ],
+          "schema_version": "1.0.0"
+        },
+        {
+          "artifact_size_bytes": 1329008847,
+          "au_pro": 0.32565978111520155,
+          "au_pro_delta_ci_vs_other": [
+            -0.20937871262955995,
+            -0.20454602737955863
+          ],
+          "family": "dinomaly",
+          "gpu_p95_latency_ms": 74.8011099974974,
+          "image_auroc": 0.4459259259259259,
+          "image_auroc_delta_ci_vs_other": [
+            -0.14314814814814814,
+            -0.1262962962962963
+          ],
+          "peak_vram_mib": 659.86669921875,
+          "run_identities": [
+            "bd52d8aae11e6b34ebca612e9de4cfd888c6fc82b737ceb79ebd98fdc6d2cc42",
+            "73f313cbf83ebf08a024f59720323763c63396fcea8710f27ed272c62ea8712a",
+            "f3053000fbce78ddb48c0f0b942f3d6de250c09c13ca72c09c6de0848557b4c0"
+          ],
+          "schema_version": "1.0.0"
+        }
+      ],
+      "category": "wallplugs",
+      "decision": {
+        "loser": "dinomaly",
+        "reason": "significant_higher_au_pro",
+        "schema_version": "1.0.0",
+        "winner": "patchcore"
+      },
+      "schema_version": "1.0.0"
+    },
+    {
+      "bootstrap_resamples": 10000,
+      "bootstrap_seed": 42,
+      "candidates": [
+        {
+          "artifact_size_bytes": 1186993139,
+          "au_pro": 0.7166803183053198,
+          "au_pro_delta_ci_vs_other": [
+            0.088083332658484,
+            0.09897371457526016
+          ],
+          "family": "patchcore",
+          "gpu_p95_latency_ms": 119.59126001165713,
+          "image_auroc": 0.840925925925926,
+          "image_auroc_delta_ci_vs_other": [
+            0.11111111111111105,
+            0.12425925925925918
+          ],
+          "peak_vram_mib": 2243.369140625,
+          "run_identities": [
+            "ac6584bb60bedf8a14ede6bc2c63ab0ed31ea150c5e14157465bafd6c9519975",
+            "459516eb474914946f90dd5a49a37aa9eba96d056e127ac4e029620fd63814d5",
+            "8dd81e382b9fc7fa7372bc3d71053a614b747e79f4845df477ea6825a1786372"
+          ],
+          "schema_version": "1.0.0"
+        },
+        {
+          "artifact_size_bytes": 1329045839,
+          "au_pro": 0.6233735061499631,
+          "au_pro_delta_ci_vs_other": [
+            -0.09897371457526016,
+            -0.088083332658484
+          ],
+          "family": "dinomaly",
+          "gpu_p95_latency_ms": 76.288475000092,
+          "image_auroc": 0.7214197530864198,
+          "image_auroc_delta_ci_vs_other": [
+            -0.12425925925925918,
+            -0.11111111111111105
+          ],
+          "peak_vram_mib": 659.86669921875,
+          "run_identities": [
+            "909d5cd9839dfdb7c43c852db721e4e361fb08f8aaeeb91f66f83c3c6aeb0a62",
+            "8355aa5e398e1b9137b8615ec3cec99a09a2856b08b2f9d4c895429d9459aefb",
+            "a46a2f63ef7bcefdc6f702d67ea76bfcefabbd4776e09d998324bf27f9b09ed6"
+          ],
+          "schema_version": "1.0.0"
+        }
+      ],
+      "category": "walnuts",
+      "decision": {
+        "loser": "dinomaly",
+        "reason": "significant_higher_au_pro",
+        "schema_version": "1.0.0",
+        "winner": "patchcore"
+      },
+      "schema_version": "1.0.0"
+    }
+  ],
+  "experiment_version": "mvtec-ad2-v1",
+  "public_benchmark_sha256": "9cf47070c75bbf66f5e9919c32b5847b886a2f02190ea844c55273bb5ac4f751",
+  "public_gate_identity": "5cb50fd6e7226ebccfdf3564d494d1890458fbcb29e8b3ae3182130ddfcc2409",
+  "schema_version": "1.0.0"
+}

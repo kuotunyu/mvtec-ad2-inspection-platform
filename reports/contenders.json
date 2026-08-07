@@ -1,0 +1,308 @@
+{
+  "canonical_sha256": "73550a2056e6b18b0d16af0df4f803ded68699e873eba450dc33084f75be4cbd",
+  "contenders": {
+    "can": [
+      "patchcore",
+      "dinomaly"
+    ],
+    "fabric": [
+      "dinomaly",
+      "patchcore"
+    ],
+    "fruit_jelly": [
+      "dinomaly",
+      "patchcore"
+    ],
+    "rice": [
+      "dinomaly",
+      "patchcore"
+    ],
+    "sheet_metal": [
+      "dinomaly",
+      "patchcore"
+    ],
+    "vial": [
+      "patchcore",
+      "dinomaly"
+    ],
+    "wallplugs": [
+      "patchcore",
+      "dinomaly"
+    ],
+    "walnuts": [
+      "patchcore",
+      "dinomaly"
+    ]
+  },
+  "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+  "decisions": [
+    {
+      "category": "can",
+      "contenders": [
+        "patchcore",
+        "dinomaly"
+      ],
+      "excluded": "efficient_ad",
+      "ranking": [
+        {
+          "family": "patchcore",
+          "public_au_pro": 0.3113045822252449,
+          "public_image_auroc": 0.5098765432098765,
+          "run_identity": "597dbe614d9aa98fd8939b0626aaf61def78fa4abac1b25755aeb5b5c980e81a",
+          "schema_version": "1.0.0"
+        },
+        {
+          "family": "dinomaly",
+          "public_au_pro": 0.3005203883817808,
+          "public_image_auroc": 0.5132716049382716,
+          "run_identity": "fcc4b2c90275cd585b79adb1e33be05cfc18222d41af235dfcba22bab3016cd3",
+          "schema_version": "1.0.0"
+        },
+        {
+          "family": "efficient_ad",
+          "public_au_pro": 0.19015299563073218,
+          "public_image_auroc": 0.48302469135802467,
+          "run_identity": "ec781513bd6a3affb2ca48cfca83ebcef2962c14c04e3b931ca1d00c3af2bc95",
+          "schema_version": "1.0.0"
+        }
+      ],
+      "rationale": "top_two_seed_42_public_au_pro",
+      "schema_version": "1.0.0"
+    },
+    {
+      "category": "fabric",
+      "contenders": [
+        "dinomaly",
+        "patchcore"
+      ],
+      "excluded": "efficient_ad",
+      "ranking": [
+        {
+          "family": "dinomaly",
+          "public_au_pro": 0.6564196134043307,
+          "public_image_auroc": 0.694949494949495,
+          "run_identity": "b96429546f4bb46d528156e305cee5efd18be8e1f96513ba615d867879572a1f",
+          "schema_version": "1.0.0"
+        },
+        {
+          "family": "patchcore",
+          "public_au_pro": 0.5901689185245128,
+          "public_image_auroc": 0.7791245791245791,
+          "run_identity": "d6c6b6bbf7fec007b0f73ecea42bb6e0115d4bf105ba31619cc413454d58c8f3",
+          "schema_version": "1.0.0"
+        },
+        {
+          "family": "efficient_ad",
+          "public_au_pro": 0.260952580171557,
+          "public_image_auroc": 0.5451178451178451,
+          "run_identity": "e4920f7c73fe684b600cd7acca24e3f4ae4950146c52cea6d7cdf24abae93a42",
+          "schema_version": "1.0.0"
+        }
+      ],
+      "rationale": "top_two_seed_42_public_au_pro",
+      "schema_version": "1.0.0"
+    },
+    {
+      "category": "fruit_jelly",
+      "contenders": [
+        "dinomaly",
+        "patchcore"
+      ],
+      "excluded": "efficient_ad",
+      "ranking": [
+        {
+          "family": "dinomaly",
+          "public_au_pro": 0.729079251158372,
+          "public_image_auroc": 0.7966666666666666,
+          "run_identity": "8a3b687e9da2e93e7f407aa0496cee17482302ce02faf1343e785e6d6e33bcde",
+          "schema_version": "1.0.0"
+        },
+        {
+          "family": "patchcore",
+          "public_au_pro": 0.7216494645728515,
+          "public_image_auroc": 0.9208333333333333,
+          "run_identity": "7c7ed4bbdfdcbd94ae1d12ce240bb711efda00eb7cbe20ad821e7e9a6c0d220c",
+          "schema_version": "1.0.0"
+        },
+        {
+          "family": "efficient_ad",
+          "public_au_pro": 0.4020393737488144,
+          "public_image_auroc": 0.7525,
+          "run_identity": "00c68e091a1352166e84f7d4c76a9d8e6e36c4a8f996ac0f82e7c8f302221f6a",
+          "schema_version": "1.0.0"
+        }
+      ],
+      "rationale": "top_two_seed_42_public_au_pro",
+      "schema_version": "1.0.0"
+    },
+    {
+      "category": "rice",
+      "contenders": [
+        "dinomaly",
+        "patchcore"
+      ],
+      "excluded": "efficient_ad",
+      "ranking": [
+        {
+          "family": "dinomaly",
+          "public_au_pro": 0.6614313564054396,
+          "public_image_auroc": 0.6746031746031746,
+          "run_identity": "d47baf7b7871fc45185753bee4a526ead9194847200612e48c241c2511aab726",
+          "schema_version": "1.0.0"
+        },
+        {
+          "family": "patchcore",
+          "public_au_pro": 0.48696467778684055,
+          "public_image_auroc": 0.6952380952380953,
+          "run_identity": "7179e031e1f41849866b581a0cc9261e5e3a598548359db93fc09d33e53ef3b5",
+          "schema_version": "1.0.0"
+        },
+        {
+          "family": "efficient_ad",
+          "public_au_pro": 0.22335568110379753,
+          "public_image_auroc": 0.535978835978836,
+          "run_identity": "29623b228ef46307275e9dfb2113a5f301c40039dceab607f2e124aac62a8d1b",
+          "schema_version": "1.0.0"
+        }
+      ],
+      "rationale": "top_two_seed_42_public_au_pro",
+      "schema_version": "1.0.0"
+    },
+    {
+      "category": "sheet_metal",
+      "contenders": [
+        "dinomaly",
+        "patchcore"
+      ],
+      "excluded": "efficient_ad",
+      "ranking": [
+        {
+          "family": "dinomaly",
+          "public_au_pro": 0.48958305457810075,
+          "public_image_auroc": 0.7671296296296297,
+          "run_identity": "fe366c4598620920e434af345569ffcd30941dd1621379249eb4e8a44d89cac7",
+          "schema_version": "1.0.0"
+        },
+        {
+          "family": "patchcore",
+          "public_au_pro": 0.39412608385460035,
+          "public_image_auroc": 0.6731481481481482,
+          "run_identity": "fb22267b01354c9d534cbc322b239a1493c45b86936abb4cf0d917e2482c2ca4",
+          "schema_version": "1.0.0"
+        },
+        {
+          "family": "efficient_ad",
+          "public_au_pro": 0.13593331982957224,
+          "public_image_auroc": 0.6773148148148148,
+          "run_identity": "7247ff893a9ecca0bce801753d3569923eac0ca737727a6ec43031ef6d1f3bef",
+          "schema_version": "1.0.0"
+        }
+      ],
+      "rationale": "top_two_seed_42_public_au_pro",
+      "schema_version": "1.0.0"
+    },
+    {
+      "category": "vial",
+      "contenders": [
+        "patchcore",
+        "dinomaly"
+      ],
+      "excluded": "efficient_ad",
+      "ranking": [
+        {
+          "family": "patchcore",
+          "public_au_pro": 0.9245036544255336,
+          "public_image_auroc": 0.8696598639455783,
+          "run_identity": "8752351992b83b368586fc84dca669a2679dfa7d6f5b1df3b33190f342222a8d",
+          "schema_version": "1.0.0"
+        },
+        {
+          "family": "dinomaly",
+          "public_au_pro": 0.9134432979058684,
+          "public_image_auroc": 0.8095238095238095,
+          "run_identity": "792221b53b1231f5ce22c57c1b565c9efcb12a8e91f04eb85273b404ba05f69e",
+          "schema_version": "1.0.0"
+        },
+        {
+          "family": "efficient_ad",
+          "public_au_pro": 0.8884030912300461,
+          "public_image_auroc": 0.8816326530612244,
+          "run_identity": "647f89379a8c992a385f91bc97534199c7aa79c1f59400f3e4e021e4ccef0245",
+          "schema_version": "1.0.0"
+        }
+      ],
+      "rationale": "top_two_seed_42_public_au_pro",
+      "schema_version": "1.0.0"
+    },
+    {
+      "category": "wallplugs",
+      "contenders": [
+        "patchcore",
+        "dinomaly"
+      ],
+      "excluded": "efficient_ad",
+      "ranking": [
+        {
+          "family": "patchcore",
+          "public_au_pro": 0.5285957173343723,
+          "public_image_auroc": 0.5725925925925927,
+          "run_identity": "6ffd7c77dc95549ae174f324c19684a44a90808029672390c07cc72df9874972",
+          "schema_version": "1.0.0"
+        },
+        {
+          "family": "dinomaly",
+          "public_au_pro": 0.32404968995481365,
+          "public_image_auroc": 0.4422222222222222,
+          "run_identity": "73f313cbf83ebf08a024f59720323763c63396fcea8710f27ed272c62ea8712a",
+          "schema_version": "1.0.0"
+        },
+        {
+          "family": "efficient_ad",
+          "public_au_pro": 0.21225930591454345,
+          "public_image_auroc": 0.5446296296296296,
+          "run_identity": "996cf010750e7d0296f02256f2b0bca5cd07097886084f94e1f9a5a8fc590672",
+          "schema_version": "1.0.0"
+        }
+      ],
+      "rationale": "top_two_seed_42_public_au_pro",
+      "schema_version": "1.0.0"
+    },
+    {
+      "category": "walnuts",
+      "contenders": [
+        "patchcore",
+        "dinomaly"
+      ],
+      "excluded": "efficient_ad",
+      "ranking": [
+        {
+          "family": "patchcore",
+          "public_au_pro": 0.7136191005245376,
+          "public_image_auroc": 0.8381481481481482,
+          "run_identity": "459516eb474914946f90dd5a49a37aa9eba96d056e127ac4e029620fd63814d5",
+          "schema_version": "1.0.0"
+        },
+        {
+          "family": "dinomaly",
+          "public_au_pro": 0.6207557112922117,
+          "public_image_auroc": 0.7270370370370371,
+          "run_identity": "8355aa5e398e1b9137b8615ec3cec99a09a2856b08b2f9d4c895429d9459aefb",
+          "schema_version": "1.0.0"
+        },
+        {
+          "family": "efficient_ad",
+          "public_au_pro": 0.35944189275484756,
+          "public_image_auroc": 0.62,
+          "run_identity": "e6e1231bef09ac7ed3059e71f31c42f2747d9f68540eac32af6ab23d190b1a41",
+          "schema_version": "1.0.0"
+        }
+      ],
+      "rationale": "top_two_seed_42_public_au_pro",
+      "schema_version": "1.0.0"
+    }
+  ],
+  "experiment_version": "mvtec-ad2-v1",
+  "public_benchmark_sha256": "68b4b26675588c9e7a1133e44561eee92c6521fe6c4c37651638cbf3df50b3e2",
+  "public_gate_identity": "5cb50fd6e7226ebccfdf3564d494d1890458fbcb29e8b3ae3182130ddfcc2409",
+  "schema_version": "1.0.0"
+}

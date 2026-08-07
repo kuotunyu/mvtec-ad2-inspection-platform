@@ -1,0 +1,3807 @@
+{
+  "canonical_sha256": "9cf47070c75bbf66f5e9919c32b5847b886a2f02190ea844c55273bb5ac4f751",
+  "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+  "evaluation_size": [
+    256,
+    256
+  ],
+  "experiment_version": "mvtec-ad2-v1",
+  "public_gate_identity": "5cb50fd6e7226ebccfdf3564d494d1890458fbcb29e8b3ae3182130ddfcc2409",
+  "runs": [
+    {
+      "category": "can",
+      "checkpoint_sha256": "3c6481c50c9e5f699ddb2b74c12f66c936bcdd1017776816126ecf15ce014be6",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329040463,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 41.94949999509845,
+          "p95_ms": 73.13847997429548,
+          "samples": 162,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 54757.01570013189,
+          "throughput_images_per_second": 23.34695724419268
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.5177469135802469,
+          "average_precision": 0.5622318956589761,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 72,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 375.0,
+          "public_anomaly_recall": 0.4111111111111111,
+          "public_normal_false_review_rate": 0.375,
+          "public_review_f1": 0.4805194805194805,
+          "public_review_precision": 0.578125,
+          "schema_version": "1.0.0",
+          "threshold": 0.05025326833128929
+        },
+        "peak_vram_mib": 659.86669921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 468,
+          "au_pro": 0.2979582841884795,
+          "auroc": 0.7437588758316717,
+          "average_precision": 9.989272215633125e-05,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 10616364,
+          "pro_fpr_limit": 0.3,
+          "region_count": 96,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "6b3a4906ae3dc267996b9dd8762029bca1b0ae02e08f9a87e7ef5b30e1c02dfc",
+      "prediction_locator": "public-evaluation/959be543842f678e3cda3ff1bc1430bb4dc3d407b3711b1a2de9236906de9aaf/predictions/test_public.json",
+      "run_identity": "959be543842f678e3cda3ff1bc1430bb4dc3d407b3711b1a2de9236906de9aaf",
+      "run_record_sha256": "59ca614029405e64d2bd796a6f206f9d989922265e3ac4a3cb26084f492e88b4",
+      "schema_version": "1.0.0",
+      "seed": 17,
+      "stage": "replication",
+      "threshold_artifact_sha256": "6ee5ede06382851b71c94040b456df4660d2e0bdb878feb97341e55f728349c2"
+    },
+    {
+      "category": "can",
+      "checkpoint_sha256": "bd07559d08cd85f8def329a573e937017f29224a38ccc95e46a92bd788fcae42",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329040463,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 40.67370000007031,
+          "p95_ms": 76.47347000008719,
+          "samples": 162,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 55455.61229999817,
+          "throughput_images_per_second": 21.398109125702156
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.5132716049382716,
+          "average_precision": 0.5602948441766473,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 72,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 375.0,
+          "public_anomaly_recall": 0.4222222222222222,
+          "public_normal_false_review_rate": 0.375,
+          "public_review_f1": 0.4903225806451613,
+          "public_review_precision": 0.5846153846153846,
+          "schema_version": "1.0.0",
+          "threshold": 0.049940839409828186
+        },
+        "peak_vram_mib": 659.86669921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 468,
+          "au_pro": 0.3005203883817808,
+          "auroc": 0.7556199896470421,
+          "average_precision": 0.00011465290625354329,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 10616364,
+          "pro_fpr_limit": 0.3,
+          "region_count": 96,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "b1bbd78c65b7b1f0620e1629ac84bb147713eced3580fdb561161391fc5bf0f2",
+      "prediction_locator": "public-evaluation/fcc4b2c90275cd585b79adb1e33be05cfc18222d41af235dfcba22bab3016cd3/predictions/test_public.json",
+      "run_identity": "fcc4b2c90275cd585b79adb1e33be05cfc18222d41af235dfcba22bab3016cd3",
+      "run_record_sha256": "7bc9dc2f45baa6241300b5ff673bdfebf487567d9626421a3e472ac30a94c1b7",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "5c87ebf218cd36fa23c307c9bb63875ac67c9a3cb8a70392e1daeba10213477a"
+    },
+    {
+      "category": "can",
+      "checkpoint_sha256": "4e28408930ad76fafda1948f962243657ab1a2233092989c7dfa4e5799460d7c",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329040463,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 40.03094999643508,
+          "p95_ms": 45.27090001211035,
+          "samples": 162,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 36133.338600135176,
+          "throughput_images_per_second": 24.60777186398683
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.5141975308641975,
+          "average_precision": 0.5635306614898266,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 72,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 375.0,
+          "public_anomaly_recall": 0.4222222222222222,
+          "public_normal_false_review_rate": 0.375,
+          "public_review_f1": 0.4903225806451613,
+          "public_review_precision": 0.5846153846153846,
+          "schema_version": "1.0.0",
+          "threshold": 0.050326090306043625
+        },
+        "peak_vram_mib": 659.86669921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 468,
+          "au_pro": 0.29995164908385397,
+          "auroc": 0.755676554476631,
+          "average_precision": 0.00011666235518379373,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 10616364,
+          "pro_fpr_limit": 0.3,
+          "region_count": 96,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "7a483505c59f83e102e61895c6979883108901cef3506bebb149a8af86af4487",
+      "prediction_locator": "public-evaluation/46e4689fb88bbcf7889bf48002e17dae6b5d131ceaf65330b6f175e02f7b2cdd/predictions/test_public.json",
+      "run_identity": "46e4689fb88bbcf7889bf48002e17dae6b5d131ceaf65330b6f175e02f7b2cdd",
+      "run_record_sha256": "d236ab457dea4831d12a8fc73f7aa1db123d007338adb9f6a656b061d9ec6833",
+      "schema_version": "1.0.0",
+      "seed": 2026,
+      "stage": "replication",
+      "threshold_artifact_sha256": "5343bcee7d86962cada151a3c92322ff10da6351eaf04832f0ffd385d7031fa6"
+    },
+    {
+      "category": "can",
+      "checkpoint_sha256": "312533211d2697f39c4722294b18d2142318ea7fa9c3004f11c7f4efafa4748e",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "7b03017ec1328a45d6b1b18ae33efcc29542e4175582f351492709af84d6cc10",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "efficient_ad",
+      "metrics": {
+        "artifact_size_bytes": 76535629,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 26.42589999993561,
+          "p95_ms": 35.483935000161175,
+          "samples": 162,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 32837.21449999757,
+          "throughput_images_per_second": 36.714006658676354
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.48302469135802467,
+          "average_precision": 0.5872014348549298,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 72,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 819.4444444444445,
+          "public_anomaly_recall": 0.7555555555555555,
+          "public_normal_false_review_rate": 0.8194444444444444,
+          "public_review_f1": 0.6267281105990784,
+          "public_review_precision": 0.5354330708661418,
+          "schema_version": "1.0.0",
+          "threshold": 0.23655341565608978
+        },
+        "peak_vram_mib": 100.85498046875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 468,
+          "au_pro": 0.19015299563073218,
+          "auroc": 0.6465845610252183,
+          "average_precision": 5.962011286679342e-05,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 10616364,
+          "pro_fpr_limit": 0.3,
+          "region_count": 96,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/EfficientAd/small",
+      "prediction_artifact_sha256": "2708cbb50720104a8c591828ea3e6ff5e987f79e9c723b26f8d33413cb932cc9",
+      "prediction_locator": "public-evaluation/ec781513bd6a3affb2ca48cfca83ebcef2962c14c04e3b931ca1d00c3af2bc95/predictions/test_public.json",
+      "run_identity": "ec781513bd6a3affb2ca48cfca83ebcef2962c14c04e3b931ca1d00c3af2bc95",
+      "run_record_sha256": "6f4fa81fdb8d8435e586c40e739a816feac9257c907e5bf966cfb808e65de0d6",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "14407ebd82489058ee3a3ac060ab42b41ec6ff82c45030feb5f7ca8ed56e30ab"
+    },
+    {
+      "category": "can",
+      "checkpoint_sha256": "0212e0329e732b7c26e477f20e0b2343bf09a7a1b1c60aea5e859bfc72db49df",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 1136661491,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 95.30640000593849,
+          "p95_ms": 99.71490499883657,
+          "samples": 162,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 45645.95190010732,
+          "throughput_images_per_second": 10.289683817141194
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.5143518518518518,
+          "average_precision": 0.5904865294576496,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 72,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 208.33333333333334,
+          "public_anomaly_recall": 0.18888888888888888,
+          "public_normal_false_review_rate": 0.20833333333333334,
+          "public_review_f1": 0.27868852459016397,
+          "public_review_precision": 0.53125,
+          "schema_version": "1.0.0",
+          "threshold": 49.500144958496094
+        },
+        "peak_vram_mib": 2146.337890625,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 468,
+          "au_pro": 0.3087668902429388,
+          "auroc": 0.7392230567901519,
+          "average_precision": 0.00011733130810145774,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 10616364,
+          "pro_fpr_limit": 0.3,
+          "region_count": 96,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "abf769da8efd5b78850d5606464875a40bfadfe838eb710d75a9b69333574466",
+      "prediction_locator": "public-evaluation/3147a91e6d2c6536494edfa04985ba23490604f86f4c3e685a1ab18e94655b58/predictions/test_public.json",
+      "run_identity": "3147a91e6d2c6536494edfa04985ba23490604f86f4c3e685a1ab18e94655b58",
+      "run_record_sha256": "12da64c236fd573d5f89d527d0c0d6c7577d4a4bfb0db74ecf5b27e89c06bf90",
+      "schema_version": "1.0.0",
+      "seed": 17,
+      "stage": "replication",
+      "threshold_artifact_sha256": "586a01bebb94011458641cf727cbf4640405c60844e9d465f3540b4f47291a4f"
+    },
+    {
+      "category": "can",
+      "checkpoint_sha256": "b7cac603f1b0761620522a0754c7e2f5d6f6a2dab07684b070e30653ce3d81b5",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 1136661491,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 98.04650000000947,
+          "p95_ms": 105.35707500001763,
+          "samples": 162,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 46502.71079999993,
+          "throughput_images_per_second": 9.964824109382542
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.5098765432098765,
+          "average_precision": 0.5860379822895361,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 72,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 208.33333333333334,
+          "public_anomaly_recall": 0.2,
+          "public_normal_false_review_rate": 0.20833333333333334,
+          "public_review_f1": 0.29268292682926833,
+          "public_review_precision": 0.5454545454545454,
+          "schema_version": "1.0.0",
+          "threshold": 49.504642486572266
+        },
+        "peak_vram_mib": 2146.337890625,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 468,
+          "au_pro": 0.3113045822252449,
+          "auroc": 0.7754772702178424,
+          "average_precision": 0.00012180630762861534,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 10616364,
+          "pro_fpr_limit": 0.3,
+          "region_count": 96,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "9fc13d168ac5d8a0dde694c18110ec2e892ac2f27a680d82b005967a946e0c8b",
+      "prediction_locator": "public-evaluation/597dbe614d9aa98fd8939b0626aaf61def78fa4abac1b25755aeb5b5c980e81a/predictions/test_public.json",
+      "run_identity": "597dbe614d9aa98fd8939b0626aaf61def78fa4abac1b25755aeb5b5c980e81a",
+      "run_record_sha256": "adc26efbec3dcf51c5246360f976f9ce46ba097c54264d3439ab37e9e6749028",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "6bce1e816d40048f391f41aa848e3691c3c85caa9954c22dc37d4f5fdbca4e0a"
+    },
+    {
+      "category": "can",
+      "checkpoint_sha256": "a79dee486f2e0d3fd53c818dae5dc29eaf99abffcf4c690e2968e556a6f8ac4a",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 1136661491,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 95.05979999084957,
+          "p95_ms": 99.07809500582516,
+          "samples": 162,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 39481.19990012492,
+          "throughput_images_per_second": 10.44969406981028
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.508179012345679,
+          "average_precision": 0.5878998960650962,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 72,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 208.33333333333334,
+          "public_anomaly_recall": 0.2,
+          "public_normal_false_review_rate": 0.20833333333333334,
+          "public_review_f1": 0.29268292682926833,
+          "public_review_precision": 0.5454545454545454,
+          "schema_version": "1.0.0",
+          "threshold": 49.493099212646484
+        },
+        "peak_vram_mib": 2146.337890625,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 468,
+          "au_pro": 0.30408122026515777,
+          "auroc": 0.7508359738988912,
+          "average_precision": 0.0001189845115179491,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 10616364,
+          "pro_fpr_limit": 0.3,
+          "region_count": 96,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "702229e75015602d184d0c0049a5f67c18b5e7b36bd22f15c5a7741e6ae9cfc6",
+      "prediction_locator": "public-evaluation/dc06f3aff0c13e17d1e9e4f9e59190121154e36c5b516fbe1527f759f841b57c/predictions/test_public.json",
+      "run_identity": "dc06f3aff0c13e17d1e9e4f9e59190121154e36c5b516fbe1527f759f841b57c",
+      "run_record_sha256": "cfffc6e70c19121eb300cb693068b02dd1d2dd40e9548b4b23072ba4b9f5cebd",
+      "schema_version": "1.0.0",
+      "seed": 2026,
+      "stage": "replication",
+      "threshold_artifact_sha256": "2aab54f1e0a862e999b918ecfb7d2db6494fe2bb17bc28f8350f0c3c143751d4"
+    },
+    {
+      "category": "fabric",
+      "checkpoint_sha256": "fae96fa06ba7ca1d10001fd0e637058b406d3e771a7f536347f44d9fdd1e2cb7",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329034063,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 40.01625000091735,
+          "p95_ms": 75.52237500931369,
+          "samples": 156,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 76015.45160007663,
+          "throughput_images_per_second": 20.60777724854248
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.72003367003367,
+          "average_precision": 0.7547535986196763,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 66,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 121.21212121212122,
+          "public_anomaly_recall": 0.3111111111111111,
+          "public_normal_false_review_rate": 0.12121212121212122,
+          "public_review_f1": 0.44444444444444436,
+          "public_review_precision": 0.7777777777777778,
+          "schema_version": "1.0.0",
+          "threshold": 0.04015088826417923
+        },
+        "peak_vram_mib": 659.86669921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 73842,
+          "au_pro": 0.6694497257368306,
+          "auroc": 0.9011008580485861,
+          "average_precision": 0.11864035001987598,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 10149774,
+          "pro_fpr_limit": 0.3,
+          "region_count": 204,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "be0e6475210249dd75d0ab486167d6c55e2ef6a8a7da378c7b5f0504d613b1d1",
+      "prediction_locator": "public-evaluation/8c8de411b36904e7be61eebe0b6942876a2615690f1f26e6f43a519cbb47b954/predictions/test_public.json",
+      "run_identity": "8c8de411b36904e7be61eebe0b6942876a2615690f1f26e6f43a519cbb47b954",
+      "run_record_sha256": "5d0cbb5a4d8ae8dd9ff7911c9b2af7eeff42c88f3d5a546d6bd0abc56c48f2ef",
+      "schema_version": "1.0.0",
+      "seed": 17,
+      "stage": "replication",
+      "threshold_artifact_sha256": "7a249bb41e635be539ab55b7201feaf2a58907929d852b8cb592d8e3d64cbcfe"
+    },
+    {
+      "category": "fabric",
+      "checkpoint_sha256": "beb949c918e4bd35694e31e3bdaa925584fb36bc5ca82bbad3a3ae66b404af28",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329034063,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 41.86060000006364,
+          "p95_ms": 88.82657499992774,
+          "samples": 156,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 82302.76450000178,
+          "throughput_images_per_second": 21.427699603765785
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.694949494949495,
+          "average_precision": 0.7375665816692908,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 66,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 106.06060606060606,
+          "public_anomaly_recall": 0.25555555555555554,
+          "public_normal_false_review_rate": 0.10606060606060606,
+          "public_review_f1": 0.38333333333333336,
+          "public_review_precision": 0.7666666666666667,
+          "schema_version": "1.0.0",
+          "threshold": 0.04324210807681084
+        },
+        "peak_vram_mib": 659.86669921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 73842,
+          "au_pro": 0.6564196134043307,
+          "auroc": 0.8995312397139137,
+          "average_precision": 0.11396348305587109,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 10149774,
+          "pro_fpr_limit": 0.3,
+          "region_count": 204,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "17ce678a9f537972b54d9eb1d3bc79935651328189b52e30a0b2bdfd6bfc130a",
+      "prediction_locator": "public-evaluation/b96429546f4bb46d528156e305cee5efd18be8e1f96513ba615d867879572a1f/predictions/test_public.json",
+      "run_identity": "b96429546f4bb46d528156e305cee5efd18be8e1f96513ba615d867879572a1f",
+      "run_record_sha256": "4862805215027b8c78160fe4f52dd5e905112e0e1d3e0d51ed6a794811c429d6",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "66530de3844dc639f9f3051e2cd1b056051c3119172dfe4f65a875c24b576e52"
+    },
+    {
+      "category": "fabric",
+      "checkpoint_sha256": "18023c18c86ea3e405b583b2e6955b54969ae6049c85cda0b6ea40d0ddf1c4bb",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329034063,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 39.26250000949949,
+          "p95_ms": 75.03012499364559,
+          "samples": 156,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 63262.47769978363,
+          "throughput_images_per_second": 21.53563786311895
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.7205387205387205,
+          "average_precision": 0.755672201705851,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 66,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 106.06060606060606,
+          "public_anomaly_recall": 0.25555555555555554,
+          "public_normal_false_review_rate": 0.10606060606060606,
+          "public_review_f1": 0.38333333333333336,
+          "public_review_precision": 0.7666666666666667,
+          "schema_version": "1.0.0",
+          "threshold": 0.04180056229233742
+        },
+        "peak_vram_mib": 659.86669921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 73842,
+          "au_pro": 0.6946043964390582,
+          "auroc": 0.9015916495754721,
+          "average_precision": 0.12498500102045919,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 10149774,
+          "pro_fpr_limit": 0.3,
+          "region_count": 204,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "e7cf769d441d74c66c466259a3a30ad9b8d99f5460acab856afa757d00ae0343",
+      "prediction_locator": "public-evaluation/4ff70550f063b796ddf9e4dba253281505d6b0dc80f00c97783c1db27b810857/predictions/test_public.json",
+      "run_identity": "4ff70550f063b796ddf9e4dba253281505d6b0dc80f00c97783c1db27b810857",
+      "run_record_sha256": "3e767fbf288ec9e0abb855dfbc8646db54a1812c97cfc1d141e9f27f26794225",
+      "schema_version": "1.0.0",
+      "seed": 2026,
+      "stage": "replication",
+      "threshold_artifact_sha256": "1c14484e15414b50dab534d449fbb14f47a92dd1ac88d3b9c057973bae4afa8e"
+    },
+    {
+      "category": "fabric",
+      "checkpoint_sha256": "879307e6ba2e4fd96a3dcf9f17a02841551208eddd986ff8e20bddd82b8da1a3",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "7b03017ec1328a45d6b1b18ae33efcc29542e4175582f351492709af84d6cc10",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "efficient_ad",
+      "metrics": {
+        "artifact_size_bytes": 76534605,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 29.4317499999579,
+          "p95_ms": 45.200949999809836,
+          "samples": 156,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 59626.4317000007,
+          "throughput_images_per_second": 34.0860613617333
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.5451178451178451,
+          "average_precision": 0.6144142496795846,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 66,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 712.1212121212121,
+          "public_anomaly_recall": 0.7666666666666667,
+          "public_normal_false_review_rate": 0.7121212121212122,
+          "public_review_f1": 0.6699029126213593,
+          "public_review_precision": 0.5948275862068966,
+          "schema_version": "1.0.0",
+          "threshold": 0.10029852390289307
+        },
+        "peak_vram_mib": 100.109375,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 73842,
+          "au_pro": 0.260952580171557,
+          "auroc": 0.6864609759650762,
+          "average_precision": 0.011094210732734467,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 10149774,
+          "pro_fpr_limit": 0.3,
+          "region_count": 204,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/EfficientAd/small",
+      "prediction_artifact_sha256": "bbbcea2040ec553d51ee792fcc06dd1512a44ff7e3107583e2d9f0294fc8486b",
+      "prediction_locator": "public-evaluation/e4920f7c73fe684b600cd7acca24e3f4ae4950146c52cea6d7cdf24abae93a42/predictions/test_public.json",
+      "run_identity": "e4920f7c73fe684b600cd7acca24e3f4ae4950146c52cea6d7cdf24abae93a42",
+      "run_record_sha256": "8df17e8dc9270aecfc0bae13d4da03397a9e893005530b1de1d4c59ba132cfc2",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "7606778f12f4867a25639227df1952d1f1ead3bc90573eca7f45df9f2d626e6e"
+    },
+    {
+      "category": "fabric",
+      "checkpoint_sha256": "62eb427c6f18d20e19bb5cc150335d5c22659905541f0c98a118232bca496814",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 1073746931,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 89.80650000739843,
+          "p95_ms": 105.43862499616807,
+          "samples": 156,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 65665.69809999783,
+          "throughput_images_per_second": 10.733452741609636
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.7765993265993266,
+          "average_precision": 0.8052104197091837,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 66,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 90.9090909090909,
+          "public_anomaly_recall": 0.2,
+          "public_normal_false_review_rate": 0.09090909090909091,
+          "public_review_f1": 0.31578947368421056,
+          "public_review_precision": 0.75,
+          "schema_version": "1.0.0",
+          "threshold": 46.168212890625
+        },
+        "peak_vram_mib": 2027.298828125,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 73842,
+          "au_pro": 0.591376612857353,
+          "auroc": 0.7835569888167933,
+          "average_precision": 0.06672263796678791,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 10149774,
+          "pro_fpr_limit": 0.3,
+          "region_count": 204,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "fb05347d537ca36df111b6247bc0133b706215e755d8d28e26e2d2e1a4b2ab90",
+      "prediction_locator": "public-evaluation/97c84392dff5564abb7f96308798f79383b71bf5223788898b689e4c6536b2f8/predictions/test_public.json",
+      "run_identity": "97c84392dff5564abb7f96308798f79383b71bf5223788898b689e4c6536b2f8",
+      "run_record_sha256": "224095adfb5011a28862c105d4474d37318c4b2a949d413e129ccff650f54946",
+      "schema_version": "1.0.0",
+      "seed": 17,
+      "stage": "replication",
+      "threshold_artifact_sha256": "2d7196fb7187d43e5cf461ada2ad62943836bf6832f98b5f52cbb5b1c68e6b84"
+    },
+    {
+      "category": "fabric",
+      "checkpoint_sha256": "723fbdb0ecc103f8661ec5f804669a40c0cc142701cff1244f63e0a254ca56fa",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 1073746931,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 91.55644999987089,
+          "p95_ms": 108.69982500008746,
+          "samples": 156,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 66224.97730000169,
+          "throughput_images_per_second": 10.604059357637482
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.7791245791245791,
+          "average_precision": 0.8125873018604008,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 66,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 166.66666666666666,
+          "public_anomaly_recall": 0.4444444444444444,
+          "public_normal_false_review_rate": 0.16666666666666666,
+          "public_review_f1": 0.5673758865248226,
+          "public_review_precision": 0.7843137254901961,
+          "schema_version": "1.0.0",
+          "threshold": 44.38440704345703
+        },
+        "peak_vram_mib": 2027.298828125,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 73842,
+          "au_pro": 0.5901689185245128,
+          "auroc": 0.7886008251312798,
+          "average_precision": 0.06692275495129914,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 10149774,
+          "pro_fpr_limit": 0.3,
+          "region_count": 204,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "4b65113ce1edf03444d3d8b5d756ae3f339c2d0edccb118cfba514e03ddbf2ea",
+      "prediction_locator": "public-evaluation/d6c6b6bbf7fec007b0f73ecea42bb6e0115d4bf105ba31619cc413454d58c8f3/predictions/test_public.json",
+      "run_identity": "d6c6b6bbf7fec007b0f73ecea42bb6e0115d4bf105ba31619cc413454d58c8f3",
+      "run_record_sha256": "cccd237bb0d40bb6a4f8ced3ece0a47ba1d0870b30a1b16dcd0df881de90746e",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "b45118077b904436f06cbaa71abee0d43a39de9a7a840cfdd09574e5e140214b"
+    },
+    {
+      "category": "fabric",
+      "checkpoint_sha256": "7cfee6f4d11bd51d86f56b1d9b5612b697ebb20168560e08ed1a78b0a4fb3770",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 1073746931,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 89.39339999051299,
+          "p95_ms": 104.32390000642044,
+          "samples": 156,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 65510.345200047595,
+          "throughput_images_per_second": 10.887575841085116
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.7390572390572391,
+          "average_precision": 0.7747695513546766,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 66,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 151.51515151515153,
+          "public_anomaly_recall": 0.34444444444444444,
+          "public_normal_false_review_rate": 0.15151515151515152,
+          "public_review_f1": 0.4732824427480916,
+          "public_review_precision": 0.7560975609756098,
+          "schema_version": "1.0.0",
+          "threshold": 44.721595764160156
+        },
+        "peak_vram_mib": 2027.298828125,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 73842,
+          "au_pro": 0.5854891451723147,
+          "auroc": 0.7847439384677287,
+          "average_precision": 0.06730937248264283,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 10149774,
+          "pro_fpr_limit": 0.3,
+          "region_count": 204,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "539e494eecf4e6cc7eadec28578050d6e6ee27917bde9eb73686198b4710c158",
+      "prediction_locator": "public-evaluation/dba7e08fd4bd353ea8ed19a8590024fed0fa4907c2bbf9b4fbef741a0d0124c6/predictions/test_public.json",
+      "run_identity": "dba7e08fd4bd353ea8ed19a8590024fed0fa4907c2bbf9b4fbef741a0d0124c6",
+      "run_record_sha256": "9feb594d39acfe8f01846148feb9de62ef411a24252ec3e2a43e11bfa9724f7c",
+      "schema_version": "1.0.0",
+      "seed": 2026,
+      "stage": "replication",
+      "threshold_artifact_sha256": "a065c79480a59be7a09d7ef73a306f1d6d12bd84b06ddda7e1f552b1d389cfb5"
+    },
+    {
+      "category": "fruit_jelly",
+      "checkpoint_sha256": "11cae792986784d8438260d876be8f9be84d04e9af8f9ce770e0043eb507eef3",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329000079,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 41.246199994930066,
+          "p95_ms": 64.84396998857845,
+          "samples": 80,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 20156.74769980251,
+          "throughput_images_per_second": 23.1305846976508
+        },
+        "image": {
+          "anomaly_count": 60,
+          "auroc": 0.7858333333333333,
+          "average_precision": 0.905217423474409,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 20,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 200.0,
+          "public_anomaly_recall": 0.5333333333333333,
+          "public_normal_false_review_rate": 0.2,
+          "public_review_f1": 0.6666666666666667,
+          "public_review_precision": 0.8888888888888888,
+          "schema_version": "1.0.0",
+          "threshold": 0.049397412687540054
+        },
+        "peak_vram_mib": 659.29345703125,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 52549,
+          "au_pro": 0.7322926502807103,
+          "auroc": 0.8662018855685336,
+          "average_precision": 0.3321312567531031,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 5190331,
+          "pro_fpr_limit": 0.3,
+          "region_count": 472,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "247917b1bce6b88190bed53f2d7b118faa56fe4a7ef4225427f562cce825146c",
+      "prediction_locator": "public-evaluation/de31a953ae314b31a6c9923d5b6a24b87b1f71c0aa4abc99b607e06b21755e5c/predictions/test_public.json",
+      "run_identity": "de31a953ae314b31a6c9923d5b6a24b87b1f71c0aa4abc99b607e06b21755e5c",
+      "run_record_sha256": "a7fff26e1dc04d28be1c6c0ae86adffb3cc87f539439a96450f275c28bee3435",
+      "schema_version": "1.0.0",
+      "seed": 17,
+      "stage": "replication",
+      "threshold_artifact_sha256": "cad58589ab36f3e00cf0f70391f959230582e06f29b683aaa1be6946a4795a80"
+    },
+    {
+      "category": "fruit_jelly",
+      "checkpoint_sha256": "9272d3f03ce73f96b99926ae80d5a60e8e7e24de2feb9137b0efd88d7763ee64",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329000079,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 41.34580000004462,
+          "p95_ms": 46.128990000079284,
+          "samples": 80,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 20635.16430000004,
+          "throughput_images_per_second": 24.06237858838121
+        },
+        "image": {
+          "anomaly_count": 60,
+          "auroc": 0.7966666666666666,
+          "average_precision": 0.9195370178069039,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 20,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 150.0,
+          "public_anomaly_recall": 0.5333333333333333,
+          "public_normal_false_review_rate": 0.15,
+          "public_review_f1": 0.6736842105263158,
+          "public_review_precision": 0.9142857142857143,
+          "schema_version": "1.0.0",
+          "threshold": 0.050920601934194565
+        },
+        "peak_vram_mib": 659.29345703125,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 52549,
+          "au_pro": 0.729079251158372,
+          "auroc": 0.8654023099035435,
+          "average_precision": 0.32522383296867274,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 5190331,
+          "pro_fpr_limit": 0.3,
+          "region_count": 472,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "5e274bada9ec3222420495c3ad9ff0677d72065bc143c15048ab39beaa57c019",
+      "prediction_locator": "public-evaluation/8a3b687e9da2e93e7f407aa0496cee17482302ce02faf1343e785e6d6e33bcde/predictions/test_public.json",
+      "run_identity": "8a3b687e9da2e93e7f407aa0496cee17482302ce02faf1343e785e6d6e33bcde",
+      "run_record_sha256": "a0deb7a677a8acbe051b138cbcef4f8d029fe3972c374a01df01ddd3e43f3e6a",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "1fe82ea3f107c51422b4a2521fca562579c0d644e7ba027ea12c2a9760dcbf53"
+    },
+    {
+      "category": "fruit_jelly",
+      "checkpoint_sha256": "e0766b3d9e23bf79b55ea74d65a73384ab3d3e861a40dfcbb05841fe038f02e8",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329000079,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 38.69709999707993,
+          "p95_ms": 43.08459499588935,
+          "samples": 80,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 19561.55740021495,
+          "throughput_images_per_second": 25.826054423107998
+        },
+        "image": {
+          "anomaly_count": 60,
+          "auroc": 0.7741666666666666,
+          "average_precision": 0.9104947682640874,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 20,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 150.0,
+          "public_anomaly_recall": 0.35,
+          "public_normal_false_review_rate": 0.15,
+          "public_review_f1": 0.4999999999999999,
+          "public_review_precision": 0.875,
+          "schema_version": "1.0.0",
+          "threshold": 0.05155932158231735
+        },
+        "peak_vram_mib": 659.29345703125,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 52549,
+          "au_pro": 0.7198124310360193,
+          "auroc": 0.8633549971133758,
+          "average_precision": 0.31935659266265676,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 5190331,
+          "pro_fpr_limit": 0.3,
+          "region_count": 472,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "f4921c5b462e525d13133a1c78846cd3f4062983e6c655a085b222f7d196ad07",
+      "prediction_locator": "public-evaluation/f434284473c1de94e916147b1591a30c1a15253f304e2b4362c1130a1fea913a/predictions/test_public.json",
+      "run_identity": "f434284473c1de94e916147b1591a30c1a15253f304e2b4362c1130a1fea913a",
+      "run_record_sha256": "e65d170cda6fa7b48bb85892cccfd81964727fb5efcee1e575de720fe45332db",
+      "schema_version": "1.0.0",
+      "seed": 2026,
+      "stage": "replication",
+      "threshold_artifact_sha256": "bed8e81dd519981b432ea1c8a017b266a307d4ce535e16632c92819f67fe01f0"
+    },
+    {
+      "category": "fruit_jelly",
+      "checkpoint_sha256": "27ac6cda66e792fdb346c959aad3c1ab0a85e999e9f66b03787d85f4f3a28f0a",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "7b03017ec1328a45d6b1b18ae33efcc29542e4175582f351492709af84d6cc10",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "efficient_ad",
+      "metrics": {
+        "artifact_size_bytes": 76685517,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 22.585199999980432,
+          "p95_ms": 29.644980000000476,
+          "samples": 80,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 16609.600600000478,
+          "throughput_images_per_second": 43.60943520658382
+        },
+        "image": {
+          "anomaly_count": 60,
+          "auroc": 0.7525,
+          "average_precision": 0.9105539906646485,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 20,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 0.0,
+          "public_anomaly_recall": 0.25,
+          "public_normal_false_review_rate": 0.0,
+          "public_review_f1": 0.4,
+          "public_review_precision": 1.0,
+          "schema_version": "1.0.0",
+          "threshold": 0.9454504251480103
+        },
+        "peak_vram_mib": 100.109375,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 52549,
+          "au_pro": 0.4020393737488144,
+          "auroc": 0.8697711469078127,
+          "average_precision": 0.49738519612842075,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 5190331,
+          "pro_fpr_limit": 0.3,
+          "region_count": 472,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/EfficientAd/small",
+      "prediction_artifact_sha256": "de92d276e9fc52be84e2ef86e85bf2a9f9b83571466e5a2948bf103ad7229a47",
+      "prediction_locator": "public-evaluation/00c68e091a1352166e84f7d4c76a9d8e6e36c4a8f996ac0f82e7c8f302221f6a/predictions/test_public.json",
+      "run_identity": "00c68e091a1352166e84f7d4c76a9d8e6e36c4a8f996ac0f82e7c8f302221f6a",
+      "run_record_sha256": "f2016835f80719d872633b0d4d8cff1d4d0bc35a84820176cf59294c2ff9af33",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "a21dc0e975874c92ff5bca456d6d0cfbf4896d96d63b01aca14fd84818bce550"
+    },
+    {
+      "category": "fruit_jelly",
+      "checkpoint_sha256": "66e89bef7c975aee2df2c0dc775dabf2297f9d6410049df320163eff32978ce2",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 761687027,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 73.65625000966247,
+          "p95_ms": 77.23543498723302,
+          "samples": 80,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 22190.501600154676,
+          "throughput_images_per_second": 13.746177553510355
+        },
+        "image": {
+          "anomaly_count": 60,
+          "auroc": 0.9224999999999999,
+          "average_precision": 0.977434892027327,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 20,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 0.0,
+          "public_anomaly_recall": 0.08333333333333333,
+          "public_normal_false_review_rate": 0.0,
+          "public_review_f1": 0.15384615384615385,
+          "public_review_precision": 1.0,
+          "schema_version": "1.0.0",
+          "threshold": 60.215370178222656
+        },
+        "peak_vram_mib": 1432.50732421875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 52549,
+          "au_pro": 0.7167148367365183,
+          "auroc": 0.9399850005708439,
+          "average_precision": 0.28803161365222635,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 5190331,
+          "pro_fpr_limit": 0.3,
+          "region_count": 472,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "84471671058ab4d00912e6ed2225b2adffd7eda82c25690af927a0accfd478fa",
+      "prediction_locator": "public-evaluation/0b42fd123f5af9b467017d27be13db1dbadbdbfc20cb4f39605f06216067772c/predictions/test_public.json",
+      "run_identity": "0b42fd123f5af9b467017d27be13db1dbadbdbfc20cb4f39605f06216067772c",
+      "run_record_sha256": "c0fd8a1e72df79a31b66b3d46919be5e117d10e516429fa7e271e29a256936e6",
+      "schema_version": "1.0.0",
+      "seed": 17,
+      "stage": "replication",
+      "threshold_artifact_sha256": "e199f8e56f1a7f63af3afb7782483731a7c6e1fb0a311558d4d4cde8f5591896"
+    },
+    {
+      "category": "fruit_jelly",
+      "checkpoint_sha256": "3d6a28b12e0c4b41ca4467a3d13656266ed5cfbf80509300a64ebe4a94d25c6f",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 761687027,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 77.9734999999846,
+          "p95_ms": 81.86607500009586,
+          "samples": 80,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 31385.390899999264,
+          "throughput_images_per_second": 12.791390677754416
+        },
+        "image": {
+          "anomaly_count": 60,
+          "auroc": 0.9208333333333333,
+          "average_precision": 0.9764697838283215,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 20,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 0.0,
+          "public_anomaly_recall": 0.06666666666666667,
+          "public_normal_false_review_rate": 0.0,
+          "public_review_f1": 0.125,
+          "public_review_precision": 1.0,
+          "schema_version": "1.0.0",
+          "threshold": 60.21459197998047
+        },
+        "peak_vram_mib": 1432.50732421875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 52549,
+          "au_pro": 0.7216494645728515,
+          "auroc": 0.9398088392649697,
+          "average_precision": 0.28612477922061486,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 5190331,
+          "pro_fpr_limit": 0.3,
+          "region_count": 472,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "ba5c47df8c52e722b3cf7323a3aa4d0940ef96e56d087420f71a9f0680e871c2",
+      "prediction_locator": "public-evaluation/7c7ed4bbdfdcbd94ae1d12ce240bb711efda00eb7cbe20ad821e7e9a6c0d220c/predictions/test_public.json",
+      "run_identity": "7c7ed4bbdfdcbd94ae1d12ce240bb711efda00eb7cbe20ad821e7e9a6c0d220c",
+      "run_record_sha256": "3adfb06bf3fddacad8059ffd3e5914e93052481c5495fa8410227eb3ee88a180",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "40ffe1371b7a3faded1f58f5305dc5e2fd73ed9ffc41f8d94a27f12fba6c4df5"
+    },
+    {
+      "category": "fruit_jelly",
+      "checkpoint_sha256": "87862dc081daaa2172b90d83497b9b9212fe4253b1b10ab728939ec0062de02e",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 761687027,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 75.42014998034574,
+          "p95_ms": 80.19950001180405,
+          "samples": 80,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 19966.90070015029,
+          "throughput_images_per_second": 13.470047128020335
+        },
+        "image": {
+          "anomaly_count": 60,
+          "auroc": 0.92,
+          "average_precision": 0.975073189382963,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 20,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 0.0,
+          "public_anomaly_recall": 0.06666666666666667,
+          "public_normal_false_review_rate": 0.0,
+          "public_review_f1": 0.125,
+          "public_review_precision": 1.0,
+          "schema_version": "1.0.0",
+          "threshold": 60.70579147338867
+        },
+        "peak_vram_mib": 1432.50732421875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 52549,
+          "au_pro": 0.7165739252722557,
+          "auroc": 0.9398597844452801,
+          "average_precision": 0.28939731711356603,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 5190331,
+          "pro_fpr_limit": 0.3,
+          "region_count": 472,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "3ed585f33c61a639a96ecfa01a10d712da5d62dfb06f2a5e3581a502303a016e",
+      "prediction_locator": "public-evaluation/dbe69bf70290388453b4d1726e4d5f5ed9b9dfed6c2c89c7be7e41f975a1e487/predictions/test_public.json",
+      "run_identity": "dbe69bf70290388453b4d1726e4d5f5ed9b9dfed6c2c89c7be7e41f975a1e487",
+      "run_record_sha256": "6ce8720d7da09a0da806e6d0bafba27334e9bb572906f4fc564386bcef355111",
+      "schema_version": "1.0.0",
+      "seed": 2026,
+      "stage": "replication",
+      "threshold_artifact_sha256": "67b51f9d3f9daa0dbc7d602bdc8bde47e3a6acb08e5b3b89e3799d2c30cb286d"
+    },
+    {
+      "category": "rice",
+      "checkpoint_sha256": "ba399989aa455bc1e4bc6686ea04f207d4363079f946022680f90a4049f388bc",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329014287,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 39.53170000750106,
+          "p95_ms": 76.44294999772683,
+          "samples": 132,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 63471.13719992922,
+          "throughput_images_per_second": 20.788010155832687
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.6972222222222223,
+          "average_precision": 0.8593350532036136,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 42,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 0.0,
+          "public_anomaly_recall": 0.32222222222222224,
+          "public_normal_false_review_rate": 0.0,
+          "public_review_f1": 0.4873949579831933,
+          "public_review_precision": 1.0,
+          "schema_version": "1.0.0",
+          "threshold": 0.20379862189292908
+        },
+        "peak_vram_mib": 659.86669921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 15462,
+          "au_pro": 0.687452620122129,
+          "auroc": 0.7730404068436718,
+          "average_precision": 0.25373685940380364,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 8635290,
+          "pro_fpr_limit": 0.3,
+          "region_count": 132,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "a1df9c3199025f26ce9186ad45ec8d65b77e64d86130de56863a50d79955bb13",
+      "prediction_locator": "public-evaluation/fb47a348c19f0def019df9b48c81255fc660371f4b2e16b82f2a0c0862bac403/predictions/test_public.json",
+      "run_identity": "fb47a348c19f0def019df9b48c81255fc660371f4b2e16b82f2a0c0862bac403",
+      "run_record_sha256": "adabdc678b5664e6f70d5c9210803157470df7d02359f178936d2eff2b92c88f",
+      "schema_version": "1.0.0",
+      "seed": 17,
+      "stage": "replication",
+      "threshold_artifact_sha256": "ef2cea0caaf9204adca9718f324faa7ac0cb95adc0203b2fe44135b12648a71c"
+    },
+    {
+      "category": "rice",
+      "checkpoint_sha256": "d3fa5e00d0aec552a2e331e54ba02356fd2dd328cc54cd987eb05d7ae07df707",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329014287,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 42.9097000001093,
+          "p95_ms": 84.86293000001977,
+          "samples": 132,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 78432.78110000075,
+          "throughput_images_per_second": 20.1798362800739
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.6746031746031746,
+          "average_precision": 0.8490402018056433,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 42,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 214.28571428571428,
+          "public_anomaly_recall": 0.4666666666666667,
+          "public_normal_false_review_rate": 0.21428571428571427,
+          "public_review_f1": 0.5957446808510638,
+          "public_review_precision": 0.8235294117647058,
+          "schema_version": "1.0.0",
+          "threshold": 0.03267982229590416
+        },
+        "peak_vram_mib": 659.86669921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 15462,
+          "au_pro": 0.6614313564054396,
+          "auroc": 0.7897095305528476,
+          "average_precision": 0.28317446499725635,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 8635290,
+          "pro_fpr_limit": 0.3,
+          "region_count": 132,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "08b19719c9da972e0d1778575a74c1c7705a654c93374cb911de717c76e8df1c",
+      "prediction_locator": "public-evaluation/d47baf7b7871fc45185753bee4a526ead9194847200612e48c241c2511aab726/predictions/test_public.json",
+      "run_identity": "d47baf7b7871fc45185753bee4a526ead9194847200612e48c241c2511aab726",
+      "run_record_sha256": "6108c254753a1281e822fbcd7f523d5d59dd906381209296a5126279f63165df",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "9105ed6463f88dcae5e6aa108cde220006beb56209d76e0837008baa45b3ea5c"
+    },
+    {
+      "category": "rice",
+      "checkpoint_sha256": "e3bf56fcaa81cb9f696e0a70a8ef866b5f69c8641d5242ae6c68db8528a79278",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329014287,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 40.15995000372641,
+          "p95_ms": 73.21086999290856,
+          "samples": 132,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 54467.91039980599,
+          "throughput_images_per_second": 21.87742262337305
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.6746031746031746,
+          "average_precision": 0.8504035371686685,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 42,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 166.66666666666666,
+          "public_anomaly_recall": 0.4666666666666667,
+          "public_normal_false_review_rate": 0.16666666666666666,
+          "public_review_f1": 0.60431654676259,
+          "public_review_precision": 0.8571428571428571,
+          "schema_version": "1.0.0",
+          "threshold": 0.05993209034204483
+        },
+        "peak_vram_mib": 659.86669921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 15462,
+          "au_pro": 0.6813770301652907,
+          "auroc": 0.7828278695056547,
+          "average_precision": 0.2881382480938731,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 8635290,
+          "pro_fpr_limit": 0.3,
+          "region_count": 132,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "4be93f06786667a27eb50f990c7bafad5fb5aade34adfd63121b4b298f1c3a3b",
+      "prediction_locator": "public-evaluation/eff5d6760d83c14ee03159642896aa61f575a03b8039063fff7e12070f41dfae/predictions/test_public.json",
+      "run_identity": "eff5d6760d83c14ee03159642896aa61f575a03b8039063fff7e12070f41dfae",
+      "run_record_sha256": "287efb772a830ae6afc184134f86208b55ffab33e4c6876edc92d3e8954a462d",
+      "schema_version": "1.0.0",
+      "seed": 2026,
+      "stage": "replication",
+      "threshold_artifact_sha256": "70b63e6872d2041ca60608c4b82105eb6c15173dc1c9c080f096d86f97acd8c0"
+    },
+    {
+      "category": "rice",
+      "checkpoint_sha256": "58d94ba708a2a035845b908bcb93da665b67456e70f0d7d5c1bf263b4147df4b",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "7b03017ec1328a45d6b1b18ae33efcc29542e4175582f351492709af84d6cc10",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "efficient_ad",
+      "metrics": {
+        "artifact_size_bytes": 76688013,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 22.383949999948527,
+          "p95_ms": 46.984754999880344,
+          "samples": 132,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 52731.57430000174,
+          "throughput_images_per_second": 37.43401404253934
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.535978835978836,
+          "average_precision": 0.6968928998844109,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 42,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 761.9047619047618,
+          "public_anomaly_recall": 0.8222222222222222,
+          "public_normal_false_review_rate": 0.7619047619047619,
+          "public_review_f1": 0.7551020408163266,
+          "public_review_precision": 0.6981132075471698,
+          "schema_version": "1.0.0",
+          "threshold": 0.2243126481771469
+        },
+        "peak_vram_mib": 100.109375,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 15462,
+          "au_pro": 0.22335568110379753,
+          "auroc": 0.566052461301241,
+          "average_precision": 0.001977556252775996,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 8635290,
+          "pro_fpr_limit": 0.3,
+          "region_count": 132,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/EfficientAd/small",
+      "prediction_artifact_sha256": "407fd70c18df9d06d3186bc4fd1d7fa9404de3186a923a18fac84b14f53c0ef2",
+      "prediction_locator": "public-evaluation/29623b228ef46307275e9dfb2113a5f301c40039dceab607f2e124aac62a8d1b/predictions/test_public.json",
+      "run_identity": "29623b228ef46307275e9dfb2113a5f301c40039dceab607f2e124aac62a8d1b",
+      "run_record_sha256": "fda14bcb30b295ffc41b0f451453d7ce190f257b30516ab2912155649ae495cb",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "3fb9316309366b775c3544c5da4d138ba2ccc50265b012a51f4a0de559f0aec2"
+    },
+    {
+      "category": "rice",
+      "checkpoint_sha256": "0516762ad786b4ca12340f4435d5e36ad0f33c7af493277b95200d0f6b66ada3",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 887516147,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 77.10984999721404,
+          "p95_ms": 92.94002000533509,
+          "samples": 132,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 56848.87469993555,
+          "throughput_images_per_second": 12.426020229353458
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.6833333333333333,
+          "average_precision": 0.8076768571187604,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 42,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 23.809523809523807,
+          "public_anomaly_recall": 0.07777777777777778,
+          "public_normal_false_review_rate": 0.023809523809523808,
+          "public_review_f1": 0.14285714285714288,
+          "public_review_precision": 0.875,
+          "schema_version": "1.0.0",
+          "threshold": 38.80852127075195
+        },
+        "peak_vram_mib": 1673.58544921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 15462,
+          "au_pro": 0.47381653673652874,
+          "auroc": 0.8499076490425701,
+          "average_precision": 0.11695900024456996,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 8635290,
+          "pro_fpr_limit": 0.3,
+          "region_count": 132,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "ec7156ab1f5d1ee23b5cdc0114b8d6ad8a2ebcbd2daad5cae31fc88c96f11220",
+      "prediction_locator": "public-evaluation/f2c23e81227c2c4def3404043e6059784b76724048ee17a6de499490851ed481/predictions/test_public.json",
+      "run_identity": "f2c23e81227c2c4def3404043e6059784b76724048ee17a6de499490851ed481",
+      "run_record_sha256": "156ff64cfac0d0402535921cf43221504aeb75ee1c54eddc84edb0918b569841",
+      "schema_version": "1.0.0",
+      "seed": 17,
+      "stage": "replication",
+      "threshold_artifact_sha256": "80d983b461b5dec40566bfde5f6db81a4ea87ce5cdb7c0f45c7d1438026e6ff0"
+    },
+    {
+      "category": "rice",
+      "checkpoint_sha256": "81879f14dc5d77b80b627fed83fa613e099ea5749e2ba9916758ba827bcaa205",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 887516147,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 80.45270000025084,
+          "p95_ms": 90.98618000002715,
+          "samples": 132,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 59988.92859999978,
+          "throughput_images_per_second": 12.25102096945968
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.6952380952380953,
+          "average_precision": 0.833903321193041,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 42,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 23.809523809523807,
+          "public_anomaly_recall": 0.07777777777777778,
+          "public_normal_false_review_rate": 0.023809523809523808,
+          "public_review_f1": 0.14285714285714288,
+          "public_review_precision": 0.875,
+          "schema_version": "1.0.0",
+          "threshold": 39.11514663696289
+        },
+        "peak_vram_mib": 1673.58544921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 15462,
+          "au_pro": 0.48696467778684055,
+          "auroc": 0.8457353515550299,
+          "average_precision": 0.11684176472911827,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 8635290,
+          "pro_fpr_limit": 0.3,
+          "region_count": 132,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "58eab27b8938909a4fdf4f96147de42fbd4afa962ffda05097f83101d18e2fdc",
+      "prediction_locator": "public-evaluation/7179e031e1f41849866b581a0cc9261e5e3a598548359db93fc09d33e53ef3b5/predictions/test_public.json",
+      "run_identity": "7179e031e1f41849866b581a0cc9261e5e3a598548359db93fc09d33e53ef3b5",
+      "run_record_sha256": "7e33201d65aab868ee51a1a4a825f87df983cc3a15c1213269648e9d149d97df",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "a76dc939f883414c6214eeb03f955e983ceed8750795725d87f9ff8a6adaf5d7"
+    },
+    {
+      "category": "rice",
+      "checkpoint_sha256": "c03797748793e8ab2f5f14ac8809563f9f379ec5f59d7f134674846c21fbec3a",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 887516147,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 77.65730000392068,
+          "p95_ms": 98.60265999595863,
+          "samples": 132,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 57291.84250003891,
+          "throughput_images_per_second": 12.216996402068478
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.6365079365079366,
+          "average_precision": 0.7966622867790722,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 42,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 23.809523809523807,
+          "public_anomaly_recall": 0.07777777777777778,
+          "public_normal_false_review_rate": 0.023809523809523808,
+          "public_review_f1": 0.14285714285714288,
+          "public_review_precision": 0.875,
+          "schema_version": "1.0.0",
+          "threshold": 38.614933013916016
+        },
+        "peak_vram_mib": 1673.58544921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 15462,
+          "au_pro": 0.48141100116640245,
+          "auroc": 0.8519202246338813,
+          "average_precision": 0.12122681789830408,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 8635290,
+          "pro_fpr_limit": 0.3,
+          "region_count": 132,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "59319add0092ddd5aacd21910fd8f40dba460df4b2a9c3eb22621f601e2ccd9b",
+      "prediction_locator": "public-evaluation/73f5bed939e7a42edff068c8e352a7ee354ef199825a58d9f1a96d9cfece5623/predictions/test_public.json",
+      "run_identity": "73f5bed939e7a42edff068c8e352a7ee354ef199825a58d9f1a96d9cfece5623",
+      "run_record_sha256": "a823f4d2eede14d93b2b3a6ba1f4190a3f0b9b23eb7d71c3c7425559ea0dfa90",
+      "schema_version": "1.0.0",
+      "seed": 2026,
+      "stage": "replication",
+      "threshold_artifact_sha256": "c9cf8915abc6eecf6276bb3eb47f6c4bbd8e236ef668cd832431a2e6e9f309d8"
+    },
+    {
+      "category": "sheet_metal",
+      "checkpoint_sha256": "03e9af6718fe023f7f0f03934b4fb7cc242cddb66dfcb73fe95bc404702df69e",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1328966031,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 41.04205001203809,
+          "p95_ms": 73.68834999215323,
+          "samples": 114,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 30781.16529987892,
+          "throughput_images_per_second": 23.18707859718723
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.7666666666666667,
+          "average_precision": 0.9351022077920333,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 24,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 0.0,
+          "public_anomaly_recall": 0.5,
+          "public_normal_false_review_rate": 0.0,
+          "public_review_f1": 0.6666666666666666,
+          "public_review_precision": 1.0,
+          "schema_version": "1.0.0",
+          "threshold": 0.04792594537138939
+        },
+        "peak_vram_mib": 659.29345703125,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 33102,
+          "au_pro": 0.4970152255029171,
+          "auroc": 0.8497671761384612,
+          "average_precision": 0.2359237533206399,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 7438002,
+          "pro_fpr_limit": 0.3,
+          "region_count": 1596,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "4b31900121f4df3ea2785577c7003a48cc87f55f57587a10d371f073e5a660bf",
+      "prediction_locator": "public-evaluation/07ec8896cd3258251575d9369564567d13fc5a229c1e46b860dcd0b04d82bb7a/predictions/test_public.json",
+      "run_identity": "07ec8896cd3258251575d9369564567d13fc5a229c1e46b860dcd0b04d82bb7a",
+      "run_record_sha256": "77d61a6ca352de581189d0e4ddb44e34d322c363b6d46135f98e740e1ea627e0",
+      "schema_version": "1.0.0",
+      "seed": 17,
+      "stage": "replication",
+      "threshold_artifact_sha256": "1b9e7829886d7acf75be99c9ece690408684b37a5f8acf407767d4b3efb2b84d"
+    },
+    {
+      "category": "sheet_metal",
+      "checkpoint_sha256": "0d411f34b4bbf81695c159d5d3f9ef215a0064d02c765f0ac7c9b10a71a7608a",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1328966031,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 44.67649999992318,
+          "p95_ms": 48.54372999984662,
+          "samples": 114,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 31315.720599998713,
+          "throughput_images_per_second": 22.659750645736946
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.7671296296296297,
+          "average_precision": 0.933514182098981,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 24,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 333.3333333333333,
+          "public_anomaly_recall": 0.6,
+          "public_normal_false_review_rate": 0.3333333333333333,
+          "public_review_f1": 0.7105263157894737,
+          "public_review_precision": 0.8709677419354839,
+          "schema_version": "1.0.0",
+          "threshold": 0.07713340222835541
+        },
+        "peak_vram_mib": 659.29345703125,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 33102,
+          "au_pro": 0.48958305457810075,
+          "auroc": 0.8479303567360548,
+          "average_precision": 0.2501654188838216,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 7438002,
+          "pro_fpr_limit": 0.3,
+          "region_count": 1596,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "adb613036aa19b2d61f801102b81577da3c9ae6a0f524945047e6484301d92a1",
+      "prediction_locator": "public-evaluation/fe366c4598620920e434af345569ffcd30941dd1621379249eb4e8a44d89cac7/predictions/test_public.json",
+      "run_identity": "fe366c4598620920e434af345569ffcd30941dd1621379249eb4e8a44d89cac7",
+      "run_record_sha256": "8e21491d71f7c2db001a45aa22eef0480001e267b1f83c8c5757a85ae9d6681d",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "e121c3665c145cc3ef1021d5c1e17533bd13a87ee60ae1b5986927f9a9407ef6"
+    },
+    {
+      "category": "sheet_metal",
+      "checkpoint_sha256": "8f2a1e068d99cc8a639936c7327295621be1b0ed62f1c889d446e57e9ac15c94",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1328966031,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 38.83829999540467,
+          "p95_ms": 44.62757000728743,
+          "samples": 114,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 27895.800499914913,
+          "throughput_images_per_second": 25.886262754775103
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.7773148148148148,
+          "average_precision": 0.9384519854921032,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 24,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 0.0,
+          "public_anomaly_recall": 0.5111111111111111,
+          "public_normal_false_review_rate": 0.0,
+          "public_review_f1": 0.676470588235294,
+          "public_review_precision": 1.0,
+          "schema_version": "1.0.0",
+          "threshold": 0.050237901508808136
+        },
+        "peak_vram_mib": 659.29345703125,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 33102,
+          "au_pro": 0.49932901225345605,
+          "auroc": 0.8475469559008463,
+          "average_precision": 0.23212424519438418,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 7438002,
+          "pro_fpr_limit": 0.3,
+          "region_count": 1596,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "61342da1af18aab6d3ced86a62daa1623c970c6b80a00546bdbaf728648955cb",
+      "prediction_locator": "public-evaluation/6683a098b5612b26d5a31778eb45a4f831a4d3f53d51ae7aa20222286a22da25/predictions/test_public.json",
+      "run_identity": "6683a098b5612b26d5a31778eb45a4f831a4d3f53d51ae7aa20222286a22da25",
+      "run_record_sha256": "5e940da60889d251db6312270aa360092a325e428c7e9ca04754650b46e30112",
+      "schema_version": "1.0.0",
+      "seed": 2026,
+      "stage": "replication",
+      "threshold_artifact_sha256": "b1ed888171e1e21ff3267c86968c1835593cba925e2792f03c017d8a3389f925"
+    },
+    {
+      "category": "sheet_metal",
+      "checkpoint_sha256": "3d4d11d2c3645a28e220c5fb32f9fd7544c814b4834399344f909aa0ddf21bb7",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "7b03017ec1328a45d6b1b18ae33efcc29542e4175582f351492709af84d6cc10",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "efficient_ad",
+      "metrics": {
+        "artifact_size_bytes": 76673485,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 19.917750000104206,
+          "p95_ms": 31.29648500012081,
+          "samples": 114,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 24112.34089999607,
+          "throughput_images_per_second": 44.23923304375032
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.6773148148148148,
+          "average_precision": 0.8961421329415514,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 24,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 500.0,
+          "public_anomaly_recall": 0.6777777777777778,
+          "public_normal_false_review_rate": 0.5,
+          "public_review_f1": 0.7484662576687118,
+          "public_review_precision": 0.8356164383561644,
+          "schema_version": "1.0.0",
+          "threshold": 0.4661785960197449
+        },
+        "peak_vram_mib": 100.109375,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 33102,
+          "au_pro": 0.13593331982957224,
+          "auroc": 0.8018959746178094,
+          "average_precision": 0.1954496115274223,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 7438002,
+          "pro_fpr_limit": 0.3,
+          "region_count": 1596,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/EfficientAd/small",
+      "prediction_artifact_sha256": "630264e8ade51b71739f26245d10b91121269888385535ca27c8772c0145d950",
+      "prediction_locator": "public-evaluation/7247ff893a9ecca0bce801753d3569923eac0ca737727a6ec43031ef6d1f3bef/predictions/test_public.json",
+      "run_identity": "7247ff893a9ecca0bce801753d3569923eac0ca737727a6ec43031ef6d1f3bef",
+      "run_record_sha256": "601053b6a260c8e663176e5634cb35f24887aaa3f19e06bfb0d26c84e35fb8d3",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "7527dc9f8fe011cf3b3111ffa5e5ec509b284c700541fe5d1f6283e663c3bc9e"
+    },
+    {
+      "category": "sheet_metal",
+      "checkpoint_sha256": "aeac86bdd3f09988bcf3e25a95049988b3a269dc8f9957f6aaed70ac6b61fbd3",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 444601331,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 66.44720000622328,
+          "p95_ms": 72.46247998991748,
+          "samples": 114,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 28321.65460009128,
+          "throughput_images_per_second": 16.68016760433512
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.6893518518518519,
+          "average_precision": 0.9022024835625928,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 24,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 83.33333333333333,
+          "public_anomaly_recall": 0.3111111111111111,
+          "public_normal_false_review_rate": 0.08333333333333333,
+          "public_review_f1": 0.4666666666666667,
+          "public_review_precision": 0.9333333333333333,
+          "schema_version": "1.0.0",
+          "threshold": 41.925167083740234
+        },
+        "peak_vram_mib": 826.908203125,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 33102,
+          "au_pro": 0.39423805345292273,
+          "auroc": 0.868301613530491,
+          "average_precision": 0.14288123135675215,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 7438002,
+          "pro_fpr_limit": 0.3,
+          "region_count": 1596,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "0c2d29c70588a3ca4ee638fcaff4f6ebce4074c5b46b33ead02152521272d6df",
+      "prediction_locator": "public-evaluation/efcc45542944e220ffb2865a4da672bc4e9cbe59feaeaae8d00303bd5cdac6ec/predictions/test_public.json",
+      "run_identity": "efcc45542944e220ffb2865a4da672bc4e9cbe59feaeaae8d00303bd5cdac6ec",
+      "run_record_sha256": "4815c906608bcc5451e97caaf997ecfe67b6363529658ce73b863f8566853f7e",
+      "schema_version": "1.0.0",
+      "seed": 17,
+      "stage": "replication",
+      "threshold_artifact_sha256": "cd768395d98229a60cc50384204a794b8a9d0411c4ff458504f66d5672c1a104"
+    },
+    {
+      "category": "sheet_metal",
+      "checkpoint_sha256": "55e9a52f324a9e1208240680ad5557c4f00e2bf8154ba9118b0a4617799191b6",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 444601331,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 48.726700000088385,
+          "p95_ms": 69.54693499994846,
+          "samples": 114,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 28620.01640000335,
+          "throughput_images_per_second": 17.82068665639133
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.6731481481481482,
+          "average_precision": 0.8955468006101508,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 24,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 41.666666666666664,
+          "public_anomaly_recall": 0.2777777777777778,
+          "public_normal_false_review_rate": 0.041666666666666664,
+          "public_review_f1": 0.43103448275862066,
+          "public_review_precision": 0.9615384615384616,
+          "schema_version": "1.0.0",
+          "threshold": 42.46276092529297
+        },
+        "peak_vram_mib": 826.908203125,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 33102,
+          "au_pro": 0.39412608385460035,
+          "auroc": 0.8685588054529445,
+          "average_precision": 0.1350235222755375,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 7438002,
+          "pro_fpr_limit": 0.3,
+          "region_count": 1596,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "6183c978c9b07f6a4fcd1029544c3e78997264dec0e4faf7ba030f975807131f",
+      "prediction_locator": "public-evaluation/fb22267b01354c9d534cbc322b239a1493c45b86936abb4cf0d917e2482c2ca4/predictions/test_public.json",
+      "run_identity": "fb22267b01354c9d534cbc322b239a1493c45b86936abb4cf0d917e2482c2ca4",
+      "run_record_sha256": "eae30a94f7e172be7ba58cc9d69a851fac1c2e4ff186fc6520566d9c53fe3dd1",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "2feb735c8feec0fe4aaed35a4cee379b8219d93b725a5971d419130fcdc48618"
+    },
+    {
+      "category": "sheet_metal",
+      "checkpoint_sha256": "46a34741c60052d1dcd50419460787254d73e79cec033fa1a90bf8c5be407aef",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 444601331,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 44.80340001464356,
+          "p95_ms": 69.23105500172824,
+          "samples": 114,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 28421.74789987621,
+          "throughput_images_per_second": 19.391584279938098
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.7050925925925926,
+          "average_precision": 0.9013952699775527,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 24,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 0.0,
+          "public_anomaly_recall": 0.2777777777777778,
+          "public_normal_false_review_rate": 0.0,
+          "public_review_f1": 0.4347826086956522,
+          "public_review_precision": 1.0,
+          "schema_version": "1.0.0",
+          "threshold": 42.785404205322266
+        },
+        "peak_vram_mib": 826.908203125,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 33102,
+          "au_pro": 0.3918550183290625,
+          "auroc": 0.868615273990582,
+          "average_precision": 0.1387431842598551,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 7438002,
+          "pro_fpr_limit": 0.3,
+          "region_count": 1596,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "b8dca87943bb21184436c73dd66fbbf6cd18a2e1a9bf54ef852652c468e7cc60",
+      "prediction_locator": "public-evaluation/c9ecd793e16ac8497739846ef003d194851af3896d80d72778d6d9fb60d0d0ae/predictions/test_public.json",
+      "run_identity": "c9ecd793e16ac8497739846ef003d194851af3896d80d72778d6d9fb60d0d0ae",
+      "run_record_sha256": "875d0aba9cd1b93ff86cdc1e9e7c8a3f39d8f0a99448be46cc5a25fbb4bd5bce",
+      "schema_version": "1.0.0",
+      "seed": 2026,
+      "stage": "replication",
+      "threshold_artifact_sha256": "a8a77feeda0634a544908ca7bccc6370cf4e403deabc1962a02e74f96abb043d"
+    },
+    {
+      "category": "vial",
+      "checkpoint_sha256": "163e4a32a3d517a7be89d62fa618797bb36c8b1ba85f3b1da077cc65f8ad3810",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329007823,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 35.37150000920519,
+          "p95_ms": 38.67699001420988,
+          "samples": 140,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 29839.41220017732,
+          "throughput_images_per_second": 28.29243456565304
+        },
+        "image": {
+          "anomaly_count": 105,
+          "auroc": 0.8443537414965986,
+          "average_precision": 0.9409096295724624,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 35,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 171.42857142857142,
+          "public_anomaly_recall": 0.7714285714285715,
+          "public_normal_false_review_rate": 0.17142857142857143,
+          "public_review_f1": 0.8437500000000001,
+          "public_review_precision": 0.9310344827586207,
+          "schema_version": "1.0.0",
+          "threshold": 0.35385414958000183
+        },
+        "peak_vram_mib": 659.29345703125,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 194817,
+          "au_pro": 0.9166116780514494,
+          "auroc": 0.930199203087805,
+          "average_precision": 0.3107712319477556,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 8980223,
+          "pro_fpr_limit": 0.3,
+          "region_count": 155,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "6c8f6971009db9764cae92058ef31a6a26a76bdbe24dd1de0f16cf232ed983bf",
+      "prediction_locator": "public-evaluation/35ef2ef8f1fbb109de2b1ebc16a0debf440a68d5a1822ac13acdcf0e189cd70a/predictions/test_public.json",
+      "run_identity": "35ef2ef8f1fbb109de2b1ebc16a0debf440a68d5a1822ac13acdcf0e189cd70a",
+      "run_record_sha256": "bb3bb11dd452e6d2fdc5c017e41d0f526e260767f931624b08dddf5b7d788fd1",
+      "schema_version": "1.0.0",
+      "seed": 17,
+      "stage": "replication",
+      "threshold_artifact_sha256": "4792a99ec9d7a286280446097bbc9d31b2ce43f807c39db6149ddef7dfc71ad2"
+    },
+    {
+      "category": "vial",
+      "checkpoint_sha256": "6f3edd87ee7f4cc88d8cf8c491e98befc03d8fee34464684a34aee2195beeb52",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329007823,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 32.72930000002816,
+          "p95_ms": 37.46023999992758,
+          "samples": 140,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 27785.91430000006,
+          "throughput_images_per_second": 31.708126514247926
+        },
+        "image": {
+          "anomaly_count": 105,
+          "auroc": 0.8095238095238095,
+          "average_precision": 0.9287279959218616,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 35,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 342.85714285714283,
+          "public_anomaly_recall": 0.8,
+          "public_normal_false_review_rate": 0.34285714285714286,
+          "public_review_f1": 0.8358208955223881,
+          "public_review_precision": 0.875,
+          "schema_version": "1.0.0",
+          "threshold": 0.057245735079050064
+        },
+        "peak_vram_mib": 659.29345703125,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 194817,
+          "au_pro": 0.9134432979058684,
+          "auroc": 0.9287949051677222,
+          "average_precision": 0.29213873797068424,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 8980223,
+          "pro_fpr_limit": 0.3,
+          "region_count": 155,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "4b9350f35c4734fe82608ce1b8214f58aaf01ce7a7b1e3d20d7bd0511178155a",
+      "prediction_locator": "public-evaluation/792221b53b1231f5ce22c57c1b565c9efcb12a8e91f04eb85273b404ba05f69e/predictions/test_public.json",
+      "run_identity": "792221b53b1231f5ce22c57c1b565c9efcb12a8e91f04eb85273b404ba05f69e",
+      "run_record_sha256": "e79e53109d351cde22d9e45994c1555475412f24bd325bab5d2f468de5b5f3e8",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "5f37fe131271764b80c564aadeef4bd41f488b17432bb719255af0d6dc81141f"
+    },
+    {
+      "category": "vial",
+      "checkpoint_sha256": "8349ee761ac2333ece6b75b8fbb228a2404f4b540241cfdbd173dfa186f84061",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329007823,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 33.80030000698753,
+          "p95_ms": 35.96621499455068,
+          "samples": 140,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 24601.771199755603,
+          "throughput_images_per_second": 29.73179120889767
+        },
+        "image": {
+          "anomaly_count": 105,
+          "auroc": 0.8182312925170068,
+          "average_precision": 0.9294446685710662,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 35,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 342.85714285714283,
+          "public_anomaly_recall": 0.8666666666666667,
+          "public_normal_false_review_rate": 0.34285714285714286,
+          "public_review_f1": 0.8750000000000001,
+          "public_review_precision": 0.883495145631068,
+          "schema_version": "1.0.0",
+          "threshold": 0.055825550109148026
+        },
+        "peak_vram_mib": 659.29345703125,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 194817,
+          "au_pro": 0.9167950662131451,
+          "auroc": 0.9296511419781182,
+          "average_precision": 0.2892014028459921,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 8980223,
+          "pro_fpr_limit": 0.3,
+          "region_count": 155,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "8e6c43515a33549fd4c97b98fc3e6d1420b9e0284884aa0e1181a6dc54113286",
+      "prediction_locator": "public-evaluation/168e3d5e61e5219baa2f9371e108f3d519dedc27a0bd54b620998c49b809b291/predictions/test_public.json",
+      "run_identity": "168e3d5e61e5219baa2f9371e108f3d519dedc27a0bd54b620998c49b809b291",
+      "run_record_sha256": "57ee8acf8a2b130a5dcc88357a932d6aa9c8ed33db253f15f6794e07aba7c843",
+      "schema_version": "1.0.0",
+      "seed": 2026,
+      "stage": "replication",
+      "threshold_artifact_sha256": "0afa01b31d0eb00e9d2cb1fe791222f0a174bff84b0c4335fdf010ab8676842e"
+    },
+    {
+      "category": "vial",
+      "checkpoint_sha256": "de21e923fbd6cec4ac7bb84e9bb4b1bbf928e0ea3b943a141e834f6af2fe9d1a",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "7b03017ec1328a45d6b1b18ae33efcc29542e4175582f351492709af84d6cc10",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "efficient_ad",
+      "metrics": {
+        "artifact_size_bytes": 76686093,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 18.699850000075458,
+          "p95_ms": 26.762165000263842,
+          "samples": 140,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 19972.784900000534,
+          "throughput_images_per_second": 50.94717902013403
+        },
+        "image": {
+          "anomaly_count": 105,
+          "auroc": 0.8816326530612244,
+          "average_precision": 0.9519426121723354,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 35,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 57.14285714285714,
+          "public_anomaly_recall": 0.38095238095238093,
+          "public_normal_false_review_rate": 0.05714285714285714,
+          "public_review_f1": 0.5442176870748299,
+          "public_review_precision": 0.9523809523809523,
+          "schema_version": "1.0.0",
+          "threshold": 0.7011430263519287
+        },
+        "peak_vram_mib": 100.85498046875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 194817,
+          "au_pro": 0.8884030912300461,
+          "auroc": 0.8956981386823752,
+          "average_precision": 0.3584944195695464,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 8980223,
+          "pro_fpr_limit": 0.3,
+          "region_count": 155,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/EfficientAd/small",
+      "prediction_artifact_sha256": "601ebd382d0f3806dd1048b888768762623ad9ea078595597a3b718032553ad6",
+      "prediction_locator": "public-evaluation/647f89379a8c992a385f91bc97534199c7aa79c1f59400f3e4e021e4ccef0245/predictions/test_public.json",
+      "run_identity": "647f89379a8c992a385f91bc97534199c7aa79c1f59400f3e4e021e4ccef0245",
+      "run_record_sha256": "5f3289c343516864de72f82f28fda34f281865f3f7d941093f187d9e1be46cfa",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "0b0837fb14ed3f9893f8af0cf34b2b5d1c3e699aadc5c45f1a7bc42414c11842"
+    },
+    {
+      "category": "vial",
+      "checkpoint_sha256": "7a94953f5f1d6fa940cbf9ca97ba14d2a7ad8c4d2e7ca32f02fbe86ee36c95a6",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 832152563,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 69.5673500013072,
+          "p95_ms": 74.25438499049051,
+          "samples": 140,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 28919.505800207844,
+          "throughput_images_per_second": 14.060194787415922
+        },
+        "image": {
+          "anomaly_count": 105,
+          "auroc": 0.8710204081632653,
+          "average_precision": 0.9563605891929863,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 35,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 0.0,
+          "public_anomaly_recall": 0.44761904761904764,
+          "public_normal_false_review_rate": 0.0,
+          "public_review_f1": 0.618421052631579,
+          "public_review_precision": 1.0,
+          "schema_version": "1.0.0",
+          "threshold": 56.08207702636719
+        },
+        "peak_vram_mib": 1566.34423828125,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 194817,
+          "au_pro": 0.9240824348474691,
+          "auroc": 0.9418160264053995,
+          "average_precision": 0.34173761751180515,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 8980223,
+          "pro_fpr_limit": 0.3,
+          "region_count": 155,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "bf4ce2db1d6795ea5338aae59efc9cfa9431075e3f130e6f6afa3aa0057c138e",
+      "prediction_locator": "public-evaluation/41be15f350a3cd6e198810074bc7bf56e69e14550cab0b15d81f3067204af948/predictions/test_public.json",
+      "run_identity": "41be15f350a3cd6e198810074bc7bf56e69e14550cab0b15d81f3067204af948",
+      "run_record_sha256": "51ba91222931801acd943b17cf8033b31cc625fa776c123fcd2d3d027f5c1581",
+      "schema_version": "1.0.0",
+      "seed": 17,
+      "stage": "replication",
+      "threshold_artifact_sha256": "569871dc109b14590cb341a4477984f7a0cced6b7b85355accce743f89e979da"
+    },
+    {
+      "category": "vial",
+      "checkpoint_sha256": "fe989729026b399c3a050aad8a67fa5d23046f50dd170f5a25494057f73b8e5b",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 832152563,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 72.20200000006116,
+          "p95_ms": 74.1193149997116,
+          "samples": 140,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 28915.84920000059,
+          "throughput_images_per_second": 13.788185209404201
+        },
+        "image": {
+          "anomaly_count": 105,
+          "auroc": 0.8696598639455783,
+          "average_precision": 0.9564231023121232,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 35,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 0.0,
+          "public_anomaly_recall": 0.41904761904761906,
+          "public_normal_false_review_rate": 0.0,
+          "public_review_f1": 0.5906040268456376,
+          "public_review_precision": 1.0,
+          "schema_version": "1.0.0",
+          "threshold": 55.669349670410156
+        },
+        "peak_vram_mib": 1566.34423828125,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 194817,
+          "au_pro": 0.9245036544255336,
+          "auroc": 0.9416640982132471,
+          "average_precision": 0.3405318980816928,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 8980223,
+          "pro_fpr_limit": 0.3,
+          "region_count": 155,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "04e89e1044b5cae1f3b134400b92a4eb8ad38208ffa3f18cbd73395c3ccae4d0",
+      "prediction_locator": "public-evaluation/8752351992b83b368586fc84dca669a2679dfa7d6f5b1df3b33190f342222a8d/predictions/test_public.json",
+      "run_identity": "8752351992b83b368586fc84dca669a2679dfa7d6f5b1df3b33190f342222a8d",
+      "run_record_sha256": "a85ce9372d9aca28d96f9d5f9cd00ccc52fc420ae26362493c446d7a971133dc",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "0dc63bcb74c73cd1f756df93e14defa036b062b02f7c04756631812f2f534c4b"
+    },
+    {
+      "category": "vial",
+      "checkpoint_sha256": "4af61119484870232ce1e5979760f2ea1715f34b13674368ea3c964d04f4428c",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 832152563,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 69.05905000166968,
+          "p95_ms": 73.49890501936898,
+          "samples": 140,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 26996.681699849432,
+          "throughput_images_per_second": 14.371704741143603
+        },
+        "image": {
+          "anomaly_count": 105,
+          "auroc": 0.8655782312925169,
+          "average_precision": 0.9547561962533808,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 35,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 0.0,
+          "public_anomaly_recall": 0.41904761904761906,
+          "public_normal_false_review_rate": 0.0,
+          "public_review_f1": 0.5906040268456376,
+          "public_review_precision": 1.0,
+          "schema_version": "1.0.0",
+          "threshold": 56.039695739746094
+        },
+        "peak_vram_mib": 1566.34423828125,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 194817,
+          "au_pro": 0.9239166123991293,
+          "auroc": 0.9414541561311518,
+          "average_precision": 0.3410188951961249,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 8980223,
+          "pro_fpr_limit": 0.3,
+          "region_count": 155,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "4386e1c9321bcfba17931a727ae4518e9f5550b9012cc65baa35f089a41d34cd",
+      "prediction_locator": "public-evaluation/453d50f7a0df250776a0cab3d8b096aa194b49a57e88425ca87e46bf5521b542/predictions/test_public.json",
+      "run_identity": "453d50f7a0df250776a0cab3d8b096aa194b49a57e88425ca87e46bf5521b542",
+      "run_record_sha256": "2df875e361fe753673f2ac8cd093b4f314b1036ff58a3a602581cdaea81a70ad",
+      "schema_version": "1.0.0",
+      "seed": 2026,
+      "stage": "replication",
+      "threshold_artifact_sha256": "a3a57f57f98d026c8e4a80dbbee4c158c6c4956be3138adeb9fd26719fb157cf"
+    },
+    {
+      "category": "wallplugs",
+      "checkpoint_sha256": "6938f98f117971c80ba26096e754f6d42619384dc76f5498b9ddfc6dae89c264",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329008847,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 39.032149987178855,
+          "p95_ms": 74.8011099974974,
+          "samples": 150,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 42621.790100150974,
+          "throughput_images_per_second": 22.792399245989984
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.4494444444444444,
+          "average_precision": 0.561611592802171,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 60,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 600.0,
+          "public_anomaly_recall": 0.6,
+          "public_normal_false_review_rate": 0.6,
+          "public_review_f1": 0.6,
+          "public_review_precision": 0.6,
+          "schema_version": "1.0.0",
+          "threshold": 0.04278906434774399
+        },
+        "peak_vram_mib": 659.86669921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 15918,
+          "au_pro": 0.323821909472036,
+          "auroc": 0.7347772382226897,
+          "average_precision": 0.00470606726494889,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 9814482,
+          "pro_fpr_limit": 0.3,
+          "region_count": 90,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "9890d0b27e2aff01366022d64f264f6682d4ee5d8710863857f77336a4575a95",
+      "prediction_locator": "public-evaluation/bd52d8aae11e6b34ebca612e9de4cfd888c6fc82b737ceb79ebd98fdc6d2cc42/predictions/test_public.json",
+      "run_identity": "bd52d8aae11e6b34ebca612e9de4cfd888c6fc82b737ceb79ebd98fdc6d2cc42",
+      "run_record_sha256": "03e709ad43b6255717e26b14a470aff2093087ab5a67dc2c038539e6c01ad26d",
+      "schema_version": "1.0.0",
+      "seed": 17,
+      "stage": "replication",
+      "threshold_artifact_sha256": "f002b03bdd7d3c9549ea4bb454e1105859b65f9e26404984b1a54898a1dd10ca"
+    },
+    {
+      "category": "wallplugs",
+      "checkpoint_sha256": "25d147b70116015747c3f132750cb21270e04caf3dd6ced3959ff22577752093",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329008847,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 49.738950000119075,
+          "p95_ms": 54.42873999982111,
+          "samples": 150,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 47766.66809999778,
+          "throughput_images_per_second": 20.283683541264974
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.4422222222222222,
+          "average_precision": 0.5590147638668407,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 60,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 600.0,
+          "public_anomaly_recall": 0.5888888888888889,
+          "public_normal_false_review_rate": 0.6,
+          "public_review_f1": 0.5921787709497207,
+          "public_review_precision": 0.5955056179775281,
+          "schema_version": "1.0.0",
+          "threshold": 0.04242173582315445
+        },
+        "peak_vram_mib": 659.86669921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 15918,
+          "au_pro": 0.32404968995481365,
+          "auroc": 0.7387061252250982,
+          "average_precision": 0.004856331717881855,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 9814482,
+          "pro_fpr_limit": 0.3,
+          "region_count": 90,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "499fbbc2fb709e1820cec7db5fb076d74732cb4f30225c006839b7bc6c7fd9d2",
+      "prediction_locator": "public-evaluation/73f313cbf83ebf08a024f59720323763c63396fcea8710f27ed272c62ea8712a/predictions/test_public.json",
+      "run_identity": "73f313cbf83ebf08a024f59720323763c63396fcea8710f27ed272c62ea8712a",
+      "run_record_sha256": "8fdc127fdabde998f1d361456b1c9eba1d6af6bb529e5faf729f40d741ddf3d7",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "2e898e8871b674f43d8258102e3eae6f3eb27be5585fe9a2029102be3a16312f"
+    },
+    {
+      "category": "wallplugs",
+      "checkpoint_sha256": "fec257dcb7eae81644c84a59623a5a1a8509012608afac90a174e1a15dbd27fa",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329008847,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 39.406049996614456,
+          "p95_ms": 69.65795498836084,
+          "samples": 150,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 38100.70400001132,
+          "throughput_images_per_second": 23.88638032352151
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.4461111111111112,
+          "average_precision": 0.5569368341748653,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 60,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 600.0,
+          "public_anomaly_recall": 0.5444444444444444,
+          "public_normal_false_review_rate": 0.6,
+          "public_review_f1": 0.5599999999999999,
+          "public_review_precision": 0.5764705882352941,
+          "schema_version": "1.0.0",
+          "threshold": 0.04514184594154358
+        },
+        "peak_vram_mib": 659.86669921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 15918,
+          "au_pro": 0.329107743918755,
+          "auroc": 0.7435998510349373,
+          "average_precision": 0.005033283735617489,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 9814482,
+          "pro_fpr_limit": 0.3,
+          "region_count": 90,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "ece7c6419880920e1311eba5d1f916e720217743e22201b47165427e72e4bf41",
+      "prediction_locator": "public-evaluation/f3053000fbce78ddb48c0f0b942f3d6de250c09c13ca72c09c6de0848557b4c0/predictions/test_public.json",
+      "run_identity": "f3053000fbce78ddb48c0f0b942f3d6de250c09c13ca72c09c6de0848557b4c0",
+      "run_record_sha256": "c9325b1b090af97ee4bacaa1c52b13928dbb36e5dd11bf90ee4a4432cbe96521",
+      "schema_version": "1.0.0",
+      "seed": 2026,
+      "stage": "replication",
+      "threshold_artifact_sha256": "195b2ffb7656c66517069bb93ef51c5c220ba39f7a07575bb92e71e4bd16c220"
+    },
+    {
+      "category": "wallplugs",
+      "checkpoint_sha256": "dd21ec0865e5c27afae867a40da15f65c0cd7fa58038aa6268043fc3e547091d",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "7b03017ec1328a45d6b1b18ae33efcc29542e4175582f351492709af84d6cc10",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "efficient_ad",
+      "metrics": {
+        "artifact_size_bytes": 76687757,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 25.88900000000649,
+          "p95_ms": 45.737939999958144,
+          "samples": 150,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 37651.22909999854,
+          "throughput_images_per_second": 35.0221202045883
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.5446296296296296,
+          "average_precision": 0.6633246374855861,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 60,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 483.3333333333333,
+          "public_anomaly_recall": 0.5333333333333333,
+          "public_normal_false_review_rate": 0.48333333333333334,
+          "public_review_f1": 0.5748502994011976,
+          "public_review_precision": 0.6233766233766234,
+          "schema_version": "1.0.0",
+          "threshold": 0.42790091037750244
+        },
+        "peak_vram_mib": 100.109375,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 15918,
+          "au_pro": 0.21225930591454345,
+          "auroc": 0.7102452534745116,
+          "average_precision": 0.0036133198109268507,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 9814482,
+          "pro_fpr_limit": 0.3,
+          "region_count": 90,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/EfficientAd/small",
+      "prediction_artifact_sha256": "69b75cb360c7eb97ba8fb45e59f1d5f3e7ee316dd24b78a6db4b6c74558a690e",
+      "prediction_locator": "public-evaluation/996cf010750e7d0296f02256f2b0bca5cd07097886084f94e1f9a5a8fc590672/predictions/test_public.json",
+      "run_identity": "996cf010750e7d0296f02256f2b0bca5cd07097886084f94e1f9a5a8fc590672",
+      "run_record_sha256": "a82aafbd447c73e181e3640b4a87bc2e92bc2cabc1680a795cc3d43aa7833cf6",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "e94b2a26bb68e53760a55e16699eea6152756fee09147369a4e8767a98dffb78"
+    },
+    {
+      "category": "wallplugs",
+      "checkpoint_sha256": "e2441e0c877a849af2c37fc7ee320efa6a80966c01b47e794f5e6d8a6e07d1e8",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 837184499,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 75.0969999935478,
+          "p95_ms": 79.80080000270391,
+          "samples": 150,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 41248.88709987863,
+          "throughput_images_per_second": 13.280052581787906
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.5925925925925926,
+          "average_precision": 0.6920297732122338,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 60,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 100.0,
+          "public_anomaly_recall": 0.25555555555555554,
+          "public_normal_false_review_rate": 0.1,
+          "public_review_f1": 0.38655462184873945,
+          "public_review_precision": 0.7931034482758621,
+          "schema_version": "1.0.0",
+          "threshold": 52.07172775268555
+        },
+        "peak_vram_mib": 1577.55419921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 15918,
+          "au_pro": 0.52920783735088,
+          "auroc": 0.9200949722119268,
+          "average_precision": 0.1323359578885655,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 9814482,
+          "pro_fpr_limit": 0.3,
+          "region_count": 90,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "6d7d25a1ac1e736c13da8335b275866d29cacdde617d0d639edf8f3d2f3ff6b5",
+      "prediction_locator": "public-evaluation/437a3d6f63e9ce551bc6710738cbaab22121f5b3bc592dace57dacfcec636d97/predictions/test_public.json",
+      "run_identity": "437a3d6f63e9ce551bc6710738cbaab22121f5b3bc592dace57dacfcec636d97",
+      "run_record_sha256": "548120996e58d1feb7a1249cad35cb97ee4ec1a9f26c974c82bb89e5dc45fcd7",
+      "schema_version": "1.0.0",
+      "seed": 17,
+      "stage": "replication",
+      "threshold_artifact_sha256": "00e7dd93b6141d42d69c54d23c41cb68f2257a499dede04c386886616a6bd81d"
+    },
+    {
+      "category": "wallplugs",
+      "checkpoint_sha256": "7f68175c9ef9ef6962f190428ad84fc90ddc1004e34531d1bec5f308416ad7e7",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 837184499,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 77.6848999998947,
+          "p95_ms": 82.25276000007398,
+          "samples": 150,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 45882.21130000602,
+          "throughput_images_per_second": 12.834631353799372
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.5725925925925927,
+          "average_precision": 0.684827523450878,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 60,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 83.33333333333333,
+          "public_anomaly_recall": 0.25555555555555554,
+          "public_normal_false_review_rate": 0.08333333333333333,
+          "public_review_f1": 0.38983050847457623,
+          "public_review_precision": 0.8214285714285714,
+          "schema_version": "1.0.0",
+          "threshold": 52.170013427734375
+        },
+        "peak_vram_mib": 1577.55419921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 15918,
+          "au_pro": 0.5285957173343723,
+          "auroc": 0.9144734980393687,
+          "average_precision": 0.13467286351704513,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 9814482,
+          "pro_fpr_limit": 0.3,
+          "region_count": 90,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "a2ec3ad6c40afe3343b367ab4a613238842686293c1629fcdb171fe07effb5bf",
+      "prediction_locator": "public-evaluation/6ffd7c77dc95549ae174f324c19684a44a90808029672390c07cc72df9874972/predictions/test_public.json",
+      "run_identity": "6ffd7c77dc95549ae174f324c19684a44a90808029672390c07cc72df9874972",
+      "run_record_sha256": "ac534a9fcd7cd640db074a937a6b26ce97e12c5e585fd8a94aa2f696fe672378",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "2b0249f23181eb1c1382b92fdf2086285c2763db14ffcf11f25aa08e96bd7edf"
+    },
+    {
+      "category": "wallplugs",
+      "checkpoint_sha256": "1815be172de7d0163c6f38977342eed26c03c5ad59ca54c69b2bbbd213a0e4e9",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 837184499,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 75.61890000943094,
+          "p95_ms": 80.65630500204861,
+          "samples": 150,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 39867.47559980722,
+          "throughput_images_per_second": 13.106251163458376
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.5724074074074075,
+          "average_precision": 0.6776267879840896,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 60,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 116.66666666666667,
+          "public_anomaly_recall": 0.25555555555555554,
+          "public_normal_false_review_rate": 0.11666666666666667,
+          "public_review_f1": 0.38333333333333336,
+          "public_review_precision": 0.7666666666666667,
+          "schema_version": "1.0.0",
+          "threshold": 52.27475357055664
+        },
+        "peak_vram_mib": 1577.55419921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 15918,
+          "au_pro": 0.538486456548315,
+          "auroc": 0.917088264299219,
+          "average_precision": 0.137492030235473,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 9814482,
+          "pro_fpr_limit": 0.3,
+          "region_count": 90,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "362e75eeada9a0fbea63a7ff397098a2211da9e7600d03cade104198cdaefea6",
+      "prediction_locator": "public-evaluation/e2517d5a507bf2a0da8e99af47a485fd88c0d900d4d8773966750afad8d7009f/predictions/test_public.json",
+      "run_identity": "e2517d5a507bf2a0da8e99af47a485fd88c0d900d4d8773966750afad8d7009f",
+      "run_record_sha256": "9d802a205edd5bdd103eadae1576e8f036be13d2d42d6d12852fe1949b9fafbc",
+      "schema_version": "1.0.0",
+      "seed": 2026,
+      "stage": "replication",
+      "threshold_artifact_sha256": "48c9d656e104aed3c867732a84e091f082e9f559134149481679d81659989218"
+    },
+    {
+      "category": "walnuts",
+      "checkpoint_sha256": "2a579515d35087bf8da3a3f5fc7918fa5272505a34859c3b8ffa85198539b7c1",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329045839,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 40.79774999991059,
+          "p95_ms": 75.60940499679418,
+          "samples": 150,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 70346.59400006058,
+          "throughput_images_per_second": 20.93588018243717
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.7205555555555556,
+          "average_precision": 0.7025533516539046,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 60,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 333.3333333333333,
+          "public_anomaly_recall": 0.9555555555555556,
+          "public_normal_false_review_rate": 0.3333333333333333,
+          "public_review_f1": 0.8775510204081634,
+          "public_review_precision": 0.8113207547169812,
+          "schema_version": "1.0.0",
+          "threshold": 0.037912074476480484
+        },
+        "peak_vram_mib": 659.86669921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 107964,
+          "au_pro": 0.6324052769153262,
+          "auroc": 0.8959337507480292,
+          "average_precision": 0.2448500468475417,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 9722436,
+          "pro_fpr_limit": 0.3,
+          "region_count": 642,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "5274bfc58bd6334cbc1054e0610fffd38c92be1e77b8ebe1f6c5a2f98f19840b",
+      "prediction_locator": "public-evaluation/909d5cd9839dfdb7c43c852db721e4e361fb08f8aaeeb91f66f83c3c6aeb0a62/predictions/test_public.json",
+      "run_identity": "909d5cd9839dfdb7c43c852db721e4e361fb08f8aaeeb91f66f83c3c6aeb0a62",
+      "run_record_sha256": "c5c8a2ba88039c786942580ef537d7d289092c390362d90fd898fbe4e12b8dd0",
+      "schema_version": "1.0.0",
+      "seed": 17,
+      "stage": "replication",
+      "threshold_artifact_sha256": "8398d48cf7f5b41f8d6e7558182c513809bbba5099252ab9d04205167f70fd88"
+    },
+    {
+      "category": "walnuts",
+      "checkpoint_sha256": "2df4c2cdfca4825673c8dba8760424a6afef74203f6a679311fc7842b8b0ecc7",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329045839,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 45.745149999902424,
+          "p95_ms": 76.288475000092,
+          "samples": 150,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 81189.48259999978,
+          "throughput_images_per_second": 20.57595133013869
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.7270370370370371,
+          "average_precision": 0.7096377291688833,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 60,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 333.3333333333333,
+          "public_anomaly_recall": 0.9333333333333333,
+          "public_normal_false_review_rate": 0.3333333333333333,
+          "public_review_f1": 0.8659793814432989,
+          "public_review_precision": 0.8076923076923077,
+          "schema_version": "1.0.0",
+          "threshold": 0.038510777056217194
+        },
+        "peak_vram_mib": 659.86669921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 107964,
+          "au_pro": 0.6207557112922117,
+          "auroc": 0.8965300073923539,
+          "average_precision": 0.25613327779162026,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 9722436,
+          "pro_fpr_limit": 0.3,
+          "region_count": 642,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "e7da4bbcde0e8255c2fff2bb48012831288239bc743457f5401e96a409a978eb",
+      "prediction_locator": "public-evaluation/8355aa5e398e1b9137b8615ec3cec99a09a2856b08b2f9d4c895429d9459aefb/predictions/test_public.json",
+      "run_identity": "8355aa5e398e1b9137b8615ec3cec99a09a2856b08b2f9d4c895429d9459aefb",
+      "run_record_sha256": "676827bdef9c495651af730ed691aa3ed14c4f7f3878a908ef9b1601378ef91e",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "56ab09a782a6c83730c48fd116a27a30427a05e217c124cf1d631c44312f19c1"
+    },
+    {
+      "category": "walnuts",
+      "checkpoint_sha256": "94c9bbecfd82003c342d4a989e8e2961e05b760cee754c62ebaf1ef4e46463b6",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "04da55509dcc89524451e6fc10c0697dc9ab08d8155f4cef17a1ba4b4cef0e43",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "dinomaly",
+      "metrics": {
+        "artifact_size_bytes": 1329045839,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 40.234400003100745,
+          "p95_ms": 74.61354000697611,
+          "samples": 150,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 61958.5910999449,
+          "throughput_images_per_second": 20.86736888129008
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.7166666666666667,
+          "average_precision": 0.6999525799469575,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 60,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 350.0,
+          "public_anomaly_recall": 0.9333333333333333,
+          "public_normal_false_review_rate": 0.35,
+          "public_review_f1": 0.8615384615384616,
+          "public_review_precision": 0.8,
+          "schema_version": "1.0.0",
+          "threshold": 0.03793928399682045
+        },
+        "peak_vram_mib": 659.86669921875,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 107964,
+          "au_pro": 0.6169595302423515,
+          "auroc": 0.8976257719214079,
+          "average_precision": 0.24683241326044053,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 9722436,
+          "pro_fpr_limit": 0.3,
+          "region_count": 642,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Dinomaly/dinov2reg_vit_base_14",
+      "prediction_artifact_sha256": "d5475bf87b39ece1190a9e53fd14d8bad88e926d728064c4a20f34bbba7f4138",
+      "prediction_locator": "public-evaluation/a46a2f63ef7bcefdc6f702d67ea76bfcefabbd4776e09d998324bf27f9b09ed6/predictions/test_public.json",
+      "run_identity": "a46a2f63ef7bcefdc6f702d67ea76bfcefabbd4776e09d998324bf27f9b09ed6",
+      "run_record_sha256": "f2e5f176539880a02bfb75e1c1784e873f9018ee179fd8478d238ba74c4b5fb2",
+      "schema_version": "1.0.0",
+      "seed": 2026,
+      "stage": "replication",
+      "threshold_artifact_sha256": "5a76a46dcf679215aaf24e6ca115efa8557df3408552b5cf7b7c42fa70653763"
+    },
+    {
+      "category": "walnuts",
+      "checkpoint_sha256": "994414c2d86d264a857f51778c14da8f61df1b0b5c5613b6c240906069ea16d2",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "7b03017ec1328a45d6b1b18ae33efcc29542e4175582f351492709af84d6cc10",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "efficient_ad",
+      "metrics": {
+        "artifact_size_bytes": 76699853,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 29.25644999982069,
+          "p95_ms": 62.57006500002262,
+          "samples": 150,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 66380.93470000332,
+          "throughput_images_per_second": 30.200798464835582
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.62,
+          "average_precision": 0.6852261259473165,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 60,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 233.33333333333334,
+          "public_anomaly_recall": 0.34444444444444444,
+          "public_normal_false_review_rate": 0.23333333333333334,
+          "public_review_f1": 0.4592592592592593,
+          "public_review_precision": 0.6888888888888889,
+          "schema_version": "1.0.0",
+          "threshold": 1.8948653936386108
+        },
+        "peak_vram_mib": 100.109375,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 107964,
+          "au_pro": 0.35944189275484756,
+          "auroc": 0.7179895789475054,
+          "average_precision": 0.02038905044435981,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 9722436,
+          "pro_fpr_limit": 0.3,
+          "region_count": 642,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/EfficientAd/small",
+      "prediction_artifact_sha256": "de29da0d160516e20dae80c446f590a1dc2265208035d659fd7aed17841da6b9",
+      "prediction_locator": "public-evaluation/e6e1231bef09ac7ed3059e71f31c42f2747d9f68540eac32af6ab23d190b1a41/predictions/test_public.json",
+      "run_identity": "e6e1231bef09ac7ed3059e71f31c42f2747d9f68540eac32af6ab23d190b1a41",
+      "run_record_sha256": "26bff22642c55742e2b2d39f6b7a457fc28b83c3b0a3f686722ddd4c32a7f076",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "c2c2026356ce14a829c4e707406085d85d3254fdf2f20d6f6155d8325e231c2a"
+    },
+    {
+      "category": "walnuts",
+      "checkpoint_sha256": "b9e38a96de0756859325a0fbedc4480387891eacb4cb0ca2da5dc449db6b867c",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 1186993139,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 99.75569999369327,
+          "p95_ms": 119.25289500359212,
+          "samples": 150,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 63664.95700008818,
+          "throughput_images_per_second": 9.682319170596664
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.8448148148148148,
+          "average_precision": 0.9049579517446968,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 60,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 0.0,
+          "public_anomaly_recall": 0.4888888888888889,
+          "public_normal_false_review_rate": 0.0,
+          "public_review_f1": 0.6567164179104478,
+          "public_review_precision": 1.0,
+          "schema_version": "1.0.0",
+          "threshold": 49.95383834838867
+        },
+        "peak_vram_mib": 2243.369140625,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 107964,
+          "au_pro": 0.7204886095738102,
+          "auroc": 0.9616196810526642,
+          "average_precision": 0.519520633458397,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 9722436,
+          "pro_fpr_limit": 0.3,
+          "region_count": 642,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "204dd37eaad9fb4a3ad734b17a07dcb571213529fcc81d352dc78bf008817ce4",
+      "prediction_locator": "public-evaluation/ac6584bb60bedf8a14ede6bc2c63ab0ed31ea150c5e14157465bafd6c9519975/predictions/test_public.json",
+      "run_identity": "ac6584bb60bedf8a14ede6bc2c63ab0ed31ea150c5e14157465bafd6c9519975",
+      "run_record_sha256": "0bda9c409f923f8d6a0c05932e4ecb3ae01b2383e3fd84ff2fab385492bba85b",
+      "schema_version": "1.0.0",
+      "seed": 17,
+      "stage": "replication",
+      "threshold_artifact_sha256": "978a58029f24bfd4e71fb8861c0aab4bc85bcfd4dc16de0379c16ad7b22a62b9"
+    },
+    {
+      "category": "walnuts",
+      "checkpoint_sha256": "d2217ee6b0f62ea181734ba3c3aa293e025b99ecca7cdded60979bf3c6a04d37",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 1186993139,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 108.9489500000127,
+          "p95_ms": 113.8983000000735,
+          "samples": 150,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 67797.84239999935,
+          "throughput_images_per_second": 9.24334621112162
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.8381481481481482,
+          "average_precision": 0.9044791212944804,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 60,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 0.0,
+          "public_anomaly_recall": 0.5,
+          "public_normal_false_review_rate": 0.0,
+          "public_review_f1": 0.6666666666666666,
+          "public_review_precision": 1.0,
+          "schema_version": "1.0.0",
+          "threshold": 49.95383834838867
+        },
+        "peak_vram_mib": 2243.369140625,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 107964,
+          "au_pro": 0.7136191005245376,
+          "auroc": 0.9623073204206194,
+          "average_precision": 0.5181425467640618,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 9722436,
+          "pro_fpr_limit": 0.3,
+          "region_count": 642,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "5c8512e014ec3d9f785be03fb8bad15d3331f480c1a278573475352388184ca0",
+      "prediction_locator": "public-evaluation/459516eb474914946f90dd5a49a37aa9eba96d056e127ac4e029620fd63814d5/predictions/test_public.json",
+      "run_identity": "459516eb474914946f90dd5a49a37aa9eba96d056e127ac4e029620fd63814d5",
+      "run_record_sha256": "8a3c0957c3dfefd50e132383021e7def17cf1c7211bdfa638e553d5bdc56d3e0",
+      "schema_version": "1.0.0",
+      "seed": 42,
+      "stage": "screening",
+      "threshold_artifact_sha256": "978a58029f24bfd4e71fb8861c0aab4bc85bcfd4dc16de0379c16ad7b22a62b9"
+    },
+    {
+      "category": "walnuts",
+      "checkpoint_sha256": "56e3cbc731241dc2f762311f56bb6ef5519030ff01c9adccc42fd42d613785cb",
+      "code_revision": "04c54b81aac20fb7ea3f509e4ee29fb1a717125d",
+      "config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+      "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+      "environment_lock_sha256": "49fdf43b70cd7dd82bb64b791a86c1533c5926a8ad801b3688588dcc1cb2a158",
+      "family": "patchcore",
+      "metrics": {
+        "artifact_size_bytes": 1186993139,
+        "evaluation_size": [
+          256,
+          256
+        ],
+        "gpu_latency": {
+          "batch_size": 1,
+          "device": "gpu",
+          "p50_ms": 99.64499999477994,
+          "p95_ms": 119.59126001165713,
+          "samples": 150,
+          "schema_version": "1.0.0",
+          "setup_latency_ms": 62037.01230001752,
+          "throughput_images_per_second": 9.649046241013835
+        },
+        "image": {
+          "anomaly_count": 90,
+          "auroc": 0.8398148148148149,
+          "average_precision": 0.9055110618543981,
+          "metric_contract_version": "1.0.0",
+          "normal_count": 60,
+          "schema_version": "1.0.0"
+        },
+        "operating": {
+          "expected_reviews_per_1000_normal": 0.0,
+          "public_anomaly_recall": 0.5222222222222223,
+          "public_normal_false_review_rate": 0.0,
+          "public_review_f1": 0.6861313868613139,
+          "public_review_precision": 1.0,
+          "schema_version": "1.0.0",
+          "threshold": 49.95383834838867
+        },
+        "peak_vram_mib": 2243.369140625,
+        "per_image_failure_rate": 0.0,
+        "pixel": {
+          "anomaly_pixel_count": 107964,
+          "au_pro": 0.7159332448176117,
+          "auroc": 0.9613346076654212,
+          "average_precision": 0.5186737675599348,
+          "metric_contract_version": "1.0.0",
+          "normal_pixel_count": 9722436,
+          "pro_fpr_limit": 0.3,
+          "region_count": 642,
+          "schema_version": "1.0.0"
+        },
+        "schema_version": "1.0.0"
+      },
+      "model_revision": "anomalib:2.5.0/Patchcore/wide_resnet50_2",
+      "prediction_artifact_sha256": "cc85ec8c55e6be08651e46305b894144dfb9a8b6e94e502ffa8e98f62e04d85c",
+      "prediction_locator": "public-evaluation/8dd81e382b9fc7fa7372bc3d71053a614b747e79f4845df477ea6825a1786372/predictions/test_public.json",
+      "run_identity": "8dd81e382b9fc7fa7372bc3d71053a614b747e79f4845df477ea6825a1786372",
+      "run_record_sha256": "88205411d34bdcce9fa258ead991603167bf3e7c860cda6b47eff5e8e5b155ef",
+      "schema_version": "1.0.0",
+      "seed": 2026,
+      "stage": "replication",
+      "threshold_artifact_sha256": "978a58029f24bfd4e71fb8861c0aab4bc85bcfd4dc16de0379c16ad7b22a62b9"
+    }
+  ],
+  "schema_version": "1.0.0",
+  "screening_macro": [
+    {
+      "au_pro": {
+        "bootstrap_resamples": 10000,
+        "bootstrap_seed": 42,
+        "confidence_level": 0.95,
+        "lower": 0.46244976978277114,
+        "mean": 0.5838665249060617,
+        "schema_version": "1.0.0",
+        "upper": 0.7165937597415272
+      },
+      "family": "patchcore",
+      "image_auroc": {
+        "bootstrap_resamples": 10000,
+        "bootstrap_seed": 42,
+        "confidence_level": 0.95,
+        "lower": 0.6390947170113838,
+        "mean": 0.7323276629675439,
+        "schema_version": "1.0.0",
+        "upper": 0.8237420763760049
+      },
+      "run_identities": [
+        "597dbe614d9aa98fd8939b0626aaf61def78fa4abac1b25755aeb5b5c980e81a",
+        "d6c6b6bbf7fec007b0f73ecea42bb6e0115d4bf105ba31619cc413454d58c8f3",
+        "7c7ed4bbdfdcbd94ae1d12ce240bb711efda00eb7cbe20ad821e7e9a6c0d220c",
+        "7179e031e1f41849866b581a0cc9261e5e3a598548359db93fc09d33e53ef3b5",
+        "fb22267b01354c9d534cbc322b239a1493c45b86936abb4cf0d917e2482c2ca4",
+        "8752351992b83b368586fc84dca669a2679dfa7d6f5b1df3b33190f342222a8d",
+        "6ffd7c77dc95549ae174f324c19684a44a90808029672390c07cc72df9874972",
+        "459516eb474914946f90dd5a49a37aa9eba96d056e127ac4e029620fd63814d5"
+      ],
+      "schema_version": "1.0.0"
+    },
+    {
+      "au_pro": {
+        "bootstrap_resamples": 10000,
+        "bootstrap_seed": 42,
+        "confidence_level": 0.95,
+        "lower": 0.21145023075285635,
+        "mean": 0.3340672800479888,
+        "schema_version": "1.0.0",
+        "upper": 0.5118820004796051
+      },
+      "family": "efficient_ad",
+      "image_auroc": {
+        "bootstrap_resamples": 10000,
+        "bootstrap_seed": 42,
+        "confidence_level": 0.95,
+        "lower": 0.5519573162177329,
+        "mean": 0.6300248087450468,
+        "schema_version": "1.0.0",
+        "upper": 0.7230575310932453
+      },
+      "run_identities": [
+        "ec781513bd6a3affb2ca48cfca83ebcef2962c14c04e3b931ca1d00c3af2bc95",
+        "e4920f7c73fe684b600cd7acca24e3f4ae4950146c52cea6d7cdf24abae93a42",
+        "00c68e091a1352166e84f7d4c76a9d8e6e36c4a8f996ac0f82e7c8f302221f6a",
+        "29623b228ef46307275e9dfb2113a5f301c40039dceab607f2e124aac62a8d1b",
+        "7247ff893a9ecca0bce801753d3569923eac0ca737727a6ec43031ef6d1f3bef",
+        "647f89379a8c992a385f91bc97534199c7aa79c1f59400f3e4e021e4ccef0245",
+        "996cf010750e7d0296f02256f2b0bca5cd07097886084f94e1f9a5a8fc590672",
+        "e6e1231bef09ac7ed3059e71f31c42f2747d9f68540eac32af6ab23d190b1a41"
+      ],
+      "schema_version": "1.0.0"
+    },
+    {
+      "au_pro": {
+        "bootstrap_resamples": 10000,
+        "bootstrap_seed": 42,
+        "confidence_level": 0.95,
+        "lower": 0.4531395633124808,
+        "mean": 0.5869102953851147,
+        "schema_version": "1.0.0",
+        "upper": 0.7220949494712178
+      },
+      "family": "dinomaly",
+      "image_auroc": {
+        "bootstrap_resamples": 10000,
+        "bootstrap_seed": 42,
+        "confidence_level": 0.95,
+        "lower": 0.5877797318422319,
+        "mean": 0.6781754549462883,
+        "schema_version": "1.0.0",
+        "upper": 0.7574323029401154
+      },
+      "run_identities": [
+        "fcc4b2c90275cd585b79adb1e33be05cfc18222d41af235dfcba22bab3016cd3",
+        "b96429546f4bb46d528156e305cee5efd18be8e1f96513ba615d867879572a1f",
+        "8a3b687e9da2e93e7f407aa0496cee17482302ce02faf1343e785e6d6e33bcde",
+        "d47baf7b7871fc45185753bee4a526ead9194847200612e48c241c2511aab726",
+        "fe366c4598620920e434af345569ffcd30941dd1621379249eb4e8a44d89cac7",
+        "792221b53b1231f5ce22c57c1b565c9efcb12a8e91f04eb85273b404ba05f69e",
+        "73f313cbf83ebf08a024f59720323763c63396fcea8710f27ed272c62ea8712a",
+        "8355aa5e398e1b9137b8615ec3cec99a09a2856b08b2f9d4c895429d9459aefb"
+      ],
+      "schema_version": "1.0.0"
+    }
+  ]
+}
