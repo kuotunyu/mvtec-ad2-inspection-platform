@@ -117,7 +117,7 @@ git commit -m "feat(backend): add durable inspection database"
 - Produces `JobStatus`, `transition_job(job_id, expected, target)`, `claim_next_job(worker_id, now)`, `renew_lease(job_id: str, worker_id: str, now: datetime) -> bool`, and `recover_expired_leases(now)`.
 - Allowed terminal states: `COMPLETED`, `COMPLETED_WITH_ERRORS`, `FAILED`, and `CANCELLED`.
 
-- [ ] **Step 1: Specify all legal and illegal transitions in tests**
+- [x] **Step 1: Specify all legal and illegal transitions in tests**
 
 ```python
 @pytest.mark.parametrize(
@@ -133,16 +133,16 @@ def test_completed_job_cannot_restart() -> None:
     assert not can_transition(JobStatus.COMPLETED, JobStatus.RUNNING)
 ```
 
-- [ ] **Step 2: Run state tests and confirm failure**
+- [x] **Step 2: Run state tests and confirm failure**
 
 Run: `uv run pytest tests/unit/jobs/test_states.py -q`
 Expected: FAIL because the transition table is absent.
 
-- [ ] **Step 3: Implement compare-and-set transitions and lease claims**
+- [x] **Step 3: Implement compare-and-set transitions and lease claims**
 
 Claim one queued or expired-running job in a short transaction. Store `worker_id`, `lease_expires_at`, `heartbeat_at`, and `attempt`. A live lease cannot be stolen. An expired lease returns to resumable ownership without resetting completed image rows.
 
-- [ ] **Step 4: Prove two workers cannot own the same job**
+- [x] **Step 4: Prove two workers cannot own the same job**
 
 Run: `uv run pytest tests/integration/jobs/test_leases.py -q`
 Expected: both concurrent claimers complete, exactly one receives the job, and expired-lease recovery is idempotent.

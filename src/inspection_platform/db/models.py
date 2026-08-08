@@ -18,6 +18,10 @@ class Job(Base):
     image_count: Mapped[int] = mapped_column(Integer, nullable=False)
     state: Mapped[str] = mapped_column(String(32), nullable=False, default="queued")
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    worker_id: Mapped[str | None] = mapped_column(String(128))
+    lease_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    heartbeat_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    attempt: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
 
 
 class InspectionImage(Base):

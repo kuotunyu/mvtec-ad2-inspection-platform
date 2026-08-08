@@ -57,6 +57,7 @@ class AuditRepository:
 
 class Repositories:
     def __init__(self, session_factory: Callable[[], Session]) -> None:
+        self.session_factory = session_factory
         self.jobs = JobRepository(session_factory)
         self.audit = AuditRepository(session_factory)
 
