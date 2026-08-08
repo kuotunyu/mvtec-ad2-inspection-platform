@@ -55,7 +55,7 @@
 - Tables: `jobs`, `inspection_images`, `predictions`, `reviews`, `audit_events`, and `model_bundles`.
 - All externally visible identifiers are UUID strings; database timestamps are timezone-aware UTC.
 
-- [ ] **Step 1: Write WAL, foreign-key, and repository tests first**
+- [x] **Step 1: Write WAL, foreign-key, and repository tests first**
 
 ```python
 def test_sqlite_connection_enables_safety_pragmas(session_factory: SessionFactory) -> None:
@@ -69,12 +69,12 @@ def test_job_creation_and_audit_are_atomic(repositories: Repositories) -> None:
     assert [(event.action, event.resource_id) for event in events] == [("job.created", job.id)]
 ```
 
-- [ ] **Step 2: Run the focused tests and confirm missing modules fail**
+- [x] **Step 2: Run the focused tests and confirm missing modules fail**
 
 Run: `uv run pytest tests/unit/db -q`
 Expected: FAIL because settings, tables, and repositories do not exist.
 
-- [ ] **Step 3: Implement fail-closed settings and the initial migration**
+- [x] **Step 3: Implement fail-closed settings and the initial migration**
 
 ```python
 class Settings(BaseSettings):
@@ -90,7 +90,7 @@ class Settings(BaseSettings):
 
 Resolve configured roots, create only their immediate directories, reject a root that is a file, and never silently fall back to a user home or repository-wide path. Configure WAL, foreign keys, a 5-second busy timeout, and transaction-scoped repositories.
 
-- [ ] **Step 4: Run migrations and database verification**
+- [x] **Step 4: Run migrations and database verification**
 
 Run: `uv run alembic upgrade head` with a temporary database URL.
 Run: `uv run pytest tests/unit/db -q`

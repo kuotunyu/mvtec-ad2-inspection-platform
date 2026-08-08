@@ -1,0 +1,59 @@
+from __future__ import annotations
+
+from datetime import datetime
+from typing import Any
+
+from sqlalchemy import JSON, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+
+
+class Base(DeclarativeBase):
+    pass
+
+
+class Job(Base):
+    __tablename__ = "jobs"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    category: Mapped[str] = mapped_column(String(64), nullable=False)
+    image_count: Mapped[int] = mapped_column(Integer, nullable=False)
+    state: Mapped[str] = mapped_column(String(32), nullable=False, default="queued")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
+class InspectionImage(Base):
+    __tablename__ = "inspection_images"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    job_id: Mapped[str] = mapped_column(ForeignKey("jobs.id"), nullable=False, index=True)
+    artifact_key: Mapped[str] = mapped_column(String(255), nullable=False)
+
+
+class Prediction(Base):
+    __tablename__ = "predictions"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    image_id: Mapped[str] = mapped_column(ForeignKey("inspection_images.id"), nullable=False)
+    payload: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False)
+
+
+class Review(Base):
+    __tablename__ = "reviews"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    image_id: Mapped[str] = mapped_column(ForeignKey("inspection_images.id"), nullable=False)
+    decision: Mapped[str] = mapped_column(String(32), nullable=False)
+    note: Mapped[str | None] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
+class AuditEvent(Base):
+    __tablename__ = "audit_events"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    action: Mapped[str] = mapped_column(String(128), nullable=False)
+    resource_id: Mapped[str] = mapped_column(String(36), nullable=False, index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
+class ModelBundle(Base):
+    __tablename__ = "model_bundles"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    category: Mapped[str] = mapped_column(String(64), nullable=False)
+    family: Mapped[str] = mapped_column(String(64), nullable=False)
+    manifest_sha256: Mapped[str] = mapped_column(String(64), nullable=False)
