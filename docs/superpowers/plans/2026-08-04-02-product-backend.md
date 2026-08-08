@@ -172,7 +172,7 @@ git commit -m "feat(worker): add leased job state machine"
 - Produces `validate_image(stream, limits) -> ValidatedImage`, `iterate_safe_archive(stream, limits)`, `ArtifactStore.put_stream(stream: BinaryIO, media_type: str) -> ArtifactRef`, and `IngestionService.create_job(category: str, uploads: Sequence[UploadStream]) -> JobRead`.
 - Accept PNG, JPEG, and WebP only after successful decoder verification and re-open.
 
-- [ ] **Step 1: Write adversarial ingestion tests**
+- [x] **Step 1: Write adversarial ingestion tests**
 
 ```python
 @pytest.mark.parametrize("name", ["../x.png", "/tmp/x.png", "a/../../x.png"])
@@ -185,20 +185,20 @@ def test_image_rejects_header_only_spoof() -> None:
         validate_image(BytesIO(b"\x89PNG\r\n\x1a\nnot-an-image"), DEFAULT_LIMITS)
 ```
 
-- [ ] **Step 2: Run ingestion tests and confirm failure**
+- [x] **Step 2: Run ingestion tests and confirm failure**
 
 Run: `uv run pytest tests/unit/ingestion -q`
 Expected: FAIL because validation and storage are absent.
 
-- [ ] **Step 3: Implement bounded streaming, decode verification, and safe archives**
+- [x] **Step 3: Implement bounded streaming, decode verification, and safe archives**
 
 Reject encrypted archives, symlinks, duplicate normalized paths, nested archives, excessive compression ratios, too many files, excessive declared or streamed bytes, and unsupported members. Store files under `sha256[:2]/sha256` using a sibling temporary file, flush/fsync, and atomic replace. Record the browser filename only as escaped display metadata.
 
-- [ ] **Step 4: Make job creation atomic across storage and database references**
+- [x] **Step 4: Make job creation atomic across storage and database references**
 
 If database creation fails, remove only newly created unreferenced temporary artifacts. Never recursively delete a configured root. If two identical images arrive, deduplicate bytes while creating two job image records.
 
-- [ ] **Step 5: Run security and integration tests**
+- [x] **Step 5: Run security and integration tests**
 
 Run: `uv run pytest tests/unit/ingestion tests/integration/ingestion -q`
 Expected: all valid image, zip, tar, limit, duplicate, rollback, and deduplication cases pass.
