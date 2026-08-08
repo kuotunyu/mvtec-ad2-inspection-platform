@@ -287,9 +287,9 @@ def build_formal_submission(
     output_root.mkdir(parents=True, exist_ok=True)
     if shutil.disk_usage(output_root).free < 160 * 1024**3:
         raise RuntimeError("at least 160 GiB free space is required for private bundles")
-    champions = json.loads(
-        (evidence_root / "champions.json").read_text(encoding="utf-8")
-    )["champions"]
+    champions = json.loads((evidence_root / "champions.json").read_text(encoding="utf-8"))[
+        "champions"
+    ]
     manifest = PrivateManifest.from_dataset_root(data_root)
     cache_root = output_root / "prediction-cache"
     predictions: list[SubmissionPrediction] = []
@@ -327,9 +327,7 @@ def build_formal_submission(
         submission_dir = extracted / archive.stem.removesuffix(".tar")
         OfficialUtilities.from_directory(
             official_utils_root,
-            archive_sha256=(
-                "fda9b379affbbde8b4d4fc1fe6ac52aaff981f347f3424e6b6de027457549f15"
-            ),
+            archive_sha256=("fda9b379affbbde8b4d4fc1fe6ac52aaff981f347f3424e6b6de027457549f15"),
         ).validate(submission_dir)
     write_submission_summary(
         output_root / "submission_summary.json",

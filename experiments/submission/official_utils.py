@@ -50,9 +50,7 @@ class OfficialUtilities:
             else archive.with_suffix("")
         )
         validator = (
-            destination
-            / "MVTecAD2_public_code_utils"
-            / "check_and_prepare_data_for_upload.py"
+            destination / "MVTecAD2_public_code_utils" / "check_and_prepare_data_for_upload.py"
         )
         if not validator.exists():
             destination.mkdir(parents=True, exist_ok=True)

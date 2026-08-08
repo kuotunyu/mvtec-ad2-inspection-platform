@@ -40,8 +40,7 @@ def verify_archive(archive: Path, manifest: PrivateManifest) -> ArchiveVerificat
     resolved = archive.expanduser().resolve(strict=True)
     inspection = inspect_submission(resolved)
     expected = {
-        "/".join((category, split, image_id))
-        for category, split, image_id in manifest.images
+        "/".join((category, split, image_id)) for category, split, image_id in manifest.images
     }
     actual = set(inspection.image_ids)
     if actual != expected:
