@@ -550,19 +550,19 @@ git commit -m "feat(eval): prepare official private submissions"
 **Interfaces:**
 - Produces one command that validates source boundaries, locks, manifests, aggregate evidence, champion bundles, and submission summaries.
 
-- [ ] **Step 1: Write a clean-export failure test**
+- [x] **Step 1: Write a clean-export failure test**
 
 Create a temporary Git archive, install only declared groups, and assert that data, weights, checkpoints, `.env`, private predictions, and absolute workstation paths are absent.
 
-- [ ] **Step 2: Implement the experiment verifier**
+- [x] **Step 2: Implement the experiment verifier**
 
 The verifier checks committed-file policy, JSON schemas, source-to-report claim traceability, dataset provenance summary, complete run matrix, bundle hashes, threshold contract, and official-submission validator status. It prints `PASS`, `FAIL`, or `PENDING EXTERNAL SUBMISSION`; it never converts pending external work into success.
 
-- [ ] **Step 3: Write exact operator commands and recovery procedures**
+- [x] **Step 3: Write exact operator commands and recovery procedures**
 
 Document environment variables, acquisition, smoke, screening, replication, resume, report generation, submission generation, and failure recovery. Do not include personal absolute paths or credentials.
 
-- [ ] **Step 4: Run all foundation gates**
+- [x] **Step 4: Run all foundation gates**
 
 Run: `uv run pytest -m "not gpu and not dataset" -q`
 Run: `uv run ruff format --check .`
