@@ -494,7 +494,7 @@ git commit -m "eval: freeze MVTec AD 2 champion evidence"
 - Produces external `private_submission.tar.gz`, `private_mixed_submission.tar.gz`, checksums, and `submission_summary.json`.
 - No function in this package performs network submission or accepts credentials.
 
-- [ ] **Step 1: Write boundary and archive-layout tests**
+- [x] **Step 1: Write boundary and archive-layout tests**
 
 ```python
 def test_private_predictions_are_never_written_under_repo(repo_root: Path, builder: SubmissionBuilder) -> None:
@@ -507,25 +507,25 @@ def test_submission_contains_every_manifest_image_once(private_manifest: Private
     assert len(members.image_ids) == len(set(members.image_ids))
 ```
 
-- [ ] **Step 2: Run submission tests and confirm failure**
+- [x] **Step 2: Run submission tests and confirm failure**
 
 Run: `uv run pytest tests/unit/submission tests/ml_integrity/test_private_boundary.py -q`
 Expected: FAIL because the builder is missing.
 
-- [ ] **Step 3: Integrate checksum-verified official code utilities**
+- [x] **Step 3: Integrate checksum-verified official code utilities**
 
 Download official utilities outside Git, record their URL and SHA-256, and invoke their validator through a narrow adapter. Do not vendor unreviewed code or silently normalize a rejected submission.
 
-- [ ] **Step 4: Implement private and private-mixed inference bundles**
+- [x] **Step 4: Implement private and private-mixed inference bundles**
 
 Resolve only frozen champion bundles. Preserve official image identifiers, validate finite scores/maps and required dimensions, run the official validator, then create archives and SHA-256 sidecars in an external output directory.
 
-- [ ] **Step 5: Run private-boundary and format tests**
+- [x] **Step 5: Run private-boundary and format tests**
 
 Run: `uv run pytest tests/unit/submission tests/ml_integrity/test_private_boundary.py -q`
 Expected: PASS without exposing private predictions.
 
-- [ ] **Step 6: Generate but do not submit formal bundles**
+- [x] **Step 6: Generate but do not submit formal bundles**
 
 Run: `uv run python -m experiments.submission.build --test-type private --output-root "$env:MVTECAD2_SUBMISSION_ROOT"`
 Run: `uv run python -m experiments.submission.build --test-type private_mixed --output-root "$env:MVTECAD2_SUBMISSION_ROOT"`
