@@ -571,7 +571,7 @@ Run: `uv run mypy src experiments`
 Run: `uv run python scripts/verify_experiments.py`
 Expected: code gates pass; verifier reports `PENDING EXTERNAL SUBMISSION` until official results exist.
 
-- [ ] **Step 5: Commit the verified handoff**
+- [x] **Step 5: Commit the verified handoff**
 
 ```powershell
 git add scripts docs tests
