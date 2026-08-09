@@ -1,8 +1,14 @@
 import type { components } from "./generated";
 
-export type CreateJobRequest = components["schemas"]["CreateJobRequest"];
 export type ErrorResponse = components["schemas"]["ErrorResponse"];
 export type JobResponse = components["schemas"]["JobResponse"];
+export type JobDetailResponse = components["schemas"]["JobDetailResponse"];
+export type JobListResponse = components["schemas"]["JobListResponse"];
+export type ReviewQueueResponse = components["schemas"]["ReviewQueueResponse"];
+export type ReviewRequest = components["schemas"]["ReviewRequest"];
+export type ReviewResponse = components["schemas"]["ReviewResponse"];
+export type ModelListResponse = components["schemas"]["ModelListResponse"];
+export type EvidenceResponse = components["schemas"]["EvidenceResponse"];
 
 export class ApiError extends Error {
   constructor(
@@ -42,13 +48,26 @@ async function request<T>(path: string, init: RequestInit = {}, retries = 0): Pr
 }
 
 export const api = {
-  createJob: (body: CreateJobRequest, signal?: AbortSignal) =>
-    request<JobResponse>("/api/jobs", {
+  createJob: (category: string, files: File[], signal?: AbortSignal) => {
+    const body = new FormData();
+    body.set("category", category);
+    for (const file of files) body.append("files", file, file.name);
+    return request<JobResponse>("/api/v1/jobs", {
       method: "POST",
-      body: JSON.stringify(body),
-      headers: { "content-type": "application/json" },
+      body,
       signal,
-    }),
+    });
+  },
+  listJobs: (signal?: AbortSignal) => request<JobListResponse>("/api/v1/jobs", { signal }, 2),
   getJob: (id: string, signal?: AbortSignal) =>
-    request<JobResponse>(`/api/jobs/${encodeURIComponent(id)}`, { signal }, 2),
+    request<JobDetailResponse>(`/api/v1/jobs/${encodeURIComponent(id)}`, { signal }, 2),
+  cancelJob: (id: string, signal?: AbortSignal) =>
+    request<JobResponse>(`/api/v1/jobs/${encodeURIComponent(id)}/cancel`, { method: "POST", signal }),
+  listReviews: (signal?: AbortSignal) => request<ReviewQueueResponse>("/api/v1/reviews", { signal }, 2),
+  recordReview: (imageId: string, body: ReviewRequest, signal?: AbortSignal) =>
+    request<ReviewResponse>(`/api/v1/reviews/${encodeURIComponent(imageId)}`, {
+      method: "POST", body: JSON.stringify(body), headers: { "content-type": "application/json" }, signal,
+    }),
+  listModels: (signal?: AbortSignal) => request<ModelListResponse>("/api/v1/models", { signal }, 2),
+  getEvidence: (signal?: AbortSignal) => request<EvidenceResponse>("/api/v1/evidence", { signal }, 2),
 };

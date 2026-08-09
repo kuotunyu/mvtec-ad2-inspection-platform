@@ -4,32 +4,15 @@
  */
 
 export interface paths {
-    readonly "/api/jobs": {
+    readonly "/api/health/live": {
         readonly parameters: {
             readonly query?: never;
             readonly header?: never;
             readonly path?: never;
             readonly cookie?: never;
         };
-        readonly get?: never;
-        readonly put?: never;
-        /** Create Job */
-        readonly post: operations["create_job_api_jobs_post"];
-        readonly delete?: never;
-        readonly options?: never;
-        readonly head?: never;
-        readonly patch?: never;
-        readonly trace?: never;
-    };
-    readonly "/api/jobs/{job_id}": {
-        readonly parameters: {
-            readonly query?: never;
-            readonly header?: never;
-            readonly path?: never;
-            readonly cookie?: never;
-        };
-        /** Get Job */
-        readonly get: operations["get_job_api_jobs__job_id__get"];
+        /** Health Live */
+        readonly get: operations["health_live_api_health_live_get"];
         readonly put?: never;
         readonly post?: never;
         readonly delete?: never;
@@ -38,15 +21,203 @@ export interface paths {
         readonly patch?: never;
         readonly trace?: never;
     };
-    readonly "/health/live": {
+    readonly "/api/health/ready": {
         readonly parameters: {
             readonly query?: never;
             readonly header?: never;
             readonly path?: never;
             readonly cookie?: never;
         };
-        /** Health Live */
-        readonly get: operations["health_live_health_live_get"];
+        /** Health Ready */
+        readonly get: operations["health_ready_api_health_ready_get"];
+        readonly put?: never;
+        readonly post?: never;
+        readonly delete?: never;
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
+    readonly "/api/v1/artifacts/{image_id}/source": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        /** Source Artifact */
+        readonly get: operations["source_artifact_api_v1_artifacts__image_id__source_get"];
+        readonly put?: never;
+        readonly post?: never;
+        readonly delete?: never;
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
+    readonly "/api/v1/evidence": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        /** Evidence */
+        readonly get: operations["evidence_api_v1_evidence_get"];
+        readonly put?: never;
+        readonly post?: never;
+        readonly delete?: never;
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
+    readonly "/api/v1/jobs": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        /** List Jobs */
+        readonly get: operations["list_jobs_api_v1_jobs_get"];
+        readonly put?: never;
+        /** Create Job */
+        readonly post: operations["create_job_api_v1_jobs_post"];
+        readonly delete?: never;
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
+    readonly "/api/v1/jobs/{job_id}": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        /** Get Job */
+        readonly get: operations["get_job_api_v1_jobs__job_id__get"];
+        readonly put?: never;
+        readonly post?: never;
+        readonly delete?: never;
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
+    readonly "/api/v1/jobs/{job_id}/cancel": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly get?: never;
+        readonly put?: never;
+        /** Cancel Job */
+        readonly post: operations["cancel_job_api_v1_jobs__job_id__cancel_post"];
+        readonly delete?: never;
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
+    readonly "/api/v1/models": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        /** Models */
+        readonly get: operations["models_api_v1_models_get"];
+        readonly put?: never;
+        readonly post?: never;
+        readonly delete?: never;
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
+    readonly "/api/v1/reviews": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        /** Review Queue */
+        readonly get: operations["review_queue_api_v1_reviews_get"];
+        readonly put?: never;
+        readonly post?: never;
+        readonly delete?: never;
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
+    readonly "/api/v1/reviews/{image_id}": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly get?: never;
+        readonly put?: never;
+        /** Record Review */
+        readonly post: operations["record_review_api_v1_reviews__image_id__post"];
+        readonly delete?: never;
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
+    readonly "/evidence/champions.json": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        /** Champions Download */
+        readonly get: operations["champions_download_evidence_champions_json_get"];
+        readonly put?: never;
+        readonly post?: never;
+        readonly delete?: never;
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
+    readonly "/evidence/public-benchmark.json": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        /** Benchmark Download */
+        readonly get: operations["benchmark_download_evidence_public_benchmark_json_get"];
+        readonly put?: never;
+        readonly post?: never;
+        readonly delete?: never;
+        readonly options?: never;
+        readonly head?: never;
+        readonly patch?: never;
+        readonly trace?: never;
+    };
+    readonly "/metrics": {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        /** Metrics */
+        readonly get: operations["metrics_metrics_get"];
         readonly put?: never;
         readonly post?: never;
         readonly delete?: never;
@@ -59,29 +230,122 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        /** CreateJobRequest */
-        readonly CreateJobRequest: {
-            /**
-             * Category
-             * @enum {string}
-             */
-            readonly category: "can" | "fabric" | "fruit_jelly" | "rice" | "sheet_metal" | "vial" | "wallplugs" | "walnuts";
-            /** Image Count */
-            readonly image_count: number;
+        /** Body_create_job_api_v1_jobs_post */
+        readonly Body_create_job_api_v1_jobs_post: {
+            /** Category */
+            readonly category: string;
+            /** Files */
+            readonly files: readonly string[];
         };
         /** ErrorResponse */
         readonly ErrorResponse: {
             /** Code */
             readonly code: string;
+            /** Details */
+            readonly details?: {
+                readonly [key: string]: unknown;
+            } | null;
             /** Message */
             readonly message: string;
             /** Request Id */
             readonly request_id: string;
         };
+        /** EvidenceResponse */
+        readonly EvidenceResponse: {
+            /** Dataset Manifest Sha256 */
+            readonly dataset_manifest_sha256: string;
+            /** Downloadable */
+            readonly downloadable: {
+                readonly [key: string]: string;
+            };
+            /** Limitations */
+            readonly limitations: readonly string[];
+            /** Metric Definitions */
+            readonly metric_definitions: {
+                readonly [key: string]: string;
+            };
+            /** Official Submission Performed */
+            readonly official_submission_performed: boolean;
+            /** Private Evaluation */
+            readonly private_evaluation: string;
+            /** Public Gate Sha256 */
+            readonly public_gate_sha256: string;
+        };
         /** HTTPValidationError */
         readonly HTTPValidationError: {
             /** Detail */
             readonly detail?: readonly components["schemas"]["ValidationError"][];
+        };
+        /** ImageResponse */
+        readonly ImageResponse: {
+            /** Anomaly Map Url */
+            readonly anomaly_map_url?: string | null;
+            /** Anomaly Score */
+            readonly anomaly_score?: number | null;
+            /** Error */
+            readonly error?: string | null;
+            /** Filename */
+            readonly filename: string;
+            /** Human Decision */
+            readonly human_decision?: ("ACCEPT" | "REJECT" | "UNCERTAIN") | null;
+            /** Id */
+            readonly id: string;
+            /** Model Outcome */
+            readonly model_outcome?: ("PASS" | "REVIEW") | null;
+            /** Overlay Url */
+            readonly overlay_url?: string | null;
+            /**
+             * Revision
+             * @default 0
+             */
+            readonly revision: number;
+            /** Source Url */
+            readonly source_url: string;
+            /** Threshold */
+            readonly threshold?: number | null;
+        };
+        /** JobDetailResponse */
+        readonly JobDetailResponse: {
+            /**
+             * Category
+             * @enum {string}
+             */
+            readonly category: "can" | "fabric" | "fruit_jelly" | "rice" | "sheet_metal" | "vial" | "wallplugs" | "walnuts";
+            /**
+             * Completed Count
+             * @default 0
+             */
+            readonly completed_count: number;
+            /** Created At */
+            readonly created_at?: string | null;
+            /**
+             * Error Count
+             * @default 0
+             */
+            readonly error_count: number;
+            /** Id */
+            readonly id: string;
+            /** Image Count */
+            readonly image_count: number;
+            /** Images */
+            readonly images: readonly components["schemas"]["ImageResponse"][];
+            /** Model Bundle Id */
+            readonly model_bundle_id?: string | null;
+            /** Revision */
+            readonly revision: number;
+            /**
+             * Status
+             * @default QUEUED
+             * @enum {string}
+             */
+            readonly status: "QUEUED" | "RUNNING" | "COMPLETED" | "COMPLETED_WITH_ERRORS" | "FAILED" | "CANCELLED";
+        };
+        /** JobListResponse */
+        readonly JobListResponse: {
+            /** Items */
+            readonly items: readonly components["schemas"]["JobResponse"][];
+            /** Total */
+            readonly total: number;
         };
         /** JobResponse */
         readonly JobResponse: {
@@ -90,6 +354,18 @@ export interface components {
              * @enum {string}
              */
             readonly category: "can" | "fabric" | "fruit_jelly" | "rice" | "sheet_metal" | "vial" | "wallplugs" | "walnuts";
+            /**
+             * Completed Count
+             * @default 0
+             */
+            readonly completed_count: number;
+            /** Created At */
+            readonly created_at?: string | null;
+            /**
+             * Error Count
+             * @default 0
+             */
+            readonly error_count: number;
             /** Id */
             readonly id: string;
             /** Image Count */
@@ -97,9 +373,76 @@ export interface components {
             /**
              * Status
              * @default QUEUED
-             * @constant
+             * @enum {string}
              */
-            readonly status: "QUEUED";
+            readonly status: "QUEUED" | "RUNNING" | "COMPLETED" | "COMPLETED_WITH_ERRORS" | "FAILED" | "CANCELLED";
+        };
+        /** ModelListResponse */
+        readonly ModelListResponse: {
+            /** Champion Matrix Sha256 */
+            readonly champion_matrix_sha256: string;
+            /** Items */
+            readonly items: readonly components["schemas"]["ModelSummary"][];
+        };
+        /** ModelSummary */
+        readonly ModelSummary: {
+            /** Artifact Size Bytes */
+            readonly artifact_size_bytes: number;
+            /**
+             * Category
+             * @enum {string}
+             */
+            readonly category: "can" | "fabric" | "fruit_jelly" | "rice" | "sheet_metal" | "vial" | "wallplugs" | "walnuts";
+            /** Family */
+            readonly family: string;
+            /** Gpu P95 Latency Ms */
+            readonly gpu_p95_latency_ms: number;
+            /** Image Auroc */
+            readonly image_auroc: number;
+            /** Peak Vram Mib */
+            readonly peak_vram_mib: number;
+            /** Pixel Au Pro */
+            readonly pixel_au_pro: number;
+            /** Selection Reason */
+            readonly selection_reason: string;
+        };
+        /** ReviewQueueResponse */
+        readonly ReviewQueueResponse: {
+            /** Items */
+            readonly items: readonly components["schemas"]["ImageResponse"][];
+            /** Total */
+            readonly total: number;
+        };
+        /** ReviewRequest */
+        readonly ReviewRequest: {
+            /**
+             * Decision
+             * @enum {string}
+             */
+            readonly decision: "ACCEPT" | "REJECT" | "UNCERTAIN";
+            /** Expected Revision */
+            readonly expected_revision: number;
+            /** Note */
+            readonly note?: string | null;
+        };
+        /** ReviewResponse */
+        readonly ReviewResponse: {
+            /**
+             * Created At
+             * Format: date-time
+             */
+            readonly created_at: string;
+            /**
+             * Decision
+             * @enum {string}
+             */
+            readonly decision: "ACCEPT" | "REJECT" | "UNCERTAIN";
+            /** Image Id */
+            readonly image_id: string;
+            /** Note */
+            readonly note: string | null;
+            /** Revision */
+            readonly revision: number;
         };
         /** ValidationError */
         readonly ValidationError: {
@@ -123,7 +466,132 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    readonly create_job_api_jobs_post: {
+    readonly health_live_api_health_live_get: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly requestBody?: never;
+        readonly responses: {
+            /** @description Successful Response */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": {
+                        readonly [key: string]: string;
+                    };
+                };
+            };
+        };
+    };
+    readonly health_ready_api_health_ready_get: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly requestBody?: never;
+        readonly responses: {
+            /** @description Successful Response */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": unknown;
+                };
+            };
+        };
+    };
+    readonly source_artifact_api_v1_artifacts__image_id__source_get: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path: {
+                readonly image_id: string;
+            };
+            readonly cookie?: never;
+        };
+        readonly requestBody?: never;
+        readonly responses: {
+            /** @description Successful Response */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            readonly 422: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    readonly evidence_api_v1_evidence_get: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly requestBody?: never;
+        readonly responses: {
+            /** @description Successful Response */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["EvidenceResponse"];
+                };
+            };
+        };
+    };
+    readonly list_jobs_api_v1_jobs_get: {
+        readonly parameters: {
+            readonly query?: {
+                readonly limit?: number;
+                readonly offset?: number;
+            };
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly requestBody?: never;
+        readonly responses: {
+            /** @description Successful Response */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["JobListResponse"];
+                };
+            };
+            /** @description Validation Error */
+            readonly 422: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    readonly create_job_api_v1_jobs_post: {
         readonly parameters: {
             readonly query?: never;
             readonly header?: never;
@@ -132,7 +600,7 @@ export interface operations {
         };
         readonly requestBody: {
             readonly content: {
-                readonly "application/json": components["schemas"]["CreateJobRequest"];
+                readonly "multipart/form-data": components["schemas"]["Body_create_job_api_v1_jobs_post"];
             };
         };
         readonly responses: {
@@ -156,7 +624,47 @@ export interface operations {
             };
         };
     };
-    readonly get_job_api_jobs__job_id__get: {
+    readonly get_job_api_v1_jobs__job_id__get: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path: {
+                readonly job_id: string;
+            };
+            readonly cookie?: never;
+        };
+        readonly requestBody?: never;
+        readonly responses: {
+            /** @description Successful Response */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["JobDetailResponse"];
+                };
+            };
+            /** @description Not Found */
+            readonly 404: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            readonly 422: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    readonly cancel_job_api_v1_jobs__job_id__cancel_post: {
         readonly parameters: {
             readonly query?: never;
             readonly header?: never;
@@ -185,6 +693,15 @@ export interface operations {
                     readonly "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
+            /** @description Conflict */
+            readonly 409: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
             /** @description Validation Error */
             readonly 422: {
                 headers: {
@@ -196,7 +713,7 @@ export interface operations {
             };
         };
     };
-    readonly health_live_health_live_get: {
+    readonly models_api_v1_models_get: {
         readonly parameters: {
             readonly query?: never;
             readonly header?: never;
@@ -211,9 +728,140 @@ export interface operations {
                     readonly [name: string]: unknown;
                 };
                 content: {
-                    readonly "application/json": {
-                        readonly [key: string]: string;
-                    };
+                    readonly "application/json": components["schemas"]["ModelListResponse"];
+                };
+            };
+        };
+    };
+    readonly review_queue_api_v1_reviews_get: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly requestBody?: never;
+        readonly responses: {
+            /** @description Successful Response */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["ReviewQueueResponse"];
+                };
+            };
+        };
+    };
+    readonly record_review_api_v1_reviews__image_id__post: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path: {
+                readonly image_id: string;
+            };
+            readonly cookie?: never;
+        };
+        readonly requestBody: {
+            readonly content: {
+                readonly "application/json": components["schemas"]["ReviewRequest"];
+            };
+        };
+        readonly responses: {
+            /** @description Successful Response */
+            readonly 201: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["ReviewResponse"];
+                };
+            };
+            /** @description Not Found */
+            readonly 404: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Conflict */
+            readonly 409: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            readonly 422: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    readonly champions_download_evidence_champions_json_get: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly requestBody?: never;
+        readonly responses: {
+            /** @description Successful Response */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": unknown;
+                };
+            };
+        };
+    };
+    readonly benchmark_download_evidence_public_benchmark_json_get: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly requestBody?: never;
+        readonly responses: {
+            /** @description Successful Response */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": unknown;
+                };
+            };
+        };
+    };
+    readonly metrics_metrics_get: {
+        readonly parameters: {
+            readonly query?: never;
+            readonly header?: never;
+            readonly path?: never;
+            readonly cookie?: never;
+        };
+        readonly requestBody?: never;
+        readonly responses: {
+            /** @description Successful Response */
+            readonly 200: {
+                headers: {
+                    readonly [name: string]: unknown;
+                };
+                content: {
+                    readonly "application/json": unknown;
                 };
             };
         };

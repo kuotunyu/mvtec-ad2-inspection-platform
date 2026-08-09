@@ -165,7 +165,7 @@ git commit -m "feat(frontend): add inspection workstation shell"
 - Dashboard displays queue summary, recent jobs, partial failures, review backlog, and active category champions.
 - New Inspection accepts a category and image files or one archive, validates obvious client limits, then creates a server job.
 
-- [ ] **Step 1: Write user-flow tests**
+- [x] **Step 1: Write user-flow tests**
 
 ```tsx
 it("creates a job and navigates to progress", async () => {
@@ -178,25 +178,25 @@ it("creates a job and navigates to progress", async () => {
 });
 ```
 
-- [ ] **Step 2: Run page tests and confirm failure**
+- [x] **Step 2: Run page tests and confirm failure**
 
 Run: `cd apps/web; npm test -- --run src/pages/Dashboard.test.tsx src/pages/NewInspection.test.tsx`
 Expected: FAIL because both pages are absent.
 
-- [ ] **Step 3: Implement honest dashboard summaries**
+- [x] **Step 3: Implement honest dashboard summaries**
 
 Separate system queue, model `REVIEW`, human unresolved, and errors. Never label the model review count as defects. Use explicit empty/loading/error states, bounded polling while jobs are active, and `aria-live="polite"` only for concise progress updates.
 
-- [ ] **Step 4: Implement accessible batch upload**
+- [x] **Step 4: Implement accessible batch upload**
 
 Support drag/drop and standard file input. Show filename, size, local validation result, remove action, and total size. Treat client validation as convenience; surface backend rejections per file. Disable double submission and provide a retry path that does not create a hidden duplicate.
 
-- [ ] **Step 5: Run page and accessibility tests**
+- [x] **Step 5: Run page and accessibility tests**
 
 Run: `cd apps/web; npm test -- --run src/pages/Dashboard.test.tsx src/pages/NewInspection.test.tsx`
 Expected: loading, empty, partial error, upload, duplicate submit, keyboard, and screen-reader status cases pass.
 
-- [ ] **Step 6: Commit Dashboard and ingestion UI**
+- [x] **Step 6: Commit Dashboard and ingestion UI**
 
 ```powershell
 git add apps/web/src/pages apps/web/src/components/JobTable.tsx apps/web/src/components/UploadDropzone.tsx apps/web/src/components/UploadManifest.tsx apps/web/src/api/queries.ts
