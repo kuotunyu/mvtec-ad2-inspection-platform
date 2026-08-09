@@ -5,7 +5,7 @@ from typing import Protocol
 from inspection_platform.contracts.models import ModelBundleManifest
 from inspection_platform.contracts.predictions import PredictionRecord
 
-from .mock import IncompatibleBundleError, LoadedMockModel, MockRuntime
+from .mock import IncompatibleBundleError, MockRuntime
 
 
 class LoadedModel(Protocol):
