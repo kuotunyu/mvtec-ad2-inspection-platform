@@ -196,30 +196,30 @@ git commit -m "test(system): verify resilient inspection workflow"
 - `security_scan.py --root PATH` emits a machine-readable report and nonzero exit on high-severity findings.
 - `verify_public_boundary.py --git-tree HEAD` inspects tracked files and built distributions/images.
 
-- [ ] **Step 1: Add adversarial API and archive tests**
+- [x] **Step 1: Add adversarial API and archive tests**
 
 Cover path traversal, symlinks, decompression bombs, polyglot files, malformed images, oversize bodies, Unicode filename tricks, duplicate keys, invalid UUIDs, HTML/CSV injection, request-ID log injection, cancelled upload, and concurrent review conflicts.
 
-- [ ] **Step 2: Add log and error-boundary assertions**
+- [x] **Step 2: Add log and error-boundary assertions**
 
 Capture logs from upload, inference exception, review note, bundle failure, and request validation. Reject raw image bytes, notes, full external exceptions, filesystem roots, cookies, authorization values, environment secrets, or unsanitized line breaks. Public errors expose stable code, safe message, and request ID only.
 
-- [ ] **Step 3: Add deletion-scope tests**
+- [x] **Step 3: Add deletion-scope tests**
 
 Resolve every target through database references and verify its final absolute path remains under the configured artifact root. Test symlink substitution and repeated deletion. Never use wildcard or recursive deletion against a configured root.
 
-- [ ] **Step 4: Implement repository, archive, and image scanners**
+- [x] **Step 4: Implement repository, archive, and image scanners**
 
 Scan tracked files, wheel, sdist, frontend dist, Docker contexts, and image inventories for secrets, large binaries, MVTec/raw-prediction patterns, runtime databases, `.env`, checkpoints, absolute Windows/Linux paths, unsafe license claims, and unpinned remote scripts.
 
-- [ ] **Step 5: Run the security gate**
+- [x] **Step 5: Run the security gate**
 
 Run: `uv run pytest tests/security -q`
 Run: `uv run python scripts/security_scan.py --root .`
 Run: `uv run python scripts/verify_public_boundary.py --git-tree HEAD`
 Expected: all adversarial tests pass and scanners report zero high-severity violations.
 
-- [ ] **Step 6: Commit hardening**
+- [x] **Step 6: Commit hardening**
 
 ```powershell
 git add scripts/security_scan.py scripts/verify_public_boundary.py tests/security docs/SECURITY.md

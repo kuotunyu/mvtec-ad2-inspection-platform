@@ -5,6 +5,7 @@ import hashlib
 import html
 import json
 import re
+from collections.abc import Awaitable, Callable
 from datetime import UTC, datetime
 from io import BytesIO, StringIO
 from pathlib import Path
@@ -20,8 +21,13 @@ from sqlalchemy import func, select
 from inspection_platform.db.engine import create_engine_and_session
 from inspection_platform.db.models import InspectionImage, Job, Prediction, Review
 from inspection_platform.db.repositories import Repositories
-from inspection_platform.ingestion.images import ImageValidationError, validate_image
+from inspection_platform.ingestion.images import (
+    ImageValidationError,
+    sanitize_filename,
+    validate_image,
+)
 from inspection_platform.reports.builder import build_report_json
+from inspection_platform.retention import DeletionScopeError, delete_job_artifacts
 from inspection_platform.settings import Settings
 from inspection_platform.storage.artifacts import ArtifactStore
 
@@ -42,6 +48,23 @@ from .schemas import (
 
 _ROOT = Path(__file__).resolve().parents[2]
 _REQUEST_ID = re.compile(r"^[A-Za-z0-9._-]{1,80}$")
+
+
+class _DuplicateJSONKey(ValueError):
+    pass
+
+
+def _unique_json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    output: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in output:
+            raise _DuplicateJSONKey(key)
+        output[key] = value
+    return output
+
+
+def _safe_csv_cell(value: str) -> str:
+    return f"'{value}" if value.startswith(("=", "+", "-", "@")) else value
 
 
 def _request_id(request: Request) -> str:
@@ -71,6 +94,19 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.settings = configured
     registry = CollectorRegistry()
     jobs_total = Counter("inspection_jobs", "Created inspection jobs", registry=registry)
+
+    @app.middleware("http")
+    async def reject_duplicate_json_keys(
+        request: Request, call_next: Callable[[Request], Awaitable[Response]]
+    ) -> Response:
+        if "application/json" in request.headers.get("content-type", ""):
+            try:
+                json.loads(await request.body(), object_pairs_hook=_unique_json_object)
+            except _DuplicateJSONKey:
+                return _error(request, 400, "duplicate_json_key", "JSON object keys must be unique")
+            except json.JSONDecodeError:
+                return _error(request, 400, "invalid_json", "Request body is not valid JSON")
+        return await call_next(request)
 
     def job_response(job: Job, *, completed_count: int = 0, error_count: int = 0) -> JobResponse:
         return JobResponse(
@@ -149,11 +185,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             return _error(request, 422, "invalid_category", "Unknown component category")
         accepted: list[tuple[str, str, str, str | None]] = []
         for item in files:
-            filename = Path(item.filename or "image").name
+            filename = sanitize_filename(item.filename or "image")
             content = await item.read()
             try:
                 image = validate_image(
-                    BytesIO(content), filename=filename, max_bytes=configured.max_upload_bytes
+                    BytesIO(content),
+                    filename=filename,
+                    max_bytes=configured.max_upload_bytes,
+                    max_pixels=configured.max_image_pixels,
                 )
                 reference = artifact_store.put_stream(
                     BytesIO(image.content), media_type=image.media_type
@@ -270,7 +309,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 writer.writerow(
                     [
                         image.id,
-                        image.filename,
+                        _safe_csv_cell(image.filename),
                         image.model_outcome or "",
                         image.human_decision or "",
                         image.error or "",
@@ -313,6 +352,19 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.get("/api/v1/jobs/{job_id}/report.html", response_model=None)
     def report_html(job_id: str, request: Request) -> Response:
         return report_response(job_id, request, "html")
+
+    @app.delete("/api/v1/jobs/{job_id}/artifacts", response_model=None)
+    def delete_artifacts(job_id: str, request: Request) -> dict[str, int] | JSONResponse:
+        with sessions() as session:
+            if session.get(Job, job_id) is None:
+                return _error(request, 404, "job_not_found", "Job not found")
+        try:
+            result = delete_job_artifacts(configured.artifact_root, sessions, job_id)
+        except (DeletionScopeError, OSError):
+            return _error(
+                request, 409, "deletion_scope_invalid", "Artifact deletion could not be verified"
+            )
+        return {"deleted_files": result.deleted_files}
 
     @app.post(
         "/api/v1/jobs/{job_id}/cancel",
@@ -488,6 +540,3 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         app.mount("/", StaticFiles(directory=web_dist, html=True), name="web")
 
     return app
-
-
-app = create_app()

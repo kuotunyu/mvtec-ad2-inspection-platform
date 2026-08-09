@@ -876,6 +876,43 @@
         "summary": "Get Job"
       }
     },
+    "/api/v1/jobs/{job_id}/artifacts": {
+      "delete": {
+        "operationId": "delete_artifacts_api_v1_jobs__job_id__artifacts_delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "schema": {
+              "title": "Job Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Delete Artifacts"
+      }
+    },
     "/api/v1/jobs/{job_id}/cancel": {
       "post": {
         "operationId": "cancel_job_api_v1_jobs__job_id__cancel_post",
@@ -933,6 +970,117 @@
           }
         },
         "summary": "Cancel Job"
+      }
+    },
+    "/api/v1/jobs/{job_id}/report.csv": {
+      "get": {
+        "operationId": "report_csv_api_v1_jobs__job_id__report_csv_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "schema": {
+              "title": "Job Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Report Csv"
+      }
+    },
+    "/api/v1/jobs/{job_id}/report.html": {
+      "get": {
+        "operationId": "report_html_api_v1_jobs__job_id__report_html_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "schema": {
+              "title": "Job Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Report Html"
+      }
+    },
+    "/api/v1/jobs/{job_id}/report.json": {
+      "get": {
+        "operationId": "report_json_api_v1_jobs__job_id__report_json_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "schema": {
+              "title": "Job Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Report Json"
       }
     },
     "/api/v1/models": {

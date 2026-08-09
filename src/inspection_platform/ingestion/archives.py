@@ -21,6 +21,7 @@ def iterate_safe_archive(
     stream: BinaryIO, *, max_files: int, max_bytes: int
 ) -> Iterator[ArchiveMember]:
     total = 0
+    seen: set[str] = set()
     try:
         with tarfile.open(fileobj=stream, mode="r:*") as archive:
             members = archive.getmembers()
@@ -31,6 +32,10 @@ def iterate_safe_archive(
                 path = PurePosixPath(name)
                 if not member.isfile() or path.is_absolute() or ".." in path.parts:
                     raise ArchiveValidationError(f"unsafe archive member: {name}")
+                normalized = path.as_posix()
+                if normalized in seen:
+                    raise ArchiveValidationError(f"duplicate archive member: {name}")
+                seen.add(normalized)
                 handle = archive.extractfile(member)
                 if handle is None:
                     raise ArchiveValidationError(f"cannot read archive member: {name}")
