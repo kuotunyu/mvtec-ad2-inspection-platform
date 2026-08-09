@@ -19,10 +19,16 @@ from .mock import IncompatibleBundleError
 InferencerFactory = Callable[[Path, str], Any]
 
 
+def _normalize_inferencer_device(device: str) -> str:
+    if device.startswith("cuda:") and device.removeprefix("cuda:").isdigit():
+        return "cuda"
+    return device
+
+
 def _default_factory(path: Path, device: str) -> Any:
     from anomalib.deploy import TorchInferencer
 
-    return TorchInferencer(path=path, device=device)
+    return TorchInferencer(path=path, device=_normalize_inferencer_device(device))
 
 
 @dataclass(frozen=True)

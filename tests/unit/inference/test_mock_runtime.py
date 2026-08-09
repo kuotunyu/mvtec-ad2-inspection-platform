@@ -6,7 +6,10 @@ from pathlib import Path
 import numpy as np
 
 from inspection_platform.contracts.models import BundleFile, ModelBundleManifest
-from inspection_platform.inference.anomalib_runtime import AnomalibRuntime
+from inspection_platform.inference.anomalib_runtime import (
+    AnomalibRuntime,
+    _normalize_inferencer_device,
+)
 from inspection_platform.inference.mock import IncompatibleBundleError, MockRuntime
 from inspection_platform.inference.runtime import InferenceRuntime
 
@@ -109,3 +112,9 @@ def test_product_runtime_loads_verified_anomalib_bundle(tmp_path: Path) -> None:
         inferencer_factory=lambda _path, device: FakeInferencer() if device == "cuda:0" else None,
     )
     assert loaded.predict(b"input", input_id="one").anomaly_score == 0.25
+
+
+def test_anomalib_device_normalizes_indexed_cuda_for_torch_inferencer() -> None:
+    assert _normalize_inferencer_device("cuda:0") == "cuda"
+    assert _normalize_inferencer_device("cuda") == "cuda"
+    assert _normalize_inferencer_device("cpu") == "cpu"
