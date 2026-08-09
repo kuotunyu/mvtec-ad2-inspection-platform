@@ -41,6 +41,17 @@ __pycache__/
 /dist/
 *.egg-info/
 
+# Local maintainer and agent workflow (kept outside public repository)
+.agents/
+.claude/
+CLAUDE.md
+PLAN.md
+PROGRESS.md
+PROJECT_PLAN.md
+interview*.md
+INTERVIEW_PREP.md
+*.private.md
+
 # Editors and operating systems
 .DS_Store
 Thumbs.db

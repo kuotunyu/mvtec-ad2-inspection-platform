@@ -1,15 +1,71 @@
 # MVTec AD 2 Industrial Inspection Platform
 
+![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688?logo=fastapi&logoColor=white)
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-EE4C2C?logo=pytorch&logoColor=white)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 ![以 synthetic 資料呈現異常證據與人工覆核的工業檢測工作站](docs/assets/screenshots/job-evidence.webp)
 
 這是一套 local-first 工業異常檢測與人工覆核平台，把 frozen benchmark evidence 轉為可續跑的 batch、視覺化檢閱與可稽核的人工作業流程。Repository 只使用 `fixtures/public-demo` 產生公開畫面，不重新散布 MVTec 資料；官方 frozen private gate 的結論為 `PRIVATE-NO-GO`。
 
+---
+
 ## 專案重點
 
-- **可追溯模型選擇：**8 個 category-specific champions <!-- claim:8|reports/champions.json|/champions|len -->，選自 56 次 formal public runs <!-- claim:56|reports/public_benchmark.json|/runs|len -->；每個公開數字都連結 committed machine-readable evidence。
-- **完整產品流程：**React 工作站、FastAPI、SQLite、leased worker、model registry、人工覆核與報告匯出。
-- **Fail-closed 邊界：**驗證 model identity、uploads、recovery、reports 與 deletion，並以 synthetic fixtures 完成 end-to-end 測試。
-- **誠實揭露：**官方結果不支持 v1 release，因此維持 `PRIVATE-NO-GO`，不以 private 結果 retune 或重新提交。
+- **可追溯模型選擇：** 8 個 category-specific champions <!-- claim:8|reports/champions.json|/champions|len -->，選自 56 次 formal public runs <!-- claim:56|reports/public_benchmark.json|/runs|len -->；每個公開數字都連結 committed machine-readable evidence。
+- **完整產品流程：** React 工作站、FastAPI、SQLite、leased worker、model registry、人工覆核與報告匯出。
+- **Fail-closed 邊界：** 驗證 model identity、uploads、recovery、reports 與 deletion，並以 synthetic fixtures 完成 end-to-end 測試。
+- **誠實揭露：** 官方結果不支持 v1 release，因此維持 `PRIVATE-NO-GO`，不以 private 結果 retune 或重新提交。
+
+---
+
+## 系統架構與 Pipeline
+
+### 端到端工業檢測與人機協作流程
+
+```mermaid
+%%{init: {'themeVariables': {'fontSize': '18px'}}}%%
+flowchart TD
+    subgraph InStage ["階段一：批次提交與任務註冊 (Batch Ingestion)"]
+        direction LR
+        Batch[("工業檢測影像批次<br/>(PNG / TIFF / JPEG)")] --> Validate["檔案格式與完整性檢核<br/>(單檔損壞不中斷批次)"] --> Task[("SQLite 任務隊列<br/>(租約式任務註冊)")]
+    end
+
+    subgraph WorkerStage ["階段二：Leased Worker GPU 推理與異常定位"]
+        direction LR
+        Task --> Worker["Leased Background Worker<br/>(獨占租約與冪等續跑)"] --> Reg[("Model Registry 權重檢核<br/>(PatchCore / Dinomaly)")] --> GPU["RTX 4090 GPU 推理<br/>(產生 TIFF 異常熱力圖)"]
+    end
+
+    subgraph ReviewStage ["階段三：模型判定與人機協作覆核 (Human-in-the-Loop)"]
+        direction LR
+        GPU --> Gate{"閾值自動門控<br/>(Score vs Threshold)"}
+        Gate -->|"低於閾值"| Pass[("PASS 模型判定")]
+        Gate -->|"高於閾值"| Review[("REVIEW 待審判定")]
+        Pass & Review --> UI(["React 工業檢測工作站<br/>(視覺化比對與人工覆核)"]) --> Report[("稽核報告匯出<br/>(分開記錄模型與人工決策)")]
+    end
+
+    InStage --> WorkerStage --> ReviewStage
+
+    classDef srcStyle fill:#e7f5ff,stroke:#1971c2,stroke-width:2px,color:#212529
+    classDef procStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#212529
+    classDef condStyle fill:#fff9db,stroke:#f59f00,stroke-width:2px,color:#212529
+    classDef safeStyle fill:#e6fcf5,stroke:#0ca678,stroke-width:2px,color:#212529
+    classDef revStyle fill:#ffe3e3,stroke:#e03131,stroke-width:2px,color:#212529
+
+    class Batch,Task,Reg srcStyle
+    class Validate,Worker,GPU,UI,Report procStyle
+    class Gate condStyle
+    class Pass safeStyle
+    class Review revStyle
+
+    style InStage fill:#f8f9fa,stroke:#1971c2,stroke-width:2px,color:#1971c2,stroke-dasharray: 4 4
+    style WorkerStage fill:#faf5ff,stroke:#7b1fa2,stroke-width:2px,color:#7b1fa2,stroke-dasharray: 4 4
+    style ReviewStage fill:#f4fbf7,stroke:#0ca678,stroke-width:2px,color:#0ca678,stroke-dasharray: 4 4
+```
+
+---
 
 ## 產品流程
 
@@ -19,6 +75,8 @@
 
 本 Repository 的 screenshots 全由 `fixtures/public-demo` 產生，不含 MVTec pixels，也不代表已部署於 production。
 
+---
+
 ## 證據，而非 leaderboard 宣稱
 
 - Frozen champion matrix 位於 [reports/champions.json](reports/champions.json)，可讀摘要位於 [reports/benchmark.md](reports/benchmark.md)。
@@ -27,11 +85,15 @@
 - EfficientAD 是已 benchmark 的 candidate，但未被選為 champion。
 - 唯一一次獲授權的 frozen archive 通過官方 local validator 並由官方 server 評測；看到結果後沒有重建或重新提交。
 
+---
+
 ## 官方 private gate
 
 官方 server 回傳的 AucPro_0.05 average：`private` 為 **31.24** <!-- claim:31.24|docs/assets/evidence/official-private-result.json|/metrics/private/auc_pro_0_05/average|.2f -->，`private_mixed` 為 **29.81** <!-- claim:29.81|docs/assets/evidence/official-private-result.json|/metrics/private_mixed/auc_pro_0_05/average|.2f -->。依預先承諾的規則，material mixed-lighting failure 必須揭露而不能事後調整，因此分類為 `PRIVATE-NO-GO`。
 
 提交的 archive 包含全部 4,090 張 TIFF anomaly maps，但沒有 optional thresholded PNGs。官方 ClassF1 與 SegF1 因此為零，不能解讀成 thresholded-map performance 的有效量測。經審查的 per-category aggregates 與 evidence hashes 位於 [official-private-result.json](docs/assets/evidence/official-private-result.json)；raw server evidence 保留在 Git 之外。
+
+---
 
 ## 已驗證的本機 serving 效能
 
@@ -50,6 +112,8 @@
 
 完整 sanitized artifact 另記錄 cold start、mean confidence intervals、throughput、CPU fallback、RSS、software versions、bundle identities 與 evidence hash manifest。
 
+---
+
 ## 架構
 
 ![由 React、FastAPI、SQLite、worker、artifact store 與 verified registry 組成的 local architecture](docs/assets/architecture.svg)
@@ -57,6 +121,8 @@
 API startup 不會 import training orchestration。Runtime databases、uploads、artifacts、datasets、checkpoints 與 real model bundles 全部位於 Git 之外。Docker 使用 digest-pinned multi-stage images、read-only root filesystem、unprivileged user、persistent runtime volumes 與 read-only model mount。
 
 詳細資料請見 [Architecture](docs/ARCHITECTURE.md)、[Case study](docs/CASE_STUDY.md)、[Model card](docs/MODEL_CARD.md)、[Data card](docs/DATA_CARD.md)、[Security](docs/SECURITY.md) 與 [Limitations](docs/LIMITATIONS.md)。
+
+---
 
 ## 執行 synthetic local demo
 
@@ -78,9 +144,13 @@ docker compose up -d --build --wait
 
 完整驗證與 real-model preparation 請依 [Reproducibility](docs/REPRODUCIBILITY.md) 和 [Remote setup](docs/REMOTE_SETUP.md) 操作。文件中的命令不會自行 push、publish、upload 或 submit。
 
+---
+
 ## 判定語意
 
 `PASS` 表示 frozen model score 低於其記錄 threshold；`REVIEW` 表示證據應由人員檢閱。兩者都不是 defect type、root cause 或 automatic reject decision。
+
+---
 
 ## License 與資料邊界
 
