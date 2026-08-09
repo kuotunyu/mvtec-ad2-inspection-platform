@@ -53,7 +53,7 @@
 - Produces `api`, typed request/response shapes from OpenAPI, `ApiError`, and `requestId` propagation.
 - Scripts: `npm run api:generate`, `api:check`, `typecheck`, `lint`, `test`, `build`, and `e2e`.
 
-- [ ] **Step 1: Write client behavior tests before the client**
+- [x] **Step 1: Write client behavior tests before the client**
 
 ```tsx
 it("maps the backend error envelope and keeps the request id", async () => {
@@ -67,20 +67,20 @@ it("maps the backend error envelope and keeps the request id", async () => {
 });
 ```
 
-- [ ] **Step 2: Run the client test and confirm the missing project fails**
+- [x] **Step 2: Run the client test and confirm the missing project fails**
 
 Run: `cd apps/web; npm test -- --run src/api/client.test.ts`
 Expected: FAIL because package configuration and client do not exist.
 
-- [ ] **Step 3: Create strict TypeScript configuration and deterministic generation**
+- [x] **Step 3: Create strict TypeScript configuration and deterministic generation**
 
 Generate types from `apps/web/openapi.json`; do not hand-maintain duplicate API interfaces. Generation writes to a temporary file and atomically replaces `generated.ts`. `api:check` regenerates and fails on a diff.
 
-- [ ] **Step 4: Implement the HTTP wrapper**
+- [x] **Step 4: Implement the HTTP wrapper**
 
 Use same-origin `/api`, JSON parsing with content-type validation, abort signals, and multipart upload progress where supported. Do not retry mutations automatically. Retry idempotent reads only for transient network failures with a small bounded backoff.
 
-- [ ] **Step 5: Run frontend foundation gates**
+- [x] **Step 5: Run frontend foundation gates**
 
 Run: `cd apps/web; npm ci`
 Run: `cd apps/web; npm run api:check`
@@ -88,7 +88,7 @@ Run: `cd apps/web; npm run typecheck`
 Run: `cd apps/web; npm test -- --run src/api/client.test.ts`
 Expected: all pass.
 
-- [ ] **Step 6: Commit the frontend foundation**
+- [x] **Step 6: Commit the frontend foundation**
 
 ```powershell
 git add apps/web
