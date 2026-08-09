@@ -29,6 +29,10 @@ class InspectionImage(Base):
     id: Mapped[str] = mapped_column(String(36), primary_key=True)
     job_id: Mapped[str] = mapped_column(ForeignKey("jobs.id"), nullable=False, index=True)
     artifact_key: Mapped[str] = mapped_column(String(255), nullable=False)
+    filename: Mapped[str] = mapped_column(String(255), nullable=False, default="image")
+    media_type: Mapped[str] = mapped_column(
+        String(64), nullable=False, default="application/octet-stream"
+    )
 
 
 class Prediction(Base):
@@ -45,6 +49,7 @@ class Review(Base):
     decision: Mapped[str] = mapped_column(String(32), nullable=False)
     note: Mapped[str | None] = mapped_column(Text)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    revision: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
 
 
 class AuditEvent(Base):

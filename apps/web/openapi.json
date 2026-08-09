@@ -1,34 +1,26 @@
 {
   "components": {
     "schemas": {
-      "CreateJobRequest": {
+      "Body_create_job_api_v1_jobs_post": {
         "properties": {
           "category": {
-            "enum": [
-              "can",
-              "fabric",
-              "fruit_jelly",
-              "rice",
-              "sheet_metal",
-              "vial",
-              "wallplugs",
-              "walnuts"
-            ],
             "title": "Category",
             "type": "string"
           },
-          "image_count": {
-            "maximum": 2000.0,
-            "minimum": 1.0,
-            "title": "Image Count",
-            "type": "integer"
+          "files": {
+            "items": {
+              "contentMediaType": "application/octet-stream",
+              "type": "string"
+            },
+            "title": "Files",
+            "type": "array"
           }
         },
         "required": [
           "category",
-          "image_count"
+          "files"
         ],
-        "title": "CreateJobRequest",
+        "title": "Body_create_job_api_v1_jobs_post",
         "type": "object"
       },
       "ErrorResponse": {
@@ -36,6 +28,18 @@
           "code": {
             "title": "Code",
             "type": "string"
+          },
+          "details": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Details"
           },
           "message": {
             "title": "Message",
@@ -54,6 +58,58 @@
         "title": "ErrorResponse",
         "type": "object"
       },
+      "EvidenceResponse": {
+        "properties": {
+          "dataset_manifest_sha256": {
+            "title": "Dataset Manifest Sha256",
+            "type": "string"
+          },
+          "downloadable": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Downloadable",
+            "type": "object"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "metric_definitions": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Metric Definitions",
+            "type": "object"
+          },
+          "official_submission_performed": {
+            "title": "Official Submission Performed",
+            "type": "boolean"
+          },
+          "private_evaluation": {
+            "title": "Private Evaluation",
+            "type": "string"
+          },
+          "public_gate_sha256": {
+            "title": "Public Gate Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "public_gate_sha256",
+          "dataset_manifest_sha256",
+          "private_evaluation",
+          "official_submission_performed",
+          "limitations",
+          "metric_definitions",
+          "downloadable"
+        ],
+        "title": "EvidenceResponse",
+        "type": "object"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -65,6 +121,233 @@
           }
         },
         "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "ImageResponse": {
+        "properties": {
+          "anomaly_map_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Anomaly Map Url"
+          },
+          "anomaly_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Anomaly Score"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "filename": {
+            "title": "Filename",
+            "type": "string"
+          },
+          "human_decision": {
+            "anyOf": [
+              {
+                "enum": [
+                  "ACCEPT",
+                  "REJECT",
+                  "UNCERTAIN"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Human Decision"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "model_outcome": {
+            "anyOf": [
+              {
+                "enum": [
+                  "PASS",
+                  "REVIEW"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Outcome"
+          },
+          "overlay_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overlay Url"
+          },
+          "revision": {
+            "default": 0,
+            "title": "Revision",
+            "type": "integer"
+          },
+          "source_url": {
+            "title": "Source Url",
+            "type": "string"
+          },
+          "threshold": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Threshold"
+          }
+        },
+        "required": [
+          "id",
+          "filename",
+          "source_url"
+        ],
+        "title": "ImageResponse",
+        "type": "object"
+      },
+      "JobDetailResponse": {
+        "properties": {
+          "category": {
+            "enum": [
+              "can",
+              "fabric",
+              "fruit_jelly",
+              "rice",
+              "sheet_metal",
+              "vial",
+              "wallplugs",
+              "walnuts"
+            ],
+            "title": "Category",
+            "type": "string"
+          },
+          "completed_count": {
+            "default": 0,
+            "title": "Completed Count",
+            "type": "integer"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "error_count": {
+            "default": 0,
+            "title": "Error Count",
+            "type": "integer"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "image_count": {
+            "title": "Image Count",
+            "type": "integer"
+          },
+          "images": {
+            "items": {
+              "$ref": "#/components/schemas/ImageResponse"
+            },
+            "title": "Images",
+            "type": "array"
+          },
+          "model_bundle_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Bundle Id"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "status": {
+            "default": "QUEUED",
+            "enum": [
+              "QUEUED",
+              "RUNNING",
+              "COMPLETED",
+              "COMPLETED_WITH_ERRORS",
+              "FAILED",
+              "CANCELLED"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "category",
+          "image_count",
+          "images",
+          "revision"
+        ],
+        "title": "JobDetailResponse",
+        "type": "object"
+      },
+      "JobListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/JobResponse"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total"
+        ],
+        "title": "JobListResponse",
         "type": "object"
       },
       "JobResponse": {
@@ -83,6 +366,28 @@
             "title": "Category",
             "type": "string"
           },
+          "completed_count": {
+            "default": 0,
+            "title": "Completed Count",
+            "type": "integer"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "error_count": {
+            "default": 0,
+            "title": "Error Count",
+            "type": "integer"
+          },
           "id": {
             "title": "Id",
             "type": "string"
@@ -92,8 +397,15 @@
             "type": "integer"
           },
           "status": {
-            "const": "QUEUED",
             "default": "QUEUED",
+            "enum": [
+              "QUEUED",
+              "RUNNING",
+              "COMPLETED",
+              "COMPLETED_WITH_ERRORS",
+              "FAILED",
+              "CANCELLED"
+            ],
             "title": "Status",
             "type": "string"
           }
@@ -104,6 +416,188 @@
           "image_count"
         ],
         "title": "JobResponse",
+        "type": "object"
+      },
+      "ModelListResponse": {
+        "properties": {
+          "champion_matrix_sha256": {
+            "title": "Champion Matrix Sha256",
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ModelSummary"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items",
+          "champion_matrix_sha256"
+        ],
+        "title": "ModelListResponse",
+        "type": "object"
+      },
+      "ModelSummary": {
+        "properties": {
+          "artifact_size_bytes": {
+            "title": "Artifact Size Bytes",
+            "type": "integer"
+          },
+          "category": {
+            "enum": [
+              "can",
+              "fabric",
+              "fruit_jelly",
+              "rice",
+              "sheet_metal",
+              "vial",
+              "wallplugs",
+              "walnuts"
+            ],
+            "title": "Category",
+            "type": "string"
+          },
+          "family": {
+            "title": "Family",
+            "type": "string"
+          },
+          "gpu_p95_latency_ms": {
+            "title": "Gpu P95 Latency Ms",
+            "type": "number"
+          },
+          "image_auroc": {
+            "title": "Image Auroc",
+            "type": "number"
+          },
+          "peak_vram_mib": {
+            "title": "Peak Vram Mib",
+            "type": "number"
+          },
+          "pixel_au_pro": {
+            "title": "Pixel Au Pro",
+            "type": "number"
+          },
+          "selection_reason": {
+            "title": "Selection Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "category",
+          "family",
+          "artifact_size_bytes",
+          "gpu_p95_latency_ms",
+          "peak_vram_mib",
+          "image_auroc",
+          "pixel_au_pro",
+          "selection_reason"
+        ],
+        "title": "ModelSummary",
+        "type": "object"
+      },
+      "ReviewQueueResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ImageResponse"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total"
+        ],
+        "title": "ReviewQueueResponse",
+        "type": "object"
+      },
+      "ReviewRequest": {
+        "properties": {
+          "decision": {
+            "enum": [
+              "ACCEPT",
+              "REJECT",
+              "UNCERTAIN"
+            ],
+            "title": "Decision",
+            "type": "string"
+          },
+          "expected_revision": {
+            "minimum": 0.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "required": [
+          "decision",
+          "expected_revision"
+        ],
+        "title": "ReviewRequest",
+        "type": "object"
+      },
+      "ReviewResponse": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "decision": {
+            "enum": [
+              "ACCEPT",
+              "REJECT",
+              "UNCERTAIN"
+            ],
+            "title": "Decision",
+            "type": "string"
+          },
+          "image_id": {
+            "title": "Image Id",
+            "type": "string"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "image_id",
+          "decision",
+          "note",
+          "revision",
+          "created_at"
+        ],
+        "title": "ReviewResponse",
         "type": "object"
       },
       "ValidationError": {
@@ -154,14 +648,155 @@
   },
   "openapi": "3.1.0",
   "paths": {
-    "/api/jobs": {
+    "/api/health/live": {
+      "get": {
+        "operationId": "health_live_api_health_live_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Health Live Api Health Live Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health Live"
+      }
+    },
+    "/api/health/ready": {
+      "get": {
+        "operationId": "health_ready_api_health_ready_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health Ready"
+      }
+    },
+    "/api/v1/artifacts/{image_id}/source": {
+      "get": {
+        "operationId": "source_artifact_api_v1_artifacts__image_id__source_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "image_id",
+            "required": true,
+            "schema": {
+              "title": "Image Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Source Artifact"
+      }
+    },
+    "/api/v1/evidence": {
+      "get": {
+        "operationId": "evidence_api_v1_evidence_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Evidence"
+      }
+    },
+    "/api/v1/jobs": {
+      "get": {
+        "operationId": "list_jobs_api_v1_jobs_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Jobs"
+      },
       "post": {
-        "operationId": "create_job_api_jobs_post",
+        "operationId": "create_job_api_v1_jobs_post",
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/CreateJobRequest"
+                "$ref": "#/components/schemas/Body_create_job_api_v1_jobs_post"
               }
             }
           },
@@ -192,9 +827,58 @@
         "summary": "Create Job"
       }
     },
-    "/api/jobs/{job_id}": {
+    "/api/v1/jobs/{job_id}": {
       "get": {
-        "operationId": "get_job_api_jobs__job_id__get",
+        "operationId": "get_job_api_v1_jobs__job_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "schema": {
+              "title": "Job Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobDetailResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Job"
+      }
+    },
+    "/api/v1/jobs/{job_id}/cancel": {
+      "post": {
+        "operationId": "cancel_job_api_v1_jobs__job_id__cancel_post",
         "parameters": [
           {
             "in": "path",
@@ -227,6 +911,16 @@
             },
             "description": "Not Found"
           },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
           "422": {
             "content": {
               "application/json": {
@@ -238,29 +932,160 @@
             "description": "Validation Error"
           }
         },
-        "summary": "Get Job"
+        "summary": "Cancel Job"
       }
     },
-    "/health/live": {
+    "/api/v1/models": {
       "get": {
-        "operationId": "health_live_health_live_get",
+        "operationId": "models_api_v1_models_get",
         "responses": {
           "200": {
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": {
-                    "type": "string"
-                  },
-                  "title": "Response Health Live Health Live Get",
-                  "type": "object"
+                  "$ref": "#/components/schemas/ModelListResponse"
                 }
               }
             },
             "description": "Successful Response"
           }
         },
-        "summary": "Health Live"
+        "summary": "Models"
+      }
+    },
+    "/api/v1/reviews": {
+      "get": {
+        "operationId": "review_queue_api_v1_reviews_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewQueueResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Review Queue"
+      }
+    },
+    "/api/v1/reviews/{image_id}": {
+      "post": {
+        "operationId": "record_review_api_v1_reviews__image_id__post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "image_id",
+            "required": true,
+            "schema": {
+              "title": "Image Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Record Review"
+      }
+    },
+    "/evidence/champions.json": {
+      "get": {
+        "operationId": "champions_download_evidence_champions_json_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Champions Download"
+      }
+    },
+    "/evidence/public-benchmark.json": {
+      "get": {
+        "operationId": "benchmark_download_evidence_public_benchmark_json_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Benchmark Download"
+      }
+    },
+    "/metrics": {
+      "get": {
+        "operationId": "metrics_metrics_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Metrics"
       }
     }
   }
