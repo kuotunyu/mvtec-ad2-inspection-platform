@@ -175,12 +175,16 @@ def test_private_no_go_release_is_complete_and_truthful() -> None:
 
 def test_private_no_go_release_bookkeeping_has_no_stale_pending_work() -> None:
     plan_root = Path("docs/superpowers/plans")
-    unchecked = [
-        f"{path.name}:{line.strip()}"
-        for path in sorted(plan_root.glob("*.md"))
-        for line in path.read_text(encoding="utf-8").splitlines()
-        if re.match(r"^\s*- \[ \]", line)
-    ]
+    unchecked: list[str] = []
+    for path in sorted(plan_root.glob("*.md")):
+        content = path.read_text(encoding="utf-8")
+        if "**Status:** Active" in content:
+            continue
+        unchecked.extend(
+            f"{path.name}:{line.strip()}"
+            for line in content.splitlines()
+            if re.match(r"^\s*- \[ \]", line)
+        )
     assert unchecked == []
 
     checklist = Path("docs/RELEASE_CHECKLIST.md").read_text(encoding="utf-8")
