@@ -3,6 +3,7 @@ import type { components } from "./generated";
 export type ErrorResponse = components["schemas"]["ErrorResponse"];
 export type JobResponse = components["schemas"]["JobResponse"];
 export type JobDetailResponse = components["schemas"]["JobDetailResponse"];
+export type ImageResponse = components["schemas"]["ImageResponse"];
 export type JobListResponse = components["schemas"]["JobListResponse"];
 export type ReviewQueueResponse = components["schemas"]["ReviewQueueResponse"];
 export type ReviewRequest = components["schemas"]["ReviewRequest"];

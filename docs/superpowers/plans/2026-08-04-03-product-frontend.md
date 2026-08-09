@@ -219,7 +219,7 @@ git commit -m "feat(frontend): add batch inspection intake"
 - Shows job status, completed/error counts, model bundle identity, threshold, per-image score/outcome, source/map/overlay comparison, and report downloads.
 - `HeatmapCompare` supports side-by-side and keyboard-controlled reveal slider without drawing conclusions beyond the API record.
 
-- [ ] **Step 1: Write progress and evidence tests**
+- [x] **Step 1: Write progress and evidence tests**
 
 ```tsx
 it("keeps successful results visible when one image failed", async () => {
@@ -230,25 +230,25 @@ it("keeps successful results visible when one image failed", async () => {
 });
 ```
 
-- [ ] **Step 2: Run tests and confirm failure**
+- [x] **Step 2: Run tests and confirm failure**
 
 Run: `cd apps/web; npm test -- --run src/pages/JobDetail.test.tsx src/components/HeatmapCompare.test.tsx`
 Expected: FAIL because the evidence page is absent.
 
-- [ ] **Step 3: Implement bounded progress polling and terminal refresh**
+- [x] **Step 3: Implement bounded progress polling and terminal refresh**
 
 Poll while `QUEUED` or `RUNNING`, slow the interval when the tab is hidden, stop on terminal state, and allow manual refresh. Use the server revision to avoid stale status replacement.
 
-- [ ] **Step 4: Implement the evidence gallery and dialog**
+- [x] **Step 4: Implement the evidence gallery and dialog**
 
 Cards display exact score, exact threshold, textual outcome, processing duration, and human state. The dialog provides original/map/overlay views, opacity control, accessible labels, previous/next navigation, artifact hashes, and a direct route into review. Preserve natural aspect ratio and never crop evidence by default.
 
-- [ ] **Step 5: Verify partial, cancelled, and failed jobs**
+- [x] **Step 5: Verify partial, cancelled, and failed jobs**
 
 Run: `cd apps/web; npm test -- --run src/pages/JobDetail.test.tsx src/components`
 Expected: terminal states, missing artifacts, stale polling, slider keyboard control, and accessible dialog tests pass.
 
-- [ ] **Step 6: Commit job evidence UI**
+- [x] **Step 6: Commit job evidence UI**
 
 ```powershell
 git add apps/web/src/pages/JobDetail.tsx apps/web/src/components
