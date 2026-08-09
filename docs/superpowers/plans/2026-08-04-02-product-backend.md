@@ -96,7 +96,7 @@ Run: `uv run alembic upgrade head` with a temporary database URL.
 Run: `uv run pytest tests/unit/db -q`
 Expected: migration and all database tests pass.
 
-- [ ] **Step 5: Commit the database foundation**
+- [x] **Step 5: Commit the database foundation**
 
 ```powershell
 git add src/inspection_platform/settings.py src/inspection_platform/db alembic.ini tests/unit/db
@@ -147,7 +147,7 @@ Claim one queued or expired-running job in a short transaction. Store `worker_id
 Run: `uv run pytest tests/integration/jobs/test_leases.py -q`
 Expected: both concurrent claimers complete, exactly one receives the job, and expired-lease recovery is idempotent.
 
-- [ ] **Step 5: Commit lifecycle and leases**
+- [x] **Step 5: Commit lifecycle and leases**
 
 ```powershell
 git add src/inspection_platform/jobs tests/unit/jobs tests/integration/jobs
@@ -203,7 +203,7 @@ If database creation fails, remove only newly created unreferenced temporary art
 Run: `uv run pytest tests/unit/ingestion tests/integration/ingestion -q`
 Expected: all valid image, zip, tar, limit, duplicate, rollback, and deduplication cases pass.
 
-- [ ] **Step 6: Commit secure ingestion**
+- [x] **Step 6: Commit secure ingestion**
 
 ```powershell
 git add src/inspection_platform/storage src/inspection_platform/ingestion tests/unit/ingestion tests/integration/ingestion
@@ -229,7 +229,7 @@ git commit -m "feat(ingestion): secure batch image uploads"
 - `LoadedModel.predict(image: NDArrayUInt8) -> PredictionRecord`.
 - `ModelRegistry.activate(category, bundle_id)` verifies every file hash and enforces one active bundle per category. Normal mode accepts only a public-selected frozen champion; explicit demo mode accepts only `runtime_kind="mock"`, `model_family=None`, and `evaluation_scope="synthetic-ci-only"`.
 
-- [ ] **Step 1: Write tampering and compatibility tests**
+- [x] **Step 1: Write tampering and compatibility tests**
 
 ```python
 def test_registry_rejects_tampered_weight(valid_bundle: BundleFixture) -> None:
@@ -243,20 +243,20 @@ def test_runtime_rejects_prediction_contract_mismatch(valid_bundle: BundleFixtur
         runtime.load(valid_bundle.manifest)
 ```
 
-- [ ] **Step 2: Run focused tests and confirm failure**
+- [x] **Step 2: Run focused tests and confirm failure**
 
 Run: `uv run pytest tests/unit/registry tests/unit/inference -q`
 Expected: FAIL because registry and runtime boundaries do not exist.
 
-- [ ] **Step 3: Implement verification-first registration and a deterministic mock**
+- [x] **Step 3: Implement verification-first registration and a deterministic mock**
 
 The mock runtime must return the same score and anomaly-map dimensions for the same image hash and bundle identity. It exists for CI and public synthetic demos and must label outputs `runtime="mock"`; never imply it is a trained model.
 
-- [ ] **Step 4: Implement the Anomalib serving adapter without training imports in API startup**
+- [x] **Step 4: Implement the Anomalib serving adapter without training imports in API startup**
 
 Load a bundle lazily in the worker, validate category, preprocessing, threshold, weights, device, and library compatibility before setting it active. Normalize the adapter output into the Plan 01 `PredictionRecord` and preserve raw score before threshold comparison.
 
-- [ ] **Step 5: Verify clean-process loading**
+- [x] **Step 5: Verify clean-process loading**
 
 Run: `uv run pytest tests/integration/inference/test_bundle_loading.py -q`
 Expected: valid mock and fixture bundles load; tampered, incompatible, wrong-category, and missing-file bundles fail closed.

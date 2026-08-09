@@ -1,8 +1,12 @@
 from __future__ import annotations
 
 import hashlib
+from pathlib import Path
+
+import numpy as np
 
 from inspection_platform.contracts.models import BundleFile, ModelBundleManifest
+from inspection_platform.inference.anomalib_runtime import AnomalibRuntime
 from inspection_platform.inference.mock import IncompatibleBundleError, MockRuntime
 
 
@@ -33,3 +37,37 @@ def test_mock_runtime_rejects_wrong_contract() -> None:
         pass
     else:
         raise AssertionError("incompatible contract must fail closed")
+
+
+def test_anomalib_runtime_loads_lazily_and_normalizes_prediction(tmp_path: Path) -> None:
+    model = tmp_path / "model.pt"
+    model.write_bytes(b"model")
+    manifest = ModelBundleManifest(
+        category="can",
+        runtime_kind="anomalib",
+        model_family="patchcore",
+        files=(
+            BundleFile(
+                path="model.pt",
+                sha256=hashlib.sha256(b"model").hexdigest(),
+                size=5,
+            ),
+        ),
+        preprocessing_sha256="1" * 64,
+        threshold=0.5,
+    )
+
+    class Result:
+        pred_score = np.asarray([0.75], dtype=np.float32)
+        anomaly_map = np.ones((4, 4), dtype=np.float32)
+
+    class FakeInferencer:
+        def predict(self, _image: object) -> Result:
+            return Result()
+
+    loaded = AnomalibRuntime.load(
+        manifest, tmp_path, inferencer_factory=lambda _path, _device: FakeInferencer()
+    )
+    record = loaded.predict(b"not-decoded-by-fake", input_id="one")
+    assert record.anomaly_score == 0.75
+    assert record.category == "can"
