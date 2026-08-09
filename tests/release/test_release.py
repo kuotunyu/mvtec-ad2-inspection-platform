@@ -155,8 +155,10 @@ def test_local_release_candidate_is_complete_and_truthful() -> None:
     for row in evidence["model_bundles"].values():
         assert re.fullmatch(r"[0-9a-f]{64}", row["bundle_identity"])
         assert re.fullmatch(r"[0-9a-f]{64}", row["manifest_sha256"])
+    assert evidence["lock_sha256_kind"] == "utf8-lf-canonical"
     for relative, expected in evidence["lock_sha256"].items():
-        assert hashlib.sha256(Path(relative).read_bytes()).hexdigest() == expected
+        canonical = Path(relative).read_text(encoding="utf-8").replace("\r\n", "\n")
+        assert hashlib.sha256(canonical.encode()).hexdigest() == expected
 
 
 def test_release_handoff_stays_at_the_authorization_boundary() -> None:

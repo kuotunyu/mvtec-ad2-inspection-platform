@@ -87,6 +87,7 @@
     "apps/web/package-lock.json": "1148d0ee30f6f870a82958a0985474861d91620912b5fc51834adf905c2a63eb",
     "uv.lock": "fe2dfdc8a680ee8fffc9ca80b794f38be382ac1bcff9f485972b66dc8fea2c95"
   },
+  "lock_sha256_kind": "utf8-lf-canonical",
   "model_bundles": {
     "can": {
       "bundle_identity": "d846b26e3eff9c9c86d2f72f8f6516fd671cc3773f46fe1d1a7bf1831eafb007",

@@ -19,7 +19,7 @@ This status means the public benchmark, product, Docker, security, documentation
 - [x] Security and Git public-boundary scans report zero findings.
 - [x] Eight real champion bundles pass clean-process GPU serving from the verified source SHA.
 - [x] Clean committed export passes tests, package builds, wheel import, CycloneDX SBOM generation, Docker smoke, and the real browser system workflow.
-- [x] Release evidence records lock, dataset, champion, registry, bundle, metric, Docker, GPU, and source identities.
+- [x] Release evidence records LF-canonical lock hashes plus dataset, champion, registry, bundle, metric, Docker, GPU, and source identities.
 
 ## Frozen official submission handoff
 
@@ -56,4 +56,3 @@ Do not perform these actions without explicit authorization and the required off
 - [ ] Publication explicitly authorized.
 
 These unchecked items are intentionally outside the `PUBLIC-RC` gate.
-
