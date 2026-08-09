@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Status:** Active
+**Status:** Complete
 
 **Goal:** Publish `kuotunyu/mvtec-ad2-inspection-platform` as a Public, concise Traditional Chinese portfolio repository with verified evidence boundaries and `kuotunyu` as its sole contributor.
 
@@ -237,7 +237,7 @@ Expected: a clean worktree and a `kuotunyu`-only commit. Run focused publication
 - Consumes: Task 2 verified clean committed history, active `gh` authentication for `kuotunyu`, and the approved GitHub metadata.
 - Produces: the Public GitHub repository, `origin`, pushed `main`, passing GitHub Actions, verified remote metadata, and continuity records.
 
-- [ ] **Step 1: Reconfirm the action-time preconditions**
+- [x] **Step 1: Reconfirm the action-time preconditions**
 
 Run:
 
@@ -250,7 +250,7 @@ git remote -v
 
 Expected: authenticated as `kuotunyu`; repository lookup returns not found; worktree and remote list are empty. Never print or store the authentication token.
 
-- [ ] **Step 2: Create the Public repository and initial push**
+- [x] **Step 2: Create the Public repository and initial push**
 
 Run:
 
@@ -260,7 +260,7 @@ gh repo create kuotunyu/mvtec-ad2-inspection-platform --public --source . --remo
 
 Expected: repository creation succeeds, `origin` points to `https://github.com/kuotunyu/mvtec-ad2-inspection-platform.git`, and local `main` tracks `origin/main`.
 
-- [ ] **Step 3: Apply the focused About metadata**
+- [x] **Step 3: Apply the focused About metadata**
 
 Run:
 
@@ -270,7 +270,7 @@ gh repo edit kuotunyu/mvtec-ad2-inspection-platform --enable-issues=true --enabl
 
 Expected: command succeeds and no Website is configured.
 
-- [ ] **Step 4: Verify the remote metadata and sole-contributor history**
+- [x] **Step 4: Verify the remote metadata and sole-contributor history**
 
 Run:
 
@@ -282,7 +282,7 @@ gh api repos/kuotunyu/mvtec-ad2-inspection-platform/contributors --paginate --jq
 
 Expected: Public, `main`, exact description, empty homepage, exactly the approved ten topics, commit identities only `kuotunyu`, and the contributors endpoint either reports only `kuotunyu` or is temporarily empty while GitHub computes it. Any different identity is a blocker.
 
-- [ ] **Step 5: Wait for the initial GitHub Actions run**
+- [x] **Step 5: Wait for the initial GitHub Actions run**
 
 Find the push workflow for the current remote SHA and wait for it:
 
@@ -295,7 +295,7 @@ gh run view $run.databaseId --repo kuotunyu/mvtec-ad2-inspection-platform --json
 
 Expected: workflow conclusion `success`, including `python`, `frontend`, `publication`, `docker`, and `system`. Diagnose failures with `systematic-debugging`; apply fixes with TDD and repeat local gates before pushing again.
 
-- [ ] **Step 6: Record publication completion and push the bookkeeping commit**
+- [x] **Step 6: Record publication completion and push the bookkeeping commit**
 
 Mark every Task 3 checkbox complete and change this plan's status from `Active` to `Complete`. Overwrite `.codex-local/PROJECT_STATUS.md` and append one compact `.codex-local/WORKLOG.md` entry with the remote URL, commit SHA, exact objective verification results, and any failure reason; keep both excluded. Stage only this plan, audit identity and trailers, then commit and push:
 
@@ -307,7 +307,7 @@ git push origin main
 
 Expected: push succeeds; `.codex-local` and `AGENTS.md` remain excluded and do not appear in `git status`.
 
-- [ ] **Step 7: Perform final remote and clean-export verification**
+- [x] **Step 7: Perform final remote and clean-export verification**
 
 Run focused publication/release tests, `scripts/verify_claims.py`, security scan, `verify_public_boundary.py --git-tree HEAD`, and a final `scripts/clean_export.ps1 -Treeish HEAD` report at `D:\mvtec-ad2-release\github-publication-final-<short-sha>.json`. Wait for the final push GitHub Actions run and require `success`. Recheck:
 
@@ -320,3 +320,5 @@ gh repo view kuotunyu/mvtec-ad2-inspection-platform --json visibility,defaultBra
 ```
 
 Expected: clean worktree; local HEAD equals `origin/main`; the only populated contributor is `kuotunyu`; metadata matches the design; final local and GitHub Actions gates pass.
+
+**Execution evidence:** The initial push run `31323347648` exposed four Linux portability gaps: OS-dependent screenshot bytes, a Windows-only subprocess typing attribute, a Windows-only curl executable name, and null worktree snapshots in `pwsh`. Run `31323842547` proved the first corrections fixed Linux mypy and multipart upload but exposed SVG line-ending hashes and empty-array unrolling. TDD commits `47fd9e0` and `b1146b1` made manifest verification platform-stable, canonicalized SVGs to LF, resolved curl as a cross-platform application, and compared worktree snapshots as strings. Run `31324250645` then passed all five GitHub Actions jobs.
