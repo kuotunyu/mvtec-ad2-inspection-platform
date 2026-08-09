@@ -173,6 +173,20 @@ def test_private_no_go_release_is_complete_and_truthful() -> None:
         assert hashlib.sha256(canonical.encode()).hexdigest() == expected
 
 
+def test_private_no_go_release_bookkeeping_has_no_stale_pending_work() -> None:
+    plan_root = Path("docs/superpowers/plans")
+    unchecked = [
+        f"{path.name}:{line.strip()}"
+        for path in sorted(plan_root.glob("*.md"))
+        for line in path.read_text(encoding="utf-8").splitlines()
+        if re.match(r"^\s*- \[ \]", line)
+    ]
+    assert unchecked == []
+
+    checklist = Path("docs/RELEASE_CHECKLIST.md").read_text(encoding="utf-8")
+    assert "pending" not in checklist.lower()
+
+
 def test_release_handoff_stays_at_the_authorization_boundary() -> None:
     checklist = Path("docs/RELEASE_CHECKLIST.md").read_text(encoding="utf-8")
     remote_setup = Path("docs/REMOTE_SETUP.md").read_text(encoding="utf-8")

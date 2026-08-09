@@ -531,7 +531,7 @@ Run: `uv run python -m experiments.submission.build --test-type private --output
 Run: `uv run python -m experiments.submission.build --test-type private_mixed --output-root "$env:MVTECAD2_SUBMISSION_ROOT"`
 Expected: two official-validator-passing archives, two checksum files, and a redacted summary.
 
-- [ ] **Step 7: Commit only code and redacted summary schema**
+- [x] **Step 7: Commit only code and redacted summary schema**
 
 ```powershell
 git add experiments/submission tests reports/schemas

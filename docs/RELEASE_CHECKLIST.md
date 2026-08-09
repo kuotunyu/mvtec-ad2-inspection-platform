@@ -12,7 +12,7 @@ The public benchmark, product, Docker, security, documentation, clean-export, an
 
 ## Completed local gates
 
-- [x] Experiment verifier reports the expected external-only pending state.
+- [x] Experiment verifier passes against the completed official submission handoff.
 - [x] Backend verifier passes.
 - [x] Frontend API, lint, type, unit, build, asset, accessibility, and browser gates pass.
 - [x] Dataset-to-product contract chain passes for all eight categories.
