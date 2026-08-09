@@ -35,6 +35,9 @@ __pycache__/
 # Frontend and packaging outputs
 /apps/web/node_modules/
 /apps/web/dist/
+/apps/web/coverage/
+/apps/web/test-results/
+/apps/web/playwright-report/
 /dist/
 *.egg-info/
 

@@ -374,23 +374,23 @@ git commit -m "feat(frontend): present model evidence and limits"
 - Create: `apps/web/playwright.config.ts`
 - Create: `apps/web/scripts/verify-public-assets.mjs`
 
-- [ ] **Step 1: Centralize deterministic synthetic fixtures**
+- [x] **Step 1: Centralize deterministic synthetic fixtures**
 
 Fixtures cover queued, running, complete, partial-error, failed, cancelled, unresolved review, resolved review, public-only evidence, private pass, and lighting-shift no-go. Images are visibly synthetic geometric parts and contain no MVTec pixels.
 
-- [ ] **Step 2: Add a complete browser workflow test**
+- [x] **Step 2: Add a complete browser workflow test**
 
 Use Playwright to create a synthetic batch, observe progress, inspect source/map/overlay, resolve one review with confirmation, download a report, and inspect the active champion. Assert the UI never calls a model outcome a final rejection.
 
-- [ ] **Step 3: Add automated accessibility checks**
+- [x] **Step 3: Add automated accessibility checks**
 
 Run axe on all five pages in representative states, keyboard-traverse upload and review, verify focus restoration, and test at 200% zoom plus a 390-pixel viewport.
 
-- [ ] **Step 4: Scan built assets for prohibited material**
+- [x] **Step 4: Scan built assets for prohibited material**
 
 `verify-public-assets.mjs` rejects MVTec category image hashes, common local absolute paths, secrets, source maps in production, oversized committed binaries, and unexpected remote analytics URLs.
 
-- [ ] **Step 5: Run the clean frontend gate**
+- [x] **Step 5: Run the clean frontend gate**
 
 Run: `cd apps/web; npm ci`
 Run: `cd apps/web; npm run api:check`
@@ -402,7 +402,7 @@ Run: `cd apps/web; npm run verify:public-assets`
 Run: `cd apps/web; npm run e2e` against the Plan 02 mock backend.
 Expected: every command passes with no console errors, failed requests, accessibility violations, or prohibited assets.
 
-- [ ] **Step 6: Commit frontend verification**
+- [x] **Step 6: Commit frontend verification**
 
 ```powershell
 git add apps/web
