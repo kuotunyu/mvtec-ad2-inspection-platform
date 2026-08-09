@@ -261,7 +261,7 @@ Load a bundle lazily in the worker, validate category, preprocessing, threshold,
 Run: `uv run pytest tests/integration/inference/test_bundle_loading.py -q`
 Expected: valid mock and fixture bundles load; tampered, incompatible, wrong-category, and missing-file bundles fail closed.
 
-- [ ] **Step 6: Commit the model-serving boundary**
+- [x] **Step 6: Commit the model-serving boundary**
 
 ```powershell
 git add src/inspection_platform/registry src/inspection_platform/inference tests/unit/registry tests/unit/inference tests/integration/inference
@@ -282,7 +282,7 @@ git commit -m "feat(inference): serve verified champion bundles"
 - Produces `WorkerRunner.run_once() -> WorkResult`, `WorkerRunner.serve(stop_event)`, and CLI `inspection-worker serve`.
 - One image result is committed only after all referenced artifacts exist and their hashes match.
 
-- [ ] **Step 1: Write idempotency, cancellation, and crash tests**
+- [x] **Step 1: Write idempotency, cancellation, and crash tests**
 
 ```python
 def test_resume_skips_completed_images(worker_fixture: WorkerFixture) -> None:
@@ -297,20 +297,20 @@ def test_one_bad_image_yields_partial_completion(worker_fixture: WorkerFixture) 
     assert result.succeeded == 1 and result.failed == 1
 ```
 
-- [ ] **Step 2: Run worker tests and confirm failure**
+- [x] **Step 2: Run worker tests and confirm failure**
 
 Run: `uv run pytest tests/unit/worker -q`
 Expected: FAIL because the runner does not exist.
 
-- [ ] **Step 3: Implement per-image atomic inference and heartbeat renewal**
+- [x] **Step 3: Implement per-image atomic inference and heartbeat renewal**
 
 Load the category champion once per job, decode the stored input, predict, render an anomaly map and alpha overlay, write content-addressed artifacts, then insert the prediction record transactionally. Renew the lease on a separate bounded heartbeat loop. Check cancellation between images.
 
-- [ ] **Step 4: Distinguish image failure from job failure**
+- [x] **Step 4: Distinguish image failure from job failure**
 
 A corrupt individual input becomes an image-level error and permits `COMPLETED_WITH_ERRORS`. Bundle integrity failure, incompatible runtime, lost lease, or unavailable storage fails the job. Store exception class and a stable error code; do not persist model tracebacks or filesystem paths in public responses.
 
-- [ ] **Step 5: Verify recovery and concurrency**
+- [x] **Step 5: Verify recovery and concurrency**
 
 Run: `uv run pytest tests/unit/worker tests/integration/worker -q`
 Expected: crash/restart, expired lease, cancellation, partial completion, and repeated `run_once` tests pass without duplicate predictions.
