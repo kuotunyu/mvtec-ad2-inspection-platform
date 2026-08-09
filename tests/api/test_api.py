@@ -22,3 +22,10 @@ def test_errors_use_stable_envelope() -> None:
     response = client.get("/api/jobs/not-found")
     assert response.status_code == 404
     assert set(response.json()) == {"code", "message", "request_id"}
+
+
+def test_metrics_are_bounded_and_prometheus_formatted() -> None:
+    client = TestClient(create_app())
+    response = client.get("/metrics")
+    assert response.status_code == 200
+    assert "inspection_jobs_total" in response.text

@@ -3,7 +3,8 @@ from __future__ import annotations
 from uuid import uuid4
 
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
+from prometheus_client import CollectorRegistry, Counter, generate_latest
 
 from .schemas import CreateJobRequest, ErrorResponse, JobResponse
 
@@ -11,6 +12,8 @@ from .schemas import CreateJobRequest, ErrorResponse, JobResponse
 def create_app() -> FastAPI:
     app = FastAPI(title="MVTec AD 2 Inspection API", version="1.0.0")
     jobs: dict[str, JobResponse] = {}
+    registry = CollectorRegistry()
+    jobs_total = Counter("inspection_jobs", "Created inspection jobs", registry=registry)
 
     @app.get("/health/live")
     def health_live() -> dict[str, str]:
@@ -20,7 +23,12 @@ def create_app() -> FastAPI:
     def create_job(request: CreateJobRequest) -> JobResponse:
         job = JobResponse(id=str(uuid4()), **request.model_dump())
         jobs[job.id] = job
+        jobs_total.inc()
         return job
+
+    @app.get("/metrics")
+    def metrics() -> Response:
+        return Response(generate_latest(registry), media_type="text/plain; version=0.0.4")
 
     @app.get(
         "/api/jobs/{job_id}",

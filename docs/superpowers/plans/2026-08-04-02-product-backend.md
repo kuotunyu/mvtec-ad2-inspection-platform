@@ -375,7 +375,7 @@ Run: `uv run python scripts/export_openapi.py --output apps/web/openapi.json` af
 Run: `uv run pytest tests/api -q`
 Expected: API tests pass and OpenAPI contains the documented v1 routes with no internal path fields.
 
-- [ ] **Step 5: Commit the API**
+- [x] **Step 5: Commit the API**
 
 ```powershell
 git add apps/api scripts/export_openapi.py apps/web/openapi.json tests/api
@@ -403,7 +403,7 @@ git commit -m "feat(api): expose inspection and review workflows"
 - `ReportBuilder.build(job_id) -> InspectionReport`; deterministic JSON is canonical evidence and CSV/HTML are projections.
 - `RetentionService.delete_job(job_id) -> DeletionReceipt` deletes only referenced artifacts after a transactional tombstone.
 
-- [ ] **Step 1: Write review concurrency and report determinism tests**
+- [x] **Step 1: Write review concurrency and report determinism tests**
 
 ```python
 def test_review_append_only_history_and_revision(review_service: ReviewService) -> None:
@@ -416,20 +416,20 @@ def test_report_json_is_byte_stable(report_builder: ReportBuilder) -> None:
     assert report_builder.render_json(JOB_ID) == report_builder.render_json(JOB_ID)
 ```
 
-- [ ] **Step 2: Run focused tests and confirm failure**
+- [x] **Step 2: Run focused tests and confirm failure**
 
 Run: `uv run pytest tests/unit/reviews tests/unit/reports -q`
 Expected: FAIL because review and report services do not exist.
 
-- [ ] **Step 3: Implement optimistic review revisions and evidence reports**
+- [x] **Step 3: Implement optimistic review revisions and evidence reports**
 
 Include job identity, category, bundle identity/hash, threshold method/value, input hashes, scores, PASS/REVIEW outcomes, artifact hashes, human-review history, runtime identity, and generation timestamp. Escape all display fields in HTML. CSV uses fixed columns and RFC 4180 quoting.
 
-- [ ] **Step 4: Implement bounded metrics and safe retention**
+- [x] **Step 4: Implement bounded metrics and safe retention**
 
 Expose job counts, queue age, image outcomes, inference latency, job duration, worker heartbeat age, and error-code counts. Do not use raw job/image IDs as metric labels. Retention deletes only database-resolved files under the verified artifact root, records a receipt, and is retry-safe.
 
-- [ ] **Step 5: Run report, retention, and metric gates**
+- [x] **Step 5: Run report, retention, and metric gates**
 
 Run: `uv run pytest tests/unit/reviews tests/unit/reports tests/unit/test_retention.py tests/api/test_metrics.py -q`
 Expected: all tests pass, including XSS strings, CSV formulas, concurrent reviews, missing artifacts, and repeat deletion.
