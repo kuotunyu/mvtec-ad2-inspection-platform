@@ -7,12 +7,13 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from io import BytesIO
 from pathlib import Path
+from typing import Any, BinaryIO, cast
 
 import numpy as np
 import tifffile
 from PIL import Image
 
-from experiments.submission.build import PrivateManifest, inspect_submission
+from experiments.submission.build import PrivateManifest, SubmissionInspection
 from experiments.submission.thresholds import SubmissionThreshold
 
 
@@ -73,36 +74,77 @@ def _require_exact_identities(
         )
 
 
-def _validate_image_contracts(archive: Path) -> None:
+class _HashingReader:
+    def __init__(self, stream: BinaryIO, digest: Any) -> None:
+        self.stream = stream
+        self.digest = digest
+
+    def read(self, size: int = -1) -> bytes:
+        payload = self.stream.read(size)
+        self.digest.update(payload)
+        return payload
+
+
+@dataclass(frozen=True, slots=True)
+class _StreamInspection:
+    inspection: SubmissionInspection
+    continuous_shapes: dict[str, tuple[int, int]]
+    thresholded_shapes: dict[str, tuple[int, int]]
+    archive_sha256: str
+
+
+def _inspect_validate_and_hash(archive: Path) -> _StreamInspection:
+    continuous: list[str] = []
+    thresholded: list[str] = []
     continuous_shapes: dict[str, tuple[int, int]] = {}
     thresholded_shapes: dict[str, tuple[int, int]] = {}
-    with tarfile.open(archive, "r:gz") as stream:
-        for member in stream:
-            parts = Path(member.name).parts
-            if len(parts) != 5 or not member.isfile():
-                continue
-            payload = stream.extractfile(member)
-            if payload is None:
-                raise ValueError(f"archive image member cannot be read: {member.name}")
-            if parts[1] == "anomaly_images" and Path(member.name).suffix == ".tiff":
-                identity = "/".join(parts[2:]).removesuffix(".tiff")
-                values = np.asarray(tifffile.imread(BytesIO(payload.read())))
-                if values.dtype != np.float16 or values.ndim != 2 or not np.isfinite(values).all():
-                    raise ValueError("continuous images must be finite 2D float16 TIFF files")
-                continuous_shapes[identity] = values.shape
-            elif parts[1] == "anomaly_images_thresholded" and Path(member.name).suffix == ".png":
-                identity = "/".join(parts[2:]).removesuffix(".png")
-                with Image.open(BytesIO(payload.read())) as image:
-                    if image.mode != "L":
-                        raise ValueError(
-                            "thresholded images must be single-channel mode-L PNG files"
-                        )
-                    binary = np.asarray(image)
-                if not set(np.unique(binary).tolist()).issubset({0, 255}):
-                    raise ValueError("thresholded PNG values must be exactly binary 0 or 255")
-                thresholded_shapes[identity] = binary.shape
-    if continuous_shapes != thresholded_shapes:
-        raise ValueError("continuous and thresholded image dimensions differ")
+    digest = hashlib.sha256()
+    with archive.open("rb") as raw:
+        reader = _HashingReader(raw, digest)
+        with tarfile.open(fileobj=cast(Any, reader), mode="r|gz") as stream:
+            for member in stream:
+                parts = Path(member.name).parts
+                if len(parts) != 5 or not member.isfile():
+                    continue
+                payload = stream.extractfile(member)
+                if payload is None:
+                    raise ValueError(f"archive image member cannot be read: {member.name}")
+                if parts[1] == "anomaly_images" and Path(member.name).suffix == ".tiff":
+                    identity = "/".join(parts[2:]).removesuffix(".tiff")
+                    continuous.append(identity)
+                    values = np.asarray(tifffile.imread(BytesIO(payload.read())))
+                    if (
+                        values.dtype != np.float16
+                        or values.ndim != 2
+                        or not np.isfinite(values).all()
+                    ):
+                        raise ValueError("continuous images must be finite 2D float16 TIFF files")
+                    continuous_shapes[identity] = values.shape
+                elif (
+                    parts[1] == "anomaly_images_thresholded" and Path(member.name).suffix == ".png"
+                ):
+                    identity = "/".join(parts[2:]).removesuffix(".png")
+                    thresholded.append(identity)
+                    with Image.open(BytesIO(payload.read())) as image:
+                        if image.mode != "L":
+                            raise ValueError(
+                                "thresholded images must be single-channel mode-L PNG files"
+                            )
+                        binary = np.asarray(image)
+                    if not set(np.unique(binary).tolist()).issubset({0, 255}):
+                        raise ValueError("thresholded PNG values must be exactly binary 0 or 255")
+                    thresholded_shapes[identity] = binary.shape
+        while reader.read(1024 * 1024):
+            pass
+    return _StreamInspection(
+        inspection=SubmissionInspection(
+            continuous_image_ids=tuple(sorted(continuous)),
+            thresholded_image_ids=tuple(sorted(thresholded)),
+        ),
+        continuous_shapes=continuous_shapes,
+        thresholded_shapes=thresholded_shapes,
+        archive_sha256=digest.hexdigest(),
+    )
 
 
 def verify_archive(
@@ -114,7 +156,8 @@ def verify_archive(
     expected_categories = {category for category, _split, _image_id in manifest.images}
     if set(thresholds) != expected_categories:
         raise ValueError("threshold categories do not match private manifest")
-    inspection = inspect_submission(resolved)
+    streamed = _inspect_validate_and_hash(resolved)
+    inspection = streamed.inspection
     expected = _expected_identities(manifest)
     _require_exact_identities(
         kind="continuous",
@@ -126,14 +169,11 @@ def verify_archive(
         identities=inspection.thresholded_image_ids,
         expected=expected,
     )
-    _validate_image_contracts(resolved)
-    digest = hashlib.sha256()
-    with resolved.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
+    if streamed.continuous_shapes != streamed.thresholded_shapes:
+        raise ValueError("continuous and thresholded image dimensions differ")
     return ArchiveVerification(
         archive=resolved,
-        archive_sha256=digest.hexdigest(),
+        archive_sha256=streamed.archive_sha256,
         continuous_image_count=len(inspection.continuous_image_ids),
         thresholded_image_count=len(inspection.thresholded_image_ids),
         calibration_sha256={

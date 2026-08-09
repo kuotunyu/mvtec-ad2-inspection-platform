@@ -135,6 +135,32 @@ def test_verify_archive_requires_exact_manifest(tmp_path: Path) -> None:
     assert result.thresholded_image_count == 1
 
 
+def test_verify_archive_reads_compressed_tar_once(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    manifest = PrivateManifest(images=(("can", "test_private", "000_regular"),))
+    thresholds = {"can": _threshold(1.0)}
+    archive = SubmissionBuilder(manifest=manifest).build(
+        output_dir=tmp_path / "external-output",
+        predictions=(_prediction(tmp_path),),
+        thresholds=thresholds,
+    )
+    real_open = tarfile.open
+    opened = 0
+
+    def counted_open(*args: object, **kwargs: object) -> tarfile.TarFile:
+        nonlocal opened
+        opened += 1
+        return real_open(*args, **kwargs)
+
+    monkeypatch.setattr(tarfile, "open", counted_open)
+
+    verify_archive(archive, manifest, thresholds)
+
+    assert opened == 1
+
+
 @pytest.mark.parametrize(
     "thresholds",
     [
