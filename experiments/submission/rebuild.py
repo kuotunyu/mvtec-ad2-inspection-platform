@@ -204,12 +204,14 @@ def frozen_champion_run(
             continue
         spec = json.loads((run / "spec.json").read_text(encoding="utf-8"))
         record = json.loads((run / "record.json").read_text(encoding="utf-8"))
+        recorded_spec = {key: value for key, value in spec.items() if key != "canonical_sha256"}
         if (
-            spec.get("category") == category
+            spec.get("canonical_sha256") == identity
+            and spec.get("category") == category
             and spec.get("model_family") == family
             and spec.get("seed") == 42
             and record.get("status") == "completed"
-            and record.get("spec") == spec
+            and record.get("spec") == recorded_spec
         ):
             matches.append(run.resolve())
     if len(matches) != 1:

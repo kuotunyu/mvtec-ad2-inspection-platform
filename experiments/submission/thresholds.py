@@ -84,7 +84,10 @@ def calibrate_submission_threshold(run_dir: Path) -> SubmissionThreshold:
         raise ValueError("submission threshold calibration requires a seed-42 run")
     if record.get("status") != "completed":
         raise ValueError("submission threshold calibration requires a completed run")
-    if record.get("spec") != spec:
+    if spec.get("canonical_sha256") != root.name:
+        raise ValueError("run spec canonical identity does not match its directory")
+    recorded_spec = {key: value for key, value in spec.items() if key != "canonical_sha256"}
+    if record.get("spec") != recorded_spec:
         raise ValueError("run record spec does not match spec.json")
 
     validation_path = root / "predictions" / "validation.json"

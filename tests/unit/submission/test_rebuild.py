@@ -196,10 +196,11 @@ def test_frozen_champion_run_ignores_same_seed_distractor(tmp_path: Path) -> Non
     for identity in (approved_identity, distractor_identity):
         run = runs_root / identity
         run.mkdir(parents=True)
-        spec = {"category": "can", "model_family": "patchcore", "seed": 42}
+        record_spec = {"category": "can", "model_family": "patchcore", "seed": 42}
+        spec = {"canonical_sha256": identity, **record_spec}
         (run / "spec.json").write_text(json.dumps(spec), encoding="utf-8")
         (run / "record.json").write_text(
-            json.dumps({"status": "completed", "spec": spec}),
+            json.dumps({"status": "completed", "spec": record_spec}),
             encoding="utf-8",
         )
 

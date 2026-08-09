@@ -85,10 +85,11 @@ def _completed_run(
         anomaly_maps=tuple(maps),
     )
     write_contract(run_dir / "predictions" / "validation.json", artifact)
-    spec = {"category": "can", "model_family": "patchcore", "seed": seed}
+    record_spec = {"category": "can", "model_family": "patchcore", "seed": seed}
+    spec = {"canonical_sha256": run_identity, **record_spec}
     (run_dir / "spec.json").write_text(json.dumps(spec, sort_keys=True) + "\n", encoding="utf-8")
     (run_dir / "record.json").write_text(
-        json.dumps({"status": status, "spec": spec}, sort_keys=True) + "\n",
+        json.dumps({"status": status, "spec": record_spec}, sort_keys=True) + "\n",
         encoding="utf-8",
     )
     return run_dir, tuple(paths)
