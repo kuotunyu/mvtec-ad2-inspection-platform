@@ -170,7 +170,7 @@ Expected: one non-merge commit with only `kuotunyu` as author and committer and 
 - Consumes: Task 1 committed README, release checklist, tests, and existing release automation.
 - Produces: clean-export and history evidence proving that the exact candidate is safe to publish.
 
-- [ ] **Step 1: Run the complete non-GPU local gates**
+- [x] **Step 1: Run the complete non-GPU local gates**
 
 Run:
 
@@ -188,7 +188,7 @@ uv run python scripts/verify_public_boundary.py --git-tree HEAD
 
 Expected: every command passes. No GPU is required.
 
-- [ ] **Step 2: Run the clean committed export gate**
+- [x] **Step 2: Run the clean committed export gate**
 
 Run:
 
@@ -199,7 +199,7 @@ powershell -ExecutionPolicy Bypass -File scripts/clean_export.ps1 -Treeish HEAD 
 
 Expected: clean export PASS for the exact committed SHA, including package builds, SBOM, Docker smoke, and real browser system workflow. No formal model GPU run is required.
 
-- [ ] **Step 3: Repeat the publication identity audit**
+- [x] **Step 3: Repeat the publication identity audit**
 
 Run:
 
@@ -213,7 +213,7 @@ git remote -v
 
 Expected: the author and committer outputs each contain only the approved `kuotunyu` identity; the trailer query and worktree status are empty; no remote exists before publication.
 
-- [ ] **Step 4: Mark Task 2 complete and commit its tracked bookkeeping**
+- [x] **Step 4: Mark Task 2 complete and commit its tracked bookkeeping**
 
 Mark Task 2 steps complete, stage only this plan, run `git diff --cached --check`, repeat the identity audit, and commit:
 
