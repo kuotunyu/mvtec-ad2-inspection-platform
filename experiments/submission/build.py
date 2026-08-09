@@ -6,6 +6,7 @@ import json
 import shutil
 import tarfile
 import tempfile
+from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
 from shutil import copyfile
@@ -19,6 +20,10 @@ from experiments.data.manifest import REQUIRED_CATEGORIES
 from experiments.models.base import ModelConfig, PredictContext, PredictionArtifact
 from experiments.models.factory import create_adapter
 from experiments.orchestration.gpu_lock import GpuLease
+from experiments.submission.thresholds import (
+    SubmissionThreshold,
+    calibrate_submission_threshold,
+)
 from experiments.train import write_contract
 from inspection_platform.contracts import MVTecAD2Category
 
@@ -72,7 +77,8 @@ class PrivateManifest:
 
 @dataclass(frozen=True, slots=True)
 class SubmissionInspection:
-    image_ids: tuple[str, ...]
+    continuous_image_ids: tuple[str, ...]
+    thresholded_image_ids: tuple[str, ...]
 
 
 def _sha256(path: Path) -> str:
@@ -84,14 +90,24 @@ def _sha256(path: Path) -> str:
 
 
 def inspect_submission(archive: Path) -> SubmissionInspection:
-    identities: list[str] = []
+    continuous: list[str] = []
+    thresholded: list[str] = []
     with tarfile.open(archive, "r:gz") as tar:
         for member in tar.getmembers():
             path = Path(member.name)
             parts = path.parts
             if len(parts) == 5 and parts[1] == "anomaly_images" and path.suffix == ".tiff":
-                identities.append("/".join(parts[2:]).removesuffix(".tiff"))
-    return SubmissionInspection(image_ids=tuple(sorted(identities)))
+                continuous.append("/".join(parts[2:]).removesuffix(".tiff"))
+            elif (
+                len(parts) == 5
+                and parts[1] == "anomaly_images_thresholded"
+                and path.suffix == ".png"
+            ):
+                thresholded.append("/".join(parts[2:]).removesuffix(".png"))
+    return SubmissionInspection(
+        continuous_image_ids=tuple(sorted(continuous)),
+        thresholded_image_ids=tuple(sorted(thresholded)),
+    )
 
 
 class SubmissionBuilder:
@@ -113,12 +129,12 @@ class SubmissionBuilder:
         *,
         output_dir: Path,
         predictions: tuple[SubmissionPrediction, ...],
+        thresholds: Mapping[str, SubmissionThreshold],
         archive_name: str = "private_submission",
     ) -> Path:
         output = output_dir.expanduser().resolve()
         if output == self.repository_root or self.repository_root in output.parents:
             raise PublicBoundaryError("private output must be outside repository")
-        output.mkdir(parents=True, exist_ok=True)
 
         expected = set(self.manifest.images)
         actual = [prediction.identity for prediction in predictions]
@@ -126,6 +142,12 @@ class SubmissionBuilder:
             raise ValueError("duplicate prediction identity")
         if set(actual) != expected:
             raise ValueError("prediction identities do not match private manifest")
+        expected_categories = {category for category, _split, _image_id in expected}
+        if set(thresholds) != expected_categories:
+            raise ValueError("threshold categories do not match private manifest")
+        if any(threshold.category != category for category, threshold in thresholds.items()):
+            raise ValueError("threshold contract category does not match its mapping key")
+        output.mkdir(parents=True, exist_ok=True)
 
         with tempfile.TemporaryDirectory(prefix=f"{archive_name}-", dir=output) as temp:
             staging = Path(temp) / archive_name
@@ -134,8 +156,8 @@ class SubmissionBuilder:
                 if source.suffix.lower() != ".tiff":
                     raise ValueError("anomaly maps must be TIFF files")
                 values = np.asarray(tifffile.imread(source))
-                if values.ndim != 2 or not np.isfinite(values).all():
-                    raise ValueError("anomaly maps must be finite 2D arrays")
+                if values.dtype != np.float16 or values.ndim != 2 or not np.isfinite(values).all():
+                    raise ValueError("anomaly maps must be finite 2D float16 arrays")
                 destination = (
                     staging
                     / "anomaly_images"
@@ -145,6 +167,20 @@ class SubmissionBuilder:
                 )
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 copyfile(source, destination)
+                thresholded = np.where(
+                    values > thresholds[prediction.category].threshold,
+                    255,
+                    0,
+                ).astype(np.uint8)
+                thresholded_destination = (
+                    staging
+                    / "anomaly_images_thresholded"
+                    / prediction.category
+                    / prediction.split
+                    / f"{prediction.image_id}.png"
+                )
+                thresholded_destination.parent.mkdir(parents=True, exist_ok=True)
+                Image.fromarray(thresholded, mode="L").save(thresholded_destination)
 
             archive = output / f"{archive_name}.tar.gz"
             with tarfile.open(archive, "w:gz") as tar:
@@ -291,6 +327,12 @@ def build_formal_submission(
         "champions"
     ]
     manifest = PrivateManifest.from_dataset_root(data_root)
+    thresholds = {
+        category: calibrate_submission_threshold(
+            _champion_run(runs_root, category, champions[category])
+        )
+        for category in REQUIRED_CATEGORIES
+    }
     cache_root = output_root / "prediction-cache"
     predictions: list[SubmissionPrediction] = []
     repository_identity = hashlib.sha256(str(Path.cwd().resolve()).encode("utf-8")).hexdigest()
@@ -317,9 +359,10 @@ def build_formal_submission(
     archive = SubmissionBuilder(manifest=manifest).build(
         output_dir=output_root,
         predictions=tuple(predictions),
+        thresholds=thresholds,
         archive_name="private_submission",
     )
-    verification = verify_archive(archive, manifest)
+    verification = verify_archive(archive, manifest, thresholds)
     with tempfile.TemporaryDirectory(prefix="private-validator-", dir=output_root) as temp:
         extracted = Path(temp)
         with tarfile.open(archive, "r:gz") as stream:

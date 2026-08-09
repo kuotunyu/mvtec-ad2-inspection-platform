@@ -155,7 +155,7 @@ git commit -m "feat(submission): calibrate pixel thresholds"
 - Consumes: `Mapping[str, SubmissionThreshold]`, `PrivateManifest`, and exact TIFF `SubmissionPrediction` objects.
 - Produces: archives with parallel `anomaly_images` and `anomaly_images_thresholded` trees; `SubmissionInspection` and `ArchiveVerification` with separate counts.
 
-- [ ] **Step 1: Write the failing dual-tree archive test**
+- [x] **Step 1: Write the failing dual-tree archive test**
 
 ```python
 def test_submission_contains_matching_binary_thresholded_images(tmp_path: Path) -> None:
@@ -176,27 +176,27 @@ def test_submission_contains_matching_binary_thresholded_images(tmp_path: Path) 
             assert np.asarray(image).tolist() == [[0, 255]]
 ```
 
-- [ ] **Step 2: Run the focused test and observe RED**
+- [x] **Step 2: Run the focused test and observe RED**
 
 Run: `uv run pytest tests/unit/submission/test_submission.py::test_submission_contains_matching_binary_thresholded_images -q`
 
 Expected: FAIL because `build` does not accept thresholds and writes no PNG tree.
 
-- [ ] **Step 3: Implement minimal thresholded PNG generation**
+- [x] **Step 3: Implement minimal thresholded PNG generation**
 
 Require the threshold keys to equal the manifest categories. For each finite 2D TIFF, copy the continuous source and save `np.where(values > threshold, 255, 0).astype(np.uint8)` through Pillow mode `L` at the mirrored `.png` path.
 
-- [ ] **Step 4: Run the focused test and observe GREEN**
+- [x] **Step 4: Run the focused test and observe GREEN**
 
 Run: `uv run pytest tests/unit/submission/test_submission.py::test_submission_contains_matching_binary_thresholded_images -q`
 
 Expected: `1 passed`.
 
-- [ ] **Step 5: Add RED tests for missing calibration, identity parity, duplicates, dimensions, and content**
+- [x] **Step 5: Add RED tests for missing calibration, identity parity, duplicates, dimensions, and content**
 
 Assert that a missing or extra category threshold fails before archive creation; inspection reports exact continuous and thresholded identities; verification rejects a tar with one missing PNG; generated PNG dimensions equal its TIFF dimensions; TIFF dtype remains `float16`; and thresholded values contain no value outside `{0, 255}`.
 
-- [ ] **Step 6: Extend archive inspection, verification, and summary schema**
+- [x] **Step 6: Extend archive inspection, verification, and summary schema**
 
 ```python
 @dataclass(frozen=True, slots=True)
@@ -216,7 +216,7 @@ class ArchiveVerification:
 
 Require both exact identity sets and preserve only sanitized counts/hashes in summary schema `2.0.0` with status `LOCAL-PREFLIGHT-NOT-SUBMITTED` or `PASS`.
 
-- [ ] **Step 7: Run submission regression and static gates**
+- [x] **Step 7: Run submission regression and static gates**
 
 Run:
 
@@ -228,7 +228,7 @@ uv run mypy experiments/submission
 
 Expected: all commands exit zero.
 
-- [ ] **Step 8: Update bookkeeping and commit Task 2**
+- [x] **Step 8: Update bookkeeping and commit Task 2**
 
 ```powershell
 git add experiments/submission/build.py experiments/submission/verify.py tests/unit/submission/test_submission.py docs/superpowers/plans/2026-08-10-06-thresholded-submission-pipeline.md

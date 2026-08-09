@@ -20,6 +20,7 @@ def test_private_predictions_are_never_written_under_repo(tmp_path: Path) -> Non
         SubmissionBuilder(manifest=manifest, repository_root=repo_root).build(
             output_dir=repo_root / "reports",
             predictions=(),
+            thresholds={},
         )
 
 
