@@ -9,6 +9,7 @@ export type ReviewQueueResponse = components["schemas"]["ReviewQueueResponse"];
 export type ReviewRequest = components["schemas"]["ReviewRequest"];
 export type ReviewResponse = components["schemas"]["ReviewResponse"];
 export type ModelListResponse = components["schemas"]["ModelListResponse"];
+export type ModelSummary = components["schemas"]["ModelSummary"];
 export type EvidenceResponse = components["schemas"]["EvidenceResponse"];
 
 export class ApiError extends Error {

@@ -1,0 +1,3 @@
+export function ProvenancePanel({ publicHash, datasetHash, championHash, downloads }: { publicHash: string; datasetHash: string; championHash: string; downloads: Readonly<Record<string, string>> }) {
+  return <section className="provenance-panel"><header><span className="eyebrow">Immutable evidence chain</span><h2>Provenance</h2></header><dl><div><dt>Public gate</dt><dd>{publicHash}</dd></div><div><dt>Dataset manifest</dt><dd>{datasetHash}</dd></div><div><dt>Champion matrix</dt><dd>{championHash}</dd></div></dl><div className="download-links">{Object.entries(downloads).map(([label, url]) => <a key={label} href={url} download>{label.replaceAll("_", " ")} ↧</a>)}</div></section>;
+}

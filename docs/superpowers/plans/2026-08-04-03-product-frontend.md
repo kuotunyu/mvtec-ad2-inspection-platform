@@ -328,7 +328,7 @@ git commit -m "feat(frontend): add human anomaly review"
 - Shows one champion per category, bundle/hash/version, threshold provenance, public metric confidence intervals, private validation status, runtime profile, and explicit limitations.
 - Metric labels include scope and direction, such as `Pixel AU-PRO (FPR ≤ 0.30, higher is better)`.
 
-- [ ] **Step 1: Write claims and missing-evidence tests**
+- [x] **Step 1: Write claims and missing-evidence tests**
 
 ```tsx
 it("labels an unevaluated private gate instead of inferring success", async () => {
@@ -338,25 +338,25 @@ it("labels an unevaluated private gate instead of inferring success", async () =
 });
 ```
 
-- [ ] **Step 2: Run evidence tests and confirm failure**
+- [x] **Step 2: Run evidence tests and confirm failure**
 
 Run: `cd apps/web; npm test -- --run src/pages/ModelEvidence.test.tsx src/components/ChampionMatrix.test.tsx`
 Expected: FAIL because the evidence page is absent.
 
-- [ ] **Step 3: Implement provenance-first evidence presentation**
+- [x] **Step 3: Implement provenance-first evidence presentation**
 
 Present category rows rather than a single global winner. Put confidence intervals next to estimates. Mark `GO`, `NO-GO under lighting shift`, or `not evaluated` only from the backend evidence contract. Link downloadable machine-readable evidence and reveal code/config/dataset/model identities without exposing local paths.
 
-- [ ] **Step 4: Add limitations beside metrics**
+- [x] **Step 4: Add limitations beside metrics**
 
 State noncommercial dataset constraints, no defect-type classification, no automatic final rejection, threshold calibration scope, public selection/private validation separation, and hardware-specific latency. Keep limitations visible without requiring a modal.
 
-- [ ] **Step 5: Verify evidence rendering**
+- [x] **Step 5: Verify evidence rendering**
 
 Run: `cd apps/web; npm test -- --run src/pages/ModelEvidence.test.tsx src/components/ChampionMatrix.test.tsx`
 Expected: public-only, private pass, mixed-lighting no-go, missing artifact, and responsive table cases pass.
 
-- [ ] **Step 6: Commit model evidence UI**
+- [x] **Step 6: Commit model evidence UI**
 
 ```powershell
 git add apps/web/src/pages/ModelEvidence.tsx apps/web/src/components/ChampionMatrix.tsx apps/web/src/components/MetricDefinition.tsx apps/web/src/components/ProvenancePanel.tsx apps/web/src/components/LimitationsPanel.tsx apps/web/src/pages/ModelEvidence.test.tsx apps/web/src/components/ChampionMatrix.test.tsx
