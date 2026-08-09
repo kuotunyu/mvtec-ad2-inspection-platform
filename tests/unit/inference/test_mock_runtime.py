@@ -2,14 +2,17 @@ from __future__ import annotations
 
 import hashlib
 import os
+from io import BytesIO
 from pathlib import Path
 
 import numpy as np
 import pytest
+from PIL import Image
 
 from inspection_platform.contracts.models import BundleFile, ModelBundleManifest
 from inspection_platform.inference.anomalib_runtime import (
     AnomalibRuntime,
+    LoadedAnomalibModel,
     _as_numpy,
     _normalize_inferencer_device,
     _trusted_remote_code_scope,
@@ -163,3 +166,28 @@ def test_gpu_like_tensor_moves_to_cpu_before_numpy_conversion() -> None:
 
     assert _as_numpy(FakeGpuTensor()).tolist() == pytest.approx([0.75])
     assert calls == ["detach", "cpu"]
+
+
+def test_anomalib_runtime_decodes_grayscale_input_as_rgb() -> None:
+    manifest = ModelBundleManifest(
+        category="sheet_metal",
+        runtime_kind="anomalib",
+        model_family="dinomaly",
+        files=(BundleFile(path="model.pt", sha256="0" * 64, size=1),),
+        preprocessing_sha256="1" * 64,
+        threshold=0.5,
+    )
+
+    class Result:
+        pred_score = np.asarray([0.25], dtype=np.float32)
+        anomaly_map = np.ones((4, 4), dtype=np.float32)
+
+    class FakeInferencer:
+        def predict(self, image: object) -> Result:
+            assert getattr(image, "mode", None) == "RGB"
+            return Result()
+
+    stream = BytesIO()
+    Image.new("L", (4, 4), 128).save(stream, format="PNG")
+    loaded = LoadedAnomalibModel(manifest, FakeInferencer(), decode_images=True)
+    assert loaded.predict(stream.getvalue(), input_id="gray").category == "sheet_metal"

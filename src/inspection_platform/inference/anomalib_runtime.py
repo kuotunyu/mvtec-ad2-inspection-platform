@@ -71,7 +71,7 @@ class LoadedAnomalibModel:
         return self.predict_with_map(image, input_id=input_id).record
 
     def predict_with_map(self, image: bytes, *, input_id: str) -> AnomalibPrediction:
-        value: object = Image.open(BytesIO(image)) if self.decode_images else image
+        value: object = Image.open(BytesIO(image)).convert("RGB") if self.decode_images else image
         result = self.inferencer.predict(value)
         score = float(_as_numpy(result.pred_score).reshape(-1)[0])
         anomaly_map = np.asarray(_as_numpy(result.anomaly_map), dtype=np.float32).squeeze()
