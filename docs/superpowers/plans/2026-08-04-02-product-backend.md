@@ -315,7 +315,7 @@ A corrupt individual input becomes an image-level error and permits `COMPLETED_W
 Run: `uv run pytest tests/unit/worker tests/integration/worker -q`
 Expected: crash/restart, expired lease, cancellation, partial completion, and repeated `run_once` tests pass without duplicate predictions.
 
-- [ ] **Step 6: Commit the worker**
+- [x] **Step 6: Commit the worker**
 
 ```powershell
 git add src/inspection_platform/worker tests/unit/worker tests/integration/worker
@@ -344,7 +344,7 @@ git commit -m "feat(worker): run resumable batch inference"
 - `GET /api/v1/jobs/{id}/images/{image_id}`, artifact endpoints, review queue and review mutation endpoints.
 - `GET /api/v1/models`, `GET /api/v1/evidence`, `GET /api/health/live`, and `GET /api/health/ready`.
 
-- [ ] **Step 1: Write OpenAPI-facing behavior tests**
+- [x] **Step 1: Write OpenAPI-facing behavior tests**
 
 ```python
 def test_create_job_returns_202(client: TestClient, png_bytes: bytes) -> None:
@@ -360,16 +360,16 @@ def test_review_requires_expected_revision(client: TestClient, reviewable_image:
     assert response.status_code == 409
 ```
 
-- [ ] **Step 2: Run API tests and confirm failure**
+- [x] **Step 2: Run API tests and confirm failure**
 
 Run: `uv run pytest tests/api -q`
 Expected: FAIL because the application routes do not exist.
 
-- [ ] **Step 3: Implement routes, pagination, and stable error envelopes**
+- [x] **Step 3: Implement routes, pagination, and stable error envelopes**
 
 Use bounded page sizes and structured errors `{code, message, request_id}`. Sanitize incoming request IDs or replace them with generated UUIDs. Artifact endpoints resolve database references and never accept filesystem paths. Health liveness checks process response; readiness checks database, artifact root, and active model manifests but does not load every GPU model.
 
-- [ ] **Step 4: Export and verify the OpenAPI document**
+- [x] **Step 4: Export and verify the OpenAPI document**
 
 Run: `uv run python scripts/export_openapi.py --output apps/web/openapi.json` after creating the script beside the API work.
 Run: `uv run pytest tests/api -q`

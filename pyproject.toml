@@ -9,12 +9,17 @@ description = "Reproducible MVTec AD 2 benchmarking and industrial inspection wo
 requires-python = ">=3.12,<3.13"
 dependencies = [
   "alembic>=1.16,<2",
+  "fastapi>=0.115,<1",
+  "httpx>=0.28,<1",
   "jsonschema>=4.24,<5",
+  "prometheus-client>=0.22,<1",
   "psutil>=7.0,<8",
   "pydantic>=2.11,<3",
   "pydantic-settings>=2.9,<3",
   "sqlalchemy>=2.0,<3",
+  "structlog>=25,<26",
   "truststore>=0.10.4,<0.11",
+  "uvicorn>=0.34,<1",
 ]
 
 [project.optional-dependencies]
