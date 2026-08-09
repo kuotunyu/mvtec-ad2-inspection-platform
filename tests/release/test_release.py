@@ -123,3 +123,8 @@ def test_container_gates_support_gitless_committed_exports() -> None:
         script = Path(name).read_text(encoding="utf-8")
         assert 'Test-Path -LiteralPath (Join-Path $repoRoot ".git")' in script
         assert 'throw "SOURCE_REVISION is required outside a Git worktree"' in script
+
+
+def test_hash_bound_evidence_uses_stable_lf_bytes() -> None:
+    attributes = Path(".gitattributes").read_text(encoding="utf-8")
+    assert re.search(r"^docs/assets/evidence/\*\.json\s+text\s+eol=lf$", attributes, re.MULTILINE)
