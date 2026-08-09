@@ -23,7 +23,6 @@ from experiments.models import ExportContext, ModelConfig, create_adapter
 from experiments.orchestration.gpu_lock import GpuLease
 from inspection_platform.contracts import (
     BundleFile,
-    canonical_hash,
     sha256_file,
 )
 from inspection_platform.inference.anomalib_runtime import LoadedAnomalibModel
@@ -60,6 +59,20 @@ def _write_json(path: Path, payload: object) -> None:
         newline="\n",
     )
     os.replace(temporary, path)
+
+
+def canonical_mapping_hash(payload: dict[str, Any]) -> str:
+    """Hash a JSON mapping while excluding its stored computed identity."""
+
+    canonical = {key: value for key, value in payload.items() if key != "canonical_sha256"}
+    encoded = json.dumps(
+        canonical,
+        allow_nan=False,
+        ensure_ascii=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
 
 
 def discover_champion_run_ids(champions_path: Path, runs_root: Path) -> dict[str, str]:
@@ -165,8 +178,10 @@ def _registry_index(registry_root: Path) -> dict[str, Any]:
 def verify_real_registry(registry_root: Path, *, code_sha: str) -> dict[str, Any]:
     root = registry_root.expanduser().resolve(strict=True)
     index = _registry_index(root)
-    if index.get("code_sha") != code_sha or set(index.get("categories", {})) != set(
-        REQUIRED_CATEGORIES
+    if (
+        index.get("canonical_sha256") != canonical_mapping_hash(index)
+        or index.get("code_sha") != code_sha
+        or set(index.get("categories", {})) != set(REQUIRED_CATEGORIES)
     ):
         raise ValueError("registry identity is incompatible with the serving gate")
     registry = ModelRegistry(root)
@@ -251,7 +266,7 @@ def prepare_real_registry(
             "dataset_manifest_sha256": champions["dataset_manifest_sha256"],
             "categories": categories,
         }
-        index["canonical_sha256"] = canonical_hash(index)
+        index["canonical_sha256"] = canonical_mapping_hash(index)
         _write_json(temporary / "registry.json", index)
         destination.parent.mkdir(parents=True, exist_ok=True)
         os.replace(temporary, destination)
@@ -273,7 +288,7 @@ def _render_artifacts(image_bytes: bytes, anomaly_map: np.ndarray[Any, Any]) -> 
     values = np.asarray(anomaly_map, dtype=np.float32)
     low, high = float(values.min()), float(values.max())
     normalized = np.zeros_like(values) if high <= low else (values - low) / (high - low)
-    grayscale = Image.fromarray(np.uint8(np.clip(normalized * 255, 0, 255)), mode="L")
+    grayscale = Image.fromarray(cast(Any, np.uint8(np.clip(normalized * 255, 0, 255))), mode="L")
     source = Image.open(BytesIO(image_bytes)).convert("RGB")
     resized = grayscale.resize(source.size, Image.Resampling.BILINEAR)
     red = Image.new("RGB", source.size, (235, 55, 55))

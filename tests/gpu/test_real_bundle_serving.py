@@ -14,6 +14,7 @@ from scripts.benchmark_serving import (
     write_serving_evidence,
 )
 from scripts.gpu_product_smoke import (
+    canonical_mapping_hash,
     discover_champion_run_ids,
     record_matches_spec,
     run_real_serving_gate,
@@ -70,6 +71,12 @@ def test_completed_record_embeds_spec_without_computed_identity() -> None:
     spec = {"canonical_sha256": "a" * 64, "category": "can", "seed": 42}
     record = {"spec": {"category": "can", "seed": 42}}
     assert record_matches_spec(record, spec)
+
+
+def test_registry_index_hash_is_canonical_and_ignores_stored_identity() -> None:
+    left = {"z": 2, "a": {"value": 1}}
+    right = {"a": {"value": 1}, "z": 2, "canonical_sha256": "f" * 64}
+    assert canonical_mapping_hash(left) == canonical_mapping_hash(right)
 
 
 def test_serving_summary_uses_literal_percentiles_and_throughput() -> None:
