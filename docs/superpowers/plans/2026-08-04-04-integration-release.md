@@ -337,23 +337,23 @@ git commit -m "ci: verify clean portfolio release"
 - Create: `tests/gpu/test_real_bundle_serving.py`
 - Create: `docs/assets/evidence/serving-benchmark.json`
 
-- [ ] **Step 1: Wait for exclusive access to the RTX 4090**
+- [x] **Step 1: Wait for exclusive access to the RTX 4090**
 
 Check the shared GPU lock from Plan 01 and system process utilization. Do not interrupt another formal experiment. Acquire the lock with project/run identity and record GPU model, driver, CUDA, PyTorch, Anomalib, power mode, and code SHA.
 
-- [ ] **Step 2: Smoke every category champion through the product runtime**
+- [x] **Step 2: Smoke every category champion through the product runtime**
 
 For each of eight frozen bundles, load the model in a clean worker process, infer a permitted local test input, verify prediction/map/overlay/report contracts, release GPU memory, and prove another category can load. Do not commit input images or raw private outputs.
 
-- [ ] **Step 3: Benchmark serving behavior**
+- [x] **Step 3: Benchmark serving behavior**
 
 Measure cold start, warmup, per-image p50/p95 latency at batch size 1, sustained throughput, peak allocated/reserved VRAM, CPU fallback latency where supported, artifact size, and process RSS. Use fixed repetitions and report setup separately from inference. A GPU out-of-memory or incompatible export is a release blocker for that bundle.
 
-- [ ] **Step 4: Sanitize and verify the serving artifact**
+- [x] **Step 4: Sanitize and verify the serving artifact**
 
 Write aggregate results only, including environment/config identities and confidence intervals where meaningful. Reject local paths, raw image identifiers, and private labels. Bind the artifact hash into the evidence endpoint and docs verifier.
 
-- [ ] **Step 5: Run regression gates and commit sanitized evidence**
+- [x] **Step 5: Run regression gates and commit sanitized evidence**
 
 Run: `uv run pytest tests/gpu/test_real_bundle_serving.py -m gpu -q`
 Run: `uv run python scripts/benchmark_serving.py --registry "$env:INSPECTION_MODEL_ROOT" --output docs/assets/evidence/serving-benchmark.json`

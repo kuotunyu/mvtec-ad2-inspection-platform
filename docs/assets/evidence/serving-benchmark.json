@@ -1,0 +1,316 @@
+{
+  "categories": {
+    "can": {
+      "artifact_size_bytes": 3409718327,
+      "bundle_identity": "d846b26e3eff9c9c86d2f72f8f6516fd671cc3773f46fe1d1a7bf1831eafb007",
+      "cpu": {
+        "cold_start_ms": 5248.00230000983,
+        "mean_latency_95ci_ms": [
+          5773.514529172166,
+          6358.846937504064
+        ],
+        "mean_latency_ms": 6066.180733338115,
+        "measured_repetitions": 3,
+        "p50_latency_ms": 6160.972700003185,
+        "p95_latency_ms": 6253.732640003727,
+        "process_rss_mib": 5262.30078125,
+        "throughput_images_per_second": 0.1648483690082404,
+        "warmup_repetitions": 0
+      },
+      "family": "patchcore",
+      "gpu": {
+        "cold_start_ms": 7103.159699996468,
+        "mean_latency_95ci_ms": [
+          154.13427824409578,
+          160.360791755152
+        ],
+        "mean_latency_ms": 157.2475349996239,
+        "measured_repetitions": 20,
+        "p50_latency_ms": 155.17430000181776,
+        "p95_latency_ms": 173.22966500141774,
+        "peak_allocated_vram_mib": 4319.2880859375,
+        "peak_reserved_vram_mib": 4388.0,
+        "process_rss_mib": 1544.9921875,
+        "throughput_images_per_second": 6.359400164857222,
+        "warmup_repetitions": 3
+      },
+      "run_identity": "597dbe614d9aa98fd8939b0626aaf61def78fa4abac1b25755aeb5b5c980e81a"
+    },
+    "fabric": {
+      "artifact_size_bytes": 1776166311,
+      "bundle_identity": "1acdbd1edcde8b3b9fb33b2b068831c837dc61aa510c25069d7eb270f358438a",
+      "cpu": {
+        "cold_start_ms": 4315.593400009675,
+        "mean_latency_95ci_ms": [
+          578.1720238502285,
+          602.3901761550931
+        ],
+        "mean_latency_ms": 590.2811000026608,
+        "measured_repetitions": 3,
+        "p50_latency_ms": 595.2663000061875,
+        "p95_latency_ms": 597.3483599998872,
+        "process_rss_mib": 3118.171875,
+        "throughput_images_per_second": 1.694108112212118,
+        "warmup_repetitions": 0
+      },
+      "family": "dinomaly",
+      "gpu": {
+        "cold_start_ms": 4730.171900009736,
+        "mean_latency_95ci_ms": [
+          158.29976489808027,
+          171.0205251070453
+        ],
+        "mean_latency_ms": 164.66014500256279,
+        "measured_repetitions": 20,
+        "p50_latency_ms": 167.35900000639958,
+        "p95_latency_ms": 184.93086499875062,
+        "peak_allocated_vram_mib": 2177.37353515625,
+        "peak_reserved_vram_mib": 2408.0,
+        "process_rss_mib": 1454.92578125,
+        "throughput_images_per_second": 6.0731150211512075,
+        "warmup_repetitions": 3
+      },
+      "run_identity": "b96429546f4bb46d528156e305cee5efd18be8e1f96513ba615d867879572a1f"
+    },
+    "fruit_jelly": {
+      "artifact_size_bytes": 1776166311,
+      "bundle_identity": "5ade35dff123348312dacb94239b392b0f29660886e4b986f72cf263d2f5104b",
+      "cpu": {
+        "cold_start_ms": 4487.980499994592,
+        "mean_latency_95ci_ms": [
+          562.3183780387203,
+          578.6716219563034
+        ],
+        "mean_latency_ms": 570.4949999975119,
+        "measured_repetitions": 3,
+        "p50_latency_ms": 573.8370000035502,
+        "p95_latency_ms": 575.2839299937477,
+        "process_rss_mib": 3069.33984375,
+        "throughput_images_per_second": 1.7528637411447276,
+        "warmup_repetitions": 0
+      },
+      "family": "dinomaly",
+      "gpu": {
+        "cold_start_ms": 4109.937400004128,
+        "mean_latency_95ci_ms": [
+          65.46898941607925,
+          68.2222705886279
+        ],
+        "mean_latency_ms": 66.84563000235357,
+        "measured_repetitions": 20,
+        "p50_latency_ms": 66.93865000852384,
+        "p95_latency_ms": 72.06016500058467,
+        "peak_allocated_vram_mib": 2155.9033203125,
+        "peak_reserved_vram_mib": 2388.0,
+        "process_rss_mib": 1417.015625,
+        "throughput_images_per_second": 14.95984105415404,
+        "warmup_repetitions": 3
+      },
+      "run_identity": "8a3b687e9da2e93e7f407aa0496cee17482302ce02faf1343e785e6d6e33bcde"
+    },
+    "rice": {
+      "artifact_size_bytes": 1776166311,
+      "bundle_identity": "c6feb3c904cb3049bdf40cf5b7efaffc9482c8e429163255be63fe9b7e394105",
+      "cpu": {
+        "cold_start_ms": 4200.187199996435,
+        "mean_latency_95ci_ms": [
+          542.8135534679753,
+          556.4129131934213
+        ],
+        "mean_latency_ms": 549.6132333306983,
+        "measured_repetitions": 3,
+        "p50_latency_ms": 547.5469999946654,
+        "p95_latency_ms": 555.4990399992676,
+        "process_rss_mib": 3105.31640625,
+        "throughput_images_per_second": 1.819461285420519,
+        "warmup_repetitions": 0
+      },
+      "family": "dinomaly",
+      "gpu": {
+        "cold_start_ms": 4117.76789999567,
+        "mean_latency_95ci_ms": [
+          156.13376656298894,
+          168.44975343949957
+        ],
+        "mean_latency_ms": 162.29176000124426,
+        "measured_repetitions": 20,
+        "p50_latency_ms": 170.36850001022685,
+        "p95_latency_ms": 177.15026500591196,
+        "peak_allocated_vram_mib": 2177.37353515625,
+        "peak_reserved_vram_mib": 2408.0,
+        "process_rss_mib": 1453.6953125,
+        "throughput_images_per_second": 6.1617422843423055,
+        "warmup_repetitions": 3
+      },
+      "run_identity": "d47baf7b7871fc45185753bee4a526ead9194847200612e48c241c2511aab726"
+    },
+    "sheet_metal": {
+      "artifact_size_bytes": 1776166311,
+      "bundle_identity": "88cd57e7acbc6cdd9d0d8eee25574a31e0598dfe1e4827e6f73d1d1fd2ef7057",
+      "cpu": {
+        "cold_start_ms": 4381.312500001513,
+        "mean_latency_95ci_ms": [
+          525.4528720586424,
+          556.1925946099665
+        ],
+        "mean_latency_ms": 540.8227333343044,
+        "measured_repetitions": 3,
+        "p50_latency_ms": 536.0520000103861,
+        "p95_latency_ms": 554.1373199957889,
+        "process_rss_mib": 3093.4921875,
+        "throughput_images_per_second": 1.8490346991051123,
+        "warmup_repetitions": 0
+      },
+      "family": "dinomaly",
+      "gpu": {
+        "cold_start_ms": 4262.1529000025475,
+        "mean_latency_95ci_ms": [
+          62.27360705401963,
+          63.776832943905795
+        ],
+        "mean_latency_ms": 63.02521999896271,
+        "measured_repetitions": 20,
+        "p50_latency_ms": 63.20609999966109,
+        "p95_latency_ms": 65.80959499115124,
+        "peak_allocated_vram_mib": 2171.37353515625,
+        "peak_reserved_vram_mib": 2402.0,
+        "process_rss_mib": 1439.3359375,
+        "throughput_images_per_second": 15.866664170572642,
+        "warmup_repetitions": 3
+      },
+      "run_identity": "fe366c4598620920e434af345569ffcd30941dd1621379249eb4e8a44d89cac7"
+    },
+    "vial": {
+      "artifact_size_bytes": 2496191543,
+      "bundle_identity": "54d3043fcf7e701602ea030185a288c765a6aa9871857e9e765f6207cfdf3c58",
+      "cpu": {
+        "cold_start_ms": 5015.745400000014,
+        "mean_latency_95ci_ms": [
+          3657.1163234538053,
+          3847.881143207929
+        ],
+        "mean_latency_ms": 3752.4987333308673,
+        "measured_repetitions": 3,
+        "p50_latency_ms": 3748.6006999970414,
+        "p95_latency_ms": 3829.6626200070023,
+        "process_rss_mib": 4131.078125,
+        "throughput_images_per_second": 0.2664890972827485,
+        "warmup_repetitions": 0
+      },
+      "family": "patchcore",
+      "gpu": {
+        "cold_start_ms": 4878.4925999934785,
+        "mean_latency_95ci_ms": [
+          99.60802028788585,
+          104.39401971245552
+        ],
+        "mean_latency_ms": 102.00102000017068,
+        "measured_repetitions": 20,
+        "p50_latency_ms": 101.28134999831673,
+        "p95_latency_ms": 111.90648499687086,
+        "peak_allocated_vram_mib": 3161.77490234375,
+        "peak_reserved_vram_mib": 3232.0,
+        "process_rss_mib": 1548.4609375,
+        "throughput_images_per_second": 9.803823530375741,
+        "warmup_repetitions": 3
+      },
+      "run_identity": "8752351992b83b368586fc84dca669a2679dfa7d6f5b1df3b33190f342222a8d"
+    },
+    "wallplugs": {
+      "artifact_size_bytes": 2511287351,
+      "bundle_identity": "b07fc0b71e0ffe9d2925b6e894e8fc13b51226fbd4d141d2814925bb6c51887d",
+      "cpu": {
+        "cold_start_ms": 4785.217700002249,
+        "mean_latency_95ci_ms": [
+          3641.6422624024253,
+          3858.675737593664
+        ],
+        "mean_latency_ms": 3750.1589999980447,
+        "measured_repetitions": 3,
+        "p50_latency_ms": 3743.716900004074,
+        "p95_latency_ms": 3838.5741099962615,
+        "process_rss_mib": 4202.98828125,
+        "throughput_images_per_second": 0.2666553604795214,
+        "warmup_repetitions": 0
+      },
+      "family": "patchcore",
+      "gpu": {
+        "cold_start_ms": 4630.240200000117,
+        "mean_latency_95ci_ms": [
+          133.59457728317426,
+          137.58824271547422
+        ],
+        "mean_latency_ms": 135.59140999932424,
+        "measured_repetitions": 20,
+        "p50_latency_ms": 134.92204999784008,
+        "p95_latency_ms": 144.05823501001578,
+        "peak_allocated_vram_mib": 3211.75048828125,
+        "peak_reserved_vram_mib": 3274.0,
+        "process_rss_mib": 1533.65234375,
+        "throughput_images_per_second": 7.375098466820161,
+        "warmup_repetitions": 3
+      },
+      "run_identity": "6ffd7c77dc95549ae174f324c19684a44a90808029672390c07cc72df9874972"
+    },
+    "walnuts": {
+      "artifact_size_bytes": 3560713271,
+      "bundle_identity": "a7408320cbd9807964d0401d9da32902584588780fc596f59175ae45e7e71fff",
+      "cpu": {
+        "cold_start_ms": 5168.877100004465,
+        "mean_latency_95ci_ms": [
+          5559.34877187244,
+          6221.518428123115
+        ],
+        "mean_latency_ms": 5890.4335999977775,
+        "measured_repetitions": 3,
+        "p50_latency_ms": 5787.007300008554,
+        "p95_latency_ms": 6177.311469989945,
+        "process_rss_mib": 4475.09375,
+        "throughput_images_per_second": 0.16976678932436778,
+        "warmup_repetitions": 0
+      },
+      "family": "patchcore",
+      "gpu": {
+        "cold_start_ms": 5530.734900006792,
+        "mean_latency_95ci_ms": [
+          238.9284871099891,
+          246.29045289588143
+        ],
+        "mean_latency_ms": 242.60947000293527,
+        "measured_repetitions": 20,
+        "p50_latency_ms": 239.68700000841636,
+        "p95_latency_ms": 259.7833500010893,
+        "peak_allocated_vram_mib": 4543.1630859375,
+        "peak_reserved_vram_mib": 4610.0,
+        "process_rss_mib": 1594.58984375,
+        "throughput_images_per_second": 4.1218506432906405,
+        "warmup_repetitions": 3
+      },
+      "run_identity": "459516eb474914946f90dd5a49a37aa9eba96d056e127ac4e029620fd63814d5"
+    }
+  },
+  "champions_sha256": "813c9822d951a011706f8ecbcd35ea1531474be5a73039053f70270a9d7f05f2",
+  "code_sha": "267045936edabf718aff33abb98f7b5d96f022a8",
+  "configuration": {
+    "batch_size": 1,
+    "cpu_repetitions": 3,
+    "gpu_repetitions": 20,
+    "timing_scope": "decode-preprocess-model-postprocess",
+    "warmup_repetitions": 3
+  },
+  "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+  "environment": {
+    "anomalib": "2.5.0",
+    "cuda_runtime": "13.0",
+    "gpu_driver": "591.86",
+    "gpu_memory_mib": 24564,
+    "gpu_name": "NVIDIA GeForce RTX 4090",
+    "platform": "Windows",
+    "python": "3.12.13",
+    "torch": "2.13.0+cu130"
+  },
+  "evaluation_scope": "local-rtx-4090-serving-only",
+  "registry_sha256": "b44c4ea156579710455e47663866059e0c8be178ee7e2df4880a2b4a310a1c2d",
+  "schema_version": "1.0.0",
+  "status": "passed"
+}

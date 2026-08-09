@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 from io import BytesIO
 from pathlib import Path
 
@@ -55,9 +56,10 @@ def test_health_models_evidence_and_review_revision_contract(tmp_path: Path) -> 
         "not submitted",
         "local validator passed; official submission not performed",
     }
-    assert evidence["serving_benchmark_status"] in {"not evaluated", "passed"}
-    if evidence["serving_benchmark_status"] == "not evaluated":
-        assert evidence["serving_benchmark_sha256"] is None
+    assert evidence["serving_benchmark_status"] == "passed"
+    serving = client.get(evidence["downloadable"]["serving_benchmark"])
+    assert serving.status_code == 200
+    assert evidence["serving_benchmark_sha256"] == hashlib.sha256(serving.content).hexdigest()
 
     created = client.post(
         "/api/v1/jobs",
