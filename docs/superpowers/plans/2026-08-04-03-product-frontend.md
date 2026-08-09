@@ -271,7 +271,7 @@ git commit -m "feat(frontend): visualize inspection evidence"
 - Saves one of `ACCEPT`, `REJECT`, `UNCERTAIN` with optional note and expected revision.
 - Keyboard shortcuts work only inside the focused review workspace and require visible confirmation before mutation.
 
-- [ ] **Step 1: Write safe decision tests**
+- [x] **Step 1: Write safe decision tests**
 
 ```tsx
 it("does not submit a keyboard decision before confirmation", async () => {
@@ -288,25 +288,25 @@ it("refreshes after a revision conflict", async () => {
 });
 ```
 
-- [ ] **Step 2: Run review tests and confirm failure**
+- [x] **Step 2: Run review tests and confirm failure**
 
 Run: `cd apps/web; npm test -- --run src/pages/ReviewQueue.test.tsx src/components/DecisionBar.test.tsx`
 Expected: FAIL because review components do not exist.
 
-- [ ] **Step 3: Implement a deliberate review workflow**
+- [x] **Step 3: Implement a deliberate review workflow**
 
 Keep evidence visible beside actions. Display `Model outcome` and `Human decision` in separate panels. Require confirmation with the target filename and selected action; restore focus after close. Notes are plain text with length guidance. After success, keep a short undo-free receipt and advance only when the user requests it or enables an explicit preference.
 
-- [ ] **Step 4: Implement conflict, offline, and retry states**
+- [x] **Step 4: Implement conflict, offline, and retry states**
 
 On `409`, retain the unsaved note, fetch current history, and ask the user to reassess. On a network error, do not optimistically label the item reviewed. Ensure repeated confirmation cannot create duplicate revisions.
 
-- [ ] **Step 5: Run review and accessibility gates**
+- [x] **Step 5: Run review and accessibility gates**
 
 Run: `cd apps/web; npm test -- --run src/pages/ReviewQueue.test.tsx src/components/DecisionBar.test.tsx src/components/ReviewHistory.test.tsx`
 Expected: decision, confirmation, shortcut scope, focus, conflict, retry, and history tests pass.
 
-- [ ] **Step 6: Commit human review UI**
+- [x] **Step 6: Commit human review UI**
 
 ```powershell
 git add apps/web/src/pages/ReviewQueue.tsx apps/web/src/components/ReviewWorkspace.tsx apps/web/src/components/DecisionBar.tsx apps/web/src/components/ReviewHistory.tsx apps/web/src/pages/ReviewQueue.test.tsx apps/web/src/components/DecisionBar.test.tsx

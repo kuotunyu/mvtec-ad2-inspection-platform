@@ -4,6 +4,7 @@ import { EmptyState } from "../components/EmptyState";
 import { Dashboard } from "../pages/Dashboard";
 import { JobDetail } from "../pages/JobDetail";
 import { NewInspection } from "../pages/NewInspection";
+import { ReviewQueue } from "../pages/ReviewQueue";
 
 function Placeholder({ title, kicker }: { title: string; kicker: string }) {
   return <div className="page"><header className="page-header"><div><span className="eyebrow">{kicker}</span><h1>{title}</h1></div></header><EmptyState title="Surface ready">Product workflow is being connected to the verified API contract.</EmptyState></div>;
@@ -14,7 +15,7 @@ export function App() {
     <Route path="/" element={<Dashboard />} />
     <Route path="/inspect" element={<NewInspection />} />
     <Route path="/jobs/:jobId" element={<JobDetail />} />
-    <Route path="/review" element={<Placeholder title="Review queue" kicker="Human decision workspace" />} />
+    <Route path="/review" element={<ReviewQueue />} />
     <Route path="/evidence" element={<Placeholder title="Model & evidence" kicker="Provenance and limitations" />} />
     <Route path="*" element={<Navigate to="/" replace />} />
   </Routes></AppShell>;
