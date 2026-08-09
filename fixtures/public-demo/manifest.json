@@ -7,7 +7,7 @@
       "intended_mock_outcome": "PASS",
       "license": "CC0-1.0 project-generated",
       "seed": 1103,
-      "sha256": "bf06dc6d41f5017044aced9a015a8222f1619b1487373509f96f81417f15b92c"
+      "sha256": "254ec58c7c61e4f2a6cf9791b1d439c739be88dc2813f7596f999fc69a793d66"
     },
     {
       "filename": "images/scratch-review.png",
@@ -15,7 +15,7 @@
       "intended_mock_outcome": "REVIEW",
       "license": "CC0-1.0 project-generated",
       "seed": 2207,
-      "sha256": "3847567afce9851666ef4004e73da3b4b8a98bf365509f776367751acca0ab56"
+      "sha256": "afad0cde98996ef44194837f91ee41ba2d8b79610866f0d3a0fe5020a8260f86"
     },
     {
       "filename": "images/dent-review.png",
@@ -23,7 +23,7 @@
       "intended_mock_outcome": "REVIEW",
       "license": "CC0-1.0 project-generated",
       "seed": 3301,
-      "sha256": "caf15148f46323456cadc78d268ab0614c93137819307208373ada7dfc2ba749"
+      "sha256": "d78f0b86fae1df43858011b0063931e8ec1f1aa83d1e7ca72855a22362b54382"
     }
   ],
   "notice": "Generated geometry only; contains no MVTec pixels.",

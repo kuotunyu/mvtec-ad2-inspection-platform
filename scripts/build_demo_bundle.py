@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+from io import BytesIO
 from pathlib import Path
 
 from PIL import Image, ImageDraw
@@ -99,9 +100,19 @@ def build_public_demo_fixtures(output: Path) -> None:
             draw.line((108, 68, 225, 158), fill=(232, 238, 240), width=2)
         elif defect == "dent":
             draw.ellipse((135, 85, 200, 150), fill=(92, 103, 110), outline=(223, 230, 233), width=3)
+        desired_review = outcome == "REVIEW"
+        image_bytes = b""
+        for nonce in range(256):
+            image.putpixel((1, 1), (nonce, seed % 256, (seed // 256) % 256))
+            encoded = BytesIO()
+            image.save(encoded, format="PNG", optimize=False)
+            image_bytes = encoded.getvalue()
+            score = int(hashlib.sha256(image_bytes).hexdigest()[:8], 16) / 0xFFFFFFFF
+            if (score >= 0.5) == desired_review:
+                break
         image_path = output / "images" / f"{name}.png"
         image_path.parent.mkdir(parents=True, exist_ok=True)
-        image.save(image_path, format="PNG", optimize=False)
+        image_path.write_bytes(image_bytes)
         expected = {
             "evaluation_scope": "synthetic-ci-only",
             "generator_version": "1.0.0",

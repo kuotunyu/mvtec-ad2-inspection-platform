@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+import csv
+import hashlib
+import html
 import json
 import re
 from datetime import UTC, datetime
-from io import BytesIO
+from io import BytesIO, StringIO
 from pathlib import Path
 from typing import Annotated, Any
 from uuid import uuid4
@@ -17,8 +20,8 @@ from sqlalchemy import func, select
 from inspection_platform.db.engine import create_engine_and_session
 from inspection_platform.db.models import InspectionImage, Job, Prediction, Review
 from inspection_platform.db.repositories import Repositories
-from inspection_platform.ingestion.images import ImageValidationError
-from inspection_platform.ingestion.service import IngestionService, UploadStream
+from inspection_platform.ingestion.images import ImageValidationError, validate_image
+from inspection_platform.reports.builder import build_report_json
 from inspection_platform.settings import Settings
 from inspection_platform.storage.artifacts import ArtifactStore
 
@@ -63,20 +66,21 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     sessions = create_engine_and_session(configured)
     repositories = Repositories(sessions)
     artifact_store = ArtifactStore(configured.artifact_root)
-    ingestion = IngestionService(repositories, artifact_store)
     app = FastAPI(title="MVTec AD 2 Inspection API", version="1.0.0")
     app.state.sessions = sessions
     app.state.settings = configured
     registry = CollectorRegistry()
     jobs_total = Counter("inspection_jobs", "Created inspection jobs", registry=registry)
 
-    def job_response(job: Job) -> JobResponse:
+    def job_response(job: Job, *, completed_count: int = 0, error_count: int = 0) -> JobResponse:
         return JobResponse(
             id=job.id,
-            category=job.category,  # type: ignore[arg-type]
+            category=job.category,
             image_count=job.image_count,
-            status=_status(job.state),  # type: ignore[arg-type]
+            status=_status(job.state),
             created_at=job.created_at,
+            completed_count=completed_count,
+            error_count=error_count,
         )
 
     def image_response(
@@ -92,7 +96,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             anomaly_score=payload.get("anomaly_score"),
             threshold=payload.get("threshold"),
             model_outcome=payload.get("model_outcome"),
-            human_decision=review.decision if review else None,  # type: ignore[arg-type]
+            human_decision=review.decision if review else None,
             revision=review.revision if review else 0,
             error=payload.get("error"),
         )
@@ -143,29 +147,48 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "walnuts",
         }:
             return _error(request, 422, "invalid_category", "Unknown component category")
-        uploads: list[UploadStream] = []
+        accepted: list[tuple[str, str, str, str | None]] = []
         for item in files:
-            uploads.append(
-                UploadStream(Path(item.filename or "image").name, BytesIO(await item.read()))
-            )
-        try:
-            result = ingestion.create_job(category, uploads)
-        except (ImageValidationError, ValueError) as exc:
-            return _error(request, 422, "invalid_upload", str(exc))
-        with sessions() as session, session.begin():
-            for upload, reference in zip(uploads, result.artifacts, strict=True):
-                session.add(
-                    InspectionImage(
-                        id=str(uuid4()),
-                        job_id=result.id,
-                        artifact_key=reference.sha256,
-                        filename=upload.filename,
-                        media_type=reference.media_type,
+            filename = Path(item.filename or "image").name
+            content = await item.read()
+            try:
+                image = validate_image(
+                    BytesIO(content), filename=filename, max_bytes=configured.max_upload_bytes
+                )
+                reference = artifact_store.put_stream(
+                    BytesIO(image.content), media_type=image.media_type
+                )
+                accepted.append((filename, reference.sha256, reference.media_type, None))
+            except ImageValidationError:
+                accepted.append(
+                    (
+                        filename,
+                        hashlib.sha256(content).hexdigest(),
+                        "application/octet-stream",
+                        "invalid_upload",
                     )
                 )
+        job = repositories.jobs.create(category=category, image_count=len(accepted))
+        with sessions() as session, session.begin():
+            for filename, artifact_key, media_type, error_code in accepted:
+                image_id = str(uuid4())
+                session.add(
+                    InspectionImage(
+                        id=image_id,
+                        job_id=job.id,
+                        artifact_key=artifact_key,
+                        filename=filename,
+                        media_type=media_type,
+                    )
+                )
+                if error_code is not None:
+                    session.add(
+                        Prediction(
+                            id=str(uuid4()), image_id=image_id, payload={"error": error_code}
+                        )
+                    )
         jobs_total.inc()
-        with sessions() as session:
-            return job_response(session.get(Job, result.id))  # type: ignore[arg-type]
+        return job_response(job)
 
     @app.get("/api/v1/jobs", response_model=JobListResponse)
     def list_jobs(limit: int = 50, offset: int = 0) -> JobListResponse:
@@ -207,10 +230,89 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                     .limit(1)
                 )
                 output.append(image_response(image, prediction, review))
-            base = job_response(job).model_dump()
-            return JobDetailResponse(
-                **base, images=output, revision=job.attempt, model_bundle_id=None
+            completed_count = sum(
+                item.error is None and item.anomaly_score is not None for item in output
             )
+            error_count = sum(item.error is not None for item in output)
+            bundle_ids = {
+                prediction.payload.get("model_bundle_id")
+                for image in images
+                if (
+                    prediction := session.scalar(
+                        select(Prediction).where(Prediction.image_id == image.id)
+                    )
+                )
+                and prediction.payload.get("model_bundle_id")
+            }
+            base = job_response(
+                job, completed_count=completed_count, error_count=error_count
+            ).model_dump()
+            return JobDetailResponse(
+                **base,
+                images=output,
+                revision=job.attempt,
+                model_bundle_id=next(iter(bundle_ids), None),
+            )
+
+    def report_response(job_id: str, request: Request, extension: str) -> Response:
+        detail = get_job(job_id, request)
+        if isinstance(detail, JSONResponse):
+            return detail
+        job_payload = detail.model_dump(mode="json")
+        if extension == "json":
+            body = build_report_json({"job": job_payload, "schema_version": "1.0.0"})
+            media_type = "application/json"
+        elif extension == "csv":
+            stream = StringIO(newline="")
+            writer = csv.writer(stream, lineterminator="\n")
+            writer.writerow(["image_id", "filename", "model_outcome", "human_decision", "error"])
+            for image in detail.images:
+                writer.writerow(
+                    [
+                        image.id,
+                        image.filename,
+                        image.model_outcome or "",
+                        image.human_decision or "",
+                        image.error or "",
+                    ]
+                )
+            body = stream.getvalue().encode("utf-8")
+            media_type = "text/csv"
+        else:
+            rows = "".join(
+                f"<tr><td>{html.escape(image.filename)}</td>"
+                f"<td>{html.escape(image.model_outcome or '')}</td>"
+                f"<td>{html.escape(image.human_decision or '')}</td>"
+                f"<td>{html.escape(image.error or '')}</td></tr>"
+                for image in detail.images
+            )
+            body = (
+                "<!doctype html><meta charset=utf-8><title>Inspection report</title>"
+                "<h1>Inspection evidence report</h1><table><thead><tr><th>File</th>"
+                "<th>Model outcome</th><th>Human decision</th><th>Error</th></tr>"
+                f"</thead><tbody>{rows}</tbody></table>"
+            ).encode()
+            media_type = "text/html"
+        return Response(
+            body,
+            media_type=media_type,
+            headers={
+                "content-disposition": f'attachment; filename="inspection-{job_id}.{extension}"',
+                "x-content-sha256": hashlib.sha256(body).hexdigest(),
+            },
+        )
+
+    @app.get("/api/v1/jobs/{job_id}/report.json", response_model=None)
+    def report_json(job_id: str, request: Request) -> Response:
+        return report_response(job_id, request, "json")
+
+    @app.get("/api/v1/jobs/{job_id}/report.csv", response_model=None)
+    def report_csv(job_id: str, request: Request) -> Response:
+        return report_response(job_id, request, "csv")
+
+    @app.get("/api/v1/jobs/{job_id}/report.html", response_model=None)
+    def report_html(job_id: str, request: Request) -> Response:
+        return report_response(job_id, request, "html")
 
     @app.post(
         "/api/v1/jobs/{job_id}/cancel",
@@ -374,6 +476,15 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     web_dist = _ROOT / "apps" / "web" / "dist"
     if web_dist.is_dir():
+
+        @app.get("/inspect", include_in_schema=False)
+        @app.get("/review", include_in_schema=False)
+        @app.get("/evidence", include_in_schema=False)
+        @app.get("/jobs/{web_job_id}", include_in_schema=False)
+        def web_route(web_job_id: str | None = None) -> FileResponse:
+            del web_job_id
+            return FileResponse(web_dist / "index.html", media_type="text/html")
+
         app.mount("/", StaticFiles(directory=web_dist, html=True), name="web")
 
     return app

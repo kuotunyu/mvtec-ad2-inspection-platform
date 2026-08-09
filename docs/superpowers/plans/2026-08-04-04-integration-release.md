@@ -157,24 +157,24 @@ git commit -m "build(container): package inspection services"
 - Create: `apps/web/e2e/docker-workstation.spec.ts`
 - Create: `scripts/run_system_tests.ps1`
 
-- [ ] **Step 1: Write the full product acceptance test**
+- [x] **Step 1: Write the full product acceptance test**
 
 Start isolated API and worker processes with temporary roots and the mock bundle. Upload a batch containing synthetic pass, synthetic review, and corrupt input; assert `COMPLETED_WITH_ERRORS`, valid evidence for good inputs, one image error, human review revision, and byte-valid report downloads.
 
-- [ ] **Step 2: Add failure injection at durable boundaries**
+- [x] **Step 2: Add failure injection at durable boundaries**
 
 Kill the worker after artifact write but before database commit, after database commit, and during heartbeat. Restart it and assert no duplicate predictions, no orphan reference, no state regression, and one final audit history. Simulate unavailable artifact storage and tampered bundle; both fail closed with stable error codes.
 
-- [ ] **Step 3: Add a real browser-to-container test**
+- [x] **Step 3: Add a real browser-to-container test**
 
 The browser creates the batch, watches progress, opens source/map/overlay, resolves the review, downloads JSON, and visits Model & Evidence. Capture no screenshots from MVTec data. Assert network responses contain no local absolute paths or tracebacks.
 
-- [ ] **Step 4: Run repeated clean system gates**
+- [x] **Step 4: Run repeated clean system gates**
 
 Run: `powershell -ExecutionPolicy Bypass -File scripts/run_system_tests.ps1 -Repeat 3`
 Expected: three isolated runs pass; each cleans only its named temporary containers/volumes and leaves the worktree unchanged.
 
-- [ ] **Step 5: Commit system verification**
+- [x] **Step 5: Commit system verification**
 
 ```powershell
 git add tests/system apps/web/e2e/docker-workstation.spec.ts scripts/run_system_tests.ps1

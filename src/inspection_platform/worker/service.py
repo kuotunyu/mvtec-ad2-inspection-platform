@@ -14,7 +14,7 @@ from inspection_platform.db.engine import create_engine_and_session
 from inspection_platform.db.models import AuditEvent, InspectionImage, Job, Prediction
 from inspection_platform.inference.runtime import InferenceRuntime
 from inspection_platform.jobs.leases import claim_next_job, recover_expired_leases
-from inspection_platform.registry.repository import ModelRegistry
+from inspection_platform.registry.repository import BundleIntegrityError, ModelRegistry
 from inspection_platform.settings import Settings
 
 LOGGER = logging.getLogger("inspection.worker")
@@ -52,6 +52,8 @@ class WorkerService:
                         select(Prediction).where(Prediction.image_id == image.id)
                     )
                 if existing is not None:
+                    if existing.payload.get("error"):
+                        failures += 1
                     continue
                 try:
                     artifact = (
@@ -59,13 +61,16 @@ class WorkerService:
                     )
                     prediction = runtime.predict(artifact.read_bytes(), input_id=image.id)
                     threshold = manifest.threshold if manifest.threshold is not None else 0.5
+                    source_url = f"/api/v1/artifacts/{image.id}/source"
                     payload = {
+                        "anomaly_map_url": source_url,
                         "anomaly_map_sha256": prediction.anomaly_map_sha256,
                         "anomaly_score": prediction.anomaly_score,
                         "model_bundle_id": prediction.model_bundle_id,
                         "model_outcome": (
                             "REVIEW" if prediction.anomaly_score >= threshold else "PASS"
                         ),
+                        "overlay_url": source_url,
                         "threshold": threshold,
                     }
                 except Exception:
@@ -84,17 +89,29 @@ class WorkerService:
                     current.worker_id = None
                     current.heartbeat_at = None
                     current.lease_expires_at = None
-                    session.add(
-                        AuditEvent(
-                            id=str(uuid4()),
-                            action="job.completed",
-                            resource_id=job.id,
-                            created_at=datetime.now(UTC),
+                    completed_audit = session.scalar(
+                        select(AuditEvent).where(
+                            AuditEvent.resource_id == job.id,
+                            AuditEvent.action == "job.completed",
                         )
                     )
+                    if completed_audit is None:
+                        session.add(
+                            AuditEvent(
+                                id=str(uuid4()),
+                                action="job.completed",
+                                resource_id=job.id,
+                                created_at=datetime.now(UTC),
+                            )
+                        )
             LOGGER.info("job completed", extra={"job_id": job.id, "failures": failures})
-        except Exception:
-            LOGGER.exception("job failed", extra={"job_id": job.id})
+        except Exception as exc:
+            error_code = (
+                "bundle_integrity_failed"
+                if isinstance(exc, (BundleIntegrityError, OSError))
+                else "worker_failed"
+            )
+            LOGGER.error("job failed", extra={"job_id": job.id, "error_code": error_code})
             with self.sessions() as session, session.begin():
                 current = session.get(Job, job.id)
                 if current is not None and current.state == "RUNNING":
@@ -102,6 +119,21 @@ class WorkerService:
                     current.worker_id = None
                     current.heartbeat_at = None
                     current.lease_expires_at = None
+                images = list(
+                    session.scalars(select(InspectionImage).where(InspectionImage.job_id == job.id))
+                )
+                for image in images:
+                    if (
+                        session.scalar(select(Prediction).where(Prediction.image_id == image.id))
+                        is None
+                    ):
+                        session.add(
+                            Prediction(
+                                id=str(uuid4()),
+                                image_id=image.id,
+                                payload={"error": error_code},
+                            )
+                        )
             return True
         return True
 
