@@ -12,7 +12,7 @@ function Invoke-NativeChecked {
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $isGitWorktree = Test-Path -LiteralPath (Join-Path $repoRoot ".git")
-[string[]]$before = if ($isGitWorktree) { @(git -C $repoRoot status --porcelain=v1 --untracked-files=all) } else { @() }
+[string]$before = if ($isGitWorktree) { @(git -C $repoRoot status --porcelain=v1 --untracked-files=all) -join "`n" } else { "" }
 $tempBase = [IO.Path]::GetFullPath([IO.Path]::Combine([IO.Path]::GetTempPath(), "$ProjectName-$PID"))
 if (-not $tempBase.StartsWith([IO.Path]::GetFullPath([IO.Path]::GetTempPath()), [StringComparison]::OrdinalIgnoreCase)) {
     throw "Refusing unsafe temporary path: $tempBase"
@@ -81,6 +81,6 @@ finally {
 }
 
 if ($isGitWorktree) {
-    [string[]]$after = @(git -C $repoRoot status --porcelain=v1 --untracked-files=all)
-    if (Compare-Object -ReferenceObject $before -DifferenceObject $after) { throw "Docker smoke changed the worktree" }
+    [string]$after = @(git -C $repoRoot status --porcelain=v1 --untracked-files=all) -join "`n"
+    if ($before -ne $after) { throw "Docker smoke changed the worktree" }
 }

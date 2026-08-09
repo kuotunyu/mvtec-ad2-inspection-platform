@@ -119,9 +119,10 @@ def test_release_powershell_uses_cross_platform_process_contracts() -> None:
 
     for name in ("scripts/docker_smoke.ps1", "scripts/run_system_tests.ps1"):
         script = Path(name).read_text(encoding="utf-8")
-        assert "[string[]]$before" in script
-        assert "[string[]]$after" in script
-        assert "Compare-Object -ReferenceObject $before -DifferenceObject $after" in script
+        assert "[string]$before" in script
+        assert "[string]$after" in script
+        assert "Compare-Object" not in script
+        assert "$before -ne $after" in script
 
 
 def test_clean_export_uses_only_committed_head() -> None:
@@ -146,6 +147,7 @@ def test_container_gates_support_gitless_committed_exports() -> None:
 def test_hash_bound_evidence_uses_stable_lf_bytes() -> None:
     attributes = Path(".gitattributes").read_text(encoding="utf-8")
     assert re.search(r"^docs/assets/evidence/\*\.json\s+text\s+eol=lf$", attributes, re.MULTILINE)
+    assert re.search(r"^docs/assets/\*\.svg\s+text\s+eol=lf$", attributes, re.MULTILINE)
 
 
 def test_private_no_go_release_is_complete_and_truthful() -> None:
