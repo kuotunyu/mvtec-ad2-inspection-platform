@@ -1,13 +1,15 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from pathlib import Path
-from typing import Protocol
+from typing import Any, Protocol
 
 from inspection_platform.contracts.models import ModelBundleManifest
 from inspection_platform.contracts.predictions import PredictionRecord
 
-from .anomalib_runtime import AnomalibRuntime, InferencerFactory
 from .mock import IncompatibleBundleError, MockRuntime
+
+InferencerFactory = Callable[[Path, str], Any]
 
 
 class LoadedModel(Protocol):
@@ -32,6 +34,8 @@ class InferenceRuntime:
             raise IncompatibleBundleError("unsupported runtime kind")
         if bundle_root is None:
             raise IncompatibleBundleError("anomalib serving requires the verified bundle root")
+        from .anomalib_runtime import AnomalibRuntime
+
         return AnomalibRuntime.load(
             manifest,
             bundle_root,

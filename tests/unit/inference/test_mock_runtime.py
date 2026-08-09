@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import hashlib
 import os
+import subprocess
+import sys
 from io import BytesIO
 from pathlib import Path
 
@@ -191,3 +193,26 @@ def test_anomalib_runtime_decodes_grayscale_input_as_rgb() -> None:
     Image.new("L", (4, 4), 128).save(stream, format="PNG")
     loaded = LoadedAnomalibModel(manifest, FakeInferencer(), decode_images=True)
     assert loaded.predict(stream.getvalue(), input_id="gray").category == "sheet_metal"
+
+
+def test_base_runtime_import_does_not_require_ml_extra() -> None:
+    code = """
+import importlib.abc
+import sys
+
+class BlockNumpy(importlib.abc.MetaPathFinder):
+    def find_spec(self, fullname, path=None, target=None):
+        if fullname == "numpy" or fullname.startswith("numpy."):
+            raise ModuleNotFoundError("numpy intentionally unavailable")
+        return None
+
+sys.meta_path.insert(0, BlockNumpy())
+import inspection_platform.inference.runtime
+"""
+    completed = subprocess.run(
+        [sys.executable, "-c", code],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert completed.returncode == 0, completed.stderr
