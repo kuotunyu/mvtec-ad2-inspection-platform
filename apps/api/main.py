@@ -491,11 +491,27 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         benchmark = json.loads(
             (_ROOT / "reports/public_benchmark.json").read_text(encoding="utf-8")
         )
+        serving_path = _ROOT / "docs/assets/evidence/serving-benchmark.json"
+        serving_status = "not evaluated"
+        serving_sha256 = None
+        downloadable = {
+            "champions": "/evidence/champions.json",
+            "public_benchmark": "/evidence/public-benchmark.json",
+        }
+        if serving_path.is_file():
+            serving = json.loads(serving_path.read_text(encoding="utf-8"))
+            if serving.get("status") != "passed":
+                raise ValueError("committed serving benchmark is not a passing artifact")
+            serving_status = "passed"
+            serving_sha256 = hashlib.sha256(serving_path.read_bytes()).hexdigest()
+            downloadable["serving_benchmark"] = "/evidence/serving-benchmark.json"
         return EvidenceResponse(
             public_gate_sha256=benchmark["canonical_sha256"],
             dataset_manifest_sha256=benchmark["dataset_manifest_sha256"],
             private_evaluation="not submitted",
             official_submission_performed=False,
+            serving_benchmark_status=serving_status,
+            serving_benchmark_sha256=serving_sha256,
             limitations=[
                 "MVTec AD 2 is licensed for non-commercial research use and is not redistributed.",
                 "Model outcomes are PASS or REVIEW; a human owns final disposition.",
@@ -508,10 +524,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 "image_auroc": "Image AUROC (higher is better)",
                 "pixel_au_pro": "Pixel AU-PRO (FPR ≤ 0.30, higher is better)",
             },
-            downloadable={
-                "champions": "/evidence/champions.json",
-                "public_benchmark": "/evidence/public-benchmark.json",
-            },
+            downloadable=downloadable,
         )
 
     @app.get("/evidence/champions.json")
@@ -521,6 +534,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.get("/evidence/public-benchmark.json")
     def benchmark_download() -> FileResponse:
         return FileResponse(_ROOT / "reports/public_benchmark.json", media_type="application/json")
+
+    @app.get("/evidence/serving-benchmark.json", response_model=None)
+    def serving_benchmark_download(request: Request) -> FileResponse | JSONResponse:
+        path = _ROOT / "docs/assets/evidence/serving-benchmark.json"
+        if not path.is_file():
+            return _error(request, 404, "evidence_not_found", "Evidence artifact not found")
+        return FileResponse(path, media_type="application/json")
 
     @app.get("/metrics")
     def metrics() -> Response:

@@ -8,6 +8,7 @@ import numpy as np
 from inspection_platform.contracts.models import BundleFile, ModelBundleManifest
 from inspection_platform.inference.anomalib_runtime import AnomalibRuntime
 from inspection_platform.inference.mock import IncompatibleBundleError, MockRuntime
+from inspection_platform.inference.runtime import InferenceRuntime
 
 
 def _manifest() -> ModelBundleManifest:
@@ -68,6 +69,43 @@ def test_anomalib_runtime_loads_lazily_and_normalizes_prediction(tmp_path: Path)
     loaded = AnomalibRuntime.load(
         manifest, tmp_path, inferencer_factory=lambda _path, _device: FakeInferencer()
     )
-    record = loaded.predict(b"not-decoded-by-fake", input_id="one")
-    assert record.anomaly_score == 0.75
-    assert record.category == "can"
+    detailed = loaded.predict_with_map(b"not-decoded-by-fake", input_id="one")
+    assert detailed.record.anomaly_score == 0.75
+    assert detailed.record.category == "can"
+    assert detailed.anomaly_map.shape == (4, 4)
+    assert detailed.anomaly_map.dtype == np.float32
+
+
+def test_product_runtime_loads_verified_anomalib_bundle(tmp_path: Path) -> None:
+    model = tmp_path / "model.pt"
+    model.write_bytes(b"model")
+    manifest = ModelBundleManifest(
+        category="can",
+        runtime_kind="anomalib",
+        model_family="patchcore",
+        files=(
+            BundleFile(
+                path="model.pt",
+                sha256=hashlib.sha256(b"model").hexdigest(),
+                size=5,
+            ),
+        ),
+        preprocessing_sha256="1" * 64,
+        threshold=0.5,
+    )
+
+    class Result:
+        pred_score = np.asarray([0.25], dtype=np.float32)
+        anomaly_map = np.ones((4, 4), dtype=np.float32)
+
+    class FakeInferencer:
+        def predict(self, _image: object) -> Result:
+            return Result()
+
+    loaded = InferenceRuntime.load(
+        manifest,
+        tmp_path,
+        device="cuda:0",
+        inferencer_factory=lambda _path, device: FakeInferencer() if device == "cuda:0" else None,
+    )
+    assert loaded.predict(b"input", input_id="one").anomaly_score == 0.25

@@ -50,10 +50,14 @@ def test_health_models_evidence_and_review_revision_contract(tmp_path: Path) -> 
     assert client.get("/api/health/live").json()["status"] == "ok"
     assert client.get("/api/health/ready").json()["status"] == "ready"
     assert len(client.get("/api/v1/models").json()["items"]) == 8
-    assert client.get("/api/v1/evidence").json()["private_evaluation"] in {
+    evidence = client.get("/api/v1/evidence").json()
+    assert evidence["private_evaluation"] in {
         "not submitted",
         "local validator passed; official submission not performed",
     }
+    assert evidence["serving_benchmark_status"] in {"not evaluated", "passed"}
+    if evidence["serving_benchmark_status"] == "not evaluated":
+        assert evidence["serving_benchmark_sha256"] is None
 
     created = client.post(
         "/api/v1/jobs",

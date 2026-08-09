@@ -92,6 +92,8 @@ class EvidenceResponse(BaseModel):
     dataset_manifest_sha256: str
     private_evaluation: str
     official_submission_performed: bool
+    serving_benchmark_status: Literal["not evaluated", "passed"]
+    serving_benchmark_sha256: str | None
     limitations: list[str]
     metric_definitions: dict[str, str]
     downloadable: dict[str, str]

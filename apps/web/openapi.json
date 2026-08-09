@@ -96,6 +96,25 @@
           "public_gate_sha256": {
             "title": "Public Gate Sha256",
             "type": "string"
+          },
+          "serving_benchmark_sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Serving Benchmark Sha256"
+          },
+          "serving_benchmark_status": {
+            "enum": [
+              "not evaluated",
+              "passed"
+            ],
+            "title": "Serving Benchmark Status",
+            "type": "string"
           }
         },
         "required": [
@@ -103,6 +122,8 @@
           "dataset_manifest_sha256",
           "private_evaluation",
           "official_submission_performed",
+          "serving_benchmark_status",
+          "serving_benchmark_sha256",
           "limitations",
           "metric_definitions",
           "downloadable"
@@ -1218,6 +1239,22 @@
           }
         },
         "summary": "Benchmark Download"
+      }
+    },
+    "/evidence/serving-benchmark.json": {
+      "get": {
+        "operationId": "serving_benchmark_download_evidence_serving_benchmark_json_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Serving Benchmark Download"
       }
     },
     "/metrics": {

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 from collections.abc import Sized
@@ -70,7 +71,28 @@ def verify_claims(claims: tuple[Claim, ...], root: Path) -> ClaimReport:
                 errors.append(f"{claim.document}:{claim.display} != {rendered}")
         except (OSError, ValueError, KeyError, IndexError, TypeError) as exc:
             errors.append(f"{claim.document}:{claim.source}:{type(exc).__name__}")
+    errors.extend(verify_serving_evidence(root))
     return ClaimReport(not errors, len(claims), tuple(errors))
+
+
+def verify_serving_evidence(root: Path) -> tuple[str, ...]:
+    evidence = root / "docs/assets/evidence"
+    serving = evidence / "serving-benchmark.json"
+    if not serving.is_file():
+        return ()
+    try:
+        from scripts.benchmark_serving import validate_serving_report
+
+        payload = json.loads(serving.read_text(encoding="utf-8"))
+        manifest = json.loads((evidence / "manifest.json").read_text(encoding="utf-8"))
+        expected = manifest["files"]["serving-benchmark.json"]
+        actual = hashlib.sha256(serving.read_bytes()).hexdigest()
+        errors = list(validate_serving_report(payload))
+        if expected != actual:
+            errors.append("serving_evidence_hash")
+        return tuple(sorted(set(errors)))
+    except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError):
+        return ("serving_evidence_format",)
 
 
 def main() -> int:
