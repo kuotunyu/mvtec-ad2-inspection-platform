@@ -10,6 +10,7 @@ from uuid import uuid4
 
 from fastapi import FastAPI, File, Form, Request, UploadFile
 from fastapi.responses import FileResponse, JSONResponse, Response
+from fastapi.staticfiles import StaticFiles
 from prometheus_client import CollectorRegistry, Counter, generate_latest
 from sqlalchemy import func, select
 
@@ -370,6 +371,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.get("/metrics")
     def metrics() -> Response:
         return Response(generate_latest(registry), media_type="text/plain; version=0.0.4")
+
+    web_dist = _ROOT / "apps" / "web" / "dist"
+    if web_dist.is_dir():
+        app.mount("/", StaticFiles(directory=web_dist, html=True), name="web")
 
     return app
 

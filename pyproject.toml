@@ -12,6 +12,7 @@ dependencies = [
   "fastapi>=0.115,<1",
   "httpx>=0.28,<1",
   "jsonschema>=4.24,<5",
+  "pillow>=11.2,<13",
   "prometheus-client>=0.22,<1",
   "psutil>=7.0,<8",
   "pydantic>=2.11,<3",

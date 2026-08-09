@@ -105,7 +105,7 @@ git commit -m "test(system): add synthetic evidence fixtures"
 - API image serves built frontend and `/api`; worker image runs `inspection-worker serve`.
 - Compose mounts named runtime volumes and an explicit read-only model registry; no data or model downloads happen at container startup.
 
-- [ ] **Step 1: Write static container-contract tests**
+- [x] **Step 1: Write static container-contract tests**
 
 ```python
 def test_images_run_as_non_root(dockerfiles: list[Path]) -> None:
@@ -118,25 +118,25 @@ def test_context_excludes_private_material() -> None:
         assert required in rules
 ```
 
-- [ ] **Step 2: Run container tests and confirm failure**
+- [x] **Step 2: Run container tests and confirm failure**
 
 Run: `uv run pytest tests/container/test_image_contract.py -q`
 Expected: FAIL because Docker files do not exist.
 
-- [ ] **Step 3: Implement deterministic multi-stage images**
+- [x] **Step 3: Implement deterministic multi-stage images**
 
 Pin base images by digest after checking supported upstream versions. Build frontend with `npm ci`, Python wheels with the frozen lock, copy only runtime files, create an unprivileged UID, add read-only filesystem compatibility, and include OCI labels for source revision and license. Do not place CUDA, training extras, Git history, or developer caches in the API image.
 
-- [ ] **Step 4: Define health-aware Compose services**
+- [x] **Step 4: Define health-aware Compose services**
 
 API waits for migrations and exposes liveness/readiness. Worker waits for database readiness and the registry mount. Use init, stop grace periods, bounded log rotation, and restart-on-failure. SQLite and artifacts use persistent named volumes; API and worker share only required volumes.
 
-- [ ] **Step 5: Build and run the CPU smoke**
+- [x] **Step 5: Build and run the CPU smoke**
 
 Run: `powershell -ExecutionPolicy Bypass -File scripts/docker_smoke.ps1`
 Expected: clean-context builds succeed, images run non-root, API becomes ready, worker heartbeat appears, a synthetic job completes, JSON report hashes verify, containers stop cleanly, and no repository files change.
 
-- [ ] **Step 6: Inspect image contents and commit packaging**
+- [x] **Step 6: Inspect image contents and commit packaging**
 
 Run: `uv run pytest tests/container/test_image_contract.py -q`
 Run: scan both image file lists for `.git`, `.env`, MVTec names, checkpoints, raw runs, source maps, and local paths.

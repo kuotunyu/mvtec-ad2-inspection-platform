@@ -1,0 +1,62 @@
+name: mvtec-ad2-inspection
+
+x-service-defaults: &service-defaults
+  init: true
+  restart: "on-failure:3"
+  read_only: true
+  tmpfs:
+    - /tmp:size=64m,mode=1777
+  stop_grace_period: 30s
+  logging:
+    driver: json-file
+    options:
+      max-size: 10m
+      max-file: "3"
+
+services:
+  api:
+    <<: *service-defaults
+    build:
+      context: .
+      dockerfile: deploy/docker/api.Dockerfile
+      args:
+        SOURCE_REVISION: ${SOURCE_REVISION:-unknown}
+    environment:
+      INSPECTION_DATABASE_URL: sqlite:////runtime/db/inspection.db
+      INSPECTION_ARTIFACT_ROOT: /runtime/artifacts
+      INSPECTION_MODEL_REGISTRY_ROOT: /models
+    ports:
+      - "127.0.0.1:${INSPECTION_PORT:-8000}:8000"
+    volumes:
+      - inspection-db:/runtime/db
+      - inspection-artifacts:/runtime/artifacts
+      - ${INSPECTION_MODEL_ROOT:?set INSPECTION_MODEL_ROOT}:/models:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health/ready', timeout=2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 10s
+
+  worker:
+    <<: *service-defaults
+    build:
+      context: .
+      dockerfile: deploy/docker/worker.Dockerfile
+      args:
+        SOURCE_REVISION: ${SOURCE_REVISION:-unknown}
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      INSPECTION_DATABASE_URL: sqlite:////runtime/db/inspection.db
+      INSPECTION_ARTIFACT_ROOT: /runtime/artifacts
+      INSPECTION_MODEL_REGISTRY_ROOT: /models
+    volumes:
+      - inspection-db:/runtime/db
+      - inspection-artifacts:/runtime/artifacts
+      - ${INSPECTION_MODEL_ROOT:?set INSPECTION_MODEL_ROOT}:/models:ro
+
+volumes:
+  inspection-db:
+  inspection-artifacts:
