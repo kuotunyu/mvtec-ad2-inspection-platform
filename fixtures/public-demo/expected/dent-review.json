@@ -1,0 +1,6 @@
+{
+  "evaluation_scope": "synthetic-ci-only",
+  "generator_version": "1.0.0",
+  "intended_mock_outcome": "REVIEW",
+  "seed": 3301
+}

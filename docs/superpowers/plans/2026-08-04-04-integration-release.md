@@ -49,7 +49,7 @@
 - `build_demo_bundle(output: Path) -> ModelBundleManifest` creates one explicit synthetic-CI mock bundle per category; mock bundles are never champions.
 - `verify_contract_chain(evidence_root, registry_root) -> VerificationReport` proves dataset → run → prediction → metric → selection → bundle → product compatibility.
 
-- [ ] **Step 1: Write cross-contract failure tests**
+- [x] **Step 1: Write cross-contract failure tests**
 
 ```python
 @pytest.mark.parametrize(
@@ -63,26 +63,26 @@ def test_contract_chain_rejects_identity_drift(valid_chain: EvidenceChain, mutat
     assert mutation in report.error_codes
 ```
 
-- [ ] **Step 2: Run integrity tests and confirm failure**
+- [x] **Step 2: Run integrity tests and confirm failure**
 
 Run: `uv run pytest tests/ml_integrity/test_contract_chain.py -q`
 Expected: FAIL because the verifier and demo bundle do not exist.
 
-- [ ] **Step 3: Create visibly synthetic public demo fixtures**
+- [x] **Step 3: Create visibly synthetic public demo fixtures**
 
 Generate geometric metal-like shapes, scratches, dents, and clean controls from fixed seeds. Add a small visible `SYNTHETIC DEMO` mark outside the evaluated object region. Manifest each image hash, generator version, seed, intended mock outcome, and CC0 project-generated status. No MVTec pixel may be used as source or texture.
 
-- [ ] **Step 4: Build the mock bundle and contract-chain verifier**
+- [x] **Step 4: Build the mock bundle and contract-chain verifier**
 
 The mock bundle has the same manifest shape as a real champion but records `runtime_kind="mock"`, `model_family=null`, `evaluation_scope="synthetic-ci-only"`, and no public benchmark score. In demo mode the verifier accepts only that restricted mock form; in normal mode it rejects any active bundle that was not selected by the frozen public artifact. It follows hashes in both directions and rejects dangling evidence.
 
-- [ ] **Step 5: Run deterministic and tamper gates**
+- [x] **Step 5: Run deterministic and tamper gates**
 
 Run: `uv run python scripts/build_demo_bundle.py --output "$env:INSPECTION_MODEL_ROOT"` twice and compare manifests.
 Run: `uv run pytest tests/ml_integrity/test_contract_chain.py tests/integration/test_demo_bundle.py -q`
 Expected: byte-stable manifests and all valid/tampered cases pass.
 
-- [ ] **Step 6: Commit only synthetic fixtures and tooling**
+- [x] **Step 6: Commit only synthetic fixtures and tooling**
 
 ```powershell
 git add scripts/build_demo_bundle.py scripts/verify_contract_chain.py fixtures/public-demo tests/ml_integrity/test_contract_chain.py tests/integration/test_demo_bundle.py

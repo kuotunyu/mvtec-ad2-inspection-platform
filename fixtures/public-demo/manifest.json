@@ -1,0 +1,31 @@
+{
+  "evaluation_scope": "synthetic-ci-only",
+  "fixtures": [
+    {
+      "filename": "images/clean-control.png",
+      "generator_version": "1.0.0",
+      "intended_mock_outcome": "PASS",
+      "license": "CC0-1.0 project-generated",
+      "seed": 1103,
+      "sha256": "bf06dc6d41f5017044aced9a015a8222f1619b1487373509f96f81417f15b92c"
+    },
+    {
+      "filename": "images/scratch-review.png",
+      "generator_version": "1.0.0",
+      "intended_mock_outcome": "REVIEW",
+      "license": "CC0-1.0 project-generated",
+      "seed": 2207,
+      "sha256": "3847567afce9851666ef4004e73da3b4b8a98bf365509f776367751acca0ab56"
+    },
+    {
+      "filename": "images/dent-review.png",
+      "generator_version": "1.0.0",
+      "intended_mock_outcome": "REVIEW",
+      "license": "CC0-1.0 project-generated",
+      "seed": 3301,
+      "sha256": "caf15148f46323456cadc78d268ab0614c93137819307208373ada7dfc2ba749"
+    }
+  ],
+  "notice": "Generated geometry only; contains no MVTec pixels.",
+  "schema_version": "1.0.0"
+}
