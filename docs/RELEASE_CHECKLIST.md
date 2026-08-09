@@ -55,6 +55,6 @@ Do not perform these actions without explicit authorization and the required off
 - [x] Official submission authorized and completed.
 - [x] Official result sanitized and independently checked.
 - [x] Mixed-lighting criterion classified truthfully as `PRIVATE-NO-GO`.
-- [ ] Publication explicitly authorized.
+- [x] Publication explicitly authorized.
 
-Publication remains outside this authorized result-import task.
+The authorized scope is the Public source repository `kuotunyu/mvtec-ad2-inspection-platform` and its initial `main` push. Tags, GitHub Releases, deployments, model publication, and additional official submissions remain separately authorized actions.

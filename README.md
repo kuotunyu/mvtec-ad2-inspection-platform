@@ -1,38 +1,43 @@
 # MVTec AD 2 Industrial Inspection Platform
 
-![Synthetic inspection workstation showing anomaly evidence and human review](docs/assets/screenshots/job-evidence.webp)
+![以 synthetic 資料呈現異常證據與人工覆核的工業檢測工作站](docs/assets/screenshots/job-evidence.webp)
 
-A local-first industrial anomaly-inspection workstation that turns frozen benchmark evidence into a resumable batch, visual review, and auditable human-decision workflow.
+這是一套 local-first 工業異常檢測與人工覆核平台，把 frozen benchmark evidence 轉為可續跑的 batch、視覺化檢閱與可稽核的人工作業流程。Repository 只使用 `fixtures/public-demo` 產生公開畫面，不重新散布 MVTec 資料；官方 frozen private gate 的結論為 `PRIVATE-NO-GO`。
 
-The public portfolio proves three things without redistributing MVTec data: **8 category-specific champions** <!-- claim:8|reports/champions.json|/champions|len --> selected from **56 formal public runs** <!-- claim:56|reports/public_benchmark.json|/runs|len -->, an end-to-end product exercised with visibly synthetic fixtures, and fail-closed boundaries around model identity, uploads, recovery, reports, and deletion. The frozen official private gate is classified `PRIVATE-NO-GO`.
+## 專案重點
 
-## Product workflow
+- **可追溯模型選擇：**8 個 category-specific champions <!-- claim:8|reports/champions.json|/champions|len -->，選自 56 次 formal public runs <!-- claim:56|reports/public_benchmark.json|/runs|len -->；每個公開數字都連結 committed machine-readable evidence。
+- **完整產品流程：**React 工作站、FastAPI、SQLite、leased worker、model registry、人工覆核與報告匯出。
+- **Fail-closed 邊界：**驗證 model identity、uploads、recovery、reports 與 deletion，並以 synthetic fixtures 完成 end-to-end 測試。
+- **誠實揭露：**官方結果不支持 v1 release，因此維持 `PRIVATE-NO-GO`，不以 private 結果 retune 或重新提交。
 
-![Synthetic batch-to-review workflow](docs/assets/workflow.svg)
+## 產品流程
 
-An operator selects a category and submits a batch. Valid images continue even when another image is corrupt. A dedicated leased worker verifies the selected bundle before inference, stores model evidence as `PASS` or `REVIEW`, and resumes idempotently after an expired lease. A human owns final disposition and every report preserves model and human decisions separately.
+![從 batch submission 到人工覆核的 synthetic workflow](docs/assets/workflow.svg)
 
-The screenshots in this repository are generated only from `fixtures/public-demo`; they contain no MVTec pixels and do not imply production deployment.
+操作人員選擇 category 並送出 batch；其中一張影像損壞時，其餘有效影像仍會繼續。獨占 lease 的 worker 在 inference 前驗證指定 model bundle，將模型證據記為 `PASS` 或 `REVIEW`，並能在 lease 過期後 idempotent resume。最終處置由人員決定，所有報告分開保留模型判定與人工決策。
 
-## Evidence, not a leaderboard claim
+本 Repository 的 screenshots 全由 `fixtures/public-demo` 產生，不含 MVTec pixels，也不代表已部署於 production。
 
-- The frozen champion matrix is in [reports/champions.json](reports/champions.json), with its readable summary in [reports/benchmark.md](reports/benchmark.md).
-- Public selection uses image AUROC, pixel AU-PRO, confidence intervals, latency, VRAM, and artifact size under the approved metric contract.
-- Per-category winners are PatchCore for `can`, `vial`, `wallplugs`, and `walnuts`; Dinomaly for `fabric`, `fruit_jelly`, `rice`, and `sheet_metal`.
-- EfficientAD remains a benchmarked candidate, not a selected champion.
-- The one authorized frozen archive passed the official local validator, was evaluated once by the official server, and was not regenerated or resubmitted after the result.
+## 證據，而非 leaderboard 宣稱
 
-## Official private gate
+- Frozen champion matrix 位於 [reports/champions.json](reports/champions.json)，可讀摘要位於 [reports/benchmark.md](reports/benchmark.md)。
+- Public selection 依 approved metric contract 同時考量 image AUROC、pixel AU-PRO、confidence intervals、latency、VRAM 與 artifact size。
+- `can`、`vial`、`wallplugs`、`walnuts` 的 winner 是 PatchCore；`fabric`、`fruit_jelly`、`rice`、`sheet_metal` 的 winner 是 Dinomaly。
+- EfficientAD 是已 benchmark 的 candidate，但未被選為 champion。
+- 唯一一次獲授權的 frozen archive 通過官方 local validator 並由官方 server 評測；看到結果後沒有重建或重新提交。
 
-The official server returned AucPro_0.05 averages of **31.24** <!-- claim:31.24|docs/assets/evidence/official-private-result.json|/metrics/private/auc_pro_0_05/average|.2f --> for `private` and **29.81** <!-- claim:29.81|docs/assets/evidence/official-private-result.json|/metrics/private_mixed/auc_pro_0_05/average|.2f --> for `private_mixed`. This is classified `PRIVATE-NO-GO`, preserving the precommitted rule that material mixed-lighting failure is reported rather than tuned away.
+## 官方 private gate
 
-The submitted archive contained all 4,090 TIFF anomaly maps but no optional thresholded PNGs. The official ClassF1 and SegF1 values are therefore zero and are not interpreted as measured thresholded-map performance. The reviewed per-category aggregates and evidence hashes are in [official-private-result.json](docs/assets/evidence/official-private-result.json); raw server evidence remains outside Git.
+官方 server 回傳的 AucPro_0.05 average：`private` 為 **31.24** <!-- claim:31.24|docs/assets/evidence/official-private-result.json|/metrics/private/auc_pro_0_05/average|.2f -->，`private_mixed` 為 **29.81** <!-- claim:29.81|docs/assets/evidence/official-private-result.json|/metrics/private_mixed/auc_pro_0_05/average|.2f -->。依預先承諾的規則，material mixed-lighting failure 必須揭露而不能事後調整，因此分類為 `PRIVATE-NO-GO`。
 
-## Verified local serving performance
+提交的 archive 包含全部 4,090 張 TIFF anomaly maps，但沒有 optional thresholded PNGs。官方 ClassF1 與 SegF1 因此為零，不能解讀成 thresholded-map performance 的有效量測。經審查的 per-category aggregates 與 evidence hashes 位於 [official-private-result.json](docs/assets/evidence/official-private-result.json)；raw server evidence 保留在 Git 之外。
 
-All eight frozen champions passed clean-process product inference on the recorded RTX 4090 workstation. Measurements use batch size **1** <!-- claim:1|docs/assets/evidence/serving-benchmark.json|/configuration/batch_size|d -->, **3** warmups <!-- claim:3|docs/assets/evidence/serving-benchmark.json|/configuration/warmup_repetitions|d -->, and **20** timed GPU repetitions <!-- claim:20|docs/assets/evidence/serving-benchmark.json|/configuration/gpu_repetitions|d --> per category. These are local measurements, not production guarantees.
+## 已驗證的本機 serving 效能
 
-| Category | Family | GPU p50 (ms) | GPU p95 (ms) | Peak reserved VRAM (MiB) | Bundle bytes |
+8 個 frozen champions 都在記錄的 RTX 4090 workstation 上通過 clean-process product inference。每個 category 使用 batch size **1** <!-- claim:1|docs/assets/evidence/serving-benchmark.json|/configuration/batch_size|d -->、**3** 次 warmups <!-- claim:3|docs/assets/evidence/serving-benchmark.json|/configuration/warmup_repetitions|d --> 與 **20** 次 timed GPU repetitions <!-- claim:20|docs/assets/evidence/serving-benchmark.json|/configuration/gpu_repetitions|d -->。以下是本機量測，不是 production guarantee。
+
+| Category | Model family | GPU p50（ms） | GPU p95（ms） | Peak reserved VRAM（MiB） | Bundle bytes |
 |---|---|---:|---:|---:|---:|
 | can | PatchCore | 155.2 <!-- claim:155.2|docs/assets/evidence/serving-benchmark.json|/categories/can/gpu/p50_latency_ms|.1f --> | 173.2 <!-- claim:173.2|docs/assets/evidence/serving-benchmark.json|/categories/can/gpu/p95_latency_ms|.1f --> | 4388.0 <!-- claim:4388.0|docs/assets/evidence/serving-benchmark.json|/categories/can/gpu/peak_reserved_vram_mib|.1f --> | 3,409,718,327 <!-- claim:3,409,718,327|docs/assets/evidence/serving-benchmark.json|/categories/can/artifact_size_bytes|,d --> |
 | fabric | Dinomaly | 167.4 <!-- claim:167.4|docs/assets/evidence/serving-benchmark.json|/categories/fabric/gpu/p50_latency_ms|.1f --> | 184.9 <!-- claim:184.9|docs/assets/evidence/serving-benchmark.json|/categories/fabric/gpu/p95_latency_ms|.1f --> | 2408.0 <!-- claim:2408.0|docs/assets/evidence/serving-benchmark.json|/categories/fabric/gpu/peak_reserved_vram_mib|.1f --> | 1,776,166,311 <!-- claim:1,776,166,311|docs/assets/evidence/serving-benchmark.json|/categories/fabric/artifact_size_bytes|,d --> |
@@ -43,19 +48,19 @@ All eight frozen champions passed clean-process product inference on the recorde
 | wallplugs | PatchCore | 134.9 <!-- claim:134.9|docs/assets/evidence/serving-benchmark.json|/categories/wallplugs/gpu/p50_latency_ms|.1f --> | 144.1 <!-- claim:144.1|docs/assets/evidence/serving-benchmark.json|/categories/wallplugs/gpu/p95_latency_ms|.1f --> | 3274.0 <!-- claim:3274.0|docs/assets/evidence/serving-benchmark.json|/categories/wallplugs/gpu/peak_reserved_vram_mib|.1f --> | 2,511,287,351 <!-- claim:2,511,287,351|docs/assets/evidence/serving-benchmark.json|/categories/wallplugs/artifact_size_bytes|,d --> |
 | walnuts | PatchCore | 239.7 <!-- claim:239.7|docs/assets/evidence/serving-benchmark.json|/categories/walnuts/gpu/p50_latency_ms|.1f --> | 259.8 <!-- claim:259.8|docs/assets/evidence/serving-benchmark.json|/categories/walnuts/gpu/p95_latency_ms|.1f --> | 4610.0 <!-- claim:4610.0|docs/assets/evidence/serving-benchmark.json|/categories/walnuts/gpu/peak_reserved_vram_mib|.1f --> | 3,560,713,271 <!-- claim:3,560,713,271|docs/assets/evidence/serving-benchmark.json|/categories/walnuts/artifact_size_bytes|,d --> |
 
-The complete sanitized artifact also records cold start, mean confidence intervals, throughput, CPU fallback, RSS, software versions, bundle identities, and the evidence hash manifest.
+完整 sanitized artifact 另記錄 cold start、mean confidence intervals、throughput、CPU fallback、RSS、software versions、bundle identities 與 evidence hash manifest。
 
-## Architecture
+## 架構
 
-![Local architecture with React, FastAPI, SQLite, worker, artifact store, and verified registry](docs/assets/architecture.svg)
+![由 React、FastAPI、SQLite、worker、artifact store 與 verified registry 組成的 local architecture](docs/assets/architecture.svg)
 
-The API never imports training orchestration at startup. Runtime databases, uploads, artifacts, datasets, checkpoints, and real model bundles live outside Git. Docker uses digest-pinned multi-stage images, a read-only root filesystem, an unprivileged user, persistent runtime volumes, and a read-only model mount.
+API startup 不會 import training orchestration。Runtime databases、uploads、artifacts、datasets、checkpoints 與 real model bundles 全部位於 Git 之外。Docker 使用 digest-pinned multi-stage images、read-only root filesystem、unprivileged user、persistent runtime volumes 與 read-only model mount。
 
-See [Architecture](docs/ARCHITECTURE.md), [Case study](docs/CASE_STUDY.md), [Model card](docs/MODEL_CARD.md), [Data card](docs/DATA_CARD.md), [Security](docs/SECURITY.md), and [Limitations](docs/LIMITATIONS.md).
+詳細資料請見 [Architecture](docs/ARCHITECTURE.md)、[Case study](docs/CASE_STUDY.md)、[Model card](docs/MODEL_CARD.md)、[Data card](docs/DATA_CARD.md)、[Security](docs/SECURITY.md) 與 [Limitations](docs/LIMITATIONS.md)。
 
-## Run the synthetic local demo
+## 執行 synthetic local demo
 
-Prerequisites are Python, `uv`, Node/npm, Docker Desktop, and a Chromium browser installed for Playwright.
+需要 Python、`uv`、Node/npm、Docker Desktop，以及已安裝供 Playwright 使用的 Chromium browser。
 
 ```powershell
 uv sync --extra ml --frozen
@@ -69,14 +74,14 @@ uv run python scripts/build_demo_bundle.py --output $env:INSPECTION_MODEL_ROOT
 docker compose up -d --build --wait
 ```
 
-Open `http://127.0.0.1:8000`. Stop the local services with `docker compose down`; add `--volumes` only when you intentionally want to remove that Compose project's demo database and artifacts.
+開啟 `http://127.0.0.1:8000`。以 `docker compose down` 停止服務；只有在確定要刪除該 Compose project 的 demo database 與 artifacts 時才加上 `--volumes`。
 
-For exact verification and real-model preparation, follow [Reproducibility](docs/REPRODUCIBILITY.md) and [Remote setup](docs/REMOTE_SETUP.md). No command in those guides pushes, publishes, uploads, or submits by itself.
+完整驗證與 real-model preparation 請依 [Reproducibility](docs/REPRODUCIBILITY.md) 和 [Remote setup](docs/REMOTE_SETUP.md) 操作。文件中的命令不會自行 push、publish、upload 或 submit。
 
-## Decision semantics
+## 判定語意
 
-`PASS` means the frozen model score is below its recorded threshold. `REVIEW` means the evidence should be examined by a person. Neither term is a defect type, a root cause, or an automatic reject decision.
+`PASS` 表示 frozen model score 低於其記錄 threshold；`REVIEW` 表示證據應由人員檢閱。兩者都不是 defect type、root cause 或 automatic reject decision。
 
-## License boundaries
+## License 與資料邊界
 
-Project source code is available under the [MIT License](LICENSE). MVTec AD 2 data is separately licensed CC BY-NC-SA 4.0 and is not redistributed. Model artifacts trained from that data are treated as research/non-commercial portfolio artifacts; consult [MODEL_CARD.md](docs/MODEL_CARD.md) before any reuse.
+Project source code 依 [MIT License](LICENSE) 提供。本 Repository 不重新散布 MVTec 原始資料；MVTec AD 2 data 另依 CC BY-NC-SA 4.0 授權。由該資料訓練的 model artifacts 僅視為 research／non-commercial portfolio artifacts，重用前請閱讀 [MODEL_CARD.md](docs/MODEL_CARD.md)。

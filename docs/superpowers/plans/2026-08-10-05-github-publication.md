@@ -44,7 +44,7 @@ step is objectively complete.
 - Consumes: committed aggregate evidence referenced by the existing README claim comments; approved publication design at `docs/superpowers/specs/2026-08-09-github-publication-design.md`.
 - Produces: a Traditional Chinese public front door and an automated publication contract consumed by CI and the release verifier.
 
-- [ ] **Step 1: Add the failing publication-contract test**
+- [x] **Step 1: Add the failing publication-contract test**
 
 Append this test to `tests/publication/test_docs.py`:
 
@@ -67,7 +67,7 @@ def test_public_readme_is_zh_tw_front_door_and_publication_is_authorized() -> No
     assert "Publication remains outside this authorized result-import task." not in checklist
 ```
 
-- [ ] **Step 2: Run the focused test and confirm RED**
+- [x] **Step 2: Run the focused test and confirm RED**
 
 Run:
 
@@ -77,7 +77,7 @@ uv run pytest tests/publication/test_docs.py::test_public_readme_is_zh_tw_front_
 
 Expected: FAIL because the current README headings are English and publication authorization remains unchecked.
 
-- [ ] **Step 3: Rewrite the README as the concise Traditional Chinese front door**
+- [x] **Step 3: Rewrite the README as the concise Traditional Chinese front door**
 
 Keep the title, synthetic hero image, workflow image, architecture image, serving table, evidence links, commands, and every `<!-- claim:... -->` comment. Use these exact headings:
 
@@ -97,7 +97,7 @@ Keep the title, synthetic hero image, workflow image, architecture image, servin
 
 The opening summary must state that this is a local-first industrial anomaly-inspection and human-review platform, that public visuals use `fixtures/public-demo`, and that the frozen official result is `PRIVATE-NO-GO`. Translate explanatory prose and table column labels to concise Traditional Chinese without changing any metric, family selection, command, path, claim annotation, or warning. The final boundary section must explicitly say that the repository does not redistribute `MVTec 原始資料`.
 
-- [ ] **Step 4: Record the explicit publication authorization**
+- [x] **Step 4: Record the explicit publication authorization**
 
 In `docs/RELEASE_CHECKLIST.md`, change:
 
@@ -117,7 +117,7 @@ The authorized scope is the Public source repository `kuotunyu/mvtec-ad2-inspect
 
 Do not change the `PRIVATE-NO-GO` candidate status or official metrics.
 
-- [ ] **Step 5: Run focused GREEN verification**
+- [x] **Step 5: Run focused GREEN verification**
 
 Run:
 
@@ -129,7 +129,7 @@ uv run python scripts/render_docs_assets.py --check
 
 Expected: all tests pass, all numeric claims resolve, and all generated documentation assets remain unchanged.
 
-- [ ] **Step 6: Stage the exact Task 1 files and verify the staged public tree**
+- [x] **Step 6: Stage the exact Task 1 files and verify the staged public tree**
 
 Run:
 
@@ -144,7 +144,7 @@ git diff --cached --name-only
 
 Expected: zero formatting/security/public-boundary findings; the staged list contains only the four declared files.
 
-- [ ] **Step 7: Audit identity and commit Task 1**
+- [x] **Step 7: Audit identity and commit Task 1**
 
 Run the full-history author, committer, and contributor-trailer audit. Then commit with the approved identity:
 
