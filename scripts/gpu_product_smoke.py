@@ -106,6 +106,11 @@ def discover_champion_run_ids(champions_path: Path, runs_root: Path) -> dict[str
     return selected
 
 
+def record_matches_spec(record: dict[str, Any], spec: dict[str, Any]) -> bool:
+    stored_spec = {key: value for key, value in spec.items() if key != "canonical_sha256"}
+    return record.get("spec") == stored_spec
+
+
 def load_champion_sources(evidence_root: Path, runs_root: Path) -> tuple[ChampionSource, ...]:
     evidence = evidence_root.expanduser().resolve(strict=True)
     runs = runs_root.expanduser().resolve(strict=True)
@@ -120,7 +125,7 @@ def load_champion_sources(evidence_root: Path, runs_root: Path) -> tuple[Champio
         threshold_payload = _read_json(run / "metrics" / "threshold.json")
         if record.get("status") != "completed" or record.get("exit_code") != 0:
             raise ValueError(f"champion run is not completed: {category}")
-        if record.get("spec") != identity:
+        if not record_matches_spec(record, spec):
             raise ValueError(f"champion record identity drift: {category}")
         config = ModelConfig.model_validate(spec.get("config"))
         if config.family != spec.get("model_family"):

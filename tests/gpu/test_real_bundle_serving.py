@@ -13,7 +13,11 @@ from scripts.benchmark_serving import (
     validate_serving_report,
     write_serving_evidence,
 )
-from scripts.gpu_product_smoke import discover_champion_run_ids, run_real_serving_gate
+from scripts.gpu_product_smoke import (
+    discover_champion_run_ids,
+    record_matches_spec,
+    run_real_serving_gate,
+)
 
 
 def _identity(value: str) -> str:
@@ -60,6 +64,12 @@ def test_discovers_seed_42_run_for_each_frozen_category(tmp_path: Path) -> None:
     )
 
     assert discover_champion_run_ids(champions, runs) == expected
+
+
+def test_completed_record_embeds_spec_without_computed_identity() -> None:
+    spec = {"canonical_sha256": "a" * 64, "category": "can", "seed": 42}
+    record = {"spec": {"category": "can", "seed": 42}}
+    assert record_matches_spec(record, spec)
 
 
 def test_serving_summary_uses_literal_percentiles_and_throughput() -> None:
