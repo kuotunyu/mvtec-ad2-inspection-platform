@@ -198,13 +198,15 @@ def test_private_no_go_release_bookkeeping_has_no_stale_pending_work() -> None:
     unchecked: list[str] = []
     for path in sorted(plan_root.glob("*.md")):
         content = path.read_text(encoding="utf-8")
-        if "**Status:** Active" in content:
+        if re.search(r"^\*\*Status:\*\* Active$", content, re.MULTILINE):
             continue
-        unchecked.extend(
-            f"{path.name}:{line.strip()}"
-            for line in content.splitlines()
-            if re.match(r"^\s*- \[ \]", line)
-        )
+        in_fenced_code = False
+        for line in content.splitlines():
+            if re.match(r"^\s*```", line):
+                in_fenced_code = not in_fenced_code
+                continue
+            if not in_fenced_code and re.match(r"^\s*- \[ \]", line):
+                unchecked.append(f"{path.name}:{line.strip()}")
     assert unchecked == []
 
     checklist = Path("docs/RELEASE_CHECKLIST.md").read_text(encoding="utf-8")
