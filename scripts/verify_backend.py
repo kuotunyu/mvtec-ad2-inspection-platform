@@ -12,7 +12,7 @@ from inspection_platform.settings import Settings
 
 def verify_backend() -> None:
     schema = create_app().openapi()
-    if "/api/jobs" not in schema["paths"] or "/metrics" not in schema["paths"]:
+    if "/api/v1/jobs" not in schema["paths"] or "/metrics" not in schema["paths"]:
         raise RuntimeError("OpenAPI is missing required backend routes")
     with TemporaryDirectory(prefix="mvtec-ad2-backend-") as temporary:
         root = Path(temporary)
