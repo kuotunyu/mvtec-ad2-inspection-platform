@@ -465,7 +465,7 @@ Run: `uv run mypy src experiments scripts`
 Run: `uv run python scripts/verify_backend.py`
 Expected: all pass; verifier checks migration head, OpenAPI export freshness, stable error codes, and absence of path fields.
 
-- [ ] **Step 4: Commit backend verification**
+- [x] **Step 4: Commit backend verification**
 
 ```powershell
 git add tests/integration/test_backend_workflow.py scripts/verify_backend.py pyproject.toml uv.lock
