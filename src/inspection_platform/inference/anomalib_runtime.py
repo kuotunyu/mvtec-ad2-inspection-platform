@@ -27,6 +27,14 @@ def _normalize_inferencer_device(device: str) -> str:
     return device
 
 
+def _as_numpy(value: Any) -> NDArray[Any]:
+    detach = getattr(value, "detach", None)
+    detached = detach() if callable(detach) else value
+    cpu = getattr(detached, "cpu", None)
+    host = cpu() if callable(cpu) else detached
+    return np.asarray(host)
+
+
 @contextmanager
 def _trusted_remote_code_scope() -> Iterator[None]:
     previous = os.environ.get("TRUST_REMOTE_CODE")
@@ -65,8 +73,8 @@ class LoadedAnomalibModel:
     def predict_with_map(self, image: bytes, *, input_id: str) -> AnomalibPrediction:
         value: object = Image.open(BytesIO(image)) if self.decode_images else image
         result = self.inferencer.predict(value)
-        score = float(np.asarray(result.pred_score).reshape(-1)[0])
-        anomaly_map = np.asarray(result.anomaly_map, dtype=np.float32).squeeze()
+        score = float(_as_numpy(result.pred_score).reshape(-1)[0])
+        anomaly_map = np.asarray(_as_numpy(result.anomaly_map), dtype=np.float32).squeeze()
         if anomaly_map.ndim != 2 or not np.isfinite(anomaly_map).all():
             raise ValueError("anomalib runtime produced an invalid anomaly map")
         return AnomalibPrediction(

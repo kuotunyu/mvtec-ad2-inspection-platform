@@ -10,6 +10,7 @@ import pytest
 from inspection_platform.contracts.models import BundleFile, ModelBundleManifest
 from inspection_platform.inference.anomalib_runtime import (
     AnomalibRuntime,
+    _as_numpy,
     _normalize_inferencer_device,
     _trusted_remote_code_scope,
 )
@@ -143,3 +144,22 @@ def test_anomalib_runtime_requires_explicit_verified_bundle_trust(tmp_path: Path
     )
     with pytest.raises(IncompatibleBundleError, match="verified bundle trust"):
         AnomalibRuntime.load(manifest, tmp_path)
+
+
+def test_gpu_like_tensor_moves_to_cpu_before_numpy_conversion() -> None:
+    calls: list[str] = []
+
+    class FakeGpuTensor:
+        def detach(self) -> FakeGpuTensor:
+            calls.append("detach")
+            return self
+
+        def cpu(self) -> np.ndarray:
+            calls.append("cpu")
+            return np.asarray([0.75], dtype=np.float32)
+
+        def __array__(self) -> np.ndarray:
+            raise AssertionError("GPU tensor must not convert directly")
+
+    assert _as_numpy(FakeGpuTensor()).tolist() == pytest.approx([0.75])
+    assert calls == ["detach", "cpu"]
