@@ -1,0 +1,112 @@
+{
+  "archive_inventory": {
+    "anomaly_map_tiff": 4090,
+    "thresholded_png": 0
+  },
+  "benchmark": "MVTec AD 2",
+  "limitations": [
+    "The frozen submitted archive contained anomaly maps but no thresholded PNGs, so official ClassF1 and SegF1 are zero and are not interpreted as measured thresholded-map performance.",
+    "The official private and mixed-lighting result is validation-only and did not influence training, preprocessing, thresholds, seeds, checkpoints, or champion selection.",
+    "No second submission was performed."
+  ],
+  "memory_mb": null,
+  "method_name": "MVTec AD 2 Industrial Inspection Platform",
+  "metrics": {
+    "private": {
+      "auc_pro_0_05": {
+        "average": 31.24,
+        "categories": {
+          "can": 6.63,
+          "fabric": 9.41,
+          "fruit_jelly": 39.73,
+          "rice": 17.02,
+          "sheet_metal": 17.76,
+          "vial": 70.23,
+          "wallplugs": 26.02,
+          "walnuts": 63.14
+        }
+      },
+      "class_f1": {
+        "average": 0.0,
+        "categories": {
+          "can": 0.0,
+          "fabric": 0.0,
+          "fruit_jelly": 0.0,
+          "rice": 0.0,
+          "sheet_metal": 0.0,
+          "vial": 0.0,
+          "wallplugs": 0.0,
+          "walnuts": 0.0
+        }
+      },
+      "seg_f1": {
+        "average": 0.0,
+        "categories": {
+          "can": 0.0,
+          "fabric": 0.0,
+          "fruit_jelly": 0.0,
+          "rice": 0.0,
+          "sheet_metal": 0.0,
+          "vial": 0.0,
+          "wallplugs": 0.0,
+          "walnuts": 0.0
+        }
+      }
+    },
+    "private_mixed": {
+      "auc_pro_0_05": {
+        "average": 29.81,
+        "categories": {
+          "can": 6.31,
+          "fabric": 11.03,
+          "fruit_jelly": 39.16,
+          "rice": 15.57,
+          "sheet_metal": 16.0,
+          "vial": 67.44,
+          "wallplugs": 23.52,
+          "walnuts": 59.41
+        }
+      },
+      "class_f1": {
+        "average": 0.0,
+        "categories": {
+          "can": 0.0,
+          "fabric": 0.0,
+          "fruit_jelly": 0.0,
+          "rice": 0.0,
+          "sheet_metal": 0.0,
+          "vial": 0.0,
+          "wallplugs": 0.0,
+          "walnuts": 0.0
+        }
+      },
+      "seg_f1": {
+        "average": 0.0,
+        "categories": {
+          "can": 0.0,
+          "fabric": 0.0,
+          "fruit_jelly": 0.0,
+          "rice": 0.0,
+          "sheet_metal": 0.0,
+          "vial": 0.0,
+          "wallplugs": 0.0,
+          "walnuts": 0.0
+        }
+      }
+    }
+  },
+  "raw_evidence_sha256": {
+    "leaderboard_rows": "668f914eb3217e48ad9924c08e510c903860de3165e00bb6f628e00dfcfa03bf",
+    "submissions_dom": "ca77289814c7ce5a8e9425ffd7a45fd6dcae8be793492b9d56d1cb2ab7c9ca04",
+    "submissions_screenshot": "fd3d46cbb36f21bba57de1c7234a8afb3a1e55a1e8b408dc7da0b6064128faca"
+  },
+  "runtime_ms": null,
+  "schema_version": "1.0.0",
+  "server_date": "2026-08-09",
+  "source_url": "https://benchmark.mvtec.com/",
+  "status": "DONE",
+  "submission_archive_sha256": "25780c9e0c0a234454fa2e6a9a7d75f274d27d0434ad089549e19b0b0906ffb9",
+  "submission_id_sha256": "05a526510e391b4278b6d8fee26881b3d63a1b556f269965e1027b79c6f4c6c0",
+  "thresholded_metrics_available": false,
+  "verdict": "PRIVATE-NO-GO"
+}

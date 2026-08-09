@@ -27,7 +27,9 @@ Each serving bundle records preprocessing identity and its frozen threshold. The
 
 ## Evaluation status
 
-Public selection evidence is complete. Private and private-mixed predictions were packaged after freezing and passed the official local validator. Official authenticated submission was not performed; private performance is therefore `not evaluated` publicly.
+Public selection evidence is complete. The one frozen combined archive passed the local validator and completed official evaluation without retuning or resubmission. Official AucPro_0.05 averages are **31.24** <!-- claim:31.24|docs/assets/evidence/official-private-result.json|/metrics/private/auc_pro_0_05/average|.2f --> on `private` and **29.81** <!-- claim:29.81|docs/assets/evidence/official-private-result.json|/metrics/private_mixed/auc_pro_0_05/average|.2f --> on `private_mixed`; the release verdict is `PRIVATE-NO-GO`.
+
+The archive contained no thresholded PNGs, so official ClassF1 and SegF1 are zero and are not treated as measured thresholded-map performance. This packaging limitation is preserved in the sanitized [official result](assets/evidence/official-private-result.json), and no second submission was performed.
 
 ## Failure modes
 

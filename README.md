@@ -4,7 +4,7 @@
 
 A local-first industrial anomaly-inspection workstation that turns frozen benchmark evidence into a resumable batch, visual review, and auditable human-decision workflow.
 
-The public portfolio proves three things without redistributing MVTec data: **8 category-specific champions** <!-- claim:8|reports/champions.json|/champions|len --> selected from **56 formal public runs** <!-- claim:56|reports/public_benchmark.json|/runs|len -->, an end-to-end product exercised with visibly synthetic fixtures, and fail-closed boundaries around model identity, uploads, recovery, reports, and deletion. Official submission not performed.
+The public portfolio proves three things without redistributing MVTec data: **8 category-specific champions** <!-- claim:8|reports/champions.json|/champions|len --> selected from **56 formal public runs** <!-- claim:56|reports/public_benchmark.json|/runs|len -->, an end-to-end product exercised with visibly synthetic fixtures, and fail-closed boundaries around model identity, uploads, recovery, reports, and deletion. The frozen official private gate is classified `PRIVATE-NO-GO`.
 
 ## Product workflow
 
@@ -20,7 +20,13 @@ The screenshots in this repository are generated only from `fixtures/public-demo
 - Public selection uses image AUROC, pixel AU-PRO, confidence intervals, latency, VRAM, and artifact size under the approved metric contract.
 - Per-category winners are PatchCore for `can`, `vial`, `wallplugs`, and `walnuts`; Dinomaly for `fabric`, `fruit_jelly`, `rice`, and `sheet_metal`.
 - EfficientAD remains a benchmarked candidate, not a selected champion.
-- Private predictions passed the official local validator, but no authenticated server submission has been made. The public status therefore remains a local release candidate, never an official private score.
+- The one authorized frozen archive passed the official local validator, was evaluated once by the official server, and was not regenerated or resubmitted after the result.
+
+## Official private gate
+
+The official server returned AucPro_0.05 averages of **31.24** <!-- claim:31.24|docs/assets/evidence/official-private-result.json|/metrics/private/auc_pro_0_05/average|.2f --> for `private` and **29.81** <!-- claim:29.81|docs/assets/evidence/official-private-result.json|/metrics/private_mixed/auc_pro_0_05/average|.2f --> for `private_mixed`. This is classified `PRIVATE-NO-GO`, preserving the precommitted rule that material mixed-lighting failure is reported rather than tuned away.
+
+The submitted archive contained all 4,090 TIFF anomaly maps but no optional thresholded PNGs. The official ClassF1 and SegF1 values are therefore zero and are not interpreted as measured thresholded-map performance. The reviewed per-category aggregates and evidence hashes are in [official-private-result.json](docs/assets/evidence/official-private-result.json); raw server evidence remains outside Git.
 
 ## Verified local serving performance
 

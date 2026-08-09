@@ -20,6 +20,6 @@ No deployment, Hugging Face upload, Git push, tag, Release, PR, or official MVTe
 
 ## Official private handoff
 
-The frozen external upload is `private_submission.tar.gz` with SHA-256 `25780c9e0c0a234454fa2e6a9a7d75f274d27d0434ad089549e19b0b0906ffb9`. It combines `test_private` and `test_private_mixed` for the eight identically named official categories and has already passed the local official validator. Official submission performed: No.
+The frozen external upload is `private_submission.tar.gz` with SHA-256 `25780c9e0c0a234454fa2e6a9a7d75f274d27d0434ad089549e19b0b0906ffb9`. It combines `test_private` and `test_private_mixed` for the eight identically named official categories and passed the local official validator. Official submission performed: Yes, exactly once. No second submission was performed.
 
-No retuning is allowed after submission. With explicit authorization, verify the checksum, upload the frozen bytes once, and retain the raw official response outside Git. Verify the handoff with `scripts/verify_experiments.py`, import only reviewed sanitized aggregates, then run `scripts/verify_claims.py` and the complete clean-export release gate. See [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) for the capture procedure and publication boundary.
+No retuning is allowed after submission. Raw official evidence remains outside Git; the reviewed sanitized aggregate is [official-private-result.json](assets/evidence/official-private-result.json). The result is `PRIVATE-NO-GO`, and the complete release gates must remain green before any separately authorized publication action. See [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) for the evidence and publication boundary.

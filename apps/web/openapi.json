@@ -1225,6 +1225,22 @@
         "summary": "Champions Download"
       }
     },
+    "/evidence/official-private-result.json": {
+      "get": {
+        "operationId": "official_private_result_download_evidence_official_private_result_json_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Official Private Result Download"
+      }
+    },
     "/evidence/public-benchmark.json": {
       "get": {
         "operationId": "benchmark_download_evidence_public_benchmark_json_get",

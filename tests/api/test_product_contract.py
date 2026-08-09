@@ -52,14 +52,15 @@ def test_health_models_evidence_and_review_revision_contract(tmp_path: Path) -> 
     assert client.get("/api/health/ready").json()["status"] == "ready"
     assert len(client.get("/api/v1/models").json()["items"]) == 8
     evidence = client.get("/api/v1/evidence").json()
-    assert evidence["private_evaluation"] in {
-        "not submitted",
-        "local validator passed; official submission not performed",
-    }
+    assert evidence["private_evaluation"] == "NO-GO under lighting shift"
+    assert evidence["official_submission_performed"] is True
     assert evidence["serving_benchmark_status"] == "passed"
     serving = client.get(evidence["downloadable"]["serving_benchmark"])
     assert serving.status_code == 200
     assert evidence["serving_benchmark_sha256"] == hashlib.sha256(serving.content).hexdigest()
+    official = client.get(evidence["downloadable"]["official_private_result"])
+    assert official.status_code == 200
+    assert official.json()["verdict"] == "PRIVATE-NO-GO"
 
     created = client.post(
         "/api/v1/jobs",

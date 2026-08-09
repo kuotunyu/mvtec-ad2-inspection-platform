@@ -2,7 +2,7 @@
 
 ## 0.1.0-rc.1 - 2026-08-09
 
-Status: `PUBLIC-RC`. This is a verified local release candidate, not an official MVTec private-evaluation result and not a published release.
+Status: `PRIVATE-NO-GO`. The product and public release-candidate gates remain verified, but the frozen official private gate does not support a v1 release. This is not a published release.
 
 ### Added
 
@@ -16,8 +16,9 @@ Status: `PUBLIC-RC`. This is a verified local release candidate, not an official
 - All eight real champion bundles served successfully on the recorded RTX 4090 environment from source `f902c7b50cd79a2fdd954af4d23c46af4c488bc7`.
 - The committed-source clean export passed Python, frontend, accessibility, packaging, SBOM, Docker, security, documentation, and end-to-end browser gates.
 - The combined frozen private prediction archive contains both official private splits and passes the official local validator.
+- The one authorized official submission reached `DONE`; sanitized private and mixed-lighting aggregates are hash-bound in the release evidence.
+- The submitted archive contained no thresholded PNGs, so official ClassF1 and SegF1 are zero and explicitly treated as unavailable thresholded-map evidence.
 
-### Pending
+### Publication boundary
 
-- Authenticated official private and mixed-lighting submission, result capture, and any publication action require separate explicit authorization.
-
+- No second official submission is planned. Push, tag, GitHub Release, deployment, and model publication still require separate explicit authorization.

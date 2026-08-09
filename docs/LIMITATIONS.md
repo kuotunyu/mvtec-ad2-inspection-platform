@@ -7,4 +7,5 @@
 - MVTec AD 2 is a research dataset with non-commercial terms and is not redistributed.
 - Synthetic demo results prove product plumbing, determinism, recovery, accessibility, and boundary handling—not real model quality.
 - The default deployment is a trusted single-user workstation. Authentication, TLS termination, centralized authorization, and multi-tenant isolation are outside scope.
-- Official private submission has not been performed. Local validator success is not an official score.
+- The frozen official private gate is `PRIVATE-NO-GO`; no retuning or second submission was performed after seeing the result.
+- The submitted archive contained no thresholded PNGs. Official ClassF1 and SegF1 are therefore zero and are not interpreted as measured thresholded-map performance.

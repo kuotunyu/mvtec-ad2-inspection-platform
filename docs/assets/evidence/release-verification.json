@@ -1,5 +1,5 @@
 {
-  "candidate_status": "PUBLIC-RC",
+  "candidate_status": "PRIVATE-NO-GO",
   "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
   "docker": {
     "api_image_id": "sha256:c81d25d5855b369a64c80ad37c76881fcb8b760a758bcf1e28a2740c7872ad7b",
@@ -23,7 +23,7 @@
       "docker_smoke": "PASS",
       "frontend_e2e": "7 passed, 6 skipped",
       "node_audit_vulnerabilities": 0,
-      "python_tests": "245 passed, 1 skipped, 6 deselected",
+      "python_tests": "248 passed, 1 skipped, 6 deselected",
       "sbom": [
         "CycloneDX Python",
         "CycloneDX Node"
@@ -37,11 +37,11 @@
       "status": "PASS"
     },
     "documentation_claims": {
-      "checked": 40,
+      "checked": 44,
       "status": "PASS"
     },
     "experiment_verifier": {
-      "status": "PENDING EXTERNAL SUBMISSION"
+      "status": "PASS"
     },
     "frontend": {
       "build": "PASS",
@@ -55,17 +55,17 @@
       "tests": "1 passed, 6 deselected"
     },
     "public_boundary": {
-      "checked_files": 287,
+      "checked_files": 291,
       "findings": 0,
       "status": "PASS"
     },
     "security": {
       "findings": 0,
-      "scanned_files": 287,
+      "scanned_files": 291,
       "status": "PASS"
     }
   },
-  "generated_at": "2026-08-09T17:46:00+08:00",
+  "generated_at": "2026-08-09T20:55:00+08:00",
   "gpu_environment": {
     "anomalib": "2.5.0",
     "cuda_runtime": "13.0",
@@ -77,7 +77,8 @@
     "torch": "2.13.0+cu130"
   },
   "known_limitations": [
-    "Official private and mixed-lighting server evaluation has not been performed.",
+    "The frozen official private gate is PRIVATE-NO-GO; no retuning or second submission was performed.",
+    "The submitted archive contained no thresholded PNGs, so official ClassF1 and SegF1 are zero and are not interpreted as measured thresholded-map performance.",
     "Public benchmark results do not establish factory-domain performance.",
     "PASS and REVIEW are model outcomes; final disposition remains a human decision.",
     "The reference deployment is a trusted single-user workstation, not a multi-tenant service.",
@@ -130,13 +131,15 @@
       "manifest_sha256": "47545517af1b552208eb2f01e499fcf98c2792e30cbe73508c9ca324d218afe2"
     }
   },
-  "next_authorized_action": "With explicit authorization and official credentials, submit the already validated frozen archive once, capture the server result, preserve raw evidence outside Git, import only sanitized aggregates, and rerun claim and release verification.",
+  "next_authorized_action": "Preserve the honest PRIVATE-NO-GO limitation. Any push, tag, GitHub Release, deployment, or model publication requires separate explicit authorization; no second official submission is planned.",
   "official_private_evaluation": {
-    "official_submission_performed": false,
-    "status": "PENDING EXTERNAL SUBMISSION"
+    "official_submission_performed": true,
+    "status": "DONE",
+    "verdict": "PRIVATE-NO-GO"
   },
   "registry_sha256": "2bbfac2d324aa528b7e0ca5a101f27762a5fab583ebb71fa646f833236801292",
   "sanitized_metric_artifacts": {
+    "docs/assets/evidence/official-private-result.json": "181ac247e94d7eb09602b808b9d43ae735a34aa734c68b277454c94597068185",
     "docs/assets/evidence/serving-benchmark.json": "afef5a76b17b224760f4d39402f3af4a5bd3963d054422fc0a3bdf775132f837",
     "reports/champions.json": "1794104e343da858edd1b6ae8b1c98caf4686c9dfd35fcec5f85e5973257e299",
     "reports/contenders.json": "e651dabddd381b53ce97f34f45f1a4560c745aa588d8b1a36ac9ed758325b70d",
@@ -149,10 +152,12 @@
     "archive_sha256": "25780c9e0c0a234454fa2e6a9a7d75f274d27d0434ad089549e19b0b0906ffb9",
     "image_count": 4090,
     "local_official_validator": "PASS",
+    "official_submission_count": 1,
     "splits": [
       "test_private",
       "test_private_mixed"
-    ]
+    ],
+    "thresholded_png_count": 0
   },
   "verified_source_sha": "f902c7b50cd79a2fdd954af4d23c46af4c488bc7"
 }

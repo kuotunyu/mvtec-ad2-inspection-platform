@@ -3,12 +3,12 @@
 ## Candidate classification
 
 - Candidate: `0.1.0-rc.1`
-- Status: `PUBLIC-RC`
+- Status: `PRIVATE-NO-GO`
 - Verified source: `f902c7b50cd79a2fdd954af4d23c46af4c488bc7`
-- Official submission performed: No
-- Official private status: `PENDING EXTERNAL SUBMISSION`
+- Official submission performed: Yes, exactly once
+- Official private status: `DONE`
 
-This status means the public benchmark, product, Docker, security, documentation, clean-export, and eight-category real GPU serving gates pass. It does not imply an official private score or permission to publish.
+The public benchmark, product, Docker, security, documentation, clean-export, and eight-category real GPU serving gates pass. The frozen official result does not support a v1 release, and it does not grant permission to publish.
 
 ## Completed local gates
 
@@ -36,6 +36,8 @@ The upload set is already generated outside Git and must remain unchanged:
 
 No retuning rule: after the frozen archive is submitted, no private or mixed-lighting result may change preprocessing, thresholds, model families, seeds, checkpoints, or champion selection. A material mixed-lighting failure must be reported as `PRIVATE-NO-GO`, not hidden or recalibrated.
 
+The single official submission reached `DONE`. Sanitized AucPro_0.05 averages are 31.24 for `private` and 29.81 for `private_mixed`. Direct archive inventory found 4,090 TIFF anomaly maps and zero thresholded PNGs; official ClassF1 and SegF1 are therefore zero and are not interpreted as measured thresholded-map performance. No second submission was performed.
+
 ## Authorized capture and import procedure
 
 Do not perform these actions without explicit authorization and the required official account or credentials.
@@ -50,9 +52,9 @@ Do not perform these actions without explicit authorization and the required off
 
 ## Publication boundary
 
-- [ ] Official submission authorized and completed.
-- [ ] Official result sanitized and independently checked.
-- [ ] Mixed-lighting criterion classified truthfully.
+- [x] Official submission authorized and completed.
+- [x] Official result sanitized and independently checked.
+- [x] Mixed-lighting criterion classified truthfully as `PRIVATE-NO-GO`.
 - [ ] Publication explicitly authorized.
 
-These unchecked items are intentionally outside the `PUBLIC-RC` gate.
+Publication remains outside this authorized result-import task.

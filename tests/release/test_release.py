@@ -130,15 +130,27 @@ def test_hash_bound_evidence_uses_stable_lf_bytes() -> None:
     assert re.search(r"^docs/assets/evidence/\*\.json\s+text\s+eol=lf$", attributes, re.MULTILINE)
 
 
-def test_local_release_candidate_is_complete_and_truthful() -> None:
+def test_private_no_go_release_is_complete_and_truthful() -> None:
     evidence = json.loads(
         Path("docs/assets/evidence/release-verification.json").read_text(encoding="utf-8")
     )
-    assert evidence["candidate_status"] == "PUBLIC-RC"
+    assert evidence["candidate_status"] == "PRIVATE-NO-GO"
     assert evidence["official_private_evaluation"] == {
-        "official_submission_performed": False,
-        "status": "PENDING EXTERNAL SUBMISSION",
+        "official_submission_performed": True,
+        "status": "DONE",
+        "verdict": "PRIVATE-NO-GO",
     }
+    official = Path("docs/assets/evidence/official-private-result.json")
+    assert official.is_file()
+    official_payload = json.loads(official.read_text(encoding="utf-8"))
+    assert official_payload["verdict"] == "PRIVATE-NO-GO"
+    assert official_payload["metrics"]["private"]["auc_pro_0_05"]["average"] == 31.24
+    assert official_payload["metrics"]["private_mixed"]["auc_pro_0_05"]["average"] == 29.81
+    assert official_payload["thresholded_metrics_available"] is False
+    assert (
+        evidence["sanitized_metric_artifacts"]["docs/assets/evidence/official-private-result.json"]
+        == hashlib.sha256(official.read_bytes()).hexdigest()
+    )
     assert re.fullmatch(r"[0-9a-f]{40}", evidence["verified_source_sha"])
     assert evidence["gates"]["gpu_product_smoke"]["source_sha"] == evidence["verified_source_sha"]
     assert evidence["gates"]["clean_export"]["source_sha"] == evidence["verified_source_sha"]
@@ -174,4 +186,5 @@ def test_release_handoff_stays_at_the_authorization_boundary() -> None:
         "scripts/verify_claims.py",
     ):
         assert phrase.lower() in combined.lower()
-    assert "official submission performed: no" in combined.lower()
+    assert "official submission performed: yes" in combined.lower()
+    assert "no second submission" in combined.lower()

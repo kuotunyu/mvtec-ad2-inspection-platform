@@ -31,7 +31,7 @@ def test_public_document_set_and_assets_are_complete() -> None:
         assert Path(asset).is_file()
     readme = Path("README.md").read_text(encoding="utf-8")
     assert "synthetic" in readme.lower()
-    assert "official submission not performed" in readme.lower()
+    assert "private-no-go" in readme.lower()
 
 
 def test_docs_never_call_review_a_defect() -> None:

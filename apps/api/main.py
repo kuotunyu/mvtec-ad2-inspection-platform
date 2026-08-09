@@ -492,6 +492,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             (_ROOT / "reports/public_benchmark.json").read_text(encoding="utf-8")
         )
         serving_path = _ROOT / "docs/assets/evidence/serving-benchmark.json"
+        official_path = _ROOT / "docs/assets/evidence/official-private-result.json"
         serving_status = "not evaluated"
         serving_sha256 = None
         downloadable = {
@@ -505,11 +506,17 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             serving_status = "passed"
             serving_sha256 = hashlib.sha256(serving_path.read_bytes()).hexdigest()
             downloadable["serving_benchmark"] = "/evidence/serving-benchmark.json"
+        if not official_path.is_file():
+            raise ValueError("committed official private evidence is missing")
+        official = json.loads(official_path.read_text(encoding="utf-8"))
+        if official.get("status") != "DONE" or official.get("verdict") != "PRIVATE-NO-GO":
+            raise ValueError("committed official private evidence is not a no-go result")
+        downloadable["official_private_result"] = "/evidence/official-private-result.json"
         return EvidenceResponse(
             public_gate_sha256=benchmark["canonical_sha256"],
             dataset_manifest_sha256=benchmark["dataset_manifest_sha256"],
-            private_evaluation="not submitted",
-            official_submission_performed=False,
+            private_evaluation="NO-GO under lighting shift",
+            official_submission_performed=True,
             serving_benchmark_status=serving_status,
             serving_benchmark_sha256=serving_sha256,
             limitations=[
@@ -519,6 +526,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 "or root cause.",
                 "Latency measurements are specific to the recorded local hardware and "
                 "software stack.",
+                "The official frozen private gate is PRIVATE-NO-GO; no retuning or second "
+                "submission was performed.",
+                "The submitted archive had no thresholded PNGs, so official ClassF1 and "
+                "SegF1 are zero and are not treated as measured thresholded-map performance.",
             ],
             metric_definitions={
                 "image_auroc": "Image AUROC (higher is better)",
@@ -538,6 +549,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.get("/evidence/serving-benchmark.json", response_model=None)
     def serving_benchmark_download(request: Request) -> FileResponse | JSONResponse:
         path = _ROOT / "docs/assets/evidence/serving-benchmark.json"
+        if not path.is_file():
+            return _error(request, 404, "evidence_not_found", "Evidence artifact not found")
+        return FileResponse(path, media_type="application/json")
+
+    @app.get("/evidence/official-private-result.json", response_model=None)
+    def official_private_result_download(request: Request) -> FileResponse | JSONResponse:
+        path = _ROOT / "docs/assets/evidence/official-private-result.json"
         if not path.is_file():
             return _error(request, 404, "evidence_not_found", "Evidence artifact not found")
         return FileResponse(path, media_type="application/json")

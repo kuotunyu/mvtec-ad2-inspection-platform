@@ -18,4 +18,4 @@ The candidate families trade off representation, latency, memory, and regional l
 
 The UI routes model evidence to `PASS` or `REVIEW`; a person records `ACCEPT`, `REJECT`, or `UNCERTAIN`. It does not infer defect type or root cause. Public measurements are tied to the recorded local hardware/software environment and are not production guarantees.
 
-Private prediction packaging and the official local validator are complete. Authenticated official submission was not performed, so this repository does not present an official private score or a final public release.
+Private prediction packaging and the official local validator completed before one authorized official submission. The server result is preserved as sanitized aggregate evidence and classified `PRIVATE-NO-GO`: AucPro_0.05 is 31.24 on `private` and 29.81 on `private_mixed`. The archive did not include thresholded PNGs, so zero official ClassF1 and SegF1 values are reported as a packaging limitation, not hidden or repaired with a second submission.
