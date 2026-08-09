@@ -1,14 +1,17 @@
 from __future__ import annotations
 
 import hashlib
+import os
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 from inspection_platform.contracts.models import BundleFile, ModelBundleManifest
 from inspection_platform.inference.anomalib_runtime import (
     AnomalibRuntime,
     _normalize_inferencer_device,
+    _trusted_remote_code_scope,
 )
 from inspection_platform.inference.mock import IncompatibleBundleError, MockRuntime
 from inspection_platform.inference.runtime import InferenceRuntime
@@ -118,3 +121,25 @@ def test_anomalib_device_normalizes_indexed_cuda_for_torch_inferencer() -> None:
     assert _normalize_inferencer_device("cuda:0") == "cuda"
     assert _normalize_inferencer_device("cuda") == "cuda"
     assert _normalize_inferencer_device("cpu") == "cpu"
+
+
+def test_verified_remote_code_scope_restores_environment(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("TRUST_REMOTE_CODE", "previous")
+    with _trusted_remote_code_scope():
+        assert os.environ["TRUST_REMOTE_CODE"] == "1"
+    assert os.environ["TRUST_REMOTE_CODE"] == "previous"
+
+
+def test_anomalib_runtime_requires_explicit_verified_bundle_trust(tmp_path: Path) -> None:
+    model = tmp_path / "model.pt"
+    model.write_bytes(b"model")
+    manifest = ModelBundleManifest(
+        category="can",
+        runtime_kind="anomalib",
+        model_family="patchcore",
+        files=(BundleFile(path="model.pt", sha256=hashlib.sha256(b"model").hexdigest(), size=5),),
+        preprocessing_sha256="1" * 64,
+        threshold=0.5,
+    )
+    with pytest.raises(IncompatibleBundleError, match="verified bundle trust"):
+        AnomalibRuntime.load(manifest, tmp_path)

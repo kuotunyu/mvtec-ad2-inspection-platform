@@ -24,6 +24,7 @@ class InferenceRuntime:
         *,
         device: str = "cpu",
         inferencer_factory: InferencerFactory | None = None,
+        trust_verified_bundle: bool = False,
     ) -> LoadedModel:
         if manifest.runtime_kind == "mock":
             return MockRuntime.load(manifest)
@@ -36,6 +37,7 @@ class InferenceRuntime:
             bundle_root,
             device=device,
             inferencer_factory=inferencer_factory,
+            trust_verified_bundle=trust_verified_bundle,
         )
 
 

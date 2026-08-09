@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import hashlib
-from collections.abc import Callable
+import os
+from collections.abc import Callable, Iterator
+from contextlib import contextmanager
 from dataclasses import dataclass
 from io import BytesIO
 from pathlib import Path
@@ -25,10 +27,24 @@ def _normalize_inferencer_device(device: str) -> str:
     return device
 
 
+@contextmanager
+def _trusted_remote_code_scope() -> Iterator[None]:
+    previous = os.environ.get("TRUST_REMOTE_CODE")
+    os.environ["TRUST_REMOTE_CODE"] = "1"
+    try:
+        yield
+    finally:
+        if previous is None:
+            os.environ.pop("TRUST_REMOTE_CODE", None)
+        else:
+            os.environ["TRUST_REMOTE_CODE"] = previous
+
+
 def _default_factory(path: Path, device: str) -> Any:
     from anomalib.deploy import TorchInferencer
 
-    return TorchInferencer(path=path, device=_normalize_inferencer_device(device))
+    with _trusted_remote_code_scope():
+        return TorchInferencer(path=path, device=_normalize_inferencer_device(device))
 
 
 @dataclass(frozen=True)
@@ -74,6 +90,7 @@ class AnomalibRuntime:
         *,
         device: str = "cpu",
         inferencer_factory: InferencerFactory | None = None,
+        trust_verified_bundle: bool = False,
     ) -> LoadedAnomalibModel:
         if manifest.runtime_kind != "anomalib" or manifest.model_family is None:
             raise IncompatibleBundleError("anomalib runtime requires a real model family")
@@ -88,6 +105,8 @@ class AnomalibRuntime:
         root = bundle_root.resolve(strict=True)
         if not model_path.is_relative_to(root):
             raise IncompatibleBundleError("model path escapes bundle root")
+        if inferencer_factory is None and not trust_verified_bundle:
+            raise IncompatibleBundleError("real inference requires explicit verified bundle trust")
         factory = inferencer_factory or _default_factory
         return LoadedAnomalibModel(
             manifest,

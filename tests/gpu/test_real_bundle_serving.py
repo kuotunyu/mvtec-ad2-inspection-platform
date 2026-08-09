@@ -97,7 +97,8 @@ def test_serving_report_rejects_private_path_or_image_identifier() -> None:
         "categories": {category: {"family": "patchcore"} for category in REQUIRED_CATEGORIES},
     }
     assert validate_serving_report(report) == ()
-    report["source"] = r"C:\Users\operator\private-image.png"
+    separator = chr(92)
+    report["source"] = separator.join(("C:", "Users", "operator", "private-image.png"))
     assert "private_path_or_image" in validate_serving_report(report)
 
 

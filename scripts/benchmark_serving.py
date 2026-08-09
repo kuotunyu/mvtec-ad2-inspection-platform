@@ -16,7 +16,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-import psutil
+import psutil  # type: ignore[import-untyped]
 
 from experiments.data.manifest import REQUIRED_CATEGORIES
 from experiments.orchestration.gpu_lock import GpuLease
@@ -120,7 +120,12 @@ def _benchmark_worker(
         torch.cuda.reset_peak_memory_stats()
     _sync(device)
     started = time.perf_counter()
-    loaded = InferenceRuntime.load(manifest, root, device=device)
+    loaded = InferenceRuntime.load(
+        manifest,
+        root,
+        device=device,
+        trust_verified_bundle=True,
+    )
     _sync(device)
     cold_start_ms = (time.perf_counter() - started) * 1000
     if not isinstance(loaded, LoadedAnomalibModel):

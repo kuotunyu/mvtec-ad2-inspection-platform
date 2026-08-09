@@ -37,7 +37,11 @@ class WorkerService:
                 self.settings.model_registry_root / "categories" / job.category / "manifest.json"
             )
             manifest = ModelRegistry(self.settings.model_registry_root).register(manifest_path)
-            runtime = InferenceRuntime.load(manifest)
+            runtime = InferenceRuntime.load(
+                manifest,
+                self.settings.model_registry_root,
+                trust_verified_bundle=True,
+            )
             with self.sessions() as session:
                 images = list(
                     session.scalars(

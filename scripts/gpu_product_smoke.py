@@ -302,7 +302,12 @@ def _render_artifacts(image_bytes: bytes, anomaly_map: np.ndarray[Any, Any]) -> 
 def _smoke_worker(registry_root: Path, category: str, input_path: Path, output: Path) -> None:
     root = registry_root.expanduser().resolve(strict=True)
     manifest = ModelRegistry(root).register(root / "categories" / category / "manifest.json")
-    loaded = InferenceRuntime.load(manifest, root, device="cuda:0")
+    loaded = InferenceRuntime.load(
+        manifest,
+        root,
+        device="cuda:0",
+        trust_verified_bundle=True,
+    )
     if not isinstance(loaded, LoadedAnomalibModel):
         raise TypeError("real serving gate did not load the Anomalib runtime")
     image_bytes = input_path.expanduser().resolve(strict=True).read_bytes()
