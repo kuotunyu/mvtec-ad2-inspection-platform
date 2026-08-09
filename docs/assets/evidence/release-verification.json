@@ -23,7 +23,7 @@
       "docker_smoke": "PASS",
       "frontend_e2e": "7 passed, 6 skipped",
       "node_audit_vulnerabilities": 0,
-      "python_tests": "248 passed, 1 skipped, 6 deselected",
+      "python_tests": "249 passed, 1 skipped, 6 deselected",
       "sbom": [
         "CycloneDX Python",
         "CycloneDX Node"
@@ -65,7 +65,7 @@
       "status": "PASS"
     }
   },
-  "generated_at": "2026-08-09T20:55:00+08:00",
+  "generated_at": "2026-08-09T21:06:00+08:00",
   "gpu_environment": {
     "anomalib": "2.5.0",
     "cuda_runtime": "13.0",

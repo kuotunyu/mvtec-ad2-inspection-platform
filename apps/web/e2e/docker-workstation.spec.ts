@@ -42,7 +42,7 @@ test("real container workflow stays inside public response boundaries", async ({
   await page.getByRole("button", { name: "Confirm uncertain" }).click();
   await expect(page.getByText(/Human decision saved/)).toBeVisible();
   await page.goto("/evidence");
-  await expect(page.getByText("Private evaluation: not submitted")).toBeVisible();
+  await expect(page.getByText("Private evaluation: NO-GO under lighting shift")).toBeVisible();
   await expect(page.getByText(/detected defect|confirmed defect/i)).toHaveCount(0);
   expect(failures).toEqual([]);
 });

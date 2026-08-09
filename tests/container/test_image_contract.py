@@ -15,6 +15,11 @@ def test_images_run_as_non_root() -> None:
         assert "README.md LICENSE" in source
 
 
+def test_api_image_includes_committed_evidence() -> None:
+    source = Path("deploy/docker/api.Dockerfile").read_text(encoding="utf-8")
+    assert "COPY docs/assets/evidence/ docs/assets/evidence/" in source
+
+
 def test_context_excludes_private_material() -> None:
     rules = Path(".dockerignore").read_text(encoding="utf-8")
     for required in (

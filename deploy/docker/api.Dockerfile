@@ -26,6 +26,7 @@ WORKDIR /app
 COPY --from=python-build /app/.venv /app/.venv
 COPY apps/api/ apps/api/
 COPY reports/ reports/
+COPY docs/assets/evidence/ docs/assets/evidence/
 COPY alembic.ini ./
 COPY src/inspection_platform/db/migrations/ src/inspection_platform/db/migrations/
 COPY --from=web /web/dist apps/web/dist/
