@@ -1,0 +1,157 @@
+{
+  "candidate_status": "PUBLIC-RC",
+  "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+  "docker": {
+    "api_image_id": "sha256:c81d25d5855b369a64c80ad37c76881fcb8b760a758bcf1e28a2740c7872ad7b",
+    "base_images": {
+      "node": "node:24-alpine@sha256:d32cdf619f63fe0471182d08996dd516c6275bb5fd31ae06e55a570bd9e1ad43",
+      "python": "python:3.12-slim@sha256:229a2c5bfa27522db7815ea81f9bed70af17ccb9de9fc7ad142b1877b5830d36"
+    },
+    "runtime_user": "10001:10001",
+    "source_revision": "f902c7b50cd79a2fdd954af4d23c46af4c488bc7",
+    "worker_image_id": "sha256:d73caa2ec34dfefa5b1aaee168604f77164e27a686c079b8b64308e1d06f2a9a"
+  },
+  "gates": {
+    "backend": {
+      "status": "PASS"
+    },
+    "clean_export": {
+      "archives": [
+        "wheel",
+        "source distribution"
+      ],
+      "docker_smoke": "PASS",
+      "frontend_e2e": "7 passed, 6 skipped",
+      "node_audit_vulnerabilities": 0,
+      "python_tests": "245 passed, 1 skipped, 6 deselected",
+      "sbom": [
+        "CycloneDX Python",
+        "CycloneDX Node"
+      ],
+      "source_sha": "f902c7b50cd79a2fdd954af4d23c46af4c488bc7",
+      "status": "PASS",
+      "system_browser": "1 passed"
+    },
+    "contract_chain": {
+      "checked_categories": 8,
+      "status": "PASS"
+    },
+    "documentation_claims": {
+      "checked": 40,
+      "status": "PASS"
+    },
+    "experiment_verifier": {
+      "status": "PENDING EXTERNAL SUBMISSION"
+    },
+    "frontend": {
+      "build": "PASS",
+      "tests": "14 passed"
+    },
+    "gpu_product_smoke": {
+      "categories": 8,
+      "duration_seconds": 350.57,
+      "source_sha": "f902c7b50cd79a2fdd954af4d23c46af4c488bc7",
+      "status": "PASS",
+      "tests": "1 passed, 6 deselected"
+    },
+    "public_boundary": {
+      "checked_files": 287,
+      "findings": 0,
+      "status": "PASS"
+    },
+    "security": {
+      "findings": 0,
+      "scanned_files": 287,
+      "status": "PASS"
+    }
+  },
+  "generated_at": "2026-08-09T17:46:00+08:00",
+  "gpu_environment": {
+    "anomalib": "2.5.0",
+    "cuda_runtime": "13.0",
+    "gpu_driver": "591.86",
+    "gpu_memory_mib": 24564,
+    "gpu_name": "NVIDIA GeForce RTX 4090",
+    "platform": "Windows",
+    "python": "3.12.13",
+    "torch": "2.13.0+cu130"
+  },
+  "known_limitations": [
+    "Official private and mixed-lighting server evaluation has not been performed.",
+    "Public benchmark results do not establish factory-domain performance.",
+    "PASS and REVIEW are model outcomes; final disposition remains a human decision.",
+    "The reference deployment is a trusted single-user workstation, not a multi-tenant service.",
+    "MVTec AD 2 data is non-commercial and is not redistributed."
+  ],
+  "lock_sha256": {
+    "apps/web/package-lock.json": "1148d0ee30f6f870a82958a0985474861d91620912b5fc51834adf905c2a63eb",
+    "uv.lock": "fe2dfdc8a680ee8fffc9ca80b794f38be382ac1bcff9f485972b66dc8fea2c95"
+  },
+  "model_bundles": {
+    "can": {
+      "bundle_identity": "d846b26e3eff9c9c86d2f72f8f6516fd671cc3773f46fe1d1a7bf1831eafb007",
+      "family": "patchcore",
+      "manifest_sha256": "e022b850697f73070c9c5aa84eb6d60589e9bdb255cf8d42113d68d7ad9403a9"
+    },
+    "fabric": {
+      "bundle_identity": "1acdbd1edcde8b3b9fb33b2b068831c837dc61aa510c25069d7eb270f358438a",
+      "family": "dinomaly",
+      "manifest_sha256": "b058389f196fa64e2d09e29d378ea63092804989199a49eaae2022643d96b73b"
+    },
+    "fruit_jelly": {
+      "bundle_identity": "5ade35dff123348312dacb94239b392b0f29660886e4b986f72cf263d2f5104b",
+      "family": "dinomaly",
+      "manifest_sha256": "c13b33df3435ec1f428125aec7c96859c6d78ca56f233911b4038443028b0032"
+    },
+    "rice": {
+      "bundle_identity": "c6feb3c904cb3049bdf40cf5b7efaffc9482c8e429163255be63fe9b7e394105",
+      "family": "dinomaly",
+      "manifest_sha256": "c85c0f4849b5834bc0cb8e4e02dcd7c40fd3292ab93e7438d7dee8a2ab8d0656"
+    },
+    "sheet_metal": {
+      "bundle_identity": "88cd57e7acbc6cdd9d0d8eee25574a31e0598dfe1e4827e6f73d1d1fd2ef7057",
+      "family": "dinomaly",
+      "manifest_sha256": "bb2eba3a585aa33f8e909c964e1be5010670e2f5464d3a4a9e11dd2aeba3b0ef"
+    },
+    "vial": {
+      "bundle_identity": "54d3043fcf7e701602ea030185a288c765a6aa9871857e9e765f6207cfdf3c58",
+      "family": "patchcore",
+      "manifest_sha256": "a03f64625a50b1f3a1adce9a9567ca0c916954847f6ce77f9a7854f6f27749fb"
+    },
+    "wallplugs": {
+      "bundle_identity": "b07fc0b71e0ffe9d2925b6e894e8fc13b51226fbd4d141d2814925bb6c51887d",
+      "family": "patchcore",
+      "manifest_sha256": "fba2e9b212091cf35f34485b870c7b091a1d28ea3ab5edf3a1ea5fb15596e818"
+    },
+    "walnuts": {
+      "bundle_identity": "a7408320cbd9807964d0401d9da32902584588780fc596f59175ae45e7e71fff",
+      "family": "patchcore",
+      "manifest_sha256": "47545517af1b552208eb2f01e499fcf98c2792e30cbe73508c9ca324d218afe2"
+    }
+  },
+  "next_authorized_action": "With explicit authorization and official credentials, submit the already validated frozen archive once, capture the server result, preserve raw evidence outside Git, import only sanitized aggregates, and rerun claim and release verification.",
+  "official_private_evaluation": {
+    "official_submission_performed": false,
+    "status": "PENDING EXTERNAL SUBMISSION"
+  },
+  "registry_sha256": "2bbfac2d324aa528b7e0ca5a101f27762a5fab583ebb71fa646f833236801292",
+  "sanitized_metric_artifacts": {
+    "docs/assets/evidence/serving-benchmark.json": "afef5a76b17b224760f4d39402f3af4a5bd3963d054422fc0a3bdf775132f837",
+    "reports/champions.json": "1794104e343da858edd1b6ae8b1c98caf4686c9dfd35fcec5f85e5973257e299",
+    "reports/contenders.json": "e651dabddd381b53ce97f34f45f1a4560c745aa588d8b1a36ac9ed758325b70d",
+    "reports/public_benchmark.json": "adc64b8b23edea988f73644b6329c44b4356d11da8f93f171a5e3392e50fc811"
+  },
+  "schema_version": "1.0.0",
+  "serving_benchmark_source_sha": "267045936edabf718aff33abb98f7b5d96f022a8",
+  "submission_handoff": {
+    "archive_filename": "private_submission.tar.gz",
+    "archive_sha256": "25780c9e0c0a234454fa2e6a9a7d75f274d27d0434ad089549e19b0b0906ffb9",
+    "image_count": 4090,
+    "local_official_validator": "PASS",
+    "splits": [
+      "test_private",
+      "test_private_mixed"
+    ]
+  },
+  "verified_source_sha": "f902c7b50cd79a2fdd954af4d23c46af4c488bc7"
+}

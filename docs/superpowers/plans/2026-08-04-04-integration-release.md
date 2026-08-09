@@ -373,11 +373,11 @@ git commit -m "perf(inference): publish serving evidence"
 - Create: `docs/assets/evidence/release-verification.json`
 - Modify: `docs/REMOTE_SETUP.md`
 
-- [ ] **Step 1: Recompute every required gate from committed `HEAD`**
+- [x] **Step 1: Recompute every required gate from committed `HEAD`**
 
 Run the Plan 01 experiment verifier, Plan 02 backend gate, Plan 03 frontend gate, contract-chain verifier, security/public-boundary scanners, GPU product smoke, and clean-export release gate. Do not reuse a pass from a different SHA.
 
-- [ ] **Step 2: Classify the candidate truthfully**
+- [x] **Step 2: Classify the candidate truthfully**
 
 The allowed local statuses are:
 
@@ -386,21 +386,21 @@ The allowed local statuses are:
 - `PRIVATE-NO-GO`: frozen private or mixed-lighting criterion materially fails.
 - `V1-CANDIDATE`: all gates, including the frozen official private validation, pass.
 
-- [ ] **Step 3: Prepare but do not execute the official submission handoff**
+- [x] **Step 3: Prepare but do not execute the official submission handoff**
 
 Document exact bundle hashes, official upload files, expected category mapping, no-retuning rule, capture procedure, and result-import verifier. Stop and request explicit user authorization before any official server submission. After results return, import them once, preserve raw external evidence outside Git, commit only sanitized aggregates, and rerun claims verification.
 
-- [ ] **Step 4: Write the release verification artifact and changelog**
+- [x] **Step 4: Write the release verification artifact and changelog**
 
 Include `HEAD`, lock hashes, dataset manifest hash, champion matrix hash, model bundle hashes, sanitized metric artifacts, test summaries, Docker image identities, public scan result, GPU environment, private status, known limitations, and next authorized action.
 
-- [ ] **Step 5: Commit the local candidate without publishing**
+- [x] **Step 5: Commit the local candidate without publishing**
 
 ```powershell
 git add CHANGELOG.md docs/RELEASE_CHECKLIST.md docs/REMOTE_SETUP.md docs/assets/evidence/release-verification.json
 git commit -m "chore(release): freeze local inspection candidate"
 ```
 
-- [ ] **Step 6: Stop at the publication boundary**
+- [x] **Step 6: Stop at the publication boundary**
 
 Confirm the worktree is clean and summarize commits, verification evidence, candidate status, unresolved limitations, disk/GPU artifacts, and exact next decision. Do not push, create a remote, open a PR, create or move a tag, create a GitHub Release, deploy, upload to Hugging Face, or submit official predictions.

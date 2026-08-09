@@ -128,3 +128,48 @@ def test_container_gates_support_gitless_committed_exports() -> None:
 def test_hash_bound_evidence_uses_stable_lf_bytes() -> None:
     attributes = Path(".gitattributes").read_text(encoding="utf-8")
     assert re.search(r"^docs/assets/evidence/\*\.json\s+text\s+eol=lf$", attributes, re.MULTILINE)
+
+
+def test_local_release_candidate_is_complete_and_truthful() -> None:
+    evidence = json.loads(
+        Path("docs/assets/evidence/release-verification.json").read_text(encoding="utf-8")
+    )
+    assert evidence["candidate_status"] == "PUBLIC-RC"
+    assert evidence["official_private_evaluation"] == {
+        "official_submission_performed": False,
+        "status": "PENDING EXTERNAL SUBMISSION",
+    }
+    assert re.fullmatch(r"[0-9a-f]{40}", evidence["verified_source_sha"])
+    assert evidence["gates"]["gpu_product_smoke"]["source_sha"] == evidence["verified_source_sha"]
+    assert evidence["gates"]["clean_export"]["source_sha"] == evidence["verified_source_sha"]
+    assert set(evidence["model_bundles"]) == {
+        "can",
+        "fabric",
+        "fruit_jelly",
+        "rice",
+        "sheet_metal",
+        "vial",
+        "wallplugs",
+        "walnuts",
+    }
+    for row in evidence["model_bundles"].values():
+        assert re.fullmatch(r"[0-9a-f]{64}", row["bundle_identity"])
+        assert re.fullmatch(r"[0-9a-f]{64}", row["manifest_sha256"])
+    for relative, expected in evidence["lock_sha256"].items():
+        assert hashlib.sha256(Path(relative).read_bytes()).hexdigest() == expected
+
+
+def test_release_handoff_stays_at_the_authorization_boundary() -> None:
+    checklist = Path("docs/RELEASE_CHECKLIST.md").read_text(encoding="utf-8")
+    remote_setup = Path("docs/REMOTE_SETUP.md").read_text(encoding="utf-8")
+    combined = checklist + remote_setup
+    for phrase in (
+        "private_submission.tar.gz",
+        "25780c9e0c0a234454fa2e6a9a7d75f274d27d0434ad089549e19b0b0906ffb9",
+        "no retuning",
+        "explicit authorization",
+        "scripts/verify_experiments.py",
+        "scripts/verify_claims.py",
+    ):
+        assert phrase.lower() in combined.lower()
+    assert "official submission performed: no" in combined.lower()
