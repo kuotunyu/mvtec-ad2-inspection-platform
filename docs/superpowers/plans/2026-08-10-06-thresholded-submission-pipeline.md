@@ -36,7 +36,7 @@
 - Consumes: a completed seed-42 run directory containing `record.json`, `predictions/validation.json`, and its referenced `.npy` anomaly maps.
 - Produces: `SubmissionThreshold`, `combine_population_statistics(...)`, and `calibrate_submission_threshold(run_dir: Path) -> SubmissionThreshold`.
 
-- [ ] **Step 1: Write the failing streaming-statistics test**
+- [x] **Step 1: Write the failing streaming-statistics test**
 
 ```python
 def test_combined_statistics_match_literal_population_values() -> None:
@@ -51,13 +51,13 @@ def test_combined_statistics_match_literal_population_values() -> None:
     assert result.threshold == pytest.approx(1.5 + 3 * np.sqrt(1.25))
 ```
 
-- [ ] **Step 2: Run the focused test and observe the expected RED**
+- [x] **Step 2: Run the focused test and observe the expected RED**
 
 Run: `uv run pytest tests/unit/submission/test_threshold_calibration.py::test_combined_statistics_match_literal_population_values -q`
 
 Expected: FAIL because `experiments.submission.thresholds` does not exist.
 
-- [ ] **Step 3: Implement the immutable contract and bounded statistic combiner**
+- [x] **Step 3: Implement the immutable contract and bounded statistic combiner**
 
 ```python
 @dataclass(frozen=True, slots=True)
@@ -106,21 +106,21 @@ def combine_population_statistics(
     return PopulationStatistics(count, mean, standard_deviation, mean + 3 * standard_deviation)
 ```
 
-- [ ] **Step 4: Run the focused test and observe GREEN**
+- [x] **Step 4: Run the focused test and observe GREEN**
 
 Run: `uv run pytest tests/unit/submission/test_threshold_calibration.py::test_combined_statistics_match_literal_population_values -q`
 
 Expected: `1 passed`.
 
-- [ ] **Step 5: Add RED tests for artifact identity, hash mismatch, invalid maps, and completed seed-42 provenance**
+- [x] **Step 5: Add RED tests for artifact identity, hash mismatch, invalid maps, and completed seed-42 provenance**
 
 Use real temporary `.npy`, `PredictionArtifact`, `spec.json`, and `record.json` files. Assert the literal category, run directory name, validation JSON SHA-256, pixel count, mean, standard deviation, and threshold. Mutate one map after writing the artifact and require a `ValueError` containing `hash`; set the run status to failed or seed to 7 and require rejection.
 
-- [ ] **Step 6: Implement calibration from a completed run**
+- [x] **Step 6: Implement calibration from a completed run**
 
 Load and validate the prediction contract, require `split == "validation"`, `record.status == "completed"`, `spec.seed == 42`, and `artifact.category == spec.category`. Verify each `ArtifactFile` size and SHA-256 before loading it with `allow_pickle=False`. Compute the validation JSON hash from bytes and construct `SubmissionThreshold` from the combined statistics.
 
-- [ ] **Step 7: Run focused and static gates**
+- [x] **Step 7: Run focused and static gates**
 
 Run:
 
@@ -132,7 +132,7 @@ uv run mypy experiments/submission/thresholds.py
 
 Expected: all commands exit zero.
 
-- [ ] **Step 8: Update bookkeeping and commit Task 1**
+- [x] **Step 8: Update bookkeeping and commit Task 1**
 
 Mark Task 1 complete, update the ignored continuity files, audit identity/trailers, and commit only the Task 1 tracked files:
 
