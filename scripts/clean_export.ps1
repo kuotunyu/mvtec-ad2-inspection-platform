@@ -47,7 +47,7 @@ try {
         Invoke-NativeChecked "npm" @("ci", "--prefix", "apps/web") "frontend dependency install"
         Invoke-NativeChecked "npm" @("--prefix", "apps/web", "run", "verify") "frontend verification"
         Invoke-NativeChecked "npm" @("--prefix", "apps/web", "run", "e2e") "frontend browser tests"
-        Invoke-NativeChecked "uv" @("run", "python", "scripts/render_docs_assets.py", "--check") "documentation assets"
+        Invoke-NativeChecked "uv" @("run", "python", "scripts/render_docs_assets.py", "--check-manifest") "documentation assets"
         Invoke-NativeChecked "uv" @("run", "python", "scripts/verify_claims.py") "documentation claims"
 
         Invoke-NativeChecked "uv" @("build", "--out-dir", "dist") "distribution build"

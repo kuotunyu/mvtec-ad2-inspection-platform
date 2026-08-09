@@ -75,7 +75,7 @@ jobs:
       - run: uv sync --frozen
       - run: npm ci --prefix apps/web
       - run: npm --prefix apps/web exec -- playwright install --with-deps chromium
-      - run: uv run python scripts/render_docs_assets.py --check
+      - run: uv run python scripts/render_docs_assets.py --check-manifest
       - run: uv run pytest tests/publication tests/security -q
       - run: uv run python scripts/verify_claims.py
       - run: uv run python scripts/security_scan.py --root .

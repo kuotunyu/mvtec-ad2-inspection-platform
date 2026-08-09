@@ -12,7 +12,7 @@ function Invoke-NativeChecked {
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $isGitWorktree = Test-Path -LiteralPath (Join-Path $repoRoot ".git")
-$before = if ($isGitWorktree) { git -C $repoRoot status --porcelain=v1 --untracked-files=all } else { $null }
+[string[]]$before = if ($isGitWorktree) { @(git -C $repoRoot status --porcelain=v1 --untracked-files=all) } else { @() }
 $sourceRevision = $env:SOURCE_REVISION
 if (-not $sourceRevision) {
     if (-not $isGitWorktree) { throw "SOURCE_REVISION is required outside a Git worktree" }
@@ -57,7 +57,7 @@ for ($iteration = 1; $iteration -le $Repeat; $iteration++) {
 }
 
 if ($isGitWorktree) {
-    $after = git -C $repoRoot status --porcelain=v1 --untracked-files=all
-    if (Compare-Object $before $after) { throw "System tests changed the worktree" }
+    [string[]]$after = @(git -C $repoRoot status --porcelain=v1 --untracked-files=all)
+    if (Compare-Object -ReferenceObject $before -DifferenceObject $after) { throw "System tests changed the worktree" }
 }
 Write-Output "Repeated system gate PASS: $Repeat isolated runs"

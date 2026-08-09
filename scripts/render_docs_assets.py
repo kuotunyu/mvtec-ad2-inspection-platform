@@ -74,11 +74,42 @@ def _write_generated(target: Path) -> None:
     )
 
 
+def _manifest_stale(destination: Path) -> tuple[str, ...]:
+    manifest_path = destination / "manifest.json"
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        hashes = manifest["assets"]
+        if (
+            manifest["schema_version"] != "1.0.0"
+            or manifest["fixture_scope"] != "synthetic-ci-only"
+            or manifest["generator"] != "scripts/render_docs_assets.py"
+            or set(hashes) != set(ASSET_NAMES)
+        ):
+            return ("manifest.json",)
+    except (AttributeError, KeyError, OSError, TypeError, json.JSONDecodeError):
+        return ("manifest.json",)
+    return tuple(
+        name
+        for name in ASSET_NAMES
+        if not (destination / name).is_file()
+        or hashlib.sha256((destination / name).read_bytes()).hexdigest() != hashes[name]
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--check", action="store_true")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--check", action="store_true")
+    mode.add_argument("--check-manifest", action="store_true")
     args = parser.parse_args()
     destination = ROOT / "docs/assets"
+    if args.check_manifest:
+        stale = _manifest_stale(destination)
+        if stale:
+            print("stale documentation asset manifest: " + ", ".join(stale))
+            return 1
+        print("documentation asset manifest is current")
+        return 0
     if not args.check:
         _write_generated(destination)
         print("rendered deterministic synthetic documentation assets")

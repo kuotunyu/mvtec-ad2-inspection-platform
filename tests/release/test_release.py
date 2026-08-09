@@ -106,6 +106,24 @@ def test_ci_is_least_privilege_pinned_and_complete() -> None:
     assert all(re.search(r"@[0-9a-f]{40}$", action) for action in uses)
 
 
+def test_ci_uses_platform_stable_docs_asset_verification() -> None:
+    workflow = Path(".github/workflows/ci.yml").read_text(encoding="utf-8")
+    assert "scripts/render_docs_assets.py --check-manifest" in workflow
+
+
+def test_release_powershell_uses_cross_platform_process_contracts() -> None:
+    docker = Path("scripts/docker_smoke.ps1").read_text(encoding="utf-8")
+    assert 'Invoke-NativeChecked "curl.exe"' not in docker
+    assert "Get-Command" in docker
+    assert "-CommandType Application" in docker
+
+    for name in ("scripts/docker_smoke.ps1", "scripts/run_system_tests.ps1"):
+        script = Path(name).read_text(encoding="utf-8")
+        assert "[string[]]$before" in script
+        assert "[string[]]$after" in script
+        assert "Compare-Object -ReferenceObject $before -DifferenceObject $after" in script
+
+
 def test_clean_export_uses_only_committed_head() -> None:
     script = Path("scripts/clean_export.ps1").read_text(encoding="utf-8")
     assert '[string]$Treeish = "HEAD"' in script

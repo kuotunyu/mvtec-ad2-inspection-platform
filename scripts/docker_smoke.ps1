@@ -12,7 +12,7 @@ function Invoke-NativeChecked {
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $isGitWorktree = Test-Path -LiteralPath (Join-Path $repoRoot ".git")
-$before = if ($isGitWorktree) { git -C $repoRoot status --porcelain=v1 --untracked-files=all } else { $null }
+[string[]]$before = if ($isGitWorktree) { @(git -C $repoRoot status --porcelain=v1 --untracked-files=all) } else { @() }
 $tempBase = [IO.Path]::GetFullPath([IO.Path]::Combine([IO.Path]::GetTempPath(), "$ProjectName-$PID"))
 if (-not $tempBase.StartsWith([IO.Path]::GetFullPath([IO.Path]::GetTempPath()), [StringComparison]::OrdinalIgnoreCase)) {
     throw "Refusing unsafe temporary path: $tempBase"
@@ -44,7 +44,9 @@ try {
 
     $fixture = Join-Path $tempBase "clean-control.png"
     Copy-Item -LiteralPath (Join-Path $repoRoot "fixtures/public-demo/images/clean-control.png") -Destination $fixture
-    $response = Invoke-NativeChecked "curl.exe" @("--fail", "--silent", "--show-error", "-F", "category=can", "-F", "files=@$fixture;type=image/png", "http://127.0.0.1:$Port/api/v1/jobs") "synthetic upload"
+    $curlApplication = Get-Command -Name @("curl.exe", "curl") -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+    if (-not $curlApplication) { throw "curl application is required for the multipart smoke request" }
+    $response = Invoke-NativeChecked $curlApplication.Source @("--fail", "--silent", "--show-error", "-F", "category=can", "-F", "files=@$fixture;type=image/png", "http://127.0.0.1:$Port/api/v1/jobs") "synthetic upload"
     $job = $response | ConvertFrom-Json
     $deadline = (Get-Date).AddSeconds(45)
     do {
@@ -79,6 +81,6 @@ finally {
 }
 
 if ($isGitWorktree) {
-    $after = git -C $repoRoot status --porcelain=v1 --untracked-files=all
-    if (Compare-Object $before $after) { throw "Docker smoke changed the worktree" }
+    [string[]]$after = @(git -C $repoRoot status --porcelain=v1 --untracked-files=all)
+    if (Compare-Object -ReferenceObject $before -DifferenceObject $after) { throw "Docker smoke changed the worktree" }
 }

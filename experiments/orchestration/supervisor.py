@@ -110,7 +110,7 @@ class SubprocessExecutor:
                 error_kind="subprocess",
                 message="worker command must not be empty",
             )
-        creationflags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+        creationflags = int(getattr(subprocess, "CREATE_NO_WINDOW", 0)) if os.name == "nt" else 0
         with (
             stdout_path.open("ab") as stdout,
             stderr_path.open("ab") as stderr,
