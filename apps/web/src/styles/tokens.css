@@ -1,0 +1,8 @@
+:root {
+  --graphite-950: #10161b; --graphite-900: #172027; --graphite-800: #222d35;
+  --slate-700: #41505b; --slate-500: #687984; --slate-300: #bcc7cd; --slate-100: #edf1f2;
+  --paper: #f8faf9; --white: #ffffff; --cyan: #20a7bd; --cyan-dark: #087487;
+  --amber: #e7a527; --amber-soft: #fff3d5; --red: #b83a3a; --red-soft: #fee8e6;
+  --green: #168266; --shadow: 0 16px 40px rgb(16 22 27 / 10%);
+  --radius: 6px; --mono: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+}

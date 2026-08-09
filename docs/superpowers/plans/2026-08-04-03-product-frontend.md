@@ -114,7 +114,7 @@ git commit -m "build(frontend): establish typed web client"
 - Routes: `/`, `/inspect`, `/jobs/:jobId`, `/review`, `/evidence`.
 - `StatusBadge` requires both text and icon semantics for job, model, and human statuses.
 
-- [ ] **Step 1: Write navigation and semantic-status tests**
+- [x] **Step 1: Write navigation and semantic-status tests**
 
 ```tsx
 it("does not communicate review state by color alone", () => {
@@ -124,25 +124,25 @@ it("does not communicate review state by color alone", () => {
 });
 ```
 
-- [ ] **Step 2: Run shell tests and confirm failure**
+- [x] **Step 2: Run shell tests and confirm failure**
 
 Run: `cd apps/web; npm test -- --run src/app/App.test.tsx src/components/StatusBadge.test.tsx`
 Expected: FAIL because shell and components do not exist.
 
-- [ ] **Step 3: Implement the industrial visual system**
+- [x] **Step 3: Implement the industrial visual system**
 
 Use a restrained graphite/slate surface palette, high-contrast light content panels, amber for review attention, cyan for model evidence, and red only for actual errors or human rejection. Use a compact sans-serif for controls and a monospaced numeric face for scores and hashes. Provide visible focus rings, reduced-motion support, 44-pixel interaction targets, and a skip link.
 
-- [ ] **Step 4: Implement the responsive application shell**
+- [x] **Step 4: Implement the responsive application shell**
 
 Desktop uses persistent left navigation and a wide evidence canvas; narrow screens use a focus-managed menu. Show backend readiness and worker heartbeat as operational state, not decorative uptime. Route errors to a useful recovery page.
 
-- [ ] **Step 5: Verify shell behavior and accessibility**
+- [x] **Step 5: Verify shell behavior and accessibility**
 
 Run: `cd apps/web; npm test -- --run src/app src/components/StatusBadge.test.tsx`
 Expected: navigation, active route, keyboard focus, reduced motion, and semantic status tests pass.
 
-- [ ] **Step 6: Commit the shell**
+- [x] **Step 6: Commit the shell**
 
 ```powershell
 git add apps/web/src/app apps/web/src/styles apps/web/src/components
