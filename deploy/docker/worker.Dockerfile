@@ -1,7 +1,7 @@
 FROM python:3.12-slim@sha256:229a2c5bfa27522db7815ea81f9bed70af17ccb9de9fc7ad142b1877b5830d36 AS python-build
 WORKDIR /app
 RUN python -m pip install --no-cache-dir uv==0.11.18
-COPY pyproject.toml uv.lock ./
+COPY pyproject.toml uv.lock README.md LICENSE ./
 COPY src/ src/
 COPY experiments/ experiments/
 RUN uv sync --frozen --no-dev --no-editable && rm /app/.venv/.gitignore

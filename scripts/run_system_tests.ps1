@@ -4,8 +4,20 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+function Invoke-NativeChecked {
+    param([string]$Command, [string[]]$Arguments, [string]$Label)
+    & $Command @Arguments
+    if ($LASTEXITCODE -ne 0) { throw "$Label failed with exit code $LASTEXITCODE" }
+}
+
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
-$before = git -C $repoRoot status --porcelain=v1 --untracked-files=all
+$isGitWorktree = Test-Path -LiteralPath (Join-Path $repoRoot ".git")
+$before = if ($isGitWorktree) { git -C $repoRoot status --porcelain=v1 --untracked-files=all } else { $null }
+$sourceRevision = $env:SOURCE_REVISION
+if (-not $sourceRevision) {
+    if (-not $isGitWorktree) { throw "SOURCE_REVISION is required outside a Git worktree" }
+    $sourceRevision = git -C $repoRoot rev-parse HEAD
+}
 
 for ($iteration = 1; $iteration -le $Repeat; $iteration++) {
     $projectName = "mvtecad2system$iteration"
@@ -18,16 +30,16 @@ for ($iteration = 1; $iteration -le $Repeat; $iteration++) {
     New-Item -ItemType Directory -Path $tempBase -Force | Out-Null
     $env:INSPECTION_MODEL_ROOT = Join-Path $tempBase "models"
     $env:INSPECTION_PORT = "$port"
-    $env:SOURCE_REVISION = (git -C $repoRoot rev-parse HEAD)
+    $env:SOURCE_REVISION = $sourceRevision
     $env:PLAYWRIGHT_BASE_URL = "http://127.0.0.1:$port"
     $env:INSPECTION_DOCKER_E2E = "1"
     try {
         Push-Location $repoRoot
-        uv run pytest tests/system -q
-        uv run python scripts/build_demo_bundle.py --output $env:INSPECTION_MODEL_ROOT
-        docker compose -p $projectName up -d --build --wait --wait-timeout 120
+        Invoke-NativeChecked "uv" @("run", "pytest", "tests/system", "-q") "system tests"
+        Invoke-NativeChecked "uv" @("run", "python", "scripts/build_demo_bundle.py", "--output", $env:INSPECTION_MODEL_ROOT) "demo bundle build"
+        Invoke-NativeChecked "docker" @("compose", "-p", $projectName, "up", "-d", "--build", "--wait", "--wait-timeout", "120") "Docker system startup"
         Push-Location (Join-Path $repoRoot "apps/web")
-        npx playwright test e2e/docker-workstation.spec.ts --config=playwright.docker.config.ts
+        Invoke-NativeChecked "npx" @("playwright", "test", "e2e/docker-workstation.spec.ts", "--config=playwright.docker.config.ts") "Docker browser workflow"
         Pop-Location
         Write-Output "System iteration $iteration/$Repeat PASS"
     }
@@ -44,6 +56,8 @@ for ($iteration = 1; $iteration -le $Repeat; $iteration++) {
     }
 }
 
-$after = git -C $repoRoot status --porcelain=v1 --untracked-files=all
-if (Compare-Object $before $after) { throw "System tests changed the worktree" }
+if ($isGitWorktree) {
+    $after = git -C $repoRoot status --porcelain=v1 --untracked-files=all
+    if (Compare-Object $before $after) { throw "System tests changed the worktree" }
+}
 Write-Output "Repeated system gate PASS: $Repeat isolated runs"

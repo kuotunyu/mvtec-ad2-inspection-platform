@@ -305,24 +305,24 @@ git commit -m "docs: present industrial inspection evidence"
 - CI jobs: `python`, `frontend`, `publication`, `docker`, and `system`.
 - `verify_release.py --source PATH` creates a JSON release-verification report from a committed export directory.
 
-- [ ] **Step 1: Write clean-export failure tests**
+- [x] **Step 1: Write clean-export failure tests**
 
 Cover untracked private files beside package code, stale OpenAPI client, dirty generated assets, uncommitted numeric claims, forbidden archive entries, missing license, mutable model references, and oversized binaries.
 
-- [ ] **Step 2: Implement CI with least privilege and pinned actions**
+- [x] **Step 2: Implement CI with least privilege and pinned actions**
 
 Use read-only contents permission, commit-SHA-pinned actions, dependency caches keyed by lockfiles, no secrets for pull-request tests, timeouts, concurrency cancellation, and uploaded verification reports. CI uses only synthetic fixtures and the mock bundle; GPU and official dataset jobs remain documented local gates.
 
-- [ ] **Step 3: Implement a committed-snapshot export**
+- [x] **Step 3: Implement a committed-snapshot export**
 
 Export tracked files from `HEAD` into a fresh temporary directory, install Python and frontend dependencies from locks, run unit/API/integration/apps/web/publication tests, build distributions and images, inspect their contents, run the mock system smoke, and remove only the verified temporary directory/container names.
 
-- [ ] **Step 4: Run the complete local CPU release gate**
+- [x] **Step 4: Run the complete local CPU release gate**
 
 Run: `powershell -ExecutionPolicy Bypass -File scripts/clean_export.ps1`
 Expected: a fresh committed export passes installs, quality, tests, frontend build, Python build, wheel smoke, sdist scan, Docker build/health, system workflow, claims, and public-boundary verification.
 
-- [ ] **Step 5: Commit CI and release verification**
+- [x] **Step 5: Commit CI and release verification**
 
 ```powershell
 git add .github scripts/clean_export.ps1 scripts/verify_release.py tests/release pyproject.toml uv.lock apps/web/package.json apps/web/package-lock.json

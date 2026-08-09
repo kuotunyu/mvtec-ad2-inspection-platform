@@ -6,6 +6,11 @@ build-backend = "hatchling.build"
 name = "mvtec-ad2-inspection-platform"
 version = "0.1.0"
 description = "Reproducible MVTec AD 2 benchmarking and industrial inspection workstation"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+  { name = "kuotunyu", email = "61350295+kuotunyu@users.noreply.github.com" },
+]
 requires-python = ">=3.12,<3.13"
 dependencies = [
   "alembic>=1.16,<2",
@@ -48,6 +53,7 @@ dev = [
   "scipy>=1.15,<2",
   "tifffile>=2025,<2027",
   "types-jsonschema>=4.24,<5",
+  "cyclonedx-bom==7.3.1",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -84,7 +90,7 @@ show_missing = true
 skip_covered = true
 
 [tool.ruff]
-exclude = ["docs"]
+extend-exclude = ["docs"]
 line-length = 100
 target-version = "py312"
 

@@ -12,7 +12,8 @@
     "test": "vitest",
     "build": "tsc -p tsconfig.app.json --noEmit && vite build",
     "e2e": "playwright test",
-    "verify:public-assets": "node scripts/verify-public-assets.mjs"
+    "verify:public-assets": "node scripts/verify-public-assets.mjs",
+    "verify": "npm run api:check && npm run lint && npm run typecheck && npm run test -- --run && npm run build && npm run verify:public-assets"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.66.0",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
+    "@cyclonedx/cyclonedx-npm": "6.0.0",
     "@eslint/js": "^9.20.0",
     "@playwright/test": "^1.51.0",
     "@testing-library/jest-dom": "^6.6.0",
@@ -43,5 +45,7 @@
     "vite": "^6.1.0",
     "vitest": "^3.0.0"
   },
-  "overrides": { "js-yaml": "^4.3.1" }
+  "overrides": {
+    "js-yaml": "^4.3.1"
+  }
 }
