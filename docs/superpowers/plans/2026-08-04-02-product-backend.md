@@ -434,7 +434,7 @@ Expose job counts, queue age, image outcomes, inference latency, job duration, w
 Run: `uv run pytest tests/unit/reviews tests/unit/reports tests/unit/test_retention.py tests/api/test_metrics.py -q`
 Expected: all tests pass, including XSS strings, CSV formulas, concurrent reviews, missing artifacts, and repeat deletion.
 
-- [ ] **Step 6: Commit product evidence and operations**
+- [x] **Step 6: Commit product evidence and operations**
 
 ```powershell
 git add src/inspection_platform/reviews src/inspection_platform/reports src/inspection_platform/observability.py src/inspection_platform/retention.py tests
@@ -448,16 +448,16 @@ git commit -m "feat(product): add review and evidence reporting"
 - Create: `scripts/verify_backend.py`
 - Modify: `pyproject.toml`
 
-- [ ] **Step 1: Add an end-to-end backend test using the deterministic mock runtime**
+- [x] **Step 1: Add an end-to-end backend test using the deterministic mock runtime**
 
 The test creates a mixed batch, lets the worker complete it, records a human review, downloads JSON/CSV/HTML reports, restarts API and worker processes against the same database, and proves state and hashes remain stable.
 
-- [ ] **Step 2: Run all CPU backend tests**
+- [x] **Step 2: Run all CPU backend tests**
 
 Run: `uv run pytest tests/unit tests/api tests/integration -m "not gpu and not dataset and not slow" --cov=inspection_platform --cov-report=term-missing --cov-fail-under=85`
 Expected: PASS with at least 85% project coverage.
 
-- [ ] **Step 3: Run static quality and schema gates**
+- [x] **Step 3: Run static quality and schema gates**
 
 Run: `uv run ruff format --check .`
 Run: `uv run ruff check .`
