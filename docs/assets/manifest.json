@@ -1,0 +1,14 @@
+{
+  "assets": {
+    "architecture.svg": "439e60c515c311af69f14f41d665d52aeb2063ac92dc9fafe97f9ea8b2f4d309",
+    "screenshots/dashboard.webp": "43ef565a0311397177e428ad019d829c1ae11825c2225692467add616fa06565",
+    "screenshots/job-evidence.webp": "4fbc42182ca919453d52bbbb9f63b9901ba657265741e41b86b6e5e24bd82a16",
+    "screenshots/model-evidence.webp": "15a4e26445ac1d0624dbb71c82bd55fcec2cc43b4960c25aae80990869593ccf",
+    "screenshots/new-inspection.webp": "ecdc91bee9fb91c8ebceb73776135541eaebd5e8e1603ba821921a46f4febfff",
+    "screenshots/review.webp": "1809b5bc6ad3e862118c534c8886133cb11336b340790b9f36770751cc6903a8",
+    "workflow.svg": "927e35256f7ea8a60decd8b9694c1c193803822f3ffabad8ba45abbc90b31881"
+  },
+  "fixture_scope": "synthetic-ci-only",
+  "generator": "scripts/render_docs_assets.py",
+  "schema_version": "1.0.0"
+}

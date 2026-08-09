@@ -42,6 +42,18 @@ def _verify_entries(entries: dict[Path, bytes]) -> PublicBoundaryReport:
             }
         except (KeyError, TypeError, json.JSONDecodeError):
             errors.add("fixture_manifest")
+    docs_manifest_path = Path("docs/assets/manifest.json")
+    if docs_manifest_path in entries:
+        try:
+            payload = json.loads(entries[docs_manifest_path])
+            manifested.update(
+                {
+                    f"docs/assets/{filename}": sha256
+                    for filename, sha256 in payload["assets"].items()
+                }
+            )
+        except (AttributeError, KeyError, TypeError, json.JSONDecodeError):
+            errors.add("docs_asset_manifest")
     for path, content in entries.items():
         relative = path.as_posix()
         top_level = path.parts[0].lower() if path.parts else ""
@@ -67,6 +79,9 @@ def verify_paths(root: Path, paths: list[Path]) -> PublicBoundaryReport:
     manifest = root / "fixtures/public-demo/manifest.json"
     if manifest.is_file() and Path("fixtures/public-demo/manifest.json") not in entries:
         entries[Path("fixtures/public-demo/manifest.json")] = manifest.read_bytes()
+    docs_manifest = root / "docs/assets/manifest.json"
+    if docs_manifest.is_file() and Path("docs/assets/manifest.json") not in entries:
+        entries[Path("docs/assets/manifest.json")] = docs_manifest.read_bytes()
     return _verify_entries(entries)
 
 

@@ -245,7 +245,7 @@ git commit -m "fix(security): harden public inspection boundaries"
 - Test: `tests/publication/test_docs.py`
 - Test: `tests/publication/test_claims.py`
 
-- [ ] **Step 1: Write documentation-verifier tests before public prose**
+- [x] **Step 1: Write documentation-verifier tests before public prose**
 
 ```python
 def test_every_numeric_claim_resolves_to_sanitized_evidence(public_docs: list[Path]) -> None:
@@ -258,28 +258,28 @@ def test_docs_never_call_review_a_defect(public_docs: list[Path]) -> None:
     assert not any(forbidden.search(path.read_text()) for path in public_docs)
 ```
 
-- [ ] **Step 2: Run publication tests and confirm failure**
+- [x] **Step 2: Run publication tests and confirm failure**
 
 Run: `uv run pytest tests/publication -q`
 Expected: FAIL because documentation and verifier do not exist.
 
-- [ ] **Step 3: Write the README around one interview narrative**
+- [x] **Step 3: Write the README around one interview narrative**
 
 Opening: a product screenshot using synthetic fixtures, one-sentence problem, and three honest proof points. Then show the batch-to-review workflow, architecture, public benchmark and confidence intervals, frozen champion matrix, private status, resilience/security evidence, local demo, reproducibility, limitations, and interview talking points. Do not lead with an exhaustive tool list.
 
-- [ ] **Step 4: Document model and data governance**
+- [x] **Step 4: Document model and data governance**
 
 MODEL_CARD distinguishes PatchCore, EfficientAD, Dinomaly, per-category champions, calibration, private gate, operational decision semantics, and failure modes. DATA_CARD records the official source URL, archive byte count/hash, eight categories, split policy, CC BY-NC-SA 4.0 restriction, and explicit statement that data is not redistributed. SECURITY includes threat model, accepted risks, retention, and local single-user scope.
 
-- [ ] **Step 5: Generate diagrams and screenshots reproducibly**
+- [x] **Step 5: Generate diagrams and screenshots reproducibly**
 
 Render architecture and workflow from text-controlled sources. Capture the five UI pages only with the synthetic demo bundle and stable viewport. Store generation commands and asset hashes. Ensure screenshot alternative text describes the workflow and does not imply real production deployment.
 
-- [ ] **Step 6: Bind public claims to evidence**
+- [x] **Step 6: Bind public claims to evidence**
 
 `verify_claims.py` maps every metric table cell, latency, VRAM, artifact size, test count, and evaluation status to a sanitized artifact by key and hash. Missing/private-not-run values render `not evaluated`, never zero or success. Limit copied raw experiment detail to non-sensitive aggregate evidence.
 
-- [ ] **Step 7: Run documentation gates and commit**
+- [x] **Step 7: Run documentation gates and commit**
 
 Run: `uv run python scripts/render_docs_assets.py --check`
 Run: `uv run pytest tests/publication -q`

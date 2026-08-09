@@ -1,6 +1,11 @@
 import path from "node:path";
 import { expect, test } from "@playwright/test";
 
+test.skip(
+  process.env.INSPECTION_DOCKER_E2E !== "1",
+  "real container workflow runs only through run_system_tests.ps1",
+);
+
 test("real container workflow stays inside public response boundaries", async ({ page }) => {
   const failures: string[] = [];
   page.on("console", (message) => {

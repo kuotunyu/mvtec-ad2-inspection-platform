@@ -1,0 +1,39 @@
+from __future__ import annotations
+
+import re
+from pathlib import Path
+
+PUBLIC_DOCS = (
+    Path("README.md"),
+    Path("docs/ARCHITECTURE.md"),
+    Path("docs/CASE_STUDY.md"),
+    Path("docs/MODEL_CARD.md"),
+    Path("docs/DATA_CARD.md"),
+    Path("docs/SECURITY.md"),
+    Path("docs/LIMITATIONS.md"),
+    Path("docs/REPRODUCIBILITY.md"),
+    Path("docs/REMOTE_SETUP.md"),
+)
+
+
+def test_public_document_set_and_assets_are_complete() -> None:
+    assert all(path.is_file() for path in PUBLIC_DOCS)
+    for asset in (
+        "docs/assets/architecture.svg",
+        "docs/assets/workflow.svg",
+        "docs/assets/screenshots/dashboard.webp",
+        "docs/assets/screenshots/new-inspection.webp",
+        "docs/assets/screenshots/job-evidence.webp",
+        "docs/assets/screenshots/review.webp",
+        "docs/assets/screenshots/model-evidence.webp",
+        "docs/assets/manifest.json",
+    ):
+        assert Path(asset).is_file()
+    readme = Path("README.md").read_text(encoding="utf-8")
+    assert "synthetic" in readme.lower()
+    assert "official submission not performed" in readme.lower()
+
+
+def test_docs_never_call_review_a_defect() -> None:
+    forbidden = re.compile(r"(?:detected|confirmed) defect", re.IGNORECASE)
+    assert not any(forbidden.search(path.read_text(encoding="utf-8")) for path in PUBLIC_DOCS)

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import json
 from pathlib import Path
 
 from scripts.security_scan import scan_root
@@ -22,3 +24,25 @@ def test_public_boundary_allows_only_manifested_synthetic_images(tmp_path: Path)
     report = verify_paths(tmp_path, [Path("fixtures/public-demo/images/demo.png")])
     assert not report.ok
     assert "unmanifested_image" in report.error_codes
+
+
+def test_public_boundary_allows_hash_manifested_documentation_images(tmp_path: Path) -> None:
+    content = b"synthetic documentation screenshot"
+    image = tmp_path / "docs/assets/screenshots/dashboard.webp"
+    image.parent.mkdir(parents=True)
+    image.write_bytes(content)
+    manifest = tmp_path / "docs/assets/manifest.json"
+    manifest.write_text(
+        json.dumps(
+            {
+                "assets": {
+                    "screenshots/dashboard.webp": hashlib.sha256(content).hexdigest(),
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    report = verify_paths(tmp_path, [image.relative_to(tmp_path), manifest.relative_to(tmp_path)])
+
+    assert report.ok

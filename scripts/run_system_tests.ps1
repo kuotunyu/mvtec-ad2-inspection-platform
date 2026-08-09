@@ -20,6 +20,7 @@ for ($iteration = 1; $iteration -le $Repeat; $iteration++) {
     $env:INSPECTION_PORT = "$port"
     $env:SOURCE_REVISION = (git -C $repoRoot rev-parse HEAD)
     $env:PLAYWRIGHT_BASE_URL = "http://127.0.0.1:$port"
+    $env:INSPECTION_DOCKER_E2E = "1"
     try {
         Push-Location $repoRoot
         uv run pytest tests/system -q
@@ -39,6 +40,7 @@ for ($iteration = 1; $iteration -le $Repeat; $iteration++) {
         if (Test-Path -LiteralPath $tempBase) {
             Remove-Item -LiteralPath $tempBase -Recurse -Force
         }
+        Remove-Item Env:INSPECTION_DOCKER_E2E -ErrorAction SilentlyContinue
     }
 }
 
