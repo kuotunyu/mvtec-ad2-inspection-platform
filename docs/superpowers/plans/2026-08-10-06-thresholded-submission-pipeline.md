@@ -250,7 +250,7 @@ git commit -m "feat(submission): require thresholded outputs"
 - Consumes: dataset root, runs root, frozen champions JSON, existing external prediction-cache root, new output root, and checksum-pinned official-utils root.
 - Produces: a new corrected local archive, eight external calibration contracts, a sanitized summary, and no GPU lease or network request.
 
-- [ ] **Step 1: Write the failing cache inventory test**
+- [x] **Step 1: Write the failing cache inventory test**
 
 Create a controlled one-image manifest/cache and assert:
 
@@ -267,31 +267,31 @@ assert predictions == (
 
 Then delete the TIFF, change its geometry, and add a spurious identity in separate tests; each must fail closed with a stable error.
 
-- [ ] **Step 2: Run the focused tests and observe RED**
+- [x] **Step 2: Run the focused tests and observe RED**
 
 Run: `uv run pytest tests/unit/submission/test_rebuild.py -q`
 
 Expected: FAIL because `experiments.submission.rebuild` does not exist.
 
-- [ ] **Step 3: Implement exact cache inventory and geometry validation**
+- [x] **Step 3: Implement exact cache inventory and geometry validation**
 
 Resolve every expected TIFF below `cache_root/{category}/{split}/tiff`, require no extra TIFFs, decode as finite two-dimensional `float16`, and require its shape to match the corresponding source PNG `(height, width)`. Return predictions in manifest order.
 
-- [ ] **Step 4: Run the focused tests and observe GREEN**
+- [x] **Step 4: Run the focused tests and observe GREEN**
 
 Run: `uv run pytest tests/unit/submission/test_rebuild.py -q`
 
 Expected: all cache-inventory tests pass.
 
-- [ ] **Step 5: Add a RED orchestration test with the real pinned validator boundary**
+- [x] **Step 5: Add a RED orchestration test with the real pinned validator boundary**
 
 Inject a narrow `validate(Path)` callable for the unit orchestration test while keeping archive building, thresholding, inspection, and summary real. Assert that the callable receives the extracted archive root, no `GpuLease` is constructed, and the old archive hash is unchanged. The real pinned utility is exercised against the complete 4,090-image archive in Task 4.
 
-- [ ] **Step 6: Implement the cache-only CLI**
+- [x] **Step 6: Implement the cache-only CLI**
 
 The CLI accepts `--data-root`, `--runs-root`, `--champions`, `--source-cache-root`, `--output-root`, and `--official-utils-root`. It refuses an output root equal to or inside the repository or source cache, refuses an existing target archive, calibrates the eight exact seed-42 champions, writes external calibration JSON atomically, builds and verifies the archive, extracts it under a temporary directory, runs `OfficialUtilities.validate`, and writes `submission_summary.json` as `LOCAL-PREFLIGHT-NOT-SUBMITTED`.
 
-- [ ] **Step 7: Run focused, documentation, and static gates**
+- [x] **Step 7: Run focused, documentation, and static gates**
 
 Run:
 
@@ -304,7 +304,7 @@ uv run mypy experiments/submission
 
 Expected: all commands exit zero.
 
-- [ ] **Step 8: Update bookkeeping and commit Task 3**
+- [x] **Step 8: Update bookkeeping and commit Task 3**
 
 ```powershell
 git add experiments/submission/rebuild.py experiments/submission/__init__.py tests/unit/submission/test_rebuild.py docs/EXPERIMENT_RUNBOOK.md docs/superpowers/plans/2026-08-10-06-thresholded-submission-pipeline.md
