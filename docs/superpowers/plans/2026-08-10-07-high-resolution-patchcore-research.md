@@ -30,17 +30,17 @@ official submission.
 - Modify: `docs/EXPERIMENT_RUNBOOK.md`
 - Modify: this plan
 
-- [ ] Write a failing test requiring exactly `can` and `wallplugs`, seed 42,
+- [x] Write a failing test requiring exactly `can` and `wallplugs`, seed 42,
   candidate geometry 768 x 768, and no config difference beyond input/resize.
-- [ ] Observe the expected import/module RED.
-- [ ] Implement candidate validation and deterministic `RunSpec` construction.
-- [ ] Add failing tests for baseline selection, aggregate comparison,
+- [x] Observe the expected import/module RED.
+- [x] Implement candidate validation and deterministic `RunSpec` construction.
+- [x] Add failing tests for baseline selection, aggregate comparison,
   classification thresholds, resource limits, external output safety, and
   sanitized identity-bound report serialization.
-- [ ] Implement the dedicated CLI by reusing the existing Supervisor,
+- [x] Implement the dedicated CLI by reusing the existing Supervisor,
   subprocess worker, GPU lease, and public evaluator.
-- [ ] Run focused tests, Ruff, format, mypy, and CLI dry-run gates.
-- [ ] Update bookkeeping and commit `feat(research): add high resolution patchcore study`.
+- [x] Run focused tests, Ruff, format, mypy, and CLI dry-run gates.
+- [x] Update bookkeeping and commit `feat(research): add high resolution patchcore study`.
 
 ### Task 2: Execute the formal public-only GPU study
 

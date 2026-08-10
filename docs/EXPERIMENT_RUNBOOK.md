@@ -40,6 +40,22 @@ uv run python -m experiments.submission.rebuild `
 
 The output root must be new and outside both the repository and source cache. The command verifies the exact frozen seed-42 champion identities, calibrates from hash-bound validation maps, checks every cached TIFF against the source geometry, writes both archive trees, runs the checksum-pinned official validator, and records `LOCAL-PREFLIGHT-NOT-SUBMITTED`. It does not acquire the GPU lease, run inference, or contact the benchmark server.
 
+## Run the fixed high-resolution PatchCore study
+
+The approved public-only study changes only PatchCore input and resize geometry from 512 x 512 to 768 x 768 for `can` and `wallplugs` at seed 42. It uses a new external run root, the shared GPU lease, the frozen public metric pipeline, and never reads or submits private evidence.
+
+```powershell
+uv run python -m experiments.high_resolution_patchcore `
+  --data-root D:\datasets\mvtec-ad-2 `
+  --dataset-manifest D:\datasets\mvtec-ad-2.manifest.json `
+  --runs-root D:\mvtec-ad2-highres-patchcore-20260810 `
+  --candidate-config experiments\configs\research\patchcore-768.yaml `
+  --baseline-public-benchmark reports\public_benchmark.json `
+  --gpu-lock D:\.mvtec-ad2-gpu.lock
+```
+
+Add `--dry-run` to verify the two run identities without acquiring the GPU lease. Completed runs and public predictions are hash-verified and reused after interruption; incompatible or corrupt evidence fails closed. The aggregate report remains under the external run root until reviewed and sanitized.
+
 ## Boundaries
 
 No command in this repository pushes, submits to the MVTec server, uploads to a model hub, or accepts credentials. Official private submission remains an explicit human authorization step.
