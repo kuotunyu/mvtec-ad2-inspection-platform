@@ -3,7 +3,7 @@
 > **For agentic workers:** Use executing-plans, TDD, systematic debugging, and
 > verification-before-completion. Work inline without subagents or a worktree.
 
-**Status:** Active
+**Status:** Complete
 
 **Goal:** Execute and verify the fixed public-only 768 x 768 PatchCore study for
 `can` and `wallplugs` without changing frozen champions or performing another
@@ -76,5 +76,5 @@ official submission.
 - [x] Run focused tests, full non-GPU gates, Ruff, format, mypy, experiment,
   claims, security, and public-boundary verifiers.
 - [x] Commit `docs(research): record high resolution patchcore study`.
-- [ ] Run an exact-HEAD clean export, complete plan bookkeeping and continuity,
+- [x] Run an exact-HEAD clean export, complete plan bookkeeping and continuity,
   and require a clean tracked worktree.
