@@ -5,9 +5,19 @@ import io
 import json
 import re
 import tarfile
+import tomllib
 from pathlib import Path
 
 from scripts.verify_release import verify_archive, verify_source
+
+
+def test_httpx2_is_dev_only_test_client_dependency() -> None:
+    project = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
+    production = project["project"]["dependencies"]
+    development = project["dependency-groups"]["dev"]
+
+    assert not any(item.startswith(("httpx=", "httpx<", "httpx>")) for item in production)
+    assert "httpx2>=2.7,<3" in development
 
 
 def _codes(root: Path) -> set[str]:

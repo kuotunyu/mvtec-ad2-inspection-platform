@@ -87,7 +87,7 @@
   ],
   "lock_sha256": {
     "apps/web/package-lock.json": "1148d0ee30f6f870a82958a0985474861d91620912b5fc51834adf905c2a63eb",
-    "uv.lock": "fe2dfdc8a680ee8fffc9ca80b794f38be382ac1bcff9f485972b66dc8fea2c95"
+    "uv.lock": "d518766a14bf787967c7216bc651f410f65555e14e2a5daf4b3a4c5b7ae72a16"
   },
   "lock_sha256_kind": "utf8-lf-canonical",
   "model_bundles": {

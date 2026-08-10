@@ -10,14 +10,14 @@ legacy HTTP client from the production dependency contract.
 
 ## Task 1: Migrate and freeze the dependency contract
 
-- [ ] Add a release test requiring dev-only `httpx2>=2.7,<3` and no direct
+- [x] Add a release test requiring dev-only `httpx2>=2.7,<3` and no direct
   production `httpx` dependency.
-- [ ] Run the contract test and backend tests with the Starlette warning as an
+- [x] Run the contract test and backend tests with the Starlette warning as an
   error; observe the expected failures.
-- [ ] Update `pyproject.toml` and `uv.lock` with uv's resolver.
-- [ ] Run focused warning-as-error tests, lock checks, Ruff, mypy, and verify
+- [x] Update `pyproject.toml` and `uv.lock` with uv's resolver.
+- [x] Run focused warning-as-error tests, lock checks, Ruff, mypy, and verify
   the production wheel metadata excludes both test clients.
-- [ ] Commit as `kuotunyu` with no contributor trailers.
+- [x] Commit as `kuotunyu` with no contributor trailers.
 
 ## Task 2: Verify and close
 
