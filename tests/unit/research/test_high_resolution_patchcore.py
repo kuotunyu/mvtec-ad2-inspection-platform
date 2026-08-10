@@ -236,3 +236,21 @@ def test_failed_runs_freeze_a_sanitized_resource_limit_report(tmp_path: Path) ->
     assert all(item["error_kind"] == "oom" for item in payload["failures"])
     assert [item["code_revision"] for item in payload["failures"]] == ["4" * 40, "5" * 40]
     assert "OutOfMemoryError" not in destination.read_text(encoding="utf-8")
+
+
+def test_committed_high_resolution_result_is_public_only_and_keeps_champions() -> None:
+    destination = Path("reports/high_resolution_patchcore.json")
+    payload = json.loads(destination.read_text(encoding="utf-8"))
+    claimed_identity = payload.pop("canonical_sha256")
+    report = HighResolutionStudyReport.model_validate(payload)
+    champions = json.loads(Path("reports/champions.json").read_text(encoding="utf-8"))
+
+    assert report.identity == claimed_identity
+    assert report.scope == "test_public-only"
+    assert report.submitted is False
+    assert report.verdict == "RESOURCE_LIMIT_EXCEEDED"
+    assert report.comparisons == ()
+    assert tuple(item.category for item in report.failures) == STUDY_CATEGORIES
+    assert all(item.error_kind == "oom" for item in report.failures)
+    assert champions["champions"]["can"] == "patchcore"
+    assert champions["champions"]["wallplugs"] == "patchcore"

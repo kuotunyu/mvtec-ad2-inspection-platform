@@ -1,0 +1,51 @@
+{
+  "baseline_benchmark_sha256": "9cf47070c75bbf66f5e9919c32b5847b886a2f02190ea844c55273bb5ac4f751",
+  "baseline_config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+  "baseline_resolution": [
+    512,
+    512
+  ],
+  "candidate_config_sha256": "f0be335d1a1648ce6caa03c85f71650aa43900f9f0e1c35ac4e90625ad8010ca",
+  "candidate_resolution": [
+    768,
+    768
+  ],
+  "canonical_sha256": "2a54b716ca8782beae998222e7e39d1cd2168bcd63a0a3cc955d07c7fad70544",
+  "comparisons": [],
+  "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+  "evaluation_size": [
+    256,
+    256
+  ],
+  "failures": [
+    {
+      "attempt": 1,
+      "candidate_duration_seconds": 74.59717154502869,
+      "candidate_run_identity": "06cefd4f80fd1178a77c2273c3278929d38fa527fc9955e8e5edbcf33c27c5f9",
+      "category": "can",
+      "code_revision": "90870d4a662901583ed7284be31e97e487e607de",
+      "error_kind": "oom",
+      "error_sha256": "f6ecbc8aba7b88d2977a62902f75c2aa0bd46db438b1aec69312d78b899f464d",
+      "exit_code": 1,
+      "schema_version": "1.0.0"
+    },
+    {
+      "attempt": 1,
+      "candidate_duration_seconds": 44.342132568359375,
+      "candidate_run_identity": "7d7f10624514cdc44e5dddfe95bca906e993637dd1e4d998ccd95a7cc79dca93",
+      "category": "wallplugs",
+      "code_revision": "f8fd09b8a94012c418d7fe4c010b2c26aed727b1",
+      "error_kind": "oom",
+      "error_sha256": "59507a1900049e7ccb33f227e62dbcb0fa7972767e59f99f853adfa592fab06f",
+      "exit_code": 1,
+      "schema_version": "1.0.0"
+    }
+  ],
+  "schema_version": "1.0.0",
+  "scope": "test_public-only",
+  "seed": 42,
+  "source_sha": "f8fd09b8a94012c418d7fe4c010b2c26aed727b1",
+  "study": "patchcore-512-vs-768-can-wallplugs-seed42",
+  "submitted": false,
+  "verdict": "RESOURCE_LIMIT_EXCEEDED"
+}

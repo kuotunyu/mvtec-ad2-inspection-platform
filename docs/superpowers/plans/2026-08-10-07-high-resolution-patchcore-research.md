@@ -46,15 +46,15 @@ official submission.
 
 **External root:** `D:\mvtec-ad2-highres-patchcore-20260810`
 
-- [ ] Require a clean committed worktree, verified dataset manifest, no live
+- [x] Require a clean committed worktree, verified dataset manifest, no live
   conflicting compute process, and an available shared GPU lease.
-- [ ] Run the two sequential 768 x 768 seed-42 fits with resumable external
-  evidence.
-- [ ] Evaluate both completed runs on `test_public` through the frozen 256 x 256
-  metric pipeline.
-- [ ] Freeze the external aggregate report and verify all run, artifact,
+- [x] Attempt the two sequential 768 x 768 seed-42 fits with resumable external
+  evidence; both fail closed with CUDA OOM.
+- [x] Evaluate any completed run on `test_public` through the frozen 256 x 256
+  metric pipeline; neither fit completed, so public evaluation is not applicable.
+- [x] Freeze the external aggregate report and verify all run, artifact,
   manifest, config, and report hashes.
-- [ ] Record objective duration, VRAM, latency, and failure results in the local
+- [x] Record objective duration, VRAM, latency, and failure results in the local
   worklog; do not copy raw evidence into Git.
 
 ### Task 3: Publish sanitized research evidence locally
@@ -67,14 +67,14 @@ official submission.
 - Modify: `tests/publication/test_claims.py` or a focused research evidence test
 - Modify: this plan
 
-- [ ] Write a failing test for the sanitized aggregate result, fixed study
+- [x] Write a failing test for the sanitized aggregate result, fixed study
   identity, public-only scope, classification, and unchanged champions.
-- [ ] Import only reviewed aggregate public metrics, hashes, run identities,
+- [x] Import only reviewed aggregate public metrics, hashes, run identities,
   and resource measurements from the external report.
-- [ ] Document the result without claiming private improvement or replacing a
+- [x] Document the result without claiming private improvement or replacing a
   champion.
-- [ ] Run focused tests, full non-GPU gates, Ruff, format, mypy, experiment,
+- [x] Run focused tests, full non-GPU gates, Ruff, format, mypy, experiment,
   claims, security, and public-boundary verifiers.
-- [ ] Commit `docs(research): record high resolution patchcore study`.
+- [x] Commit `docs(research): record high resolution patchcore study`.
 - [ ] Run an exact-HEAD clean export, complete plan bookkeeping and continuity,
   and require a clean tracked worktree.
