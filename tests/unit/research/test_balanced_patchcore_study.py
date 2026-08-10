@@ -8,6 +8,7 @@ import pytest
 
 from experiments.balanced_patchcore_study import (
     BalancedStudyReport,
+    StageBProbeReport,
     build_candidate_specs,
     classify_stage_a,
     classify_stage_b,
@@ -16,6 +17,7 @@ from experiments.balanced_patchcore_study import (
     select_wallplugs_baselines,
     validate_balanced_config,
     write_balanced_report,
+    write_stage_b_probe_report,
 )
 from experiments.evaluate_public import load_public_benchmark
 from experiments.high_resolution_patchcore import StudyMetrics, build_comparison
@@ -241,3 +243,28 @@ def test_stage_b_followups_are_conditional_on_the_fixed_probe_gate() -> None:
         select_followup_specs(specs, probe=_comparison(0.03, image_delta=-0.02, pixel_delta=0.001))
         == ()
     )
+
+
+def test_stage_b_probe_report_is_resumable_after_stage_a_resource_failure(
+    tmp_path: Path,
+) -> None:
+    comparison = _comparison(0.03, image_delta=-0.005, pixel_delta=0.001)
+    report = StageBProbeReport(
+        source_sha="d" * 40,
+        dataset_manifest_sha256="e" * 64,
+        baseline_benchmark_sha256="f" * 64,
+        baseline_config_sha256="1" * 64,
+        config_576_sha256="2" * 64,
+        stage_a_verdict="RESOURCE_LIMIT_EXCEEDED",
+        stage_a_interruption_count=2,
+        comparison=comparison,
+    )
+
+    destination = write_stage_b_probe_report(tmp_path / "probe.json", report)
+    payload = json.loads(destination.read_text(encoding="utf-8"))
+
+    assert payload["canonical_sha256"] == report.identity
+    assert payload["advance"] is True
+    assert payload["scope"] == "test_public-only"
+    assert payload["submitted"] is False
+    assert "private" not in destination.read_text(encoding="utf-8")

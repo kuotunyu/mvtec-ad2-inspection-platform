@@ -227,6 +227,32 @@ class BalancedStudyReport(ContractModel):
         return canonical_hash(self)
 
 
+class StageBProbeReport(ContractModel):
+    study: Literal["balanced-patchcore-wallplugs-stage-b-probe"] = (
+        "balanced-patchcore-wallplugs-stage-b-probe"
+    )
+    scope: Literal["test_public-only"] = "test_public-only"
+    submitted: Literal[False] = False
+    source_sha: Annotated[str, Field(pattern=r"^[0-9a-f]{40}$")]
+    dataset_manifest_sha256: Sha256
+    baseline_benchmark_sha256: Sha256
+    baseline_config_sha256: Sha256
+    config_576_sha256: Sha256
+    stage_a_verdict: Literal["RESOURCE_LIMIT_EXCEEDED"]
+    stage_a_interruption_count: Annotated[int, Field(ge=2)]
+    comparison: StudyComparison
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def advance(self) -> bool:
+        return passes_stage_b_advance(self.comparison)
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def identity(self) -> str:
+        return canonical_hash(self)
+
+
 def write_balanced_report(path: Path, report: BalancedStudyReport) -> Path:
     destination = path.expanduser().resolve()
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -235,6 +261,29 @@ def write_balanced_report(path: Path, report: BalancedStudyReport) -> Path:
     if destination.exists():
         if json.loads(destination.read_text(encoding="utf-8")) != payload:
             raise ValueError("existing balanced study report differs")
+        return destination
+    temporary = destination.with_suffix(f"{destination.suffix}.tmp")
+    try:
+        with temporary.open("x", encoding="utf-8", newline="\n") as stream:
+            json.dump(payload, stream, ensure_ascii=False, indent=2, sort_keys=True)
+            stream.write("\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, destination)
+    except BaseException:
+        temporary.unlink(missing_ok=True)
+        raise
+    return destination
+
+
+def write_stage_b_probe_report(path: Path, report: StageBProbeReport) -> Path:
+    destination = path.expanduser().resolve()
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    payload = report.model_dump(mode="json", exclude_computed_fields=False)
+    payload["canonical_sha256"] = report.identity
+    if destination.exists():
+        if json.loads(destination.read_text(encoding="utf-8")) != payload:
+            raise ValueError("existing stage B probe report differs")
         return destination
     temporary = destination.with_suffix(f"{destination.suffix}.tmp")
     try:
@@ -281,10 +330,13 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--gpu-lock", type=Path)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--stage-b-probe-only", action="store_true")
     return parser
 
 
-def execute_balanced_study(args: argparse.Namespace) -> BalancedStudyReport | None:
+def execute_balanced_study(
+    args: argparse.Namespace,
+) -> BalancedStudyReport | StageBProbeReport | None:
     repository = Path.cwd().resolve(strict=True)
     data_root = args.data_root.expanduser().resolve(strict=True)
     manifest_path = args.dataset_manifest.expanduser().resolve(strict=True)
@@ -392,6 +444,24 @@ def execute_balanced_study(args: argparse.Namespace) -> BalancedStudyReport | No
             candidate_duration_seconds=duration,
         )
 
+    if args.stage_b_probe_only:
+        probe = run_candidate(specs[2])
+        probe_report = StageBProbeReport(
+            source_sha=revision,
+            dataset_manifest_sha256=manifest.identity,
+            baseline_benchmark_sha256=benchmark.identity,
+            baseline_config_sha256=baseline_config.identity,
+            config_576_sha256=config_576.identity,
+            stage_a_verdict="RESOURCE_LIMIT_EXCEEDED",
+            stage_a_interruption_count=2,
+            comparison=probe,
+        )
+        write_stage_b_probe_report(
+            runs_root / "evidence" / "balanced-patchcore-stage-b-probe.json",
+            probe_report,
+        )
+        return probe_report
+
     stage_a = (frontier_comparison, run_candidate(specs[0]), run_candidate(specs[1]))
     probe = run_candidate(specs[2])
     followups = select_followup_specs(specs, probe=probe)
@@ -425,7 +495,14 @@ def execute_balanced_study(args: argparse.Namespace) -> BalancedStudyReport | No
 def main(argv: list[str] | None = None) -> int:
     report = execute_balanced_study(build_parser().parse_args(argv))
     if report is not None:
-        print(json.dumps({"report_sha256": report.identity, "status": report.stage_b_verdict}))
+        status = (
+            report.stage_b_verdict
+            if isinstance(report, BalancedStudyReport)
+            else "ADVANCE"
+            if report.advance
+            else "STOP"
+        )
+        print(json.dumps({"report_sha256": report.identity, "status": status}))
     return 0
 
 

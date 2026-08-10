@@ -174,6 +174,12 @@ Run the documented command with `--dry-run` and capture the exact candidate iden
 
 Run the same command without `--dry-run`. Do not terminate a live model process. If interrupted, rerun the identical command so the supervisor skips completed identities. Capture peak VRAM, durations, exit status, worker hashes, public-evaluation hashes, and the external aggregate report identity.
 
+Two independent 640 seed-17 attempts were interrupted by system-wide forced
+reboots during coreset selection. Preserve both external attempt directories,
+classify Stage A as `RESOURCE_LIMIT_EXCEEDED`, and use the tested
+`--stage-b-probe-only` recovery path to execute the independent 576 seed-42
+probe without retrying the unsafe 640 candidate a third time.
+
 - [ ] **Step 4: Verify external evidence before importing it**
 
 Recompute dataset, source, config, run, artifact, and report hashes; ensure only declared seeds/geometries ran; ensure the Stage B branch matches the seed-42 gate; confirm the report scope is `test_public-only`, `submitted` is false, and no raw/private fields are present.
