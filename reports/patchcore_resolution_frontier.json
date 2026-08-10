@@ -1,0 +1,59 @@
+{
+  "baseline_benchmark_sha256": "9cf47070c75bbf66f5e9919c32b5847b886a2f02190ea844c55273bb5ac4f751",
+  "baseline_config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+  "baseline_resolution": [
+    512,
+    512
+  ],
+  "candidate_config_sha256": "946452529503a4c6803c26a096e36e3c9c5a6c44eea1edd30bfacdd2a27eafca",
+  "candidate_resolution": [
+    640,
+    640
+  ],
+  "candidate_training_peak_vram_mib": 22219.03564453125,
+  "canonical_sha256": "cf8f7ffe7b617fcb94ddf92a85fca46b974b4c342aed28dd510c33fd7806ec48",
+  "category": "wallplugs",
+  "comparison": {
+    "au_pro_delta": 0.06952117214205145,
+    "baseline": {
+      "artifact_size_bytes": 837184499,
+      "au_pro": 0.5285957173343723,
+      "gpu_p95_latency_ms": 82.25276000007398,
+      "image_auroc": 0.5725925925925927,
+      "peak_vram_mib": 1577.55419921875,
+      "per_image_failure_rate": 0.0,
+      "pixel_auroc": 0.9144734980393687,
+      "schema_version": "1.0.0"
+    },
+    "baseline_run_identity": "6ffd7c77dc95549ae174f324c19684a44a90808029672390c07cc72df9874972",
+    "candidate": {
+      "artifact_size_bytes": 1251953715,
+      "au_pro": 0.5981168894764237,
+      "gpu_p95_latency_ms": 166.60204999980124,
+      "image_auroc": 0.532037037037037,
+      "peak_vram_mib": 2389.275390625,
+      "per_image_failure_rate": 0.0,
+      "pixel_auroc": 0.931085743010617,
+      "schema_version": "1.0.0"
+    },
+    "candidate_duration_seconds": 1883.5502259731293,
+    "candidate_run_identity": "bbe19bb06a912022d2b1319f128de42695c2ce30391c7e47f12668cb7126943b",
+    "category": "wallplugs",
+    "image_auroc_delta": -0.04055555555555568,
+    "pixel_auroc_delta": 0.016612244971248247,
+    "schema_version": "1.0.0"
+  },
+  "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+  "evaluation_size": [
+    256,
+    256
+  ],
+  "failure": null,
+  "schema_version": "1.0.0",
+  "scope": "test_public-only",
+  "seed": 42,
+  "source_sha": "438010782125727238f408f688c82cede372003d",
+  "study": "patchcore-512-vs-640-wallplugs-seed42",
+  "submitted": false,
+  "verdict": "PROMISING"
+}

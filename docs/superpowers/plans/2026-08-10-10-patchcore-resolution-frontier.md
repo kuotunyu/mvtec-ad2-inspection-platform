@@ -20,17 +20,17 @@ AU-PRO, without changing release or submission state.
 
 ## Task 2: Execute and evaluate the bounded GPU run
 
-- [ ] Require a clean committed worktree, matching dataset/benchmark identity,
+- [x] Require a clean committed worktree, matching dataset/benchmark identity,
   free shared GPU lease, and no conflicting compute process.
-- [ ] Run the single formal fit and record either completed or sanitized
+- [x] Run the single formal fit and record either completed or sanitized
   failure evidence without retrying an OOM.
-- [ ] If completed, evaluate only `test_public` and freeze the external report.
-- [ ] Verify report/run/artifact/config hashes and objective resource evidence.
+- [x] If completed, evaluate only `test_public` and freeze the external report.
+- [x] Verify report/run/artifact/config hashes and objective resource evidence.
 
 ## Task 3: Record the reviewed aggregate outcome
 
-- [ ] Add only sanitized aggregate public evidence and unchanged-champion
+- [x] Add only sanitized aggregate public evidence and unchanged-champion
   documentation with a failing committed-report test first.
-- [ ] Run complete non-GPU, frontend, claims, security, and boundary gates.
+- [x] Run complete non-GPU, frontend, claims, security, and boundary gates.
 - [ ] Commit the result, run an exact-HEAD clean export, complete bookkeeping,
   and confirm clean sole-contributor history.

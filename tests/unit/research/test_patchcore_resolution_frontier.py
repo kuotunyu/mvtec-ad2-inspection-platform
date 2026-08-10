@@ -143,3 +143,21 @@ def test_frontier_failure_report_contains_only_sanitized_evidence(tmp_path: Path
     destination = write_frontier_report(tmp_path / "failure.json", report)
 
     assert "OutOfMemoryError" not in destination.read_text(encoding="utf-8")
+
+
+def test_committed_frontier_result_is_public_only_and_keeps_champion() -> None:
+    destination = Path("reports/patchcore_resolution_frontier.json")
+    payload = json.loads(destination.read_text(encoding="utf-8"))
+    claimed_identity = payload.pop("canonical_sha256")
+    report = FrontierReport.model_validate(payload)
+    champions = json.loads(Path("reports/champions.json").read_text(encoding="utf-8"))
+
+    assert report.identity == claimed_identity
+    assert report.scope == "test_public-only"
+    assert report.submitted is False
+    assert report.verdict == "PROMISING"
+    assert report.comparison is not None
+    assert report.comparison.au_pro_delta == pytest.approx(0.06952117214205145)
+    assert report.comparison.image_auroc_delta == pytest.approx(-0.04055555555555568)
+    assert report.candidate_training_peak_vram_mib == pytest.approx(22219.03564453125)
+    assert champions["champions"]["wallplugs"] == "patchcore"

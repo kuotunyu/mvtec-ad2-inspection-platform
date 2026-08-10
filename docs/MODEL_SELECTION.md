@@ -25,3 +25,17 @@ candidate fits exhausted the RTX 4090's 24 GiB VRAM before evaluation, so the
 frozen result is `RESOURCE_LIMIT_EXCEEDED`. No private evidence or submission
 was used, and the category champions above remain unchanged. Sanitized evidence
 is recorded in `reports/high_resolution_patchcore.json`.
+
+## Resource-informed 640 x 640 frontier
+
+Measured 512 x 512 training footprints ruled out another useful `can` probe,
+but left enough margin for one fixed 640 x 640 `wallplugs` run. The candidate
+completed on the same RTX 4090 and improved public AU-PRO from 0.5286 to 0.5981
+(+0.0695) and pixel AUROC by 0.0166. Image AUROC decreased by 0.0406, GPU p95
+latency increased from 82.3 to 166.6 ms, and training peaked at 22,219 MiB.
+
+The frozen public-only classification is `PROMISING` for pixel localization,
+not a general model-quality or private-performance claim. It does not replace
+the champion above; promotion would require preplanned multi-seed replication.
+Sanitized aggregate evidence is in
+`reports/patchcore_resolution_frontier.json`.

@@ -11,3 +11,4 @@
 - The submitted archive contained no thresholded PNGs. Official ClassF1 and SegF1 are therefore zero and are not interpreted as measured thresholded-map performance.
 - A later cache-only repair produced 4,090 matching binary PNGs and passed local preflight, but it was not submitted and therefore provides no new official F1 measurement.
 - A fixed 768 x 768 PatchCore study for `can` and `wallplugs` failed during fitting with CUDA out-of-memory on a 24 GiB RTX 4090. It produced no comparable public metrics, did not change any champion, and does not support a high-resolution quality claim.
+- A later public-only 640 x 640 `wallplugs` PatchCore probe improved AU-PRO but reduced image AUROC, doubled p95 latency, and used 22,219 MiB during training. This is exploratory single-seed evidence, not a promoted champion or evidence of private improvement.
