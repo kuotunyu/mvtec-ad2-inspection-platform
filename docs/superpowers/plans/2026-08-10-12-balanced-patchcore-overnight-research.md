@@ -162,15 +162,15 @@ git commit -m "feat(research): run balanced patchcore study"
 - Consumes: exact committed Task 2 source, verified MVTec AD 2 dataset manifest, immutable 512 baseline benchmark, committed 640 seed-42 report, and shared GPU lease.
 - Produces: raw external run/evaluation evidence and one reviewed sanitized committed aggregate report.
 
-- [ ] **Step 1: Resolve and verify prerequisites without mutation**
+- [x] **Step 1: Resolve and verify prerequisites without mutation**
 
 Confirm a clean tracked worktree; dataset and manifest identities; the existing 640 report identity; sufficient free space on `D:\`; no conflicting GPU compute process; an absent or stale-safe project lease; and author/committer history containing only the required identity. Resolve `D:\mvtec-ad2-balanced-patchcore-20260810` as the exact external root and fail closed if it already exists before the first execution.
 
-- [ ] **Step 2: Run CLI dry-run**
+- [x] **Step 2: Run CLI dry-run**
 
 Run the documented command with `--dry-run` and capture the exact candidate identities, dataset hash, config hashes, source SHA, ordered run count, and Stage B conditional rule. Verify no GPU process or run directory was created.
 
-- [ ] **Step 3: Execute the formal study to its designed stopping point**
+- [x] **Step 3: Execute the formal study to its designed stopping point**
 
 Run the same command without `--dry-run`. Do not terminate a live model process. If interrupted, rerun the identical command so the supervisor skips completed identities. Capture peak VRAM, durations, exit status, worker hashes, public-evaluation hashes, and the external aggregate report identity.
 
@@ -180,19 +180,19 @@ classify Stage A as `RESOURCE_LIMIT_EXCEEDED`, and use the tested
 `--stage-b-probe-only` recovery path to execute the independent 576 seed-42
 probe without retrying the unsafe 640 candidate a third time.
 
-- [ ] **Step 4: Verify external evidence before importing it**
+- [x] **Step 4: Verify external evidence before importing it**
 
 Recompute dataset, source, config, run, artifact, and report hashes; ensure only declared seeds/geometries ran; ensure the Stage B branch matches the seed-42 gate; confirm the report scope is `test_public-only`, `submitted` is false, and no raw/private fields are present.
 
-- [ ] **Step 5: Write a failing committed-evidence test**
+- [x] **Step 5: Write a failing committed-evidence test**
 
 Add a test that loads `reports/balanced_patchcore_study.json`, removes `canonical_sha256`, validates `BalancedStudyReport`, recomputes its identity and verdicts, confirms champions still select PatchCore for `wallplugs`, and confirms the one-submission/`PRIVATE-NO-GO` state is unchanged.
 
-- [ ] **Step 6: Observe RED, then import only sanitized aggregates**
+- [x] **Step 6: Observe RED, then import only sanitized aggregates**
 
 Run the new committed-evidence test and observe the missing-report failure. Copy only the reviewed aggregate report into `reports/balanced_patchcore_study.json`; update `docs/MODEL_SELECTION.md` with the objective multi-seed outcome, limitations, and unchanged champion.
 
-- [ ] **Step 7: Run research gates and commit Task 3**
+- [x] **Step 7: Run research gates and commit Task 3**
 
 ```powershell
 uv run pytest tests/unit/research -q

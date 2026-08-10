@@ -1,0 +1,61 @@
+{
+  "baseline_benchmark_sha256": "9cf47070c75bbf66f5e9919c32b5847b886a2f02190ea844c55273bb5ac4f751",
+  "baseline_config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+  "canonical_sha256": "610019c15c21988fe6a77cdf3eb182a8eb55129b3bf129c1bfb00107c53a3118",
+  "champions_changed": false,
+  "config_576_sha256": "30eda98233af15a1a8d25349cee616bb45a3fc5cabb1b7f9abf9b422ce5e340b",
+  "config_640_sha256": "946452529503a4c6803c26a096e36e3c9c5a6c44eea1edd30bfacdd2a27eafca",
+  "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+  "frontier_report_sha256": "cf8f7ffe7b617fcb94ddf92a85fca46b974b4c342aed28dd510c33fd7806ec48",
+  "schema_version": "1.0.0",
+  "scope": "test_public-only",
+  "source_sha": "5e45b0545346138a069177295364e695a6107d10",
+  "stage_a_attempts": [
+    {
+      "candidate_run_identity": "05271efa93367b2472bd12ee75393fd4dfaf72891cc92de1626c98516078996d",
+      "completed_units": 96558,
+      "duration_seconds": 899.3271844,
+      "observed_gpu_memory_mib": 17951.0,
+      "outcome": "SYSTEM_INTERRUPTION",
+      "record_sha256": "abb14859c25aa72027013abec928904d302d9a17086ecd26d6b30c0136dcd175",
+      "resolution": [640, 640],
+      "schema_version": "1.0.0",
+      "seed": 17,
+      "source_sha": "dade2efa2d9cbde535ca14a5c62d08f7c41e6cab",
+      "stderr_sha256": "64086cae62565ac6aa3110bfb13fad339819c15eb1162fe6eabf2dd7a2240c88",
+      "total_units": 187519
+    },
+    {
+      "candidate_run_identity": "05271efa93367b2472bd12ee75393fd4dfaf72891cc92de1626c98516078996d",
+      "completed_units": 151967,
+      "duration_seconds": 1330.638809,
+      "observed_gpu_memory_mib": 17927.0,
+      "outcome": "SYSTEM_INTERRUPTION",
+      "record_sha256": "ff3d723d78ff423112367164fcaa1baac7f03b12cb3348378e33031d6c67dc10",
+      "resolution": [640, 640],
+      "schema_version": "1.0.0",
+      "seed": 17,
+      "source_sha": "dade2efa2d9cbde535ca14a5c62d08f7c41e6cab",
+      "stderr_sha256": "f9e219792b93182c8c0d41c651bc01b242518cd3e34bb4f74425c99ebb05c21c",
+      "total_units": 187519
+    }
+  ],
+  "stage_a_verdict": "RESOURCE_LIMIT_EXCEEDED",
+  "stage_b_probe": {
+    "candidate_run_identity": "31ffa87bedeffb0b50b8d5093ec128b634d29fb9c58b0a8c230e34330ad146d2",
+    "completed_units": 12633,
+    "duration_seconds": 758.6617736,
+    "observed_gpu_memory_mib": 23964.0,
+    "outcome": "SUSTAINED_RESOURCE_DEGRADATION",
+    "record_sha256": "522cc17fd35bbb69a314639cd257246faa258994cbbc35f1ac05dfb83c89a3b4",
+    "resolution": [576, 576],
+    "schema_version": "1.0.0",
+    "seed": 42,
+    "source_sha": "5e45b0545346138a069177295364e695a6107d10",
+    "stderr_sha256": "71e357561d251fc50ee6ca163ff544a711e5b1d5e77ddffd976e9c4e57be0e6e",
+    "total_units": 151890
+  },
+  "stage_b_verdict": "RESOURCE_LIMIT_EXCEEDED",
+  "study": "balanced-patchcore-wallplugs-resource-limit",
+  "submitted": false
+}

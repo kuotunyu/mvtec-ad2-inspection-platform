@@ -39,3 +39,20 @@ not a general model-quality or private-performance claim. It does not replace
 the champion above; promotion would require preplanned multi-seed replication.
 Sanitized aggregate evidence is in
 `reports/patchcore_resolution_frontier.json`.
+
+## Balanced PatchCore follow-up
+
+The preplanned public-only follow-up could not establish a reproducible or
+balanced improvement on this workstation. Two independent 640 x 640
+`wallplugs` seed-17 attempts were interrupted by system-wide forced reboots at
+96,558/187,519 and 151,967/187,519 coreset units, with observed GPU memory near
+17.9 GiB. Retrying the same candidate a third time was rejected as unsafe.
+
+The independent 576 x 576 seed-42 probe was then attempted as specified. It
+held about 23,964 MiB GPU memory and sustained severe coreset degradation at
+12,633/151,890 units, so the isolated worker was stopped through the supervisor
+and its lease was released. Stage A and Stage B are therefore both
+`RESOURCE_LIMIT_EXCEEDED`; no public candidate metrics exist, no follow-up
+seeds ran, and the frozen `wallplugs` champion remains unchanged. Sanitized,
+identity-bound aggregate evidence is in
+`reports/balanced_patchcore_resource_limit.json`.

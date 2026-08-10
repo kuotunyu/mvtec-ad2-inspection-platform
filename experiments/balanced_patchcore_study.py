@@ -253,6 +253,70 @@ class StageBProbeReport(ContractModel):
         return canonical_hash(self)
 
 
+class ResourceLimitEvidence(ContractModel):
+    candidate_run_identity: Sha256
+    source_sha: Annotated[str, Field(pattern=r"^[0-9a-f]{40}$")]
+    resolution: tuple[int, int]
+    seed: int
+    completed_units: Annotated[int, Field(ge=0)]
+    total_units: Annotated[int, Field(gt=0)]
+    observed_gpu_memory_mib: Annotated[float, Field(gt=0.0, allow_inf_nan=False)]
+    duration_seconds: Annotated[float, Field(gt=0.0, allow_inf_nan=False)]
+    record_sha256: Sha256
+    stderr_sha256: Sha256
+    outcome: Literal["SYSTEM_INTERRUPTION", "SUSTAINED_RESOURCE_DEGRADATION"]
+
+    @model_validator(mode="after")
+    def require_bounded_progress(self) -> Self:
+        if self.completed_units > self.total_units:
+            raise ValueError("completed resource-limit units exceed the total")
+        if self.resolution not in ((640, 640), (576, 576)):
+            raise ValueError("resource-limit evidence has an unsupported resolution")
+        return self
+
+
+class BalancedResourceLimitReport(ContractModel):
+    study: Literal["balanced-patchcore-wallplugs-resource-limit"] = (
+        "balanced-patchcore-wallplugs-resource-limit"
+    )
+    scope: Literal["test_public-only"] = "test_public-only"
+    submitted: Literal[False] = False
+    source_sha: Annotated[str, Field(pattern=r"^[0-9a-f]{40}$")]
+    dataset_manifest_sha256: Sha256
+    baseline_benchmark_sha256: Sha256
+    baseline_config_sha256: Sha256
+    config_640_sha256: Sha256
+    config_576_sha256: Sha256
+    frontier_report_sha256: Sha256
+    stage_a_attempts: tuple[ResourceLimitEvidence, ResourceLimitEvidence]
+    stage_a_verdict: Literal["RESOURCE_LIMIT_EXCEEDED"] = "RESOURCE_LIMIT_EXCEEDED"
+    stage_b_probe: ResourceLimitEvidence
+    stage_b_verdict: Literal["RESOURCE_LIMIT_EXCEEDED"] = "RESOURCE_LIMIT_EXCEEDED"
+    champions_changed: Literal[False] = False
+
+    @model_validator(mode="after")
+    def require_fixed_failed_study(self) -> Self:
+        if any(
+            item.resolution != (640, 640)
+            or item.seed != 17
+            or item.outcome != "SYSTEM_INTERRUPTION"
+            for item in self.stage_a_attempts
+        ):
+            raise ValueError("stage A must preserve two interrupted 640 seed-17 attempts")
+        if (
+            self.stage_b_probe.resolution != (576, 576)
+            or self.stage_b_probe.seed != 42
+            or self.stage_b_probe.outcome != "SUSTAINED_RESOURCE_DEGRADATION"
+        ):
+            raise ValueError("stage B must preserve the 576 seed-42 resource degradation")
+        return self
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def identity(self) -> str:
+        return canonical_hash(self)
+
+
 def write_balanced_report(path: Path, report: BalancedStudyReport) -> Path:
     destination = path.expanduser().resolve()
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -284,6 +348,29 @@ def write_stage_b_probe_report(path: Path, report: StageBProbeReport) -> Path:
     if destination.exists():
         if json.loads(destination.read_text(encoding="utf-8")) != payload:
             raise ValueError("existing stage B probe report differs")
+        return destination
+    temporary = destination.with_suffix(f"{destination.suffix}.tmp")
+    try:
+        with temporary.open("x", encoding="utf-8", newline="\n") as stream:
+            json.dump(payload, stream, ensure_ascii=False, indent=2, sort_keys=True)
+            stream.write("\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, destination)
+    except BaseException:
+        temporary.unlink(missing_ok=True)
+        raise
+    return destination
+
+
+def write_resource_limit_report(path: Path, report: BalancedResourceLimitReport) -> Path:
+    destination = path.expanduser().resolve()
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    payload = report.model_dump(mode="json", exclude_computed_fields=True)
+    payload["canonical_sha256"] = report.identity
+    if destination.exists():
+        if json.loads(destination.read_text(encoding="utf-8")) != payload:
+            raise ValueError("existing resource-limit report differs")
         return destination
     temporary = destination.with_suffix(f"{destination.suffix}.tmp")
     try:

@@ -7,7 +7,9 @@ from pathlib import Path
 import pytest
 
 from experiments.balanced_patchcore_study import (
+    BalancedResourceLimitReport,
     BalancedStudyReport,
+    ResourceLimitEvidence,
     StageBProbeReport,
     build_candidate_specs,
     classify_stage_a,
@@ -17,6 +19,7 @@ from experiments.balanced_patchcore_study import (
     select_wallplugs_baselines,
     validate_balanced_config,
     write_balanced_report,
+    write_resource_limit_report,
     write_stage_b_probe_report,
 )
 from experiments.evaluate_public import load_public_benchmark
@@ -268,3 +271,74 @@ def test_stage_b_probe_report_is_resumable_after_stage_a_resource_failure(
     assert payload["scope"] == "test_public-only"
     assert payload["submitted"] is False
     assert "private" not in destination.read_text(encoding="utf-8")
+
+
+def test_resource_limit_report_preserves_all_attempts_without_raw_data(tmp_path: Path) -> None:
+    attempt = ResourceLimitEvidence(
+        candidate_run_identity="a" * 64,
+        source_sha="b" * 40,
+        resolution=(640, 640),
+        seed=17,
+        completed_units=96_558,
+        total_units=187_519,
+        observed_gpu_memory_mib=17_905.0,
+        duration_seconds=1_112.0,
+        record_sha256="c" * 64,
+        stderr_sha256="d" * 64,
+        outcome="SYSTEM_INTERRUPTION",
+    )
+    probe = ResourceLimitEvidence(
+        candidate_run_identity="e" * 64,
+        source_sha="f" * 40,
+        resolution=(576, 576),
+        seed=42,
+        completed_units=12_631,
+        total_units=151_890,
+        observed_gpu_memory_mib=23_887.0,
+        duration_seconds=759.0,
+        record_sha256="1" * 64,
+        stderr_sha256="2" * 64,
+        outcome="SUSTAINED_RESOURCE_DEGRADATION",
+    )
+    report = BalancedResourceLimitReport(
+        source_sha="3" * 40,
+        dataset_manifest_sha256="4" * 64,
+        baseline_benchmark_sha256="5" * 64,
+        baseline_config_sha256="6" * 64,
+        config_640_sha256="7" * 64,
+        config_576_sha256="8" * 64,
+        frontier_report_sha256="9" * 64,
+        stage_a_attempts=(attempt, attempt),
+        stage_b_probe=probe,
+    )
+
+    destination = write_resource_limit_report(tmp_path / "resource.json", report)
+    payload = json.loads(destination.read_text(encoding="utf-8"))
+
+    assert payload["canonical_sha256"] == report.identity
+    assert payload["stage_a_verdict"] == "RESOURCE_LIMIT_EXCEEDED"
+    assert payload["stage_b_verdict"] == "RESOURCE_LIMIT_EXCEEDED"
+    assert payload["submitted"] is False
+    serialized = destination.read_text(encoding="utf-8")
+    assert "private" not in serialized
+    assert "path" not in serialized
+
+
+def test_committed_balanced_resource_limit_result_keeps_frozen_state() -> None:
+    payload = json.loads(
+        Path("reports/balanced_patchcore_resource_limit.json").read_text(encoding="utf-8")
+    )
+    claimed_identity = payload.pop("canonical_sha256")
+    report = BalancedResourceLimitReport.model_validate(payload)
+    champions = json.loads(Path("reports/champions.json").read_text(encoding="utf-8"))
+    official = json.loads(
+        Path("docs/assets/evidence/official-private-result.json").read_text(encoding="utf-8")
+    )
+
+    assert report.identity == claimed_identity
+    assert report.stage_a_verdict == "RESOURCE_LIMIT_EXCEEDED"
+    assert report.stage_b_verdict == "RESOURCE_LIMIT_EXCEEDED"
+    assert report.submitted is False
+    assert report.champions_changed is False
+    assert champions["champions"]["wallplugs"] == "patchcore"
+    assert official["verdict"] == "PRIVATE-NO-GO"
