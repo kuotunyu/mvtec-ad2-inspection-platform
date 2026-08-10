@@ -110,9 +110,9 @@ def main() -> int:
     args = parser.parse_args()
     destination = ROOT / "docs/assets"
     if args.check_manifest:
-        stale = _manifest_stale(destination)
-        if stale:
-            print("stale documentation asset manifest: " + ", ".join(stale))
+        stale_manifest = _manifest_stale(destination)
+        if stale_manifest:
+            print("stale documentation asset manifest: " + ", ".join(stale_manifest))
             return 1
         print("documentation asset manifest is current")
         return 0
@@ -123,14 +123,14 @@ def main() -> int:
     with TemporaryDirectory(prefix="mvtec-doc-check-") as temporary:
         candidate = Path(temporary)
         _write_generated(candidate)
-        stale = [
+        stale_assets = [
             name
             for name in (*ASSET_NAMES, "manifest.json")
             if not (destination / name).is_file()
             or (destination / name).read_bytes() != (candidate / name).read_bytes()
         ]
-    if stale:
-        print("stale documentation assets: " + ", ".join(stale))
+    if stale_assets:
+        print("stale documentation assets: " + ", ".join(stale_assets))
         return 1
     print("documentation assets are current")
     return 0
