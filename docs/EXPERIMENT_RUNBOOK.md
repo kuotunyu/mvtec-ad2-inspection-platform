@@ -12,7 +12,12 @@ uv run ruff check .
 uv run mypy src experiments scripts
 ```
 
-The verifier prints `PASS`, `FAIL`, or `PENDING EXTERNAL SUBMISSION`. The pending state is correct until an authorized official server result exists; it is never converted to success automatically.
+The verifier prints `PASS`, `FAIL`, or `PENDING EXTERNAL SUBMISSION`. A clean
+checkout reports `PASS` only when the committed official result is complete and
+matches its evidence-manifest hash, or when an explicitly supplied external
+local-submission summary passed validation. `PASS` means the evidence contract
+is valid; the independent release verdict can still be `PRIVATE-NO-GO`.
+Pending remains correct before either form of evidence exists.
 
 ## Reproduce the foundation
 

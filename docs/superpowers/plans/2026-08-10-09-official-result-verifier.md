@@ -3,21 +3,21 @@
 > **For agentic workers:** Use TDD, systematic debugging, and
 > verification-before-completion. Work inline without subagents or a worktree.
 
-**Status:** In Progress
+**Status:** Active
 
 **Goal:** Make a clean checkout recognize complete, integrity-bound official
 result evidence without confusing gate success with the release verdict.
 
 ## Task 1: Freeze the evidence-state contract
 
-- [ ] Add focused tests for pending, external-summary PASS, committed official
+- [x] Add focused tests for pending, external-summary PASS, committed official
   PASS, and malformed/unmanifested/hash-mismatched official evidence.
-- [ ] Run the focused tests and observe the expected failure against the
+- [x] Run the focused tests and observe the expected failure against the
   current verifier.
-- [ ] Implement the minimum fail-closed committed-evidence verification.
-- [ ] Update the experiment runbook with the status/verdict distinction.
-- [ ] Run focused tests, Ruff, format, mypy, and diff checks.
-- [ ] Audit commit identity and commit the Task as `kuotunyu` without trailers.
+- [x] Implement the minimum fail-closed committed-evidence verification.
+- [x] Update the experiment runbook with the status/verdict distinction.
+- [x] Run focused tests, Ruff, format, mypy, and diff checks.
+- [x] Audit commit identity and commit the Task as `kuotunyu` without trailers.
 
 ## Task 2: Verify and close the maintenance task
 

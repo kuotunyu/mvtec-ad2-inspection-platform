@@ -78,6 +78,27 @@ def verify_experiments(repo_root: Path, submission_summary: Path | None = None) 
     for path in required:
         if path.suffix == ".json":
             json.loads(path.read_text(encoding="utf-8"))
+
+    evidence_root = repo_root / "docs" / "assets" / "evidence"
+    official = evidence_root / "official-private-result.json"
+    if official.is_file():
+        manifest_path = evidence_root / "manifest.json"
+        if not manifest_path.is_file():
+            raise CleanExportError("missing official evidence manifest")
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        expected_hash = manifest.get("files", {}).get(official.name)
+        if not isinstance(expected_hash, str):
+            raise CleanExportError("official result is not declared in evidence manifest")
+        actual_hash = hashlib.sha256(official.read_bytes()).hexdigest()
+        if actual_hash != expected_hash:
+            raise CleanExportError("official result hash mismatch")
+        result = json.loads(official.read_text(encoding="utf-8"))
+        if result.get("status") != "DONE":
+            raise CleanExportError("official result is incomplete")
+        if result.get("verdict") not in {"PRIVATE-NO-GO", "V1-CANDIDATE"}:
+            raise CleanExportError("unknown official verdict")
+        return "PASS"
+
     if submission_summary is None or not submission_summary.is_file():
         return "PENDING EXTERNAL SUBMISSION"
     summary = json.loads(submission_summary.read_text(encoding="utf-8"))
