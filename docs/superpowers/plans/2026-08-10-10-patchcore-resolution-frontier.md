@@ -3,7 +3,7 @@
 > **For agentic workers:** Use TDD, systematic debugging, and
 > verification-before-completion. Work inline without subagents or a worktree.
 
-**Status:** Active
+**Status:** Complete
 
 **Goal:** Determine whether a resource-informed 640 x 640 `wallplugs`
 PatchCore candidate fits the RTX 4090 and materially improves frozen public
@@ -32,5 +32,5 @@ AU-PRO, without changing release or submission state.
 - [x] Add only sanitized aggregate public evidence and unchanged-champion
   documentation with a failing committed-report test first.
 - [x] Run complete non-GPU, frontend, claims, security, and boundary gates.
-- [ ] Commit the result, run an exact-HEAD clean export, complete bookkeeping,
+- [x] Commit the result, run an exact-HEAD clean export, complete bookkeeping,
   and confirm clean sole-contributor history.
