@@ -3,7 +3,7 @@
 > **For agentic workers:** Use TDD, systematic debugging, and
 > verification-before-completion. Work inline without subagents or a worktree.
 
-**Status:** Active
+**Status:** Complete
 
 **Goal:** Adopt Starlette's maintained TestClient backend and remove the unused
 legacy HTTP client from the production dependency contract.
@@ -21,8 +21,8 @@ legacy HTTP client from the production dependency contract.
 
 ## Task 2: Verify and close
 
-- [ ] Run complete Python/frontend, claims, security, experiment, and boundary
+- [x] Run complete Python/frontend, claims, security, experiment, and boundary
   gates with no Starlette TestClient deprecation warning.
-- [ ] Run exact-HEAD clean export including package/SBOM/Docker/system/browser
+- [x] Run exact-HEAD clean export including package/SBOM/Docker/system/browser
   gates.
-- [ ] Complete bookkeeping, continuity, and sole-contributor/clean-tree audits.
+- [x] Complete bookkeeping, continuity, and sole-contributor/clean-tree audits.
