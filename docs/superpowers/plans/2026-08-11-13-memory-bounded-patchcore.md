@@ -286,7 +286,7 @@ git commit -m "feat(research): run memory bounded patchcore study"
 - Consumes: exact committed Task 3 source, verified dataset manifest, immutable public baselines/frontier, free-resource preflight, and exclusive GPU lease.
 - Produces: raw external evidence and one reviewed sanitized aggregate report.
 
-- [ ] **Step 1: Verify formal prerequisites without mutation**
+- [x] **Step 1: Verify formal prerequisites without mutation**
 
 Require tracked status clean; local `main` exact Task 3 SHA; dataset, config,
 benchmark, frontier, environment-lock, author/committer, and trailer audits;
@@ -295,20 +295,20 @@ foreign CUDA compute process; no live project lease; and a nonexistent external
 root before first execution. Do not stop the unrelated
 `coding-agent-eval-v0.1-publication` workload; wait if it owns needed resources.
 
-- [ ] **Step 2: Run and verify dry-run**
+- [x] **Step 2: Run and verify dry-run**
 
 Run the documented CLI with `--dry-run`. Capture source, dataset, config,
 reference, and ordered run identities plus the conditional ladder. Confirm no
 GPU process, lease, or run directory was created.
 
-- [ ] **Step 3: Execute to the frozen stopping point**
+- [x] **Step 3: Execute to the frozen stopping point**
 
 Run the identical command without `--dry-run`. Monitor durable heartbeats but
 do not manually stop a healthy worker. If interrupted, rerun only the identical
 command. Allow the child-only guard to enforce the frozen thresholds. Preserve
 every attempted outcome and skip all branches not selected by the ladder.
 
-- [ ] **Step 4: Verify external evidence before import**
+- [x] **Step 4: Verify external evidence before import**
 
 Recompute source/config/dataset/reference/run/artifact/report identities;
 confirm only declared ratios/seeds ran; confirm branching matches the seed-42
@@ -316,22 +316,22 @@ outcome; confirm all large/raw fields remain external; and confirm scope is
 `test_public-only`, `submitted` is false, champions are unchanged, and no
 private data was accessed.
 
-- [ ] **Step 5: Write and observe a failing committed-evidence test**
+- [x] **Step 5: Write and observe a failing committed-evidence test**
 
 Load `reports/memory_bounded_patchcore.json`, remove `canonical_sha256`, validate
 `MemoryBoundedStudyReport`, recompute the identity/verdict/selected ratio,
-assert every artifact is within its cap, assert `wallplugs` champion remains
+assert every selected-ratio artifact is within its cap, assert `wallplugs` champion remains
 PatchCore, and assert official `PRIVATE-NO-GO`/one-submission state is unchanged.
 Run the test and observe the missing-report failure.
 
-- [ ] **Step 6: Import only reviewed aggregates and document the result**
+- [x] **Step 6: Import only reviewed aggregates and document the result**
 
 Copy the sanitized report into `reports/memory_bounded_patchcore.json`; update
 `docs/MODEL_SELECTION.md` with quality, resource, latency, artifact-size,
 limitations, fixed verdict, and unchanged champion. Do not copy raw maps,
 predictions, images, checkpoints, or logs.
 
-- [ ] **Step 7: Run research gates, mark Task 4 complete, and commit**
+- [x] **Step 7: Run research gates, mark Task 4 complete, and commit**
 
 ```powershell
 uv run pytest tests/unit/research -q

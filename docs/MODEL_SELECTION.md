@@ -56,3 +56,24 @@ and its lease was released. Stage A and Stage B are therefore both
 seeds ran, and the frozen `wallplugs` champion remains unchanged. Sanitized,
 identity-bound aggregate evidence is in
 `reports/balanced_patchcore_resource_limit.json`.
+
+## Memory-bounded 640 x 640 PatchCore follow-up
+
+The fixed public-only coreset ladder completed without a resource stop. The
+0.01 seed-42 probe improved AU-PRO by 0.0757 and pixel AUROC by 0.0112, but its
+205.1 MiB artifact exceeded the 200 MiB cap and image AUROC regressed by 0.0533,
+so the preplanned 0.02 rescue ran. The 0.02 seed-42 result passed: AU-PRO
+improved by 0.0854, pixel AUROC by 0.0195, image AUROC changed by -0.0302,
+public GPU p95 latency was 78.4 ms, and the artifact was 315.0 MiB. Training
+peaked at 22,219 MiB on the RTX 4090.
+
+Seeds 17 and 2026 completed with the same 0.02 contract. All three artifacts
+and latencies remained below the 350 MiB and 175 ms caps, with zero per-image
+failures, but image AUROC deltas were -0.0728 and -0.0626 for the replications.
+The three-seed mean image AUROC delta was therefore about -0.0552, below the
+frozen -0.04 reproducibility gate. The fixed verdict is
+`EFFICIENT_SEED42_ONLY`: the smaller coreset is operationally efficient and
+improves public localization, but the general image-level quality gain is not
+reproducible. It does not replace the frozen `wallplugs` champion or alter the
+official `PRIVATE-NO-GO` state. Sanitized aggregate evidence is in
+`reports/memory_bounded_patchcore.json`.

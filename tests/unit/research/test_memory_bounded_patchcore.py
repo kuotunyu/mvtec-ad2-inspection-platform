@@ -259,3 +259,40 @@ def test_dry_run_payload_binds_fixed_identities_and_conditional_rule() -> None:
         "probe-0.01; rescue-0.02-only-after-safe-quality-miss; replicate-first-passing-ratio"
     )
     assert payload["source_sha"] == "b" * 40
+
+
+def test_committed_memory_bounded_result_keeps_frozen_state() -> None:
+    payload = json.loads(Path("reports/memory_bounded_patchcore.json").read_text(encoding="utf-8"))
+    claimed_identity = payload.pop("canonical_sha256")
+    report = MemoryBoundedStudyReport.model_validate(payload)
+    champions = json.loads(Path("reports/champions.json").read_text(encoding="utf-8"))
+    official = json.loads(
+        Path("docs/assets/evidence/official-private-result.json").read_text(encoding="utf-8")
+    )
+
+    assert report.identity == claimed_identity
+    assert tuple((item.ratio, item.seed) for item in report.probes) == (
+        (0.01, 42),
+        (0.02, 42),
+    )
+    assert not passes_seed42_gate(report.probes[0])
+    assert passes_seed42_gate(report.probes[1])
+    assert report.selected_ratio == 0.02
+    assert tuple(item.seed for item in report.replications) == (17, 2026)
+
+    selected = (report.probes[1], *report.replications)
+    assert all(item.comparison is not None for item in selected)
+    assert all(
+        item.comparison.candidate.artifact_size_bytes <= 350 * 1024**2
+        and item.comparison.candidate.gpu_p95_latency_ms <= 175.0
+        and item.comparison.candidate.per_image_failure_rate == 0.0
+        for item in selected
+        if item.comparison is not None
+    )
+    assert classify_memory_bounded_study(selected) == "EFFICIENT_SEED42_ONLY"
+    assert report.verdict == "EFFICIENT_SEED42_ONLY"
+    assert report.submitted is False
+    assert report.champions_changed is False
+    assert champions["champions"]["wallplugs"] == "patchcore"
+    assert official["verdict"] == "PRIVATE-NO-GO"
+    assert "No second submission was performed." in official["limitations"]

@@ -1,0 +1,192 @@
+{
+  "baseline_benchmark_sha256": "9cf47070c75bbf66f5e9919c32b5847b886a2f02190ea844c55273bb5ac4f751",
+  "baseline_config_sha256": "28c43a7b5d1546c8e3dac8f8d8abf6e15df721fa1c01d7126f5e9d1ab70eb106",
+  "canonical_sha256": "5029acfdcda514e45c6a40edcfd314d88bd87f5cb56f4f71eb518c9fc47f68d0",
+  "champions_changed": false,
+  "config_001_sha256": "be6513f55bbaa1b9124181774b49746793ff44396b783f6f038a59218cf9f3e5",
+  "config_002_sha256": "5353e4a5276b9da8559d8e1d1ba85d0d78b531f03a26ef568a915fe8458d8330",
+  "dataset_manifest_sha256": "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf",
+  "frontier_report_sha256": "cf8f7ffe7b617fcb94ddf92a85fca46b974b4c342aed28dd510c33fd7806ec48",
+  "probes": [
+    {
+      "comparison": {
+        "au_pro_delta": 0.07574664991125923,
+        "baseline": {
+          "artifact_size_bytes": 837184499,
+          "au_pro": 0.5285957173343723,
+          "gpu_p95_latency_ms": 82.25276000007398,
+          "image_auroc": 0.5725925925925927,
+          "peak_vram_mib": 1577.55419921875,
+          "per_image_failure_rate": 0.0,
+          "pixel_auroc": 0.9144734980393687,
+          "schema_version": "1.0.0"
+        },
+        "baseline_run_identity": "6ffd7c77dc95549ae174f324c19684a44a90808029672390c07cc72df9874972",
+        "candidate": {
+          "artifact_size_bytes": 215043123,
+          "au_pro": 0.6043423672456315,
+          "gpu_p95_latency_ms": 67.71573000032731,
+          "image_auroc": 0.5192592592592593,
+          "peak_vram_mib": 441.478515625,
+          "per_image_failure_rate": 0.0,
+          "pixel_auroc": 0.9256776833158247,
+          "schema_version": "1.0.0"
+        },
+        "candidate_duration_seconds": 255.28775906562805,
+        "candidate_run_identity": "45dee77dd637464f005d37d17c9a0328f7b96f4fecb8896880a77f0a8f71a885",
+        "category": "wallplugs",
+        "image_auroc_delta": -0.053333333333333344,
+        "pixel_auroc_delta": 0.011204185276455947,
+        "schema_version": "1.0.0"
+      },
+      "frontier_reference": {
+        "artifact_size_bytes": 1251953715,
+        "au_pro": 0.5981168894764237,
+        "gpu_p95_latency_ms": 166.60204999980124,
+        "image_auroc": 0.532037037037037,
+        "peak_vram_mib": 2389.275390625,
+        "per_image_failure_rate": 0.0,
+        "pixel_auroc": 0.931085743010617,
+        "schema_version": "1.0.0"
+      },
+      "ratio": 0.01,
+      "resource_ok": true,
+      "resource_reason_sha256": null,
+      "schema_version": "1.0.0",
+      "seed": 42
+    },
+    {
+      "comparison": {
+        "au_pro_delta": 0.08536225890144233,
+        "baseline": {
+          "artifact_size_bytes": 837184499,
+          "au_pro": 0.5285957173343723,
+          "gpu_p95_latency_ms": 82.25276000007398,
+          "image_auroc": 0.5725925925925927,
+          "peak_vram_mib": 1577.55419921875,
+          "per_image_failure_rate": 0.0,
+          "pixel_auroc": 0.9144734980393687,
+          "schema_version": "1.0.0"
+        },
+        "baseline_run_identity": "6ffd7c77dc95549ae174f324c19684a44a90808029672390c07cc72df9874972",
+        "candidate": {
+          "artifact_size_bytes": 330255411,
+          "au_pro": 0.6139579762358146,
+          "gpu_p95_latency_ms": 78.37271999951552,
+          "image_auroc": 0.5424074074074074,
+          "peak_vram_mib": 631.203125,
+          "per_image_failure_rate": 0.0,
+          "pixel_auroc": 0.9340200328043742,
+          "schema_version": "1.0.0"
+        },
+        "candidate_duration_seconds": 439.0786349773407,
+        "candidate_run_identity": "2e4644215d334252cbdd65eb04c49a89648711c31ee7a812b0b0118a6cbb6a7c",
+        "category": "wallplugs",
+        "image_auroc_delta": -0.030185185185185204,
+        "pixel_auroc_delta": 0.019546534765005452,
+        "schema_version": "1.0.0"
+      },
+      "frontier_reference": {
+        "artifact_size_bytes": 1251953715,
+        "au_pro": 0.5981168894764237,
+        "gpu_p95_latency_ms": 166.60204999980124,
+        "image_auroc": 0.532037037037037,
+        "peak_vram_mib": 2389.275390625,
+        "per_image_failure_rate": 0.0,
+        "pixel_auroc": 0.931085743010617,
+        "schema_version": "1.0.0"
+      },
+      "ratio": 0.02,
+      "resource_ok": true,
+      "resource_reason_sha256": null,
+      "schema_version": "1.0.0",
+      "seed": 42
+    }
+  ],
+  "reference_config_sha256": "946452529503a4c6803c26a096e36e3c9c5a6c44eea1edd30bfacdd2a27eafca",
+  "replications": [
+    {
+      "comparison": {
+        "au_pro_delta": 0.10792565818288735,
+        "baseline": {
+          "artifact_size_bytes": 837184499,
+          "au_pro": 0.52920783735088,
+          "gpu_p95_latency_ms": 79.80080000270391,
+          "image_auroc": 0.5925925925925926,
+          "peak_vram_mib": 1577.55419921875,
+          "per_image_failure_rate": 0.0,
+          "pixel_auroc": 0.9200949722119268,
+          "schema_version": "1.0.0"
+        },
+        "baseline_run_identity": "437a3d6f63e9ce551bc6710738cbaab22121f5b3bc592dace57dacfcec636d97",
+        "candidate": {
+          "artifact_size_bytes": 330255411,
+          "au_pro": 0.6371334955337673,
+          "gpu_p95_latency_ms": 73.93924999951196,
+          "image_auroc": 0.5198148148148148,
+          "peak_vram_mib": 631.203125,
+          "per_image_failure_rate": 0.0,
+          "pixel_auroc": 0.9417089774054984,
+          "schema_version": "1.0.0"
+        },
+        "candidate_duration_seconds": 406.34627771377563,
+        "candidate_run_identity": "8eebc452e93ed04ce31940d7ce70d2d8b1fdd1f865e8bfa3f8be8ea547dc9e4a",
+        "category": "wallplugs",
+        "image_auroc_delta": -0.07277777777777772,
+        "pixel_auroc_delta": 0.021614005193571595,
+        "schema_version": "1.0.0"
+      },
+      "frontier_reference": null,
+      "ratio": 0.02,
+      "resource_ok": true,
+      "resource_reason_sha256": null,
+      "schema_version": "1.0.0",
+      "seed": 17
+    },
+    {
+      "comparison": {
+        "au_pro_delta": 0.07283957551388098,
+        "baseline": {
+          "artifact_size_bytes": 837184499,
+          "au_pro": 0.538486456548315,
+          "gpu_p95_latency_ms": 80.65630500204861,
+          "image_auroc": 0.5724074074074075,
+          "peak_vram_mib": 1577.55419921875,
+          "per_image_failure_rate": 0.0,
+          "pixel_auroc": 0.917088264299219,
+          "schema_version": "1.0.0"
+        },
+        "baseline_run_identity": "e2517d5a507bf2a0da8e99af47a485fd88c0d900d4d8773966750afad8d7009f",
+        "candidate": {
+          "artifact_size_bytes": 330255411,
+          "au_pro": 0.6113260320621959,
+          "gpu_p95_latency_ms": 74.4932600005086,
+          "image_auroc": 0.5098148148148148,
+          "peak_vram_mib": 631.203125,
+          "per_image_failure_rate": 0.0,
+          "pixel_auroc": 0.9339145363475037,
+          "schema_version": "1.0.0"
+        },
+        "candidate_duration_seconds": 412.12371826171875,
+        "candidate_run_identity": "03508e8137762ae401418baedbd41f3989a49fe372bad768f098094a23e901da",
+        "category": "wallplugs",
+        "image_auroc_delta": -0.06259259259259264,
+        "pixel_auroc_delta": 0.016826272048284685,
+        "schema_version": "1.0.0"
+      },
+      "frontier_reference": null,
+      "ratio": 0.02,
+      "resource_ok": true,
+      "resource_reason_sha256": null,
+      "schema_version": "1.0.0",
+      "seed": 2026
+    }
+  ],
+  "schema_version": "1.0.0",
+  "scope": "test_public-only",
+  "selected_ratio": 0.02,
+  "source_sha": "781c3e079f475ae69db9c025678e28370e420d9d",
+  "study": "memory-bounded-patchcore-wallplugs",
+  "submitted": false,
+  "verdict": "EFFICIENT_SEED42_ONLY"
+}
