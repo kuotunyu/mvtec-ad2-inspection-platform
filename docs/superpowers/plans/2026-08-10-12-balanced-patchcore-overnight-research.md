@@ -32,7 +32,7 @@
 - Consumes: `ModelConfig`, `RunSpec`, `StudyMetrics`, `StudyComparison`, `StudyFailure`, and the committed seed-42 `FrontierReport`.
 - Produces: `validate_balanced_config(candidate, baseline, resolution) -> None`, `build_candidate_specs(config_640, config_576, dataset_manifest_sha256) -> tuple[RunSpec, ...]`, `classify_stage_a(outcomes) -> StageAVerdict`, `passes_stage_b_advance(comparison) -> bool`, and `classify_stage_b(outcomes) -> StageBVerdict`.
 
-- [ ] **Step 1: Write failing config and run-matrix tests**
+- [x] **Step 1: Write failing config and run-matrix tests**
 
 ```python
 def test_candidate_configs_change_only_geometry() -> None:
@@ -51,17 +51,17 @@ def test_fixed_specs_exclude_completed_640_seed_42() -> None:
     ]
 ```
 
-- [ ] **Step 2: Run the focused tests and observe RED**
+- [x] **Step 2: Run the focused tests and observe RED**
 
 Run: `uv run pytest tests/unit/research/test_balanced_patchcore_study.py -q`
 
 Expected: fail because the 576 config and balanced-study module do not exist.
 
-- [ ] **Step 3: Add the minimal 576 config and validation/spec builders**
+- [x] **Step 3: Add the minimal 576 config and validation/spec builders**
 
 Copy the frozen PatchCore model config, changing only `input_size` and `preprocessing.resize` to `[576, 576]`. Implement exact normalized-payload equality after restoring those two fields to `[512, 512]`; build the five ordered specs shown in the test.
 
-- [ ] **Step 4: Write failing frozen-verdict tests**
+- [x] **Step 4: Write failing frozen-verdict tests**
 
 ```python
 def test_stage_a_requires_reproducible_localization_gain() -> None:
@@ -75,11 +75,11 @@ def test_stage_b_advance_and_balanced_verdict() -> None:
     assert classify_stage_b((_cmp(.03), _cmp(.025), _cmp(.02))) == "BALANCED_PROMISING"
 ```
 
-- [ ] **Step 5: Implement the minimal classifications and aggregate contract models**
+- [x] **Step 5: Implement the minimal classifications and aggregate contract models**
 
 Use explicit `Literal` verdicts, finite numeric fields, exact mean calculations, mandatory per-seed outcomes, and model validators that recompute rather than trust stored verdicts. Treat a run failure, latency over 500 ms, nonzero image failure rate, or declared resource breach as `RESOURCE_LIMIT_EXCEEDED`.
 
-- [ ] **Step 6: Run focused quality gates**
+- [x] **Step 6: Run focused quality gates**
 
 Run:
 
@@ -93,7 +93,7 @@ git diff --check
 
 Expected: all commands exit 0.
 
-- [ ] **Step 7: Commit Task 1**
+- [x] **Step 7: Commit Task 1**
 
 ```powershell
 git add experiments/configs/research/patchcore-576.yaml experiments/balanced_patchcore_study.py tests/unit/research/test_balanced_patchcore_study.py docs/superpowers/plans/2026-08-10-12-balanced-patchcore-overnight-research.md
