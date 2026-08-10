@@ -36,7 +36,7 @@
 - Consumes: `ModelConfig`, `RunSpec`, `StudyMetrics`, `StudyComparison`, immutable `FrontierReport`, and matching public baseline records.
 - Produces: `validate_memory_bounded_config(candidate, reference, ratio) -> None`, `build_candidate_specs(config_001, config_002, dataset_manifest_sha256) -> tuple[RunSpec, ...]`, `CandidateOutcome`, `passes_seed42_gate(outcome, frontier) -> bool`, `select_ratio(probes) -> float | None`, and `classify_memory_bounded_study(...) -> StudyVerdict`.
 
-- [ ] **Step 1: Write failing config-difference and candidate-order tests**
+- [x] **Step 1: Write failing config-difference and candidate-order tests**
 
 ```python
 def test_ratio_configs_change_only_the_declared_coreset_ratio() -> None:
@@ -59,20 +59,20 @@ def test_candidate_specs_freeze_ratio_then_seed_order() -> None:
     ]
 ```
 
-- [ ] **Step 2: Run the focused test and observe RED**
+- [x] **Step 2: Run the focused test and observe RED**
 
 Run: `uv run pytest tests/unit/research/test_memory_bounded_patchcore.py -q`
 
 Expected: collection fails because the configs and module do not exist.
 
-- [ ] **Step 3: Add minimal configs and exact normalization guard**
+- [x] **Step 3: Add minimal configs and exact normalization guard**
 
 Copy `patchcore-640.yaml` twice. Change only
 `family_options.coreset_sampling_ratio` to `0.01` and `0.02`. Implement config
 validation by restoring the declared ratio to `0.1` in the normalized candidate
 payload and requiring byte-equivalent canonical payloads.
 
-- [ ] **Step 4: Write failing gate, rescue, and verdict tests**
+- [x] **Step 4: Write failing gate, rescue, and verdict tests**
 
 ```python
 def test_ratio_one_advances_when_quality_and_efficiency_are_preserved() -> None:
@@ -96,7 +96,7 @@ def test_three_seed_verdict_is_recomputed() -> None:
     assert classify_memory_bounded_study(passing) == "EFFICIENT_REPRODUCIBLE"
 ```
 
-- [ ] **Step 5: Implement minimal immutable contract models and classifiers**
+- [x] **Step 5: Implement minimal immutable contract models and classifiers**
 
 Use explicit verdict literals:
 `EFFICIENT_REPRODUCIBLE`, `EFFICIENT_SEED42_ONLY`,
@@ -105,7 +105,7 @@ metrics, exact seed/ratio ordering, ratio-specific artifact caps, fixed latency
 caps, zero image failures, recomputed arithmetic means, and no caller-trusted
 verdict.
 
-- [ ] **Step 6: Run focused quality gates**
+- [x] **Step 6: Run focused quality gates**
 
 ```powershell
 uv run pytest tests/unit/research/test_memory_bounded_patchcore.py -q
@@ -117,7 +117,7 @@ git diff --check
 
 Expected: all commands exit 0.
 
-- [ ] **Step 7: Mark Task 1 complete and commit**
+- [x] **Step 7: Mark Task 1 complete and commit**
 
 ```powershell
 git add experiments/configs/research/patchcore-640-coreset-001.yaml experiments/configs/research/patchcore-640-coreset-002.yaml experiments/memory_bounded_patchcore.py tests/unit/research/test_memory_bounded_patchcore.py docs/superpowers/plans/2026-08-11-13-memory-bounded-patchcore.md

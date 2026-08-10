@@ -1,0 +1,25 @@
+schema_version: "1.0.0"
+family: patchcore
+anomalib_version: "2.5.0"
+model_name: Patchcore
+backbone: wide_resnet50_2
+input_size: [640, 640]
+batch_size: 1
+oom_fallback_batch_size: null
+precision: 32-true
+trainer_limits:
+  max_epochs: 1
+  max_steps: null
+seed: null
+preprocessing:
+  resize: [640, 640]
+  normalization: imagenet
+  interpolation: bilinear
+checkpoint_policy:
+  mode: best
+  save_top_k: 1
+export_mode: torch
+family_options:
+  layers: [layer2, layer3]
+  coreset_sampling_ratio: 0.02
+  num_neighbors: 9
