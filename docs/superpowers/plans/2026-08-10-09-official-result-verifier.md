@@ -3,7 +3,7 @@
 > **For agentic workers:** Use TDD, systematic debugging, and
 > verification-before-completion. Work inline without subagents or a worktree.
 
-**Status:** Active
+**Status:** Complete
 
 **Goal:** Make a clean checkout recognize complete, integrity-bound official
 result evidence without confusing gate success with the release verdict.
@@ -21,9 +21,9 @@ result evidence without confusing gate success with the release verdict.
 
 ## Task 2: Verify and close the maintenance task
 
-- [ ] Run the complete non-GPU Python and frontend gates.
-- [ ] Run claims, security, experiment, and public-boundary verification.
-- [ ] Run the exact committed clean-export release gate.
-- [ ] Update local continuity files, mark this plan Complete, and commit only
+- [x] Run the complete non-GPU Python and frontend gates.
+- [x] Run claims, security, experiment, and public-boundary verification.
+- [x] Run the exact committed clean-export release gate.
+- [x] Update local continuity files, mark this plan Complete, and commit only
   tracked bookkeeping.
-- [ ] Confirm a clean tracked worktree and sole-contributor reachable history.
+- [x] Confirm a clean tracked worktree and sole-contributor reachable history.
