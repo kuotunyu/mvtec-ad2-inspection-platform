@@ -43,17 +43,17 @@ four selected releases declare `runs.using: node24`:
   frozen SHA and exact release comment above.
 - Add a release-contract test that requires the exact action-to-SHA mapping,
   so a mutable tag, rollback, partial upgrade, or unreviewed replacement fails.
+- Extend the public-boundary verifier to reject UTF-8 public text containing
+  Unicode replacement characters or private-use code points.
 - Repair the corrupted limitations sentence to read “—not real model quality.”
-- Add a publication-contract assertion for that exact statement and reject the
-  corrupted sequence.
 
 No job, command, permission, cache key, tool version, trigger, concurrency
 setting, product dependency, or product behavior changes.
 
 ## Verification and boundaries
 
-- Observe focused test failures against the current workflow and corrupted
-  documentation before editing production files.
+- Observe focused test failures against the current workflow and a controlled
+  corrupt-text fixture before editing production files.
 - Run focused release/publication tests, Ruff, format, mypy, the complete
   non-GPU suite, claims, security, and public-boundary verification.
 - Run an exact committed clean export after implementation.

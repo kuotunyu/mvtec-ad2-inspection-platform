@@ -30,17 +30,19 @@ gates then prove the rest of the repository remains unchanged in behavior.
 **Files:**
 
 - Modify: `tests/release/test_release.py`
-- Modify: `tests/publication/test_docs.py`
+- Modify: `tests/security/test_scanners.py`
 - Modify: `.github/workflows/ci.yml`
 - Modify: `docs/LIMITATIONS.md`
+- Modify: `scripts/verify_public_boundary.py`
 - Modify: this plan
 
 - [ ] Add a release test requiring the exact four approved Action SHA/comment
   pairs and every occurrence to use only that mapping.
-- [ ] Add a publication test requiring “—not real model quality.” and rejecting
-  the corrupted sequence.
+- [ ] Add a scanner test requiring corrupt UTF-8 public text to fail with a
+  stable `invalid_public_text` error.
 - [ ] Run both focused tests and observe failures against the current files.
-- [ ] Replace all workflow pins and repair only the corrupted sentence.
+- [ ] Replace all workflow pins, implement the general text gate, and repair
+  only the corrupted sentence.
 - [ ] Run focused release/publication tests, Ruff, format, and `git diff --check`.
 - [ ] Audit author, committer, trailers, and staged scope; commit
   `chore(ci): update action runtimes`.
