@@ -1,6 +1,6 @@
 # Memory-Bounded PatchCore Research Implementation Plan
 
-**Status:** Active
+**Status:** Complete
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -322,8 +322,9 @@ private data was accessed.
 
 Load `reports/memory_bounded_patchcore.json`, remove `canonical_sha256`, validate
 `MemoryBoundedStudyReport`, recompute the identity/verdict/selected ratio,
-assert every selected-ratio artifact is within its cap, assert `wallplugs` champion remains
-PatchCore, and assert official `PRIVATE-NO-GO`/one-submission state is unchanged.
+assert every selected-ratio artifact is within its cap, assert `wallplugs`
+champion remains PatchCore, and assert official `PRIVATE-NO-GO`/one-submission
+state is unchanged.
 Run the test and observe the missing-report failure.
 
 - [x] **Step 6: Import only reviewed aggregates and document the result**
@@ -357,7 +358,7 @@ git commit -m "docs(research): record memory bounded patchcore study"
 - Consumes: exact committed Task 4 source and sanitized evidence.
 - Produces: checked Plan 13, clean verified local `main`, and concise local handoff state.
 
-- [ ] **Step 1: Run complete local gates**
+- [x] **Step 1: Run complete local gates**
 
 ```powershell
 $env:PYTHONWARNINGS = "error::DeprecationWarning:starlette.testclient"
@@ -376,7 +377,7 @@ uv run python scripts/verify_public_boundary.py --git-tree HEAD
 
 Expected: every command exits 0.
 
-- [ ] **Step 2: Run exact-HEAD clean export**
+- [x] **Step 2: Run exact-HEAD clean export**
 
 ```powershell
 $shortSha = (git rev-parse --short HEAD).Trim()
@@ -386,7 +387,7 @@ powershell -ExecutionPolicy Bypass -File scripts/clean_export.ps1 -Treeish HEAD 
 Expected: package, Python/Node SBOM, Docker smoke, system, and real-container
 browser gates pass for the exact committed SHA.
 
-- [ ] **Step 3: Mark final checkboxes and commit bookkeeping**
+- [x] **Step 3: Mark final checkboxes and commit bookkeeping**
 
 Mark Task 5 and the plan completion checklist only after Step 2 passes, then
 run focused plan/report/release tests and commit:
@@ -396,7 +397,7 @@ git add docs/superpowers/plans/2026-08-11-13-memory-bounded-patchcore.md
 git commit -m "docs: complete memory bounded patchcore study"
 ```
 
-- [ ] **Step 4: Update local continuity and perform final audits**
+- [x] **Step 4: Update local continuity and perform final audits**
 
 Overwrite `.codex-local/PROJECT_STATUS.md`, append one compact entry per Task to
 `.codex-local/WORKLOG.md`, and verify ignored-file status. Confirm no project
