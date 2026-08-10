@@ -11,6 +11,7 @@ from experiments.high_resolution_patchcore import (
     CANDIDATE_RESOLUTION,
     STUDY_CATEGORIES,
     HighResolutionStudyReport,
+    StudyFailure,
     StudyMetrics,
     build_comparison,
     build_study_specs,
@@ -200,3 +201,38 @@ def test_report_is_identity_bound_and_contains_only_aggregate_public_evidence(
     assert payload["verdict"] == "PROMISING"
     assert "input_path" not in destination.read_text(encoding="utf-8")
     assert "prediction" not in destination.read_text(encoding="utf-8")
+
+
+def test_failed_runs_freeze_a_sanitized_resource_limit_report(tmp_path: Path) -> None:
+    failures = tuple(
+        StudyFailure(
+            category=category,
+            candidate_run_identity=("a" if category == "can" else "b") * 64,
+            code_revision=("4" if category == "can" else "5") * 40,
+            candidate_duration_seconds=72.0,
+            attempt=1,
+            exit_code=1,
+            error_kind="oom",
+            error_sha256=("c" if category == "can" else "d") * 64,
+        )
+        for category in STUDY_CATEGORIES
+    )
+    report = HighResolutionStudyReport(
+        source_sha="e" * 40,
+        dataset_manifest_sha256="f" * 64,
+        baseline_benchmark_sha256="1" * 64,
+        baseline_config_sha256="2" * 64,
+        candidate_config_sha256="3" * 64,
+        comparisons=(),
+        failures=failures,
+        verdict="RESOURCE_LIMIT_EXCEEDED",
+    )
+
+    destination = write_study_report(tmp_path / "resource-limit.json", report)
+    payload = json.loads(destination.read_text(encoding="utf-8"))
+
+    assert payload["verdict"] == "RESOURCE_LIMIT_EXCEEDED"
+    assert [item["category"] for item in payload["failures"]] == list(STUDY_CATEGORIES)
+    assert all(item["error_kind"] == "oom" for item in payload["failures"])
+    assert [item["code_revision"] for item in payload["failures"]] == ["4" * 40, "5" * 40]
+    assert "OutOfMemoryError" not in destination.read_text(encoding="utf-8")

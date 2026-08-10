@@ -7,7 +7,6 @@ import math
 import os
 import sys
 from copy import deepcopy
-from dataclasses import asdict
 from pathlib import Path
 from typing import Annotated, Literal, Self, cast
 
@@ -22,7 +21,12 @@ from experiments.evaluate_public import (
 )
 from experiments.models.base import ModelConfig, load_model_config
 from experiments.orchestration.gpu_lock import GpuLease
-from experiments.orchestration.supervisor import RunStore, SubprocessExecutor, Supervisor
+from experiments.orchestration.supervisor import (
+    FailureKind,
+    RunStore,
+    SubprocessExecutor,
+    Supervisor,
+)
 from experiments.run_matrix import _attempt_command_factory, _git_revision
 from experiments.train import load_dataset_manifest
 from inspection_platform.contracts import RunSpec, canonical_hash, sha256_file
@@ -158,6 +162,25 @@ def build_comparison(
     )
 
 
+class StudyFailure(ContractModel):
+    """Sanitized aggregate evidence for a candidate run that could not complete."""
+
+    category: MVTecAD2Category
+    candidate_run_identity: Sha256
+    code_revision: Annotated[str, Field(pattern=r"^[0-9a-f]{40}$")]
+    candidate_duration_seconds: Annotated[float, Field(gt=0.0, allow_inf_nan=False)]
+    attempt: Annotated[int, Field(gt=0)]
+    exit_code: int
+    error_kind: FailureKind
+    error_sha256: Sha256
+
+    @model_validator(mode="after")
+    def require_failure_exit_code(self) -> Self:
+        if self.exit_code == 0:
+            raise ValueError("failed study run must have a nonzero exit code")
+        return self
+
+
 def classify_study(comparisons: tuple[StudyComparison, StudyComparison]) -> StudyVerdict:
     if any(
         item.candidate.peak_vram_mib > 12_288.0
@@ -221,14 +244,24 @@ class HighResolutionStudyReport(ContractModel):
     baseline_resolution: tuple[Literal[512], Literal[512]] = BASELINE_RESOLUTION
     candidate_resolution: tuple[Literal[768], Literal[768]] = CANDIDATE_RESOLUTION
     evaluation_size: tuple[Literal[256], Literal[256]] = (256, 256)
-    comparisons: Annotated[tuple[StudyComparison, StudyComparison], Field(min_length=2)]
+    comparisons: tuple[StudyComparison, ...] = ()
+    failures: tuple[StudyFailure, ...] = ()
     verdict: StudyVerdict
 
     @model_validator(mode="after")
     def require_fixed_complete_study(self) -> Self:
-        if tuple(item.category for item in self.comparisons) != STUDY_CATEGORIES:
-            raise ValueError("study report must contain can then wallplugs")
-        if self.verdict != classify_study(self.comparisons):
+        comparison_categories = tuple(item.category for item in self.comparisons)
+        failure_categories = tuple(item.category for item in self.failures)
+        observed = (*comparison_categories, *failure_categories)
+        categories = tuple(category for category in STUDY_CATEGORIES if category in observed)
+        if categories != STUDY_CATEGORIES or len(observed) != len(set(observed)):
+            raise ValueError("study report must contain one outcome for can and wallplugs")
+        expected = (
+            "RESOURCE_LIMIT_EXCEEDED"
+            if self.failures
+            else classify_study(cast(tuple[StudyComparison, StudyComparison], self.comparisons))
+        )
+        if self.verdict != expected:
             raise ValueError("study verdict differs from frozen classification rules")
         return self
 
@@ -295,6 +328,7 @@ def _study_report(
     candidate_config: ModelConfig,
     baselines: dict[MVTecAD2Category, BenchmarkRunEvidence],
     candidates: dict[MVTecAD2Category, BenchmarkRunEvidence],
+    failures: dict[MVTecAD2Category, StudyFailure],
     durations: dict[MVTecAD2Category, float],
 ) -> HighResolutionStudyReport:
     comparisons = tuple(
@@ -307,16 +341,57 @@ def _study_report(
             candidate_duration_seconds=durations[category],
         )
         for category in STUDY_CATEGORIES
+        if category in candidates
     )
-    checked = cast(tuple[StudyComparison, StudyComparison], comparisons)
+    checked_failures = tuple(
+        failures[category] for category in STUDY_CATEGORIES if category in failures
+    )
+    verdict: StudyVerdict = (
+        "RESOURCE_LIMIT_EXCEEDED"
+        if checked_failures
+        else classify_study(cast(tuple[StudyComparison, StudyComparison], comparisons))
+    )
     return HighResolutionStudyReport(
         source_sha=source_sha,
         dataset_manifest_sha256=manifest_sha256,
         baseline_benchmark_sha256=baseline_benchmark.identity,
         baseline_config_sha256=baseline_config.identity,
         candidate_config_sha256=candidate_config.identity,
-        comparisons=checked,
-        verdict=classify_study(checked),
+        comparisons=comparisons,
+        failures=checked_failures,
+        verdict=verdict,
+    )
+
+
+def _failure_evidence(*, store: RunStore, spec: RunSpec, duration_seconds: float) -> StudyFailure:
+    run_dir = store.run_dir(spec)
+    record = store.load_record(run_dir)
+    result_path = run_dir / "worker-result.json"
+    if not result_path.is_file():
+        raise ValueError("failed study run lacks worker-result.json")
+    result = json.loads(result_path.read_text(encoding="utf-8"))
+    error_kind = result.get("error_kind")
+    allowed_kinds: set[str] = {
+        "oom",
+        "checksum_mismatch",
+        "non_finite",
+        "invalid_shape",
+        "corrupt_checkpoint",
+        "subprocess",
+    }
+    if error_kind not in allowed_kinds:
+        raise ValueError("failed study run has an unsupported error kind")
+    if record.exit_code is None or record.error is None:
+        raise ValueError("failed study run lacks exit code or error evidence")
+    return StudyFailure(
+        category=spec.category,
+        candidate_run_identity=spec.identity,
+        code_revision=record.code_revision,
+        candidate_duration_seconds=duration_seconds,
+        attempt=record.attempt,
+        exit_code=record.exit_code,
+        error_kind=cast(FailureKind, error_kind),
+        error_sha256=hashlib.sha256(record.error.encode("utf-8")).hexdigest(),
     )
 
 
@@ -367,7 +442,7 @@ def execute_formal_study(args: argparse.Namespace) -> HighResolutionStudyReport 
     )
     repository_identity = hashlib.sha256(str(repository).encode("utf-8")).hexdigest()
     store = RunStore(runs_root)
-    summary = Supervisor(
+    supervisor = Supervisor(
         store,
         runner=SubprocessExecutor(
             _attempt_command_factory(
@@ -384,43 +459,50 @@ def execute_formal_study(args: argparse.Namespace) -> HighResolutionStudyReport 
             f"anomalib:{spec.config.get('anomalib_version')}/"
             f"{spec.config.get('model_name')}/{spec.config.get('backbone')}"
         ),
-    ).run(specs)
-    if summary.failed or summary.stopped:
-        raise RuntimeError(
-            "high-resolution PatchCore supervisor did not complete: "
-            + json.dumps(asdict(summary), sort_keys=True)
-        )
+    )
+    summaries = tuple(supervisor.run((spec,)) for spec in specs)
 
     candidates: dict[MVTecAD2Category, BenchmarkRunEvidence] = {}
     evaluation_root = runs_root / "public-evaluation"
-    with GpuLease(lock_path, repository_identity=repository_identity).acquire(
-        "high-resolution-patchcore-public"
-    ) as lease:
-        for spec in specs:
-            candidate = _evaluate_run(
-                store=store,
-                spec=spec,
-                stage="screening",
-                data_root=data_root,
-                dataset_manifest=manifest_path,
-                evaluation_root=evaluation_root,
-                device=args.device,
-                imagenette_root=None,
-            )
-            if candidate.code_revision != revision:
-                raise ValueError("candidate run code revision differs from study source")
-            candidates[spec.category] = candidate
-            lease.heartbeat()
+    completed_specs = tuple(
+        spec
+        for spec, summary in zip(specs, summaries, strict=True)
+        if spec.identity in (*summary.completed, *summary.skipped)
+    )
+    if completed_specs:
+        with GpuLease(lock_path, repository_identity=repository_identity).acquire(
+            "high-resolution-patchcore-public"
+        ) as lease:
+            for spec in completed_specs:
+                candidate = _evaluate_run(
+                    store=store,
+                    spec=spec,
+                    stage="screening",
+                    data_root=data_root,
+                    dataset_manifest=manifest_path,
+                    evaluation_root=evaluation_root,
+                    device=args.device,
+                    imagenette_root=None,
+                )
+                if candidate.code_revision != revision:
+                    raise ValueError("candidate run code revision differs from study source")
+                candidates[spec.category] = candidate
+                lease.heartbeat()
 
     durations: dict[MVTecAD2Category, float] = {}
+    failures: dict[MVTecAD2Category, StudyFailure] = {}
     for spec in specs:
         record = store.load_record(store.run_dir(spec))
         if record.started_at is None or record.finished_at is None:
-            raise ValueError("completed study run lacks wall-clock timestamps")
+            raise ValueError("study run lacks wall-clock timestamps")
         duration = record.finished_at - record.started_at
         if duration <= 0 or not math.isfinite(duration):
-            raise ValueError("completed study run has invalid wall-clock duration")
+            raise ValueError("study run has invalid wall-clock duration")
         durations[spec.category] = duration
+        if record.status != "completed":
+            failures[spec.category] = _failure_evidence(
+                store=store, spec=spec, duration_seconds=duration
+            )
 
     report = _study_report(
         source_sha=revision,
@@ -430,6 +512,7 @@ def execute_formal_study(args: argparse.Namespace) -> HighResolutionStudyReport 
         candidate_config=candidate_config,
         baselines=baselines,
         candidates=candidates,
+        failures=failures,
         durations=durations,
     )
     write_study_report(output, report)
