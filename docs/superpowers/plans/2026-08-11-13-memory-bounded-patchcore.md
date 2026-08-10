@@ -137,7 +137,7 @@ git commit -m "feat(research): define memory bounded patchcore study"
 - Produces: `ResourceSnapshot`, `ResourceLimits`, `probe_resource_snapshot()`, `assert_resource_preflight(snapshot, free_disk_bytes) -> None`, and `ResourceGuard.__call__(elapsed_seconds) -> str | None`.
 - Extends: `FailureKind` with `resource_limit` and `SubprocessExecutor(..., resource_guard: Callable[[float], str | None] | None = None, terminate_grace_seconds: float = 10.0)`.
 
-- [ ] **Step 1: Write failing preflight and debounce tests**
+- [x] **Step 1: Write failing preflight and debounce tests**
 
 ```python
 def test_preflight_requires_memory_disk_temperature_and_idle_gpu() -> None:
@@ -162,27 +162,27 @@ def test_healthy_sample_resets_debounce_and_timeout_is_immediate() -> None:
     )
 ```
 
-- [ ] **Step 2: Observe RED**
+- [x] **Step 2: Observe RED**
 
 Run: `uv run pytest tests/unit/orchestration/test_resource_guard.py -q`
 
 Expected: fail because `resource_guard.py` does not exist.
 
-- [ ] **Step 3: Implement pure snapshots, preflight, and debounced guard**
+- [x] **Step 3: Implement pure snapshots, preflight, and debounced guard**
 
 Use `psutil.virtual_memory().available`, existing `probe_gpu_health()`, and
 `shutil.disk_usage`. Frozen formal limits are 16 GiB preflight RAM, 160 GiB
 preflight disk, three consecutive runtime samples below 4 GiB RAM, above
 22,500 MiB GPU memory, or at/above 83 C. Timeout is supplied per ratio.
 
-- [ ] **Step 4: Write failing subprocess termination and sibling-safety test**
+- [x] **Step 4: Write failing subprocess termination and sibling-safety test**
 
 Start a long-lived sibling process and a guarded executor child. Make the guard
 return `test resource stop` on its first heartbeat. Assert the executor returns
 `error_kind == "resource_limit"`, its child exits, its logs are preserved, and
 the sibling remains alive until the test's `finally` cleanup.
 
-- [ ] **Step 5: Extend `SubprocessExecutor` minimally**
+- [x] **Step 5: Extend `SubprocessExecutor` minimally**
 
 At each timeout heartbeat, call the optional guard with elapsed monotonic time.
 On a reason, emit `resource_guard_stop`, terminate only the owned `Popen`
@@ -190,7 +190,7 @@ instance, wait the configured grace period, kill only that instance if needed,
 and return a `resource_limit` result containing stdout/stderr hashes. Existing
 callers with no guard must remain byte-for-byte behavior compatible.
 
-- [ ] **Step 6: Run orchestration gates**
+- [x] **Step 6: Run orchestration gates**
 
 ```powershell
 uv run pytest tests/unit/orchestration/test_resource_guard.py tests/unit/orchestration/test_subprocess_executor.py tests/unit/orchestration/test_run_matrix.py -q
@@ -202,7 +202,7 @@ git diff --check
 
 Expected: all commands exit 0.
 
-- [ ] **Step 7: Mark Task 2 complete and commit**
+- [x] **Step 7: Mark Task 2 complete and commit**
 
 ```powershell
 git add experiments/orchestration/resource_guard.py experiments/orchestration/supervisor.py tests/unit/orchestration/test_resource_guard.py tests/unit/orchestration/test_subprocess_executor.py docs/superpowers/plans/2026-08-11-13-memory-bounded-patchcore.md

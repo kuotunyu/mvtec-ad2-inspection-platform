@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import subprocess
 import sys
 from pathlib import Path
 
@@ -95,3 +96,30 @@ def test_missing_worker_result_preserves_nonzero_exit_code(tmp_path: Path) -> No
 
     assert result.exit_code == 7
     assert result.error_kind == "subprocess"
+
+
+def test_resource_guard_terminates_only_owned_child_and_preserves_logs(tmp_path: Path) -> None:
+    run_request = request(tmp_path)
+    sibling = subprocess.Popen(
+        (sys.executable, "-c", "import time; time.sleep(30)"),
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    try:
+        executor = SubprocessExecutor(
+            lambda _request: (sys.executable, "-c", "import time; time.sleep(30)"),
+            heartbeat_interval_seconds=0.05,
+            resource_guard=lambda _elapsed: "test resource stop",
+            terminate_grace_seconds=0.1,
+        )
+
+        result = executor(run_request)
+
+        assert result.error_kind == "resource_limit"
+        assert result.message == "test resource stop"
+        assert set(result.artifacts) == {"worker.stderr.log", "worker.stdout.log"}
+        assert sibling.poll() is None
+    finally:
+        sibling.terminate()
+        sibling.wait(timeout=5)

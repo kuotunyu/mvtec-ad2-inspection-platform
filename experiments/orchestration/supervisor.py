@@ -55,6 +55,7 @@ FailureKind = Literal[
     "invalid_shape",
     "corrupt_checkpoint",
     "subprocess",
+    "resource_limit",
 ]
 
 
@@ -92,11 +93,17 @@ class SubprocessExecutor:
         command_factory: CommandFactory,
         *,
         heartbeat_interval_seconds: float = 10.0,
+        resource_guard: Callable[[float], str | None] | None = None,
+        terminate_grace_seconds: float = 10.0,
     ) -> None:
         if heartbeat_interval_seconds <= 0:
             raise ValueError("heartbeat interval must be positive")
+        if terminate_grace_seconds <= 0:
+            raise ValueError("terminate grace period must be positive")
         self.command_factory = command_factory
         self.heartbeat_interval_seconds = heartbeat_interval_seconds
+        self.resource_guard = resource_guard
+        self.terminate_grace_seconds = terminate_grace_seconds
 
     def __call__(self, request: RunRequest) -> ExecutionResult:
         stdout_path = request.run_dir / "worker.stdout.log"
@@ -111,6 +118,8 @@ class SubprocessExecutor:
                 message="worker command must not be empty",
             )
         creationflags = int(getattr(subprocess, "CREATE_NO_WINDOW", 0)) if os.name == "nt" else 0
+        guard_reason: str | None = None
+        started_at = time.monotonic()
         with (
             stdout_path.open("ab") as stdout,
             stderr_path.open("ab") as stderr,
@@ -141,6 +150,23 @@ class SubprocessExecutor:
                                 else None
                             ),
                         )
+                        if self.resource_guard is not None:
+                            guard_reason = self.resource_guard(time.monotonic() - started_at)
+                            if guard_reason is not None:
+                                request.heartbeat.emit(
+                                    event="resource_guard_stop",
+                                    run_identity=request.spec.identity,
+                                    attempt=request.attempt,
+                                    details={"reason": guard_reason},
+                                )
+                                process.terminate()
+                                try:
+                                    process.wait(timeout=self.terminate_grace_seconds)
+                                except subprocess.TimeoutExpired:
+                                    process.kill()
+                                    process.wait(timeout=self.terminate_grace_seconds)
+                                return_code = process.returncode
+                                break
                     except BaseException:
                         process.terminate()
                         try:
@@ -150,6 +176,16 @@ class SubprocessExecutor:
                             process.wait(timeout=10)
                         raise
 
+        if guard_reason is not None:
+            return ExecutionResult(
+                exit_code=return_code,
+                artifacts={
+                    "worker.stderr.log": sha256_file(stderr_path),
+                    "worker.stdout.log": sha256_file(stdout_path),
+                },
+                error_kind="resource_limit",
+                message=guard_reason,
+            )
         if not result_path.is_file():
             return ExecutionResult(
                 exit_code=return_code,
@@ -628,7 +664,9 @@ class Supervisor:
                 effective_config=effective_config,
                 started_at=started_at,
                 exit_code=result.exit_code,
-                status="stopped" if result.error_kind == "subprocess" else "failed",
+                status=(
+                    "stopped" if result.error_kind in {"subprocess", "resource_limit"} else "failed"
+                ),
             )
             heartbeat.emit(
                 event="attempt_failed",
