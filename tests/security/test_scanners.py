@@ -4,6 +4,8 @@ import hashlib
 import json
 from pathlib import Path
 
+import pytest
+
 from scripts.security_scan import scan_root
 from scripts.verify_public_boundary import verify_paths
 
@@ -46,3 +48,17 @@ def test_public_boundary_allows_hash_manifested_documentation_images(tmp_path: P
     report = verify_paths(tmp_path, [image.relative_to(tmp_path), manifest.relative_to(tmp_path)])
 
     assert report.ok
+
+
+@pytest.mark.parametrize("corrupt_character", ["\ufffd", "\ue6ed"])
+def test_public_boundary_rejects_corrupt_unicode_text(
+    tmp_path: Path, corrupt_character: str
+) -> None:
+    document = tmp_path / "docs/LIMITATIONS.md"
+    document.parent.mkdir(parents=True)
+    document.write_text(f"public text {corrupt_character}\n", encoding="utf-8")
+
+    report = verify_paths(tmp_path, [document.relative_to(tmp_path)])
+
+    assert not report.ok
+    assert "invalid_public_text" in report.error_codes

@@ -106,6 +106,22 @@ def test_ci_is_least_privilege_pinned_and_complete() -> None:
     assert all(re.search(r"@[0-9a-f]{40}$", action) for action in uses)
 
 
+def test_ci_uses_the_reviewed_node24_action_set() -> None:
+    workflow = Path(".github/workflows/ci.yml").read_text(encoding="utf-8")
+    uses = re.findall(r"uses: ([^\s#]+)", workflow)
+    expected = {
+        "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1": 5,
+        "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97": 4,
+        "actions/setup-node@820762786026740c76f36085b0efc47a31fe5020": 3,
+        "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a": 1,
+    }
+
+    assert set(uses) == set(expected)
+    assert {action: uses.count(action) for action in expected} == expected
+    for release in ("v7.0.1", "v7.0.0"):
+        assert f"# {release}" in workflow
+
+
 def test_ci_uses_platform_stable_docs_asset_verification() -> None:
     workflow = Path(".github/workflows/ci.yml").read_text(encoding="utf-8")
     assert "scripts/render_docs_assets.py --check-manifest" in workflow

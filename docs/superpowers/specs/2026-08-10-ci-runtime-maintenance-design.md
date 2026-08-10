@@ -6,9 +6,10 @@
 
 GitHub Actions run `31354617495` passed all five jobs for commit `44e65bc`,
 but every job emitted a hosted-runner annotation because the pinned official
-Actions still declared the deprecated Node.js 20 runtime. The public
-limitations page also contains one visibly corrupted em-dash sequence in the
-synthetic-demo statement.
+Actions still declared the deprecated Node.js 20 runtime. PowerShell initially
+rendered one public limitations sentence as a corrupted em-dash sequence, but
+byte-level UTF-8 inspection later confirmed the tracked text was already
+correct; no documentation-byte repair is required.
 
 This maintenance must preserve the existing CI matrix, least-privilege
 permissions, immutable SHA pinning, release evidence, product behavior, and
@@ -44,8 +45,8 @@ four selected releases declare `runs.using: node24`:
 - Add a release-contract test that requires the exact action-to-SHA mapping,
   so a mutable tag, rollback, partial upgrade, or unreviewed replacement fails.
 - Extend the public-boundary verifier to reject UTF-8 public text containing
-  Unicode replacement characters or private-use code points.
-- Repair the corrupted limitations sentence to read “—not real model quality.”
+  Unicode replacement characters or private-use code points, while preserving
+  the already-correct limitations bytes.
 
 No job, command, permission, cache key, tool version, trigger, concurrency
 setting, product dependency, or product behavior changes.

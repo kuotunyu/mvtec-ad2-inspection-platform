@@ -6,9 +6,8 @@
 
 **Status:** Active
 
-**Goal:** Remove the known GitHub Actions Node.js 20 runtime cause and repair
-the corrupted public limitations sentence without changing CI coverage or
-product behavior.
+**Goal:** Remove the known GitHub Actions Node.js 20 runtime cause and harden
+public text validation without changing CI coverage or product behavior.
 
 **Architecture:** Treat the workflow and public copy as release contracts.
 Focused tests freeze the reviewed action-to-SHA mapping and exact limitations
@@ -32,19 +31,18 @@ gates then prove the rest of the repository remains unchanged in behavior.
 - Modify: `tests/release/test_release.py`
 - Modify: `tests/security/test_scanners.py`
 - Modify: `.github/workflows/ci.yml`
-- Modify: `docs/LIMITATIONS.md`
 - Modify: `scripts/verify_public_boundary.py`
 - Modify: this plan
 
-- [ ] Add a release test requiring the exact four approved Action SHA/comment
+- [x] Add a release test requiring the exact four approved Action SHA/comment
   pairs and every occurrence to use only that mapping.
-- [ ] Add a scanner test requiring corrupt UTF-8 public text to fail with a
+- [x] Add a scanner test requiring corrupt UTF-8 public text to fail with a
   stable `invalid_public_text` error.
-- [ ] Run both focused tests and observe failures against the current files.
-- [ ] Replace all workflow pins, implement the general text gate, and repair
-  only the corrupted sentence.
-- [ ] Run focused release/publication tests, Ruff, format, and `git diff --check`.
-- [ ] Audit author, committer, trailers, and staged scope; commit
+- [x] Run both focused tests and observe failures against the current files.
+- [x] Replace all workflow pins, implement the general text gate, and verify
+  the apparently corrupted sentence already has correct UTF-8 bytes.
+- [x] Run focused release/publication tests, Ruff, format, and `git diff --check`.
+- [x] Audit author, committer, trailers, and staged scope; commit
   `chore(ci): update action runtimes`.
 
 ### Task 2: Verify the local release candidate

@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import subprocess
+import unicodedata
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
@@ -27,6 +28,33 @@ _FORBIDDEN_SUFFIXES = {
 }
 _PRIVATE_ROOTS = {"artifacts", "checkpoints", "data", "runtime", "runs", "uploads"}
 _IMAGE_SUFFIXES = {".bmp", ".jpeg", ".jpg", ".png", ".tif", ".tiff", ".webp"}
+_TEXT_SUFFIXES = {
+    ".css",
+    ".html",
+    ".ini",
+    ".js",
+    ".json",
+    ".md",
+    ".mjs",
+    ".ps1",
+    ".py",
+    ".sh",
+    ".svg",
+    ".toml",
+    ".ts",
+    ".tsx",
+    ".txt",
+    ".yaml",
+    ".yml",
+}
+
+
+def _has_invalid_public_text(content: bytes) -> bool:
+    try:
+        text = content.decode("utf-8")
+    except UnicodeDecodeError:
+        return True
+    return "\ufffd" in text or any(unicodedata.category(character) == "Co" for character in text)
 
 
 def _verify_entries(entries: dict[Path, bytes]) -> PublicBoundaryReport:
@@ -69,6 +97,8 @@ def _verify_entries(entries: dict[Path, bytes]) -> PublicBoundaryReport:
                 errors.add("unmanifested_image")
             elif hashlib.sha256(content).hexdigest() != expected:
                 errors.add("fixture_hash")
+        if path.suffix.lower() in _TEXT_SUFFIXES and _has_invalid_public_text(content):
+            errors.add("invalid_public_text")
         if len(content) > 5 * 1024 * 1024:
             errors.add("oversized_source_file")
     return PublicBoundaryReport(not errors, len(entries), tuple(sorted(errors)))
