@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Status:** Active
+**Status:** Complete
 
 **Goal:** Build and locally verify a complete MVTec AD 2 archive containing one hash-traceable continuous TIFF and one validation-calibrated binary PNG for every private image, without another official submission.
 
@@ -372,13 +372,13 @@ uv run python scripts/verify_public_boundary.py --git-tree HEAD
 
 Expected: all commands exit zero; historical official claims remain unchanged.
 
-- [ ] **Step 6: Commit verified local-preflight evidence**
+- [x] **Step 6: Commit verified local-preflight evidence**
 
 ```powershell
 git add docs/RELEASE_CHECKLIST.md docs/LIMITATIONS.md docs/assets/evidence/release-verification.json tests/release/test_release.py docs/superpowers/plans/2026-08-10-06-thresholded-submission-pipeline.md
 git commit -m "docs(release): record thresholded local preflight"
 ```
 
-- [ ] **Step 7: Run the exact-HEAD clean export and finalize continuity**
+- [x] **Step 7: Run the exact-HEAD clean export and finalize continuity**
 
 Run `scripts/clean_export.ps1 -Treeish HEAD` to a new external report. Mark the plan `Complete`, update both ignored continuity files, commit only final plan bookkeeping if needed, and require a clean tracked worktree. Do not push without separate authorization.
