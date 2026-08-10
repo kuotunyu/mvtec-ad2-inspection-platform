@@ -38,6 +38,12 @@ No retuning rule: after the frozen archive is submitted, no private or mixed-lig
 
 The single official submission reached `DONE`. Sanitized AucPro_0.05 averages are 31.24 for `private` and 29.81 for `private_mixed`. Direct archive inventory found 4,090 TIFF anomaly maps and zero thresholded PNGs; official ClassF1 and SegF1 are therefore zero and are not interpreted as measured thresholded-map performance. No second submission was performed.
 
+## Thresholded local preflight
+
+After the official result, a cache-only pipeline repair generated a separate local archive with 4,090 continuous float16 TIFF maps and 4,090 matching binary PNG maps. All eight thresholds use finite anomaly-free `validation/good` pixels and the frozen `mean + 3 * population standard deviation` method. The project verifier and checksum-pinned official validator both passed.
+
+This corrected archive was not submitted. It does not change the historical official archive, official scores, one-submission count, or `PRIVATE-NO-GO` classification, and it provides no new official F1 measurement. Sanitized hashes and counts are recorded under `thresholded_local_preflight` in `docs/assets/evidence/release-verification.json`; the archive, calibrations, paths, identities, and raw validator output remain outside Git.
+
 ## Authorized capture and import procedure
 
 Do not perform these actions without explicit authorization and the required official account or credentials.
@@ -55,6 +61,7 @@ Do not perform these actions without explicit authorization and the required off
 - [x] Official submission authorized and completed.
 - [x] Official result sanitized and independently checked.
 - [x] Mixed-lighting criterion classified truthfully as `PRIVATE-NO-GO`.
+- [x] Thresholded cache-only repair passed local preflight and remains unsubmitted.
 - [x] Publication explicitly authorized.
 
 The authorized scope is the Public source repository `kuotunyu/mvtec-ad2-inspection-platform` and its initial `main` push. Tags, GitHub Releases, deployments, model publication, and additional official submissions remain separately authorized actions.

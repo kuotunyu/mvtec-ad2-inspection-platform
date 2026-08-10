@@ -327,17 +327,17 @@ git commit -m "feat(submission): rebuild from frozen cache"
 - Consumes: the exact committed Task 3 source, original archive and source-cache hashes, frozen champion runs, verified dataset, and pinned official utilities.
 - Produces: external corrected archive and summary, sanitized committed local-preflight evidence, complete release gates, and no official submission.
 
-- [ ] **Step 1: Write the failing release-evidence test**
+- [x] **Step 1: Write the failing release-evidence test**
 
 Require committed release evidence to preserve the historical official inventory (`4,090 TIFF`, `0 thresholded PNG`, `PRIVATE-NO-GO`) while separately recording a local-only preflight with `4,090` continuous, `4,090` thresholded, eight validation-only calibrations, official validator `PASS`, and `submitted: false`.
 
-- [ ] **Step 2: Run the release test and observe RED**
+- [x] **Step 2: Run the release test and observe RED**
 
 Run: `uv run pytest tests/release/test_release.py -q`
 
 Expected: FAIL because no corrected local-preflight evidence exists.
 
-- [ ] **Step 3: Run the complete external cache-only rebuild**
+- [x] **Step 3: Run the complete external cache-only rebuild**
 
 Run the new CLI against:
 
@@ -352,11 +352,11 @@ official utilities: D:\mvtec-ad2-official-utils-20260810\extracted\MVTecAD2_publ
 
 Before and after, hash the original archive and require exact equality. Record only sanitized aggregate counts, method identifiers, calibration hashes, archive hash, validator result, source commit, and `submitted: false`; do not commit the corrected archive, thresholds, paths, image identities, or raw validator output.
 
-- [ ] **Step 4: Update truthful documentation and evidence**
+- [x] **Step 4: Update truthful documentation and evidence**
 
 Keep the official result and `PRIVATE-NO-GO` unchanged. State that a later local pipeline repair successfully generated a complete thresholded preflight but was not submitted and therefore produced no new official F1 measurement.
 
-- [ ] **Step 5: Run focused and complete non-GPU gates**
+- [x] **Step 5: Run focused and complete non-GPU gates**
 
 Run:
 

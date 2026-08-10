@@ -193,6 +193,37 @@ def test_private_no_go_release_is_complete_and_truthful() -> None:
         assert hashlib.sha256(canonical.encode()).hexdigest() == expected
 
 
+def test_thresholded_local_preflight_is_separate_from_official_submission() -> None:
+    evidence = json.loads(
+        Path("docs/assets/evidence/release-verification.json").read_text(encoding="utf-8")
+    )
+
+    assert evidence["candidate_status"] == "PRIVATE-NO-GO"
+    assert evidence["submission_handoff"]["image_count"] == 4090
+    assert evidence["submission_handoff"]["thresholded_png_count"] == 0
+    assert evidence["submission_handoff"]["official_submission_count"] == 1
+
+    preflight = evidence["thresholded_local_preflight"]
+    assert preflight["status"] == "PASS"
+    assert preflight["submitted"] is False
+    assert preflight["official_metrics_available"] is False
+    assert preflight["continuous_tiff_count"] == 4090
+    assert preflight["thresholded_png_count"] == 4090
+    assert preflight["local_official_validator"] == "PASS"
+    assert preflight["calibration_method"] == ("validation_pixel_mean_plus_3_population_std")
+    assert preflight["calibration_split"] == "validation/good"
+    assert re.fullmatch(r"[0-9a-f]{40}", preflight["pipeline_source_sha"])
+    assert re.fullmatch(r"[0-9a-f]{64}", preflight["archive_sha256"])
+    assert preflight["original_archive_integrity"] == "UNCHANGED"
+    assert (
+        preflight["original_archive_sha256"] == (evidence["submission_handoff"]["archive_sha256"])
+    )
+    assert set(preflight["calibration_sha256"]) == set(evidence["model_bundles"])
+    assert all(
+        re.fullmatch(r"[0-9a-f]{64}", digest) for digest in preflight["calibration_sha256"].values()
+    )
+
+
 def test_private_no_go_release_bookkeeping_has_no_stale_pending_work() -> None:
     plan_root = Path("docs/superpowers/plans")
     unchecked: list[str] = []

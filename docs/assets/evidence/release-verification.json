@@ -79,6 +79,7 @@
   "known_limitations": [
     "The frozen official private gate is PRIVATE-NO-GO; no retuning or second submission was performed.",
     "The submitted archive contained no thresholded PNGs, so official ClassF1 and SegF1 are zero and are not interpreted as measured thresholded-map performance.",
+    "A later thresholded pipeline repair passed local preflight but was not submitted, so it produced no new official F1 measurement.",
     "Public benchmark results do not establish factory-domain performance.",
     "PASS and REVIEW are model outcomes; final disposition remains a human decision.",
     "The reference deployment is a trusted single-user workstation, not a multi-tenant service.",
@@ -147,6 +148,33 @@
   },
   "schema_version": "1.0.0",
   "serving_benchmark_source_sha": "267045936edabf718aff33abb98f7b5d96f022a8",
+  "thresholded_local_preflight": {
+    "archive_filename": "private_submission.tar.gz",
+    "archive_sha256": "3a84e78d4f866a59f5be1c30bd8628acfc874f8ec04a338e104c1d65f9d3cbfc",
+    "calibration_method": "validation_pixel_mean_plus_3_population_std",
+    "calibration_sha256": {
+      "can": "ef0a658005a6647b3ed1bd8c93c719a77771b352e12c56d428c0787e6fa74141",
+      "fabric": "2c7e597b29062f5a2cfe0d511d225960a415b2cda8791ed1ca0f7a9bc034b2a3",
+      "fruit_jelly": "91a269796ba7e5032f85aaa0f5bd111d0772ddec10e8eb87b02fd6ce63563fe5",
+      "rice": "89b1175e29d83502bd1834139f593274d719468aa15a3ad180fceb5d23b6095a",
+      "sheet_metal": "f93a28de499911538403bdc40a4cb706df6cc3ad496393793f74a964e34c203d",
+      "vial": "ae6a23f7f929846a0d1a1f48569be1a28919cae72e490bba9e21422e43a19e3e",
+      "wallplugs": "e22067fdd7b07f9f69574e4fa5f81cb575301e71e2cc1f56b18bea392d27fbba",
+      "walnuts": "fcc8f3e34e473d73344471f67c060c61e796fc7aa52ac80166168f7f8db73118"
+    },
+    "calibration_split": "validation/good",
+    "continuous_tiff_count": 4090,
+    "generated_at": "2026-08-10T06:13:00+08:00",
+    "local_official_validator": "PASS",
+    "official_metrics_available": false,
+    "original_archive_integrity": "UNCHANGED",
+    "original_archive_sha256": "25780c9e0c0a234454fa2e6a9a7d75f274d27d0434ad089549e19b0b0906ffb9",
+    "pipeline_source_sha": "49e7c2f0068ebee1566b79911bb456cc707f66a6",
+    "status": "PASS",
+    "submitted": false,
+    "summary_schema_version": "2.0.0",
+    "thresholded_png_count": 4090
+  },
   "submission_handoff": {
     "archive_filename": "private_submission.tar.gz",
     "archive_sha256": "25780c9e0c0a234454fa2e6a9a7d75f274d27d0434ad089549e19b0b0906ffb9",

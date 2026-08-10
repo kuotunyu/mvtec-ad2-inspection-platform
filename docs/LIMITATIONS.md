@@ -9,3 +9,4 @@
 - The default deployment is a trusted single-user workstation. Authentication, TLS termination, centralized authorization, and multi-tenant isolation are outside scope.
 - The frozen official private gate is `PRIVATE-NO-GO`; no retuning or second submission was performed after seeing the result.
 - The submitted archive contained no thresholded PNGs. Official ClassF1 and SegF1 are therefore zero and are not interpreted as measured thresholded-map performance.
+- A later cache-only repair produced 4,090 matching binary PNGs and passed local preflight, but it was not submitted and therefore provides no new official F1 measurement.
