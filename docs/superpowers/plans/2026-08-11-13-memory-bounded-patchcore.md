@@ -221,7 +221,7 @@ git commit -m "feat(research): guard formal worker resources"
 - Consumes: Task 1 contracts, Task 2 resource guard, immutable baseline/frontier reports, `Supervisor`, `_attempt_command_factory`, and `_evaluate_run`.
 - Produces: `MemoryBoundedStudyReport`, `write_memory_bounded_report(path, report) -> Path`, `execute_memory_bounded_study(args) -> MemoryBoundedStudyReport | None`, and CLI `python -m experiments.memory_bounded_patchcore`.
 
-- [ ] **Step 1: Write failing orchestration and report tests**
+- [x] **Step 1: Write failing orchestration and report tests**
 
 Test exact dry-run identities; source/config/dataset/reference mismatch rejection;
 ratio-0.01 always first; ratio-0.02 only after safe quality miss; no rescue after
@@ -230,13 +230,13 @@ identity resume; differing existing report rejection; canonical identity
 recomputation; and rejection of paths, raw errors, predictions, private fields,
 credentials, or submission data.
 
-- [ ] **Step 2: Observe RED**
+- [x] **Step 2: Observe RED**
 
 Run: `uv run pytest tests/unit/research/test_memory_bounded_patchcore.py -q`
 
 Expected: fail on missing executor/report/CLI behavior.
 
-- [ ] **Step 3: Implement the minimal conditional executor**
+- [x] **Step 3: Implement the minimal conditional executor**
 
 Construct one external `RunStore`. Before the first run, call
 `assert_resource_preflight`. For each candidate, create a fresh
@@ -246,7 +246,7 @@ evaluate the completed identity under the same lease contract, and build a
 sanitized outcome. Stop later work after integrity/resource failure; otherwise
 follow only the frozen ladder.
 
-- [ ] **Step 4: Add exact CLI and runbook contract**
+- [x] **Step 4: Add exact CLI and runbook contract**
 
 Required flags: `--data-root`, `--dataset-manifest`, `--runs-root`,
 `--config-001`, and `--config-002`. Optional flags: `--reference-config`,
@@ -254,7 +254,7 @@ Required flags: `--data-root`, `--dataset-manifest`, `--runs-root`,
 `--output`, `--device`, `--gpu-lock`, and `--dry-run`. Document the exact
 external root and identical-command resume rule.
 
-- [ ] **Step 5: Run focused and adjacent gates**
+- [x] **Step 5: Run focused and adjacent gates**
 
 ```powershell
 uv run pytest tests/unit/research/test_memory_bounded_patchcore.py tests/unit/research/test_balanced_patchcore_study.py tests/unit/research/test_patchcore_resolution_frontier.py tests/unit/orchestration/test_resource_guard.py -q
@@ -266,7 +266,7 @@ git diff --check
 
 Expected: all commands exit 0.
 
-- [ ] **Step 6: Mark Task 3 complete and commit**
+- [x] **Step 6: Mark Task 3 complete and commit**
 
 ```powershell
 git add experiments/memory_bounded_patchcore.py tests/unit/research/test_memory_bounded_patchcore.py docs/EXPERIMENT_RUNBOOK.md docs/superpowers/plans/2026-08-11-13-memory-bounded-patchcore.md

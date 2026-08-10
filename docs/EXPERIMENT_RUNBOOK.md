@@ -104,3 +104,28 @@ uv run python -m experiments.balanced_patchcore_study `
 Use `--dry-run` first. Rerunning the identical formal command resumes verified
 completed identities. Raw evidence stays under the external root; the command
 does not read private evidence, submit, push, tag, release, deploy, or publish.
+
+## Run the memory-bounded PatchCore study
+
+The fixed public-only ladder tests 640 x 640 PatchCore with a 0.01 coreset at
+seed 42 first. It tries the 0.02 rescue only after a resource-safe quality miss,
+and replicates seeds 17 and 2026 only for the first ratio that passes the frozen
+seed-42 gate. A child-only resource guard may stop this command's worker after
+three consecutive unsafe samples; it never terminates an unrelated process.
+
+```powershell
+uv run python -m experiments.memory_bounded_patchcore `
+  --data-root D:\datasets\mvtec-ad-2 `
+  --dataset-manifest D:\datasets\mvtec-ad-2.manifest.json `
+  --runs-root D:\mvtec-ad2-memory-bounded-patchcore-20260811 `
+  --config-001 experiments\configs\research\patchcore-640-coreset-001.yaml `
+  --config-002 experiments\configs\research\patchcore-640-coreset-002.yaml `
+  --gpu-lock D:\.mvtec-ad2-gpu.lock
+```
+
+Run the identical command with `--dry-run` first to validate source, dataset,
+config, reference, and ordered run identities without creating the run root or
+acquiring the GPU lease. After interruption, resume only with the identical
+formal command; completed identities are hash-verified and reused. Raw outputs
+remain under the external root. The study cannot change frozen champions or
+read private evidence, submit, push, tag, release, deploy, or publish.
