@@ -4,7 +4,7 @@
 > and verification-before-completion. Work inline without subagents or a
 > worktree.
 
-**Status:** Active
+**Status:** Complete
 
 **Goal:** Remove the known GitHub Actions Node.js 20 runtime cause and harden
 public text validation without changing CI coverage or product behavior.
@@ -53,11 +53,11 @@ gates then prove the rest of the repository remains unchanged in behavior.
 - Update locally: `.codex-local/PROJECT_STATUS.md`
 - Append locally: `.codex-local/WORKLOG.md`
 
-- [ ] Run the complete non-GPU pytest suite and frontend verification.
-- [ ] Run Ruff, format, mypy, docs assets, claims, security, experiment, and
+- [x] Run the complete non-GPU pytest suite and frontend verification.
+- [x] Run Ruff, format, mypy, docs assets, claims, security, experiment, and
   public-boundary verifiers.
-- [ ] Run an exact-HEAD clean export including packages, SBOMs, Docker smoke,
+- [x] Run an exact-HEAD clean export including packages, SBOMs, Docker smoke,
   E2E, and isolated browser system workflow.
-- [ ] Record the verified source and external report in continuity files.
-- [ ] Mark this plan Complete, commit final bookkeeping, and require a clean
+- [x] Record the verified source and external report in continuity files.
+- [x] Mark this plan Complete, commit final bookkeeping, and require a clean
   tracked worktree with local `main` ahead of unchanged `origin/main`.
