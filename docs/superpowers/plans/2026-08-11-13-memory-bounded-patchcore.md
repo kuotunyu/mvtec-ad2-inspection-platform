@@ -1,5 +1,7 @@
 # Memory-Bounded PatchCore Research Implementation Plan
 
+**Status:** Active
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Determine whether the proven 640 x 640 `wallplugs` localization gain survives a 5-10x smaller PatchCore coreset without repeating the resource-limited ratio-0.10 contract.
