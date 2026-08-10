@@ -1,17 +1,23 @@
 from __future__ import annotations
 
+import json
 from copy import deepcopy
 from pathlib import Path
 
 import pytest
 
 from experiments.balanced_patchcore_study import (
+    BalancedStudyReport,
     build_candidate_specs,
     classify_stage_a,
     classify_stage_b,
     passes_stage_b_advance,
+    select_followup_specs,
+    select_wallplugs_baselines,
     validate_balanced_config,
+    write_balanced_report,
 )
+from experiments.evaluate_public import load_public_benchmark
 from experiments.high_resolution_patchcore import StudyMetrics, build_comparison
 from experiments.models.base import ModelConfig, load_model_config
 
@@ -166,3 +172,72 @@ def test_stage_b_seed_42_advance_gate_is_balanced() -> None:
 )
 def test_stage_b_classification_is_frozen(comparisons, failed: bool, expected: str) -> None:
     assert classify_stage_b(comparisons, failed=failed) == expected
+
+
+def test_selects_one_matching_baseline_for_each_seed() -> None:
+    baseline, _, _ = _configs()
+    benchmark = load_public_benchmark(Path("reports/public_benchmark.json"))
+
+    selected = select_wallplugs_baselines(benchmark, baseline_config=baseline)
+
+    assert tuple(selected) == (42, 17, 2026)
+    assert (
+        selected[42].run_identity
+        == "6ffd7c77dc95549ae174f324c19684a44a90808029672390c07cc72df9874972"
+    )
+    assert (
+        selected[17].run_identity
+        == "437a3d6f63e9ce551bc6710738cbaab22121f5b3bc592dace57dacfcec636d97"
+    )
+    assert (
+        selected[2026].run_identity
+        == "e2517d5a507bf2a0da8e99af47a485fd88c0d900d4d8773966750afad8d7009f"
+    )
+
+
+def test_report_is_identity_bound_public_only_and_idempotent(tmp_path: Path) -> None:
+    stage_a = (_comparison(0.069), _comparison(0.03), _comparison(0.01))
+    stage_b = (
+        _comparison(0.03, image_delta=-0.005, pixel_delta=0.001),
+        _comparison(0.025, image_delta=-0.005, pixel_delta=0.001),
+        _comparison(0.02, image_delta=0.0, pixel_delta=0.0),
+    )
+    report = BalancedStudyReport(
+        source_sha="d" * 40,
+        dataset_manifest_sha256="e" * 64,
+        baseline_benchmark_sha256="f" * 64,
+        baseline_config_sha256="1" * 64,
+        config_640_sha256="2" * 64,
+        config_576_sha256="3" * 64,
+        frontier_report_sha256="4" * 64,
+        stage_a_comparisons=stage_a,
+        stage_a_verdict="REPRODUCIBLE_LOCALIZATION_GAIN",
+        stage_b_comparisons=stage_b,
+        stage_b_advanced=True,
+        stage_b_verdict="BALANCED_PROMISING",
+    )
+
+    destination = write_balanced_report(tmp_path / "report.json", report)
+    assert write_balanced_report(destination, report) == destination
+    payload = json.loads(destination.read_text(encoding="utf-8"))
+
+    assert payload["canonical_sha256"] == report.identity
+    assert payload["scope"] == "test_public-only"
+    assert payload["submitted"] is False
+    serialized = destination.read_text(encoding="utf-8")
+    assert "prediction" not in serialized
+    assert "private" not in serialized
+
+
+def test_stage_b_followups_are_conditional_on_the_fixed_probe_gate() -> None:
+    _, config_640, config_576 = _configs()
+    specs = build_candidate_specs(config_640, config_576, dataset_manifest_sha256="c" * 64)
+
+    assert (
+        select_followup_specs(specs, probe=_comparison(0.03, image_delta=-0.005, pixel_delta=0.001))
+        == specs[3:]
+    )
+    assert (
+        select_followup_specs(specs, probe=_comparison(0.03, image_delta=-0.02, pixel_delta=0.001))
+        == ()
+    )

@@ -84,3 +84,23 @@ uv run python -m experiments.patchcore_resolution_frontier `
 Use `--dry-run` for identity/config/path validation without acquiring the GPU.
 The study reads only public data and cannot change frozen champions or submit an
 archive.
+
+## Run the balanced PatchCore overnight study
+
+The fixed public-only follow-up reproduces 640 x 640 `wallplugs` at seeds 17
+and 2026, then runs the 576 x 576 seed-42 balance probe. Seeds 17 and 2026 at
+576 x 576 run only when the committed seed-42 gate passes:
+
+```powershell
+uv run python -m experiments.balanced_patchcore_study `
+  --data-root D:\datasets\mvtec-ad-2 `
+  --dataset-manifest D:\datasets\mvtec-ad-2.manifest.json `
+  --runs-root D:\mvtec-ad2-balanced-patchcore-20260810 `
+  --config-640 experiments\configs\research\patchcore-640.yaml `
+  --config-576 experiments\configs\research\patchcore-576.yaml `
+  --gpu-lock D:\.mvtec-ad2-gpu.lock
+```
+
+Use `--dry-run` first. Rerunning the identical formal command resumes verified
+completed identities. Raw evidence stays under the external root; the command
+does not read private evidence, submit, push, tag, release, deploy, or publish.

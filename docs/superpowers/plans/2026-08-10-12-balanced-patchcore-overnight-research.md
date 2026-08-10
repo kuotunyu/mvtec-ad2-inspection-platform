@@ -111,25 +111,25 @@ git commit -m "feat(research): define balanced patchcore study"
 - Consumes: Task 1 specs and verdict functions, `Supervisor`, `RunStore`, `GpuLease`, `_evaluate_run`, and committed `reports/patchcore_resolution_frontier.json`.
 - Produces: `BalancedStudyReport`, `write_balanced_report(path, report) -> Path`, `execute_balanced_study(args) -> BalancedStudyReport | None`, and CLI `python -m experiments.balanced_patchcore_study`.
 
-- [ ] **Step 1: Write failing orchestration tests**
+- [x] **Step 1: Write failing orchestration tests**
 
 Test that dry-run emits the five deterministic identities, the committed 640 seed-42 identity is required and not scheduled, Stage A and 576 seed-42 run even after an independent candidate failure, 576 replication specs execute only after the fixed advance gate, an existing identical report is idempotent, a differing report is rejected, and serialized evidence excludes predictions, paths, raw errors, and private fields.
 
-- [ ] **Step 2: Run orchestration tests and observe RED**
+- [x] **Step 2: Run orchestration tests and observe RED**
 
 Run: `uv run pytest tests/unit/research/test_balanced_patchcore_study.py -q`
 
 Expected: fail on missing CLI/report/orchestration behavior.
 
-- [ ] **Step 3: Implement the minimum resumable executor**
+- [x] **Step 3: Implement the minimum resumable executor**
 
 Construct one `Supervisor` and external `RunStore`; execute each spec as a one-item tuple so completed identities resume safely. Always process the two 640 replication specs and 576 seed 42. Expand to the remaining 576 specs only when `passes_stage_b_advance` is true. Evaluate completed runs under the same GPU lease contract, heartbeat between evaluations, preserve sanitized `StudyFailure` evidence, and atomically write one canonical-hash report.
 
-- [ ] **Step 4: Add the exact CLI contract and runbook command**
+- [x] **Step 4: Add the exact CLI contract and runbook command**
 
 Required flags: `--data-root`, `--dataset-manifest`, `--runs-root`, `--config-640`, `--config-576`; optional flags: `--baseline-config`, `--baseline-public-benchmark`, `--frontier-report`, `--output`, `--device`, `--gpu-lock`, and `--dry-run`. Document that the source must be committed and clean and that rerunning the same command resumes completed identities.
 
-- [ ] **Step 5: Run focused and adjacent tests**
+- [x] **Step 5: Run focused and adjacent tests**
 
 Run:
 
@@ -143,7 +143,7 @@ git diff --check
 
 Expected: all commands exit 0.
 
-- [ ] **Step 6: Commit Task 2**
+- [x] **Step 6: Commit Task 2**
 
 ```powershell
 git add experiments/balanced_patchcore_study.py tests/unit/research/test_balanced_patchcore_study.py docs/EXPERIMENT_RUNBOOK.md docs/superpowers/plans/2026-08-10-12-balanced-patchcore-overnight-research.md
