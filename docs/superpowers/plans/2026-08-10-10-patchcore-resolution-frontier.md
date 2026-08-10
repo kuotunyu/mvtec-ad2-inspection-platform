@@ -11,12 +11,12 @@ AU-PRO, without changing release or submission state.
 
 ## Task 1: Implement the fixed one-run contract
 
-- [ ] Add the 640 x 640 candidate config and focused failing contract tests.
-- [ ] Observe RED for the missing frontier runner.
-- [ ] Implement exact config-difference validation, deterministic run identity,
+- [x] Add the 640 x 640 candidate config and focused failing contract tests.
+- [x] Observe RED for the missing frontier runner.
+- [x] Implement exact config-difference validation, deterministic run identity,
   baseline selection, classification, external report, and resumable CLI.
-- [ ] Run focused tests, Ruff, format, mypy, CLI dry-run, and diff checks.
-- [ ] Commit as `kuotunyu` with no contributor trailers.
+- [x] Run focused tests, Ruff, format, mypy, CLI dry-run, and diff checks.
+- [x] Commit as `kuotunyu` with no contributor trailers.
 
 ## Task 2: Execute and evaluate the bounded GPU run
 

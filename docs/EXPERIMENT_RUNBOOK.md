@@ -64,3 +64,23 @@ Add `--dry-run` to verify the two run identities without acquiring the GPU lease
 ## Boundaries
 
 No command in this repository pushes, submits to the MVTec server, uploads to a model hub, or accepts credentials. Official private submission remains an explicit human authorization step.
+
+## Run the resource-informed PatchCore frontier probe
+
+After the 768 x 768 resource-limit result, the fixed frontier study runs only
+the 640 x 640 `wallplugs` candidate whose measured 512 x 512 training footprint
+leaves a credible fit margin:
+
+```powershell
+uv run python -m experiments.patchcore_resolution_frontier `
+  --data-root D:\datasets\mvtec-ad-2 `
+  --dataset-manifest D:\datasets\mvtec-ad-2.manifest.json `
+  --runs-root D:\mvtec-ad2-patchcore-frontier-20260810 `
+  --candidate-config experiments\configs\research\patchcore-640.yaml `
+  --baseline-public-benchmark reports\public_benchmark.json `
+  --gpu-lock D:\.mvtec-ad2-gpu.lock
+```
+
+Use `--dry-run` for identity/config/path validation without acquiring the GPU.
+The study reads only public data and cannot change frozen champions or submit an
+archive.
