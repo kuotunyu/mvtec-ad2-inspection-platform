@@ -216,7 +216,7 @@ git commit -m "docs(research): record balanced patchcore study"
 - Consumes: exact committed Task 3 source and sanitized evidence.
 - Produces: checked plan, clean verified HEAD, and concise local handoff state.
 
-- [ ] **Step 1: Run complete local gates**
+- [x] **Step 1: Run complete local gates**
 
 Run:
 
@@ -237,7 +237,7 @@ uv run python scripts/verify_public_boundary.py --git-tree HEAD
 
 Expected: every command exits 0 and the Python suite emits no Starlette TestClient deprecation warning.
 
-- [ ] **Step 2: Verify an exact-HEAD clean export**
+- [x] **Step 2: Verify an exact-HEAD clean export**
 
 Run:
 
@@ -248,7 +248,7 @@ powershell -ExecutionPolicy Bypass -File scripts/clean_export.ps1 -Treeish HEAD 
 
 Expected: `Clean export PASS` for the exact committed SHA after frozen dependency installation, Python/frontend checks, wheel and sdist builds, Python and Node SBOMs, Docker smoke, system tests, and the real browser workflow.
 
-- [ ] **Step 3: Complete plan bookkeeping and commit**
+- [x] **Step 3: Complete plan bookkeeping and commit**
 
 Mark every checkbox complete only after its evidence exists, update the local continuity files, rerun focused bookkeeping/claim checks, audit author/committer/trailers, and commit the tracked plan update:
 
@@ -257,6 +257,6 @@ git add docs/superpowers/plans/2026-08-10-12-balanced-patchcore-overnight-resear
 git commit -m "docs: complete balanced patchcore study"
 ```
 
-- [ ] **Step 4: Confirm final boundaries**
+- [x] **Step 4: Confirm final boundaries**
 
 Require tracked `git status` clean, no active formal worker, no held project GPU lease, and no publication action. Do not push the new commits without a separate explicit authorization.
