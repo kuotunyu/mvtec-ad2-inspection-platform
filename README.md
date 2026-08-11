@@ -25,6 +25,17 @@
 
 ---
 
+## 面試導覽
+
+| 想檢視的能力 | 程式碼入口 | 可追溯證據 |
+|---|---|---|
+| Anomaly detection 與模型選擇 | [`experiments/`](experiments)、[`reports/`](reports) | [Model selection](docs/MODEL_SELECTION.md)、[benchmark](reports/benchmark.md) |
+| Backend、worker 與資料契約 | [`apps/api/`](apps/api)、[`src/inspection_platform/`](src/inspection_platform) | [Architecture](docs/ARCHITECTURE.md)、[`tests/system/`](tests/system) |
+| React 工作站與人機協作 | [`apps/web/src/`](apps/web/src) | [`apps/web/e2e/`](apps/web/e2e)、下方工作站巡覽 |
+| Reproducibility、security 與 release engineering | [`compose.yaml`](compose.yaml)、[`.github/workflows/ci.yml`](.github/workflows/ci.yml)、[`scripts/`](scripts) | [Reproducibility](docs/REPRODUCIBILITY.md)、[Release checklist](docs/RELEASE_CHECKLIST.md) |
+
+---
+
 ## 公開內容與證據邊界
 
 | 範圍 | Repository 中的內容 | 可以解讀成什麼 |
@@ -89,6 +100,14 @@ flowchart TD
 操作人員選擇 category 並送出 batch；其中一張影像損壞時，其餘有效影像仍會繼續。獨占 lease 的 worker 在 inference 前驗證指定 model bundle，將模型證據記為 `PASS` 或 `REVIEW`，並能在 lease 過期後 idempotent resume。最終處置由人員決定，所有報告分開保留模型判定與人工決策。
 
 本 Repository 的 screenshots 全由 `fixtures/public-demo` 產生，不含 MVTec pixels，也不代表已部署於 production。
+
+### 工作站巡覽
+
+| Operations overview | Secure batch intake |
+|---|---|
+| ![佇列、人工覆核與 champion coverage 總覽](docs/assets/screenshots/dashboard.webp) | ![依 category 選擇 frozen champion 的本機批次提交](docs/assets/screenshots/new-inspection.webp) |
+| **Human review workspace** | **Model & evidence** |
+| ![分開呈現模型證據與人工處置的覆核工作區](docs/assets/screenshots/review.webp) | ![呈現 category champions、官方 gate、provenance 與限制的模型證據頁](docs/assets/screenshots/model-evidence.webp) |
 
 ---
 
