@@ -12,6 +12,9 @@ PUBLIC_DOCS = (
     Path("docs/SECURITY.md"),
     Path("docs/LIMITATIONS.md"),
     Path("docs/REPRODUCIBILITY.md"),
+    Path("docs/EXPERIMENT_RUNBOOK.md"),
+    Path("docs/MODEL_SELECTION.md"),
+    Path("docs/RELEASE_CHECKLIST.md"),
     Path("docs/REMOTE_SETUP.md"),
 )
 
@@ -43,10 +46,13 @@ def test_public_readme_is_zh_tw_front_door_and_publication_is_authorized() -> No
     readme = Path("README.md").read_text(encoding="utf-8")
     for required in (
         "## 專案重點",
+        "## 公開內容與證據邊界",
         "## 產品流程",
+        "## Memory-bounded PatchCore 研究亮點",
         "## 官方 private gate",
         "## 已驗證的本機 serving 效能",
         "## 執行 synthetic local demo",
+        "EFFICIENT_SEED42_ONLY",
         "PRIVATE-NO-GO",
         "MVTec 原始資料",
     ):
@@ -55,3 +61,9 @@ def test_public_readme_is_zh_tw_front_door_and_publication_is_authorized() -> No
     checklist = Path("docs/RELEASE_CHECKLIST.md").read_text(encoding="utf-8")
     assert "- [x] Publication explicitly authorized." in checklist
     assert "Publication remains outside this authorized result-import task." not in checklist
+
+
+def test_public_docs_do_not_expose_windows_absolute_paths() -> None:
+    windows_absolute_path = re.compile(r"(?<![A-Za-z])[A-Za-z]:[\\/]")
+    for path in PUBLIC_DOCS:
+        assert windows_absolute_path.search(path.read_text(encoding="utf-8")) is None, path

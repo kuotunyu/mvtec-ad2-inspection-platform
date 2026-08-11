@@ -2,6 +2,8 @@
 
 This repository records the reproducible MVTec AD 2 foundation workflow. Keep the dataset, checkpoints, predictions, leases, and submission archives outside Git.
 
+All commands below use explicit environment variables for licensed data and runtime artifacts. Set each referenced variable to an absolute path outside the checkout before running a study; the repository does not assume a workstation drive letter or create a private-data root inside Git.
+
 ## Verify a checkout
 
 ```powershell
@@ -35,12 +37,12 @@ Use the cache-only command when continuous private TIFFs already exist and only 
 
 ```powershell
 uv run python -m experiments.submission.rebuild `
-  --data-root D:\datasets\mvtec-ad-2 `
-  --runs-root D:\mvtec-ad2-runs `
+  --data-root $env:MVTECAD2_DATA_ROOT `
+  --runs-root $env:MVTECAD2_RUNS_ROOT `
   --champions reports\champions.json `
-  --source-cache-root D:\mvtec-ad2-submissions-20260807-171623\prediction-cache `
-  --output-root D:\mvtec-ad2-submission-thresholded-20260810 `
-  --official-utils-root D:\mvtec-ad2-official-utils-20260810\extracted\MVTecAD2_public_code_utils
+  --source-cache-root $env:MVTECAD2_PREDICTION_CACHE_ROOT `
+  --output-root $env:MVTECAD2_SUBMISSION_OUTPUT_ROOT `
+  --official-utils-root $env:MVTECAD2_OFFICIAL_UTILS_ROOT
 ```
 
 The output root must be new and outside both the repository and source cache. The command verifies the exact frozen seed-42 champion identities, calibrates from hash-bound validation maps, checks every cached TIFF against the source geometry, writes both archive trees, runs the checksum-pinned official validator, and records `LOCAL-PREFLIGHT-NOT-SUBMITTED`. It does not acquire the GPU lease, run inference, or contact the benchmark server.
@@ -51,12 +53,12 @@ The approved public-only study changes only PatchCore input and resize geometry 
 
 ```powershell
 uv run python -m experiments.high_resolution_patchcore `
-  --data-root D:\datasets\mvtec-ad-2 `
-  --dataset-manifest D:\datasets\mvtec-ad-2.manifest.json `
-  --runs-root D:\mvtec-ad2-highres-patchcore-20260810 `
+  --data-root $env:MVTECAD2_DATA_ROOT `
+  --dataset-manifest $env:MVTECAD2_DATASET_MANIFEST `
+  --runs-root $env:MVTECAD2_HIGHRES_RUNS_ROOT `
   --candidate-config experiments\configs\research\patchcore-768.yaml `
   --baseline-public-benchmark reports\public_benchmark.json `
-  --gpu-lock D:\.mvtec-ad2-gpu.lock
+  --gpu-lock $env:MVTECAD2_GPU_LOCK
 ```
 
 Add `--dry-run` to verify the two run identities without acquiring the GPU lease. Completed runs and public predictions are hash-verified and reused after interruption; incompatible or corrupt evidence fails closed. The aggregate report remains under the external run root until reviewed and sanitized.
@@ -73,12 +75,12 @@ leaves a credible fit margin:
 
 ```powershell
 uv run python -m experiments.patchcore_resolution_frontier `
-  --data-root D:\datasets\mvtec-ad-2 `
-  --dataset-manifest D:\datasets\mvtec-ad-2.manifest.json `
-  --runs-root D:\mvtec-ad2-patchcore-frontier-20260810 `
+  --data-root $env:MVTECAD2_DATA_ROOT `
+  --dataset-manifest $env:MVTECAD2_DATASET_MANIFEST `
+  --runs-root $env:MVTECAD2_FRONTIER_RUNS_ROOT `
   --candidate-config experiments\configs\research\patchcore-640.yaml `
   --baseline-public-benchmark reports\public_benchmark.json `
-  --gpu-lock D:\.mvtec-ad2-gpu.lock
+  --gpu-lock $env:MVTECAD2_GPU_LOCK
 ```
 
 Use `--dry-run` for identity/config/path validation without acquiring the GPU.
@@ -93,12 +95,12 @@ and 2026, then runs the 576 x 576 seed-42 balance probe. Seeds 17 and 2026 at
 
 ```powershell
 uv run python -m experiments.balanced_patchcore_study `
-  --data-root D:\datasets\mvtec-ad-2 `
-  --dataset-manifest D:\datasets\mvtec-ad-2.manifest.json `
-  --runs-root D:\mvtec-ad2-balanced-patchcore-20260810 `
+  --data-root $env:MVTECAD2_DATA_ROOT `
+  --dataset-manifest $env:MVTECAD2_DATASET_MANIFEST `
+  --runs-root $env:MVTECAD2_BALANCED_RUNS_ROOT `
   --config-640 experiments\configs\research\patchcore-640.yaml `
   --config-576 experiments\configs\research\patchcore-576.yaml `
-  --gpu-lock D:\.mvtec-ad2-gpu.lock
+  --gpu-lock $env:MVTECAD2_GPU_LOCK
 ```
 
 Use `--dry-run` first. Rerunning the identical formal command resumes verified
@@ -115,12 +117,12 @@ three consecutive unsafe samples; it never terminates an unrelated process.
 
 ```powershell
 uv run python -m experiments.memory_bounded_patchcore `
-  --data-root D:\datasets\mvtec-ad-2 `
-  --dataset-manifest D:\datasets\mvtec-ad-2.manifest.json `
-  --runs-root D:\mvtec-ad2-memory-bounded-patchcore-20260811 `
+  --data-root $env:MVTECAD2_DATA_ROOT `
+  --dataset-manifest $env:MVTECAD2_DATASET_MANIFEST `
+  --runs-root $env:MVTECAD2_MEMORY_BOUNDED_RUNS_ROOT `
   --config-001 experiments\configs\research\patchcore-640-coreset-001.yaml `
   --config-002 experiments\configs\research\patchcore-640-coreset-002.yaml `
-  --gpu-lock D:\.mvtec-ad2-gpu.lock
+  --gpu-lock $env:MVTECAD2_GPU_LOCK
 ```
 
 Run the identical command with `--dry-run` first to validate source, dataset,

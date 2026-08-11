@@ -31,6 +31,8 @@ Public selection evidence is complete. The one frozen combined archive passed th
 
 The archive contained no thresholded PNGs, so official ClassF1 and SegF1 are zero and are not treated as measured thresholded-map performance. This packaging limitation is preserved in the sanitized [official result](assets/evidence/official-private-result.json), and no second submission was performed.
 
+Post-freeze PatchCore studies tested higher resolutions and smaller coresets against fixed public-only gates. They produced useful resource and localization evidence, but no multi-seed result justified replacing the frozen matrix. Their `RESOURCE_LIMIT_EXCEEDED`, `PROMISING`, and `EFFICIENT_SEED42_ONLY` classifications are research outcomes rather than deployed model versions; see [MODEL_SELECTION.md](MODEL_SELECTION.md).
+
 ## Failure modes
 
 Lighting shift, texture drift, unseen product variants, contamination of nominal training data, resize artifacts, and category mistakes can change scores. Spatial maps are visual evidence, not segmentation ground truth. Latency and memory results are specific to the recorded RTX workstation. Tampered or incomplete bundles are rejected before inference.

@@ -1,30 +1,37 @@
 # Reproducibility
 
-## CPU and product gates
+## Synthetic quick check
 
-From a clean checkout with Python and Node available:
+The shortest public check requires no MVTec data, real weights, or GPU:
 
 ```powershell
-uv sync --extra ml --frozen
-uv run ruff format --check src apps/api tests scripts
-uv run ruff check src apps/api tests scripts
+uv sync --frozen
+powershell -ExecutionPolicy Bypass -File scripts/docker_smoke.ps1
+```
+
+The script builds deterministic synthetic bundles in a temporary directory, starts the non-root API and worker containers, completes an inspection, verifies the image boundary, and removes its isolated runtime volumes.
+
+## Python and frontend gates
+
+From a clean checkout with Python 3.12, Node 24, `uv`, and Playwright Chromium available:
+
+```powershell
+uv sync --frozen --extra ml
+uv run ruff format --check .
+uv run ruff check .
 uv run mypy
 uv run pytest -m "not gpu and not dataset" -q
 
-Push-Location apps/web
-npm ci
-npm run api:check
-npm run lint
-npm run typecheck
-npm run test -- --run
-npm run build
-Pop-Location
+npm ci --prefix apps/web
+npm --prefix apps/web exec -- playwright install chromium
+npm --prefix apps/web run verify
+npm --prefix apps/web run e2e
 ```
 
 Build the deterministic registry twice when investigating reproducibility; `tests/integration/test_demo_bundle.py` compares the entire byte tree.
 
 ```powershell
-$env:INSPECTION_MODEL_ROOT = "D:\mvtec-ad2-demo-models"
+$env:INSPECTION_MODEL_ROOT = Join-Path ([IO.Path]::GetTempPath()) "mvtec-ad2-demo-models"
 uv run python scripts/build_demo_bundle.py --output $env:INSPECTION_MODEL_ROOT
 uv run python scripts/verify_contract_chain.py --registry-root $env:INSPECTION_MODEL_ROOT
 powershell -ExecutionPolicy Bypass -File scripts/docker_smoke.ps1
@@ -34,11 +41,18 @@ powershell -ExecutionPolicy Bypass -File scripts/run_system_tests.ps1 -Repeat 3
 ## Publication gates
 
 ```powershell
-uv run python scripts/render_docs_assets.py --check
-uv run pytest tests/publication -q
+uv run python scripts/render_docs_assets.py --check-manifest
+uv run pytest tests/publication tests/release tests/security -q
 uv run python scripts/verify_claims.py
 uv run python scripts/security_scan.py --root .
 uv run python scripts/verify_public_boundary.py --git-tree HEAD
+
+uv build --out-dir dist
+$releaseArgs = @("run", "python", "scripts/verify_release.py", "--source", ".", "--output", "release-python.json")
+Get-ChildItem dist -File | Where-Object Name -Match '\.(?:whl|tar\.gz)$' | ForEach-Object {
+    $releaseArgs += @("--archive", $_.FullName)
+}
+& uv @releaseArgs
 ```
 
 The committed implementation, tests, evidence artifacts, release checklist, and Git history
@@ -47,4 +61,4 @@ intentionally excluded from the public repository.
 
 ## Dataset and GPU gates
 
-Dataset and real-GPU commands require the verified external manifest, external run/model roots, the project GPU lease, and the pinned environment. Follow the foundation handoff and private-evaluation runbook. Do not substitute synthetic success for real-model parity, and do not submit or publish without explicit authorization.
+Dataset and real-GPU commands require the verified external manifest, external run/model roots, the project GPU lease, and the pinned environment. Follow [EXPERIMENT_RUNBOOK.md](EXPERIMENT_RUNBOOK.md). Do not substitute synthetic success for real-model parity, and do not submit or publish without explicit authorization.

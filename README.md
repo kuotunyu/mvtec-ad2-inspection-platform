@@ -1,23 +1,38 @@
 # MVTec AD 2 Industrial Inspection Platform
 
-![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688?logo=fastapi&logoColor=white)
-![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
-![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-EE4C2C?logo=pytorch&logoColor=white)
+![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
+![FastAPI 0.141.1](https://img.shields.io/badge/FastAPI-0.141.1-009688?logo=fastapi&logoColor=white)
+![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
+![PyTorch 2.13](https://img.shields.io/badge/PyTorch-2.13-EE4C2C?logo=pytorch&logoColor=white)
+[![CI](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ![以 synthetic 資料呈現異常證據與人工覆核的工業檢測工作站](docs/assets/screenshots/job-evidence.webp)
 
-這是一套 local-first 工業異常檢測與人工覆核平台，把 frozen benchmark evidence 轉為可續跑的 batch、視覺化檢閱與可稽核的人工作業流程。Repository 只使用 `fixtures/public-demo` 產生公開畫面，不重新散布 MVTec 資料；官方 frozen private gate 的結論為 `PRIVATE-NO-GO`。
+> Industrial anomaly detection research + evidence-driven inspection workstation
+
+這是一個把 anomaly detection 研究接到可操作產品邊界的 local-first 專案：離線端比較 PatchCore、EfficientAD 與 Dinomaly，線上端提供可續跑 batch、視覺化證據、人工覆核與稽核報告。Repository 只用 `fixtures/public-demo` 產生公開畫面，不重新散布 MVTec 資料；官方 frozen private gate 的結論為 `PRIVATE-NO-GO`。
 
 ---
 
 ## 專案重點
 
 - **可追溯模型選擇：** 8 個 category-specific champions <!-- claim:8|reports/champions.json|/champions|len -->，選自 56 次 formal public runs <!-- claim:56|reports/public_benchmark.json|/runs|len -->；每個公開數字都連結 committed machine-readable evidence。
+- **資源受限研究：** 以固定 gate 依序測試解析度與 coreset 取捨；成功降低 PatchCore artifact 與推論成本，但 multi-seed image AUROC 未通過重現性門檻，因此不更換 champion。
 - **完整產品流程：** React 工作站、FastAPI、SQLite、leased worker、model registry、人工覆核與報告匯出。
 - **Fail-closed 邊界：** 驗證 model identity、uploads、recovery、reports 與 deletion，並以 synthetic fixtures 完成 end-to-end 測試。
 - **誠實揭露：** 官方結果不支持 v1 release，因此維持 `PRIVATE-NO-GO`，不以 private 結果 retune 或重新提交。
+
+---
+
+## 公開內容與證據邊界
+
+| 範圍 | Repository 中的內容 | 可以解讀成什麼 |
+|---|---|---|
+| Synthetic public demo | 專案自行生成的影像、mock bundles、screenshots 與 CPU/Docker 測試 | 產品流程、恢復能力、安全邊界與 UI 可實際執行；不代表真實模型品質 |
+| 使用者自行取得的 MVTec AD 2 | 下載、manifest 與外部路徑操作程式；不含原始影像或 masks | 可在接受官方授權後重現研究；Repository 本身不提供資料 |
+| 已完成研究 | Sanitized public aggregates、champion matrix、資源限制與 serving evidence | 可追溯比較、選模、效能與工程取捨 |
+| 未公開或未宣稱 | 不含 weights、checkpoints、raw private predictions 或第二次 submission | 不宣稱 production readiness、商用授權或有效的官方 thresholded F1 |
 
 ---
 
@@ -87,6 +102,14 @@ flowchart TD
 
 ---
 
+## Memory-bounded PatchCore 研究亮點
+
+高解析度不是免費的品質提升：768 x 768 candidates 在 24 GiB RTX 4090 fitting 階段 OOM，640 x 640 frontier 雖改善 localization，卻增加延遲並降低 image AUROC。後續固定的 coreset ladder 先測 0.01，再依 gate 執行 0.02 rescue。
+
+0.02 seed-42 candidate 的 AU-PRO 相對 baseline 增加 **0.0854** <!-- claim:0.0854|reports/memory_bounded_patchcore.json|/probes/1/comparison/au_pro_delta|.4f -->、GPU p95 為 **78.4 ms** <!-- claim:78.4|reports/memory_bounded_patchcore.json|/probes/1/comparison/candidate/gpu_p95_latency_ms|.1f -->，artifact 為 **330,255,411 bytes** <!-- claim:330,255,411|reports/memory_bounded_patchcore.json|/probes/1/comparison/candidate/artifact_size_bytes|,d -->。但 seeds 17 與 2026 的 image AUROC 都明顯退步，因此最終 verdict 是 `EFFICIENT_SEED42_ONLY`，不更換 frozen champion，也不推論 private performance。完整設計、重現方式與限制見 [Model selection](docs/MODEL_SELECTION.md)、[Experiment runbook](docs/EXPERIMENT_RUNBOOK.md) 與 [sanitized report](reports/memory_bounded_patchcore.json)。
+
+---
+
 ## 官方 private gate
 
 官方 server 回傳的 AucPro_0.05 average：`private` 為 **31.24** <!-- claim:31.24|docs/assets/evidence/official-private-result.json|/metrics/private/auc_pro_0_05/average|.2f -->，`private_mixed` 為 **29.81** <!-- claim:29.81|docs/assets/evidence/official-private-result.json|/metrics/private_mixed/auc_pro_0_05/average|.2f -->。依預先承諾的規則，material mixed-lighting failure 必須揭露而不能事後調整，因此分類為 `PRIVATE-NO-GO`。
@@ -126,16 +149,11 @@ API startup 不會 import training orchestration。Runtime databases、uploads�
 
 ## 執行 synthetic local demo
 
-需要 Python、`uv`、Node/npm、Docker Desktop，以及已安裝供 Playwright 使用的 Chromium browser。
+這個預設路徑只需要 Python 3.12、`uv` 與 Docker；不下載 MVTec AD 2、不執行 GPU 訓練，也不需要 real model weights。
 
 ```powershell
-uv sync --extra ml --frozen
-Push-Location apps/web
-npm ci
-npx playwright install chromium
-Pop-Location
-
-$env:INSPECTION_MODEL_ROOT = "D:\mvtec-ad2-demo-models"
+uv sync --frozen
+$env:INSPECTION_MODEL_ROOT = Join-Path ([IO.Path]::GetTempPath()) "mvtec-ad2-demo-models"
 uv run python scripts/build_demo_bundle.py --output $env:INSPECTION_MODEL_ROOT
 docker compose up -d --build --wait
 ```
