@@ -250,22 +250,7 @@ def test_thresholded_local_preflight_is_separate_from_official_submission() -> N
     )
 
 
-def test_private_no_go_release_bookkeeping_has_no_stale_pending_work() -> None:
-    plan_root = Path("docs/superpowers/plans")
-    unchecked: list[str] = []
-    for path in sorted(plan_root.glob("*.md")):
-        content = path.read_text(encoding="utf-8")
-        if re.search(r"^\*\*Status:\*\* Active$", content, re.MULTILINE):
-            continue
-        in_fenced_code = False
-        for line in content.splitlines():
-            if re.match(r"^\s*```", line):
-                in_fenced_code = not in_fenced_code
-                continue
-            if not in_fenced_code and re.match(r"^\s*- \[ \]", line):
-                unchecked.append(f"{path.name}:{line.strip()}")
-    assert unchecked == []
-
+def test_private_no_go_release_checklist_has_no_stale_pending_work() -> None:
     checklist = Path("docs/RELEASE_CHECKLIST.md").read_text(encoding="utf-8")
     assert "pending" not in checklist.lower()
 

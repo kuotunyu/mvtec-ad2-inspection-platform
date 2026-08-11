@@ -41,7 +41,9 @@ uv run python scripts/security_scan.py --root .
 uv run python scripts/verify_public_boundary.py --git-tree HEAD
 ```
 
-The approved design and four implementation plans are the authoritative execution record. Local continuity files are intentionally excluded from Git.
+The committed implementation, tests, evidence artifacts, release checklist, and Git history
+are the authoritative execution record. Local agent plans and continuity notes are
+intentionally excluded from the public repository.
 
 ## Dataset and GPU gates
 

@@ -42,6 +42,7 @@ __pycache__/
 *.egg-info/
 
 # Local maintainer and agent workflow (kept outside public repository)
+/docs/superpowers/
 .agents/
 .claude/
 CLAUDE.md
