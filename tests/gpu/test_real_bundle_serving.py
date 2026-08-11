@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -20,6 +21,68 @@ from scripts.gpu_product_smoke import (
     run_real_serving_gate,
     validate_workstation_detail,
 )
+
+
+def test_real_serving_children_receive_parent_gpu_lock(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    data = tmp_path / "data"
+    data.mkdir()
+    image = tmp_path / "image.png"
+    image.write_bytes(b"public-test-input")
+    gpu_lock = tmp_path / "gpu.lock"
+    bundle_identity = "b" * 64
+    commands: list[list[str]] = []
+
+    class FakeHandle:
+        def heartbeat(self) -> None:
+            return None
+
+    class FakeAcquisition:
+        def __enter__(self) -> FakeHandle:
+            return FakeHandle()
+
+        def __exit__(self, *_args: object) -> None:
+            return None
+
+    class FakeLease:
+        def acquire(self, _purpose: str) -> FakeAcquisition:
+            return FakeAcquisition()
+
+    monkeypatch.setattr("scripts.gpu_product_smoke.GpuLease", lambda *_args, **_kwargs: FakeLease())
+    monkeypatch.setattr(
+        "scripts.gpu_product_smoke.prepare_real_registry",
+        lambda *_args, **_kwargs: {
+            "categories": {
+                category: {"bundle_identity": bundle_identity} for category in REQUIRED_CATEGORIES
+            }
+        },
+    )
+    monkeypatch.setattr("scripts.gpu_product_smoke._input_for_category", lambda *_args: image)
+
+    def completed_child(command: list[str], **_kwargs: object) -> SimpleNamespace:
+        commands.append(command)
+        output = Path(command[command.index("--output") + 1])
+        output.write_text(
+            json.dumps({"status": "passed", "bundle_identity": bundle_identity}),
+            encoding="utf-8",
+        )
+        return SimpleNamespace(returncode=0, stderr="")
+
+    monkeypatch.setattr("scripts.gpu_product_smoke.subprocess.run", completed_child)
+
+    results = run_real_serving_gate(
+        evidence_root=tmp_path,
+        runs_root=tmp_path,
+        data_root=data,
+        registry_root=tmp_path / "registry",
+        code_sha="a" * 40,
+        gpu_lock=gpu_lock,
+    )
+
+    assert set(results) == set(REQUIRED_CATEGORIES)
+    assert len(commands) == len(REQUIRED_CATEGORIES)
+    assert all(command[command.index("--gpu-lock") + 1] == str(gpu_lock) for command in commands)
 
 
 def _identity(value: str) -> str:

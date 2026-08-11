@@ -387,6 +387,8 @@ def run_real_serving_gate(
                     "--worker-smoke",
                     "--registry",
                     str(registry_root),
+                    "--gpu-lock",
+                    str(gpu_lock),
                     "--category",
                     category,
                     "--input",
