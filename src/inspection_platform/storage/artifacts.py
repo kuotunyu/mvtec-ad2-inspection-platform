@@ -71,12 +71,12 @@ def artifact_store_lock(root: Path, *, timeout_seconds: float = 30.0) -> Iterato
             handle.flush()
         handle.seek(0)
         if os.name == "nt":
-            import msvcrt
+            msvcrt = vars(import_module("msvcrt"))
 
             deadline = monotonic() + timeout_seconds
             while True:
                 try:
-                    msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+                    msvcrt["locking"](handle.fileno(), msvcrt["LK_NBLCK"], 1)
                     locked = True
                     break
                 except OSError:
@@ -97,9 +97,8 @@ def artifact_store_lock(root: Path, *, timeout_seconds: float = 30.0) -> Iterato
             if locked:
                 handle.seek(0)
                 if os.name == "nt":
-                    import msvcrt
-
-                    msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+                    msvcrt = vars(import_module("msvcrt"))
+                    msvcrt["locking"](handle.fileno(), msvcrt["LK_UNLCK"], 1)
                 else:
                     fcntl = vars(import_module("fcntl"))
                     fcntl["flock"](handle.fileno(), fcntl["LOCK_UN"])
