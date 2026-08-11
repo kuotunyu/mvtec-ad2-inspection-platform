@@ -4,11 +4,16 @@
 
 - Candidate: `0.1.0-rc.1`
 - Status: `PRIVATE-NO-GO`
-- Verified source: `f902c7b50cd79a2fdd954af4d23c46af4c488bc7`
+- Real-GPU evidence source: `f902c7b50cd79a2fdd954af4d23c46af4c488bc7`
+- Published source snapshot: `82918727d6d9ed7c6555556d73b24b3acb2e7b9b`
+- Annotated tag: `v0.1.0-rc.1`
+- GitHub pre-release: [source-only portfolio snapshot](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.0-rc.1)
+- Published at: `2026-08-11T12:08:34Z`
+- Custom release assets: None; only GitHub-generated source archives are available.
 - Official submission performed: Yes, exactly once
 - Official private status: `DONE`
 
-The public benchmark, product, Docker, security, documentation, clean-export, and eight-category real GPU serving gates pass. The frozen official result does not support a v1 release, and it does not grant permission to publish.
+The public benchmark, product, Docker, security, documentation, clean-export, and eight-category real GPU serving gates pass. The frozen official result does not support a v1 release. The explicitly authorized publication is therefore labeled as a source-only `PRIVATE-NO-GO` pre-release, not a production release.
 
 ## Completed local gates
 
@@ -54,7 +59,7 @@ Do not perform these actions without explicit authorization and the required off
 4. Verify the local handoff with `uv run python scripts/verify_experiments.py --submission-summary <external-summary>`.
 5. Import only a reviewed, sanitized aggregate artifact; never import private image identifiers, maps, labels, workstation paths, credentials, or raw responses.
 6. Run `uv run python scripts/verify_claims.py`, the publication/security tests, and the full clean-export gate. Classify the result as `PRIVATE-NO-GO` or `V1-CANDIDATE` according to the frozen criteria.
-7. Request separate authorization for any commit of official aggregates and again for push, tag, GitHub Release, deployment, or model publication.
+7. Request separate authorization for any commit of official aggregates and again for push, tag, GitHub Release, deployment, or model publication. The one-time `v0.1.0-rc.1` tag and source-only pre-release authorization recorded below does not authorize any future publication action.
 
 ## Publication boundary
 
@@ -63,5 +68,8 @@ Do not perform these actions without explicit authorization and the required off
 - [x] Mixed-lighting criterion classified truthfully as `PRIVATE-NO-GO`.
 - [x] Thresholded cache-only repair passed local preflight and remains unsubmitted.
 - [x] Publication explicitly authorized.
+- [x] Annotated tag `v0.1.0-rc.1` published at source commit `82918727d6d9ed7c6555556d73b24b3acb2e7b9b`.
+- [x] Source-only GitHub pre-release published with `PRIVATE-NO-GO` labeling and no custom assets.
+- [x] No deployment, model publication, or additional official submission performed.
 
-The authorized scope is the Public source repository `kuotunyu/mvtec-ad2-inspection-platform` and its initial `main` push. Tags, GitHub Releases, deployments, model publication, and additional official submissions remain separately authorized actions.
+The completed authorized scope is the public source repository `kuotunyu/mvtec-ad2-inspection-platform`, its `main` history through the published snapshot, the annotated tag `v0.1.0-rc.1`, and the matching source-only GitHub pre-release. Deployments, model publication, additional official submissions, and all future tags or Releases remain separately authorized actions.

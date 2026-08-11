@@ -1,8 +1,14 @@
 # Changelog
 
-## 0.1.0-rc.1 - 2026-08-09
+## 0.1.0-rc.1 - 2026-08-11
 
-Status: `PRIVATE-NO-GO`. The product and public release-candidate gates remain verified, but the frozen official private gate does not support a v1 release. This is not a published release.
+Status: `PRIVATE-NO-GO`. The product and public release-candidate gates remain verified, but the frozen official private gate does not support a v1 release. This source snapshot is published as a GitHub pre-release, not as a v1 or production release.
+
+### Published snapshot
+
+- Annotated tag [`v0.1.0-rc.1`](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.0-rc.1) points to source commit `82918727d6d9ed7c6555556d73b24b3acb2e7b9b`.
+- The GitHub pre-release was published on 2026-08-11 as a source-only portfolio snapshot with no custom release assets.
+- GitHub-generated source archives contain no MVTec data, model weights, checkpoints, private predictions, raw server responses, or credentials.
 
 ### Added
 
@@ -21,4 +27,6 @@ Status: `PRIVATE-NO-GO`. The product and public release-candidate gates remain v
 
 ### Publication boundary
 
-- No second official submission is planned. Push, tag, GitHub Release, deployment, and model publication still require separate explicit authorization.
+- No second official submission was performed or is planned. Deployment and model publication remain unauthorized and unperformed.
+- The one-time authorization for the `v0.1.0-rc.1` annotated tag and source-only GitHub pre-release was exercised without deployment or model publication.
+- Any future tag, Release, deployment, model publication, or additional official submission requires new explicit authorization.
