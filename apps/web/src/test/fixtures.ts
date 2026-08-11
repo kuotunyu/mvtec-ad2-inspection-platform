@@ -18,4 +18,5 @@ export const fixtures = {
   publicOnlyEvidence: { public_gate_sha256: "9cf47070c75bbf66f5e9919c32b5847b886a2f02190ea844c55273bb5ac4f751", dataset_manifest_sha256: "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf", private_evaluation: "not submitted", official_submission_performed: false, limitations: ["Synthetic CI evidence is not a production validation.", "No defect-type classification or automatic final rejection."], metric_definitions: { image_auroc: "Image AUROC (higher is better)", pixel_au_pro: "Pixel AU-PRO (FPR ≤ 0.30, higher is better)" }, downloadable: { champions: "/evidence/champions.json" } },
   privatePassEvidence: { private_evaluation: "official private gate passed", official_submission_performed: true },
   lightingNoGoEvidence: { private_evaluation: "NO-GO under lighting shift", official_submission_performed: true },
+  systemStatus: { backend_status: "ready" as const, worker_status: "current" as const, worker_heartbeat_at: "2026-08-09T01:05:00Z", active_queue: 0, review_backlog: 1, image_errors: 0 },
 };

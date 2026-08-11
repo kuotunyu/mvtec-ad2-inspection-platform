@@ -18,6 +18,7 @@ from scripts.gpu_product_smoke import (
     discover_champion_run_ids,
     record_matches_spec,
     run_real_serving_gate,
+    validate_workstation_detail,
 )
 
 
@@ -115,6 +116,27 @@ def test_serving_writer_binds_report_bytes_to_manifest(tmp_path: Path) -> None:
     assert manifest["files"][output.name] == hashlib.sha256(output.read_bytes()).hexdigest()
 
 
+def test_real_serving_gate_requires_distinct_workstation_spatial_evidence() -> None:
+    detail = {
+        "status": "COMPLETED",
+        "model_bundle_id": "c" * 64,
+        "images": [
+            {
+                "source_url": "/api/v1/artifacts/image/source",
+                "anomaly_map_url": "/api/v1/artifacts/image/anomaly-map",
+                "overlay_url": "/api/v1/artifacts/image/overlay",
+                "anomaly_map_sha256": "a" * 64,
+                "overlay_sha256": "b" * 64,
+                "anomaly_score": 0.5,
+                "error": None,
+            }
+        ],
+    }
+    assert validate_workstation_detail(detail) == ()
+    detail["images"][0]["overlay_url"] = detail["images"][0]["source_url"]
+    assert "spatial_artifact_routes" in validate_workstation_detail(detail)
+
+
 @pytest.mark.gpu
 @pytest.mark.dataset
 def test_real_champions_serve_in_clean_category_processes() -> None:
@@ -126,6 +148,7 @@ def test_real_champions_serve_in_clean_category_processes() -> None:
         data_root=Path(os.environ["MVTECAD2_DATA_ROOT"]),
         registry_root=Path(os.environ["INSPECTION_MODEL_ROOT"]),
         code_sha=os.environ["SOURCE_REVISION"],
+        gpu_lock=Path(os.environ["MVTECAD2_GPU_LOCK"]),
     )
     assert set(results) == set(REQUIRED_CATEGORIES)
     assert all(item["status"] == "passed" for item in results.values())

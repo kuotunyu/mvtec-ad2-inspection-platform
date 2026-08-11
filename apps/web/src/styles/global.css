@@ -18,7 +18,10 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .sidebar nav a span { color: var(--slate-500); font: 11px var(--mono); }
 .sidebar nav a:hover, .sidebar nav a.active { background: var(--graphite-800); color: var(--white); border-left-color: var(--cyan); }
 .system-state { display: flex; gap: 10px; align-items: center; margin-top: auto; padding: 14px 10px; border-top: 1px solid rgb(255 255 255 / 12%); font-size: 13px; }
-.pulse { width: 10px; height: 10px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px rgb(22 130 102 / 18%); }
+.pulse { width: 10px; height: 10px; border-radius: 50%; background: var(--slate-300); box-shadow: 0 0 0 4px rgb(148 163 184 / 18%); }
+.pulse--current { background: var(--green); box-shadow: 0 0 0 4px rgb(22 130 102 / 18%); }
+.pulse--warning { background: var(--amber); box-shadow: 0 0 0 4px rgb(217 119 6 / 18%); }
+.pulse--error { background: var(--red); box-shadow: 0 0 0 4px rgb(190 24 93 / 18%); }
 .main-column { min-width: 0; }
 .topbar { height: 76px; display: flex; align-items: center; justify-content: space-between; padding: 0 38px; background: rgb(248 250 249 / 92%); border-bottom: 1px solid var(--slate-300); }
 .topbar strong, .operator small { display: block; }

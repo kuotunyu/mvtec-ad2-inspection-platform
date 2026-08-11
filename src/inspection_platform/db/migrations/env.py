@@ -16,14 +16,16 @@ target_metadata = Base.metadata
 
 
 def run_migrations_offline() -> None:
-    url = os.environ.get("INSPECTION_DATABASE_URL", config.get_main_option("sqlalchemy.url"))
+    url = config.attributes.get("database_url") or os.environ.get(
+        "INSPECTION_DATABASE_URL", config.get_main_option("sqlalchemy.url")
+    )
     context.configure(url=url, target_metadata=target_metadata)
     with context.begin_transaction():
         context.run_migrations()
 
 
 def run_migrations_online() -> None:
-    url = os.environ.get("INSPECTION_DATABASE_URL")
+    url = config.attributes.get("database_url") or os.environ.get("INSPECTION_DATABASE_URL")
     if url:
         config.set_main_option("sqlalchemy.url", url)
         if url.startswith("sqlite:///"):

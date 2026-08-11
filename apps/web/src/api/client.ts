@@ -11,6 +11,7 @@ export type ReviewResponse = components["schemas"]["ReviewResponse"];
 export type ModelListResponse = components["schemas"]["ModelListResponse"];
 export type ModelSummary = components["schemas"]["ModelSummary"];
 export type EvidenceResponse = components["schemas"]["EvidenceResponse"];
+export type SystemStatusResponse = components["schemas"]["SystemStatusResponse"];
 
 export class ApiError extends Error {
   constructor(
@@ -72,4 +73,5 @@ export const api = {
     }),
   listModels: (signal?: AbortSignal) => request<ModelListResponse>("/api/v1/models", { signal }, 2),
   getEvidence: (signal?: AbortSignal) => request<EvidenceResponse>("/api/v1/evidence", { signal }, 2),
+  getSystemStatus: (signal?: AbortSignal) => request<SystemStatusResponse>("/api/v1/system/status", { signal }, 2),
 };

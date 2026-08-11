@@ -67,3 +67,52 @@ def test_public_docs_do_not_expose_windows_absolute_paths() -> None:
     windows_absolute_path = re.compile(r"(?<![A-Za-z])[A-Za-z]:[\\/]")
     for path in PUBLIC_DOCS:
         assert windows_absolute_path.search(path.read_text(encoding="utf-8")) is None, path
+
+
+def test_example_environment_matches_formal_runbook_and_has_no_stale_switches() -> None:
+    example = Path(".env.example").read_text(encoding="utf-8")
+    for required in (
+        "MVTECAD2_DATA_ROOT",
+        "MVTECAD2_DATASET_MANIFEST",
+        "MVTECAD2_RUNS_ROOT",
+        "MVTECAD2_HIGHRES_RUNS_ROOT",
+        "MVTECAD2_FRONTIER_RUNS_ROOT",
+        "MVTECAD2_BALANCED_RUNS_ROOT",
+        "MVTECAD2_MEMORY_BOUNDED_RUNS_ROOT",
+        "MVTECAD2_PREDICTION_CACHE_ROOT",
+        "MVTECAD2_SUBMISSION_OUTPUT_ROOT",
+        "MVTECAD2_OFFICIAL_UTILS_ROOT",
+        "MVTECAD2_GPU_LOCK",
+        "INSPECTION_MODEL_ROOT",
+    ):
+        assert f"{required}=" in example
+    for stale in ("MVTECAD2_SUBMISSION_ROOT", "INSPECTION_RUNTIME_ROOT", "INSPECTION_DEMO_MODE"):
+        assert f"{stale}=" not in example
+
+
+def test_gpu_scripts_require_an_explicit_lock_path() -> None:
+    for path in (Path("scripts/gpu_product_smoke.py"), Path("scripts/benchmark_serving.py")):
+        source = path.read_text(encoding="utf-8")
+        assert 'default=Path("D:/.mvtec-ad2-gpu.lock")' not in source
+        assert 'parser.add_argument("--gpu-lock", type=Path, required=True)' in source
+
+
+def test_portfolio_front_door_describes_current_runtime_and_release() -> None:
+    readme = Path("README.md").read_text(encoding="utf-8")
+    assert "releases/tag/v0.1.0-rc.1" in readme
+    assert "docs/assets/bench/champion-au-pro.svg" in readme
+    assert "PNG、JPEG、WebP" in readme
+    assert "compose.gpu.yaml" in readme
+    architecture = Path("docs/ARCHITECTURE.md").read_text(encoding="utf-8")
+    for required in ("anomaly-map", "overlay", "heartbeat", "compose.gpu.yaml"):
+        assert required in architecture
+    security = Path("docs/SECURITY.md").read_text(encoding="utf-8")
+    assert "scheduled" in security.lower()
+    changelog = Path("CHANGELOG.md").read_text(encoding="utf-8")
+    assert "EFFICIENT_SEED42_ONLY" in changelog
+
+
+def test_documented_release_report_stays_outside_the_worktree() -> None:
+    reproducibility = Path("docs/REPRODUCIBILITY.md").read_text(encoding="utf-8")
+    assert '"--output", "release-python.json"' not in reproducibility
+    assert "GetTempPath" in reproducibility

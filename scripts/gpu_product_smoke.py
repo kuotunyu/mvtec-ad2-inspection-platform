@@ -11,12 +11,10 @@ import sys
 import tempfile
 import uuid
 from dataclasses import dataclass
-from io import BytesIO
 from pathlib import Path
 from typing import Any, cast
 
 import numpy as np
-from PIL import Image
 
 from experiments.data.manifest import REQUIRED_CATEGORIES
 from experiments.models import ExportContext, ModelConfig, create_adapter
@@ -25,10 +23,7 @@ from inspection_platform.contracts import (
     BundleFile,
     sha256_file,
 )
-from inspection_platform.inference.anomalib_runtime import LoadedAnomalibModel
-from inspection_platform.inference.runtime import InferenceRuntime
 from inspection_platform.registry.repository import ModelRegistry
-from inspection_platform.reports.builder import build_report_json
 
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 
@@ -284,57 +279,80 @@ def _input_for_category(data_root: Path, category: str) -> Path:
     return candidates[0].resolve(strict=True)
 
 
-def _render_artifacts(image_bytes: bytes, anomaly_map: np.ndarray[Any, Any]) -> tuple[bytes, bytes]:
-    values = np.asarray(anomaly_map, dtype=np.float32)
-    low, high = float(values.min()), float(values.max())
-    normalized = np.zeros_like(values) if high <= low else (values - low) / (high - low)
-    grayscale = Image.fromarray(cast(Any, np.uint8(np.clip(normalized * 255, 0, 255))), mode="L")
-    source = Image.open(BytesIO(image_bytes)).convert("RGB")
-    resized = grayscale.resize(source.size, Image.Resampling.BILINEAR)
-    red = Image.new("RGB", source.size, (235, 55, 55))
-    overlay = Image.composite(red, source, resized.point(lambda value: int(value * 0.55)))
-    map_stream, overlay_stream = BytesIO(), BytesIO()
-    grayscale.save(map_stream, format="PNG", optimize=False)
-    overlay.save(overlay_stream, format="PNG", optimize=False)
-    return map_stream.getvalue(), overlay_stream.getvalue()
+def validate_workstation_detail(detail: dict[str, Any]) -> tuple[str, ...]:
+    findings: list[str] = []
+    images = detail.get("images")
+    if detail.get("status") != "COMPLETED" or not isinstance(images, list) or len(images) != 1:
+        findings.append("formal_job_completion")
+        return tuple(findings)
+    image = images[0]
+    if not isinstance(image, dict) or image.get("error") is not None:
+        findings.append("formal_prediction")
+        return tuple(findings)
+    urls = tuple(image.get(key) for key in ("source_url", "anomaly_map_url", "overlay_url"))
+    if any(not isinstance(value, str) for value in urls) or len(set(urls)) != 3:
+        findings.append("spatial_artifact_routes")
+    for key in ("anomaly_map_sha256", "overlay_sha256"):
+        if not isinstance(image.get(key), str) or not _SHA256.fullmatch(image[key]):
+            findings.append("spatial_artifact_hashes")
+            break
+    if not isinstance(image.get("anomaly_score"), (float, int)):
+        findings.append("anomaly_score")
+    if not isinstance(detail.get("model_bundle_id"), str):
+        findings.append("model_bundle_identity")
+    return tuple(findings)
 
 
 def _smoke_worker(registry_root: Path, category: str, input_path: Path, output: Path) -> None:
+    from fastapi.testclient import TestClient
+
+    from apps.api.main import create_app
+    from inspection_platform.settings import Settings
+    from inspection_platform.worker.service import WorkerService
+
     root = registry_root.expanduser().resolve(strict=True)
     manifest = ModelRegistry(root).register(root / "categories" / category / "manifest.json")
-    loaded = InferenceRuntime.load(
-        manifest,
-        root,
-        device="cuda:0",
-        trust_verified_bundle=True,
-    )
-    if not isinstance(loaded, LoadedAnomalibModel):
-        raise TypeError("real serving gate did not load the Anomalib runtime")
     image_bytes = input_path.expanduser().resolve(strict=True).read_bytes()
-    detailed = loaded.predict_with_map(image_bytes, input_id="serving-smoke")
-    anomaly_png, overlay_png = _render_artifacts(image_bytes, detailed.anomaly_map)
-    Image.open(BytesIO(anomaly_png)).verify()
-    Image.open(BytesIO(overlay_png)).verify()
-    report = build_report_json(
-        {
-            "schema_version": "1.0.0",
-            "category": category,
-            "model_bundle_id": detailed.record.model_bundle_id,
-            "anomaly_score": detailed.record.anomaly_score,
-            "anomaly_map_sha256": hashlib.sha256(anomaly_png).hexdigest(),
-            "overlay_sha256": hashlib.sha256(overlay_png).hexdigest(),
-        }
+    runtime_root = output.parent / f"workstation-{category}"
+    settings = Settings(
+        database_url=f"sqlite:///{runtime_root / 'inspection.db'}",
+        artifact_root=runtime_root / "artifacts",
+        model_registry_root=root,
+        inference_device="cuda:0",
     )
-    json.loads(report)
+    client = TestClient(create_app(settings))
+    created = client.post(
+        "/api/v1/jobs",
+        data={"category": category},
+        files={"files": (input_path.name, image_bytes, "image/png")},
+    )
+    if created.status_code != 201:
+        raise RuntimeError(f"formal upload failed: {created.status_code}")
+    job_id = created.json()["id"]
+    if not WorkerService(settings, worker_id=f"serving-smoke-{category}").process_once():
+        raise RuntimeError("formal worker did not claim the serving smoke job")
+    detail = client.get(f"/api/v1/jobs/{job_id}").json()
+    findings = validate_workstation_detail(detail)
+    if findings:
+        raise RuntimeError(f"formal workstation evidence failed: {','.join(findings)}")
+    image = detail["images"][0]
+    anomaly_response = client.get(image["anomaly_map_url"])
+    overlay_response = client.get(image["overlay_url"])
+    if anomaly_response.status_code != 200 or overlay_response.status_code != 200:
+        raise RuntimeError("formal workstation spatial artifact fetch failed")
+    report_response = client.get(f"/api/v1/jobs/{job_id}/report.json")
+    if report_response.status_code != 200:
+        raise RuntimeError("formal workstation report failed")
+    json.loads(report_response.content)
     result = {
         "status": "passed",
         "family": manifest.model_family,
         "bundle_identity": manifest.identity,
         "artifact_size_bytes": sum(item.size for item in manifest.files),
-        "prediction_sha256": hashlib.sha256(detailed.record.model_dump_json().encode()).hexdigest(),
-        "anomaly_map_sha256": hashlib.sha256(anomaly_png).hexdigest(),
-        "overlay_sha256": hashlib.sha256(overlay_png).hexdigest(),
-        "report_sha256": hashlib.sha256(report).hexdigest(),
+        "prediction_sha256": hashlib.sha256(json.dumps(image, sort_keys=True).encode()).hexdigest(),
+        "anomaly_map_sha256": hashlib.sha256(anomaly_response.content).hexdigest(),
+        "overlay_sha256": hashlib.sha256(overlay_response.content).hexdigest(),
+        "report_sha256": hashlib.sha256(report_response.content).hexdigest(),
     }
     _write_json(output, result)
 
@@ -346,7 +364,7 @@ def run_real_serving_gate(
     data_root: Path,
     registry_root: Path,
     code_sha: str,
-    gpu_lock: Path = Path("D:/.mvtec-ad2-gpu.lock"),
+    gpu_lock: Path,
 ) -> dict[str, dict[str, Any]]:
     data = data_root.expanduser().resolve(strict=True)
     lease = GpuLease(gpu_lock, repository_identity=code_sha, ttl_seconds=300)
@@ -397,7 +415,7 @@ def main() -> int:
     parser.add_argument("--runs-root", type=Path)
     parser.add_argument("--data-root", type=Path)
     parser.add_argument("--registry", type=Path, required=True)
-    parser.add_argument("--gpu-lock", type=Path, default=Path("D:/.mvtec-ad2-gpu.lock"))
+    parser.add_argument("--gpu-lock", type=Path, required=True)
     parser.add_argument("--code-sha")
     parser.add_argument("--category", choices=REQUIRED_CATEGORIES)
     parser.add_argument("--input", type=Path)

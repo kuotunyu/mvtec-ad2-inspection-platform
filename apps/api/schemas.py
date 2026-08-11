@@ -33,6 +33,8 @@ class ImageResponse(BaseModel):
     source_url: str
     anomaly_map_url: str | None = None
     overlay_url: str | None = None
+    anomaly_map_sha256: str | None = None
+    overlay_sha256: str | None = None
     anomaly_score: float | None = None
     threshold: float | None = None
     model_outcome: Literal["PASS", "REVIEW"] | None = None
@@ -69,6 +71,15 @@ class ReviewResponse(BaseModel):
 class ReviewQueueResponse(BaseModel):
     items: list[ImageResponse]
     total: int
+
+
+class SystemStatusResponse(BaseModel):
+    backend_status: Literal["ready"]
+    worker_status: Literal["current", "stale", "missing"]
+    worker_heartbeat_at: datetime | None = None
+    active_queue: int
+    review_backlog: int
+    image_errors: int
 
 
 class ModelSummary(BaseModel):

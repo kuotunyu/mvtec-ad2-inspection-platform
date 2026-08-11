@@ -192,4 +192,17 @@ export async function mockBackend(
   await page.route("**/api/v1/evidence", (route) =>
     route.fulfill({ contentType: "application/json", body: JSON.stringify(evidence) }),
   );
+  await page.route("**/api/v1/system/status", (route) =>
+    route.fulfill({
+      contentType: "application/json",
+      body: JSON.stringify({
+        backend_status: "ready",
+        worker_status: "current",
+        worker_heartbeat_at: "2026-08-09T01:05:00Z",
+        active_queue: 0,
+        review_backlog: 1,
+        image_errors: 0,
+      }),
+    }),
+  );
 }

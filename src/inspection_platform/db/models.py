@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any
 
-from sqlalchemy import JSON, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import JSON, DateTime, ForeignKey, Index, Integer, String, Text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -37,6 +37,7 @@ class InspectionImage(Base):
 
 class Prediction(Base):
     __tablename__ = "predictions"
+    __table_args__ = (Index("uq_predictions_image_id", "image_id", unique=True),)
     id: Mapped[str] = mapped_column(String(36), primary_key=True)
     image_id: Mapped[str] = mapped_column(ForeignKey("inspection_images.id"), nullable=False)
     payload: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False)
@@ -44,6 +45,7 @@ class Prediction(Base):
 
 class Review(Base):
     __tablename__ = "reviews"
+    __table_args__ = (Index("uq_reviews_image_id_revision", "image_id", "revision", unique=True),)
     id: Mapped[str] = mapped_column(String(36), primary_key=True)
     image_id: Mapped[str] = mapped_column(ForeignKey("inspection_images.id"), nullable=False)
     decision: Mapped[str] = mapped_column(String(32), nullable=False)
@@ -54,10 +56,12 @@ class Review(Base):
 
 class AuditEvent(Base):
     __tablename__ = "audit_events"
+    __table_args__ = (Index("uq_audit_events_dedupe_key", "dedupe_key", unique=True),)
     id: Mapped[str] = mapped_column(String(36), primary_key=True)
     action: Mapped[str] = mapped_column(String(128), nullable=False)
     resource_id: Mapped[str] = mapped_column(String(36), nullable=False, index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    dedupe_key: Mapped[str | None] = mapped_column(String(255))
 
 
 class ModelBundle(Base):
@@ -66,3 +70,11 @@ class ModelBundle(Base):
     category: Mapped[str] = mapped_column(String(64), nullable=False)
     family: Mapped[str] = mapped_column(String(64), nullable=False)
     manifest_sha256: Mapped[str] = mapped_column(String(64), nullable=False)
+
+
+class WorkerHeartbeat(Base):
+    __tablename__ = "worker_heartbeats"
+    worker_id: Mapped[str] = mapped_column(String(128), primary_key=True)
+    started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    heartbeat_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    status: Mapped[str] = mapped_column(String(32), nullable=False)

@@ -15,6 +15,8 @@ InferencerFactory = Callable[[Path, str], Any]
 class LoadedModel(Protocol):
     def predict(self, image: bytes, *, input_id: str) -> PredictionRecord: ...
 
+    def predict_with_map(self, image: bytes, *, input_id: str) -> Any: ...
+
 
 class InferenceRuntime:
     """Lazy serving boundary; model engines are loaded only inside workers."""

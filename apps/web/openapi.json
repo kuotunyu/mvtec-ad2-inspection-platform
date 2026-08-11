@@ -146,6 +146,17 @@
       },
       "ImageResponse": {
         "properties": {
+          "anomaly_map_sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Anomaly Map Sha256"
+          },
           "anomaly_map_url": {
             "anyOf": [
               {
@@ -217,6 +228,17 @@
               }
             ],
             "title": "Model Outcome"
+          },
+          "overlay_sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overlay Sha256"
           },
           "overlay_url": {
             "anyOf": [
@@ -621,6 +643,57 @@
         "title": "ReviewResponse",
         "type": "object"
       },
+      "SystemStatusResponse": {
+        "properties": {
+          "active_queue": {
+            "title": "Active Queue",
+            "type": "integer"
+          },
+          "backend_status": {
+            "const": "ready",
+            "title": "Backend Status",
+            "type": "string"
+          },
+          "image_errors": {
+            "title": "Image Errors",
+            "type": "integer"
+          },
+          "review_backlog": {
+            "title": "Review Backlog",
+            "type": "integer"
+          },
+          "worker_heartbeat_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Worker Heartbeat At"
+          },
+          "worker_status": {
+            "enum": [
+              "current",
+              "stale",
+              "missing"
+            ],
+            "title": "Worker Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "backend_status",
+          "worker_status",
+          "active_queue",
+          "review_backlog",
+          "image_errors"
+        ],
+        "title": "SystemStatusResponse",
+        "type": "object"
+      },
       "ValidationError": {
         "properties": {
           "ctx": {
@@ -705,6 +778,80 @@
           }
         },
         "summary": "Health Ready"
+      }
+    },
+    "/api/v1/artifacts/{image_id}/anomaly-map": {
+      "get": {
+        "operationId": "anomaly_map_artifact_api_v1_artifacts__image_id__anomaly_map_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "image_id",
+            "required": true,
+            "schema": {
+              "title": "Image Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Anomaly Map Artifact"
+      }
+    },
+    "/api/v1/artifacts/{image_id}/overlay": {
+      "get": {
+        "operationId": "overlay_artifact_api_v1_artifacts__image_id__overlay_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "image_id",
+            "required": true,
+            "schema": {
+              "title": "Image Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Overlay Artifact"
       }
     },
     "/api/v1/artifacts/{image_id}/source": {
@@ -1207,6 +1354,24 @@
           }
         },
         "summary": "Record Review"
+      }
+    },
+    "/api/v1/system/status": {
+      "get": {
+        "operationId": "system_status_api_v1_system_status_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemStatusResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "System Status"
       }
     },
     "/evidence/champions.json": {

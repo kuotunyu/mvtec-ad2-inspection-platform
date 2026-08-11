@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
 
-from sqlalchemy import or_, select
+from sqlalchemy import or_, select, update
 from sqlalchemy.orm import Session
 
 from inspection_platform.db.models import Job
@@ -16,33 +16,47 @@ def _utc(value: datetime) -> datetime:
 
 
 def claim_next_job(
-    session_factory: Callable[[], Session], worker_id: str, now: datetime
+    session_factory: Callable[[], Session],
+    worker_id: str,
+    now: datetime,
+    *,
+    lease_seconds: int = LEASE_SECONDS,
 ) -> Job | None:
+    observed = _utc(now)
+    eligible = or_(
+        Job.state == "queued",
+        (Job.state == "RUNNING") & (Job.lease_expires_at <= observed),
+    )
+    candidate = select(Job.id).where(eligible).order_by(Job.created_at).limit(1).scalar_subquery()
     with session_factory() as session, session.begin():
-        job = session.scalar(
-            select(Job)
-            .where(
-                or_(
-                    Job.state == "queued",
-                    (Job.state == "RUNNING") & (Job.lease_expires_at <= _utc(now)),
-                )
+        job_id = session.scalar(
+            update(Job)
+            .where(Job.id == candidate)
+            .values(
+                state="RUNNING",
+                worker_id=worker_id,
+                heartbeat_at=observed,
+                lease_expires_at=observed + timedelta(seconds=lease_seconds),
+                attempt=Job.attempt + 1,
             )
-            .order_by(Job.created_at)
-            .limit(1)
+            .returning(Job.id)
         )
-        if job is None:
+        if job_id is None:
             return None
-        job.state = "RUNNING"
-        job.worker_id = worker_id
-        job.heartbeat_at = _utc(now)
-        job.lease_expires_at = _utc(now) + timedelta(seconds=LEASE_SECONDS)
-        job.attempt += 1
-        session.flush()
+        job = session.get(Job, job_id)
+        if job is None:
+            raise RuntimeError("claimed job disappeared before it could be loaded")
         return job
 
 
 def renew_lease(
-    session_factory: Callable[[], Session], job_id: str, worker_id: str, now: datetime
+    session_factory: Callable[[], Session],
+    job_id: str,
+    worker_id: str,
+    now: datetime,
+    *,
+    lease_seconds: int = LEASE_SECONDS,
+    expected_attempt: int | None = None,
 ) -> bool:
     with session_factory() as session, session.begin():
         job = session.get(Job, job_id)
@@ -50,12 +64,13 @@ def renew_lease(
             job is None
             or job.state != "RUNNING"
             or job.worker_id != worker_id
+            or (expected_attempt is not None and job.attempt != expected_attempt)
             or job.lease_expires_at is None
             or job.lease_expires_at <= _utc(now)
         ):
             return False
         job.heartbeat_at = _utc(now)
-        job.lease_expires_at = _utc(now) + timedelta(seconds=LEASE_SECONDS)
+        job.lease_expires_at = _utc(now) + timedelta(seconds=lease_seconds)
         return True
 
 

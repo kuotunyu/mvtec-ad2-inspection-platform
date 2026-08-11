@@ -9,7 +9,7 @@ uv sync --frozen
 powershell -ExecutionPolicy Bypass -File scripts/docker_smoke.ps1
 ```
 
-The script builds deterministic synthetic bundles in a temporary directory, starts the non-root API and worker containers, completes an inspection, verifies the image boundary, and removes its isolated runtime volumes.
+The script builds deterministic synthetic bundles in a temporary directory, starts the non-root API and worker containers, completes an inspection, verifies the image boundary, and removes its isolated database, artifact, and upload-spool volumes. Docker must have enough free storage for the configured multipart limit; with defaults the startup floor is `2 * 2 GiB + 25 MiB`.
 
 ## Python and frontend gates
 
@@ -48,7 +48,8 @@ uv run python scripts/security_scan.py --root .
 uv run python scripts/verify_public_boundary.py --git-tree HEAD
 
 uv build --out-dir dist
-$releaseArgs = @("run", "python", "scripts/verify_release.py", "--source", ".", "--output", "release-python.json")
+$releaseReport = Join-Path ([IO.Path]::GetTempPath()) "mvtec-ad2-release-python.json"
+$releaseArgs = @("run", "python", "scripts/verify_release.py", "--source", ".", "--output", $releaseReport)
 Get-ChildItem dist -File | Where-Object Name -Match '\.(?:whl|tar\.gz)$' | ForEach-Object {
     $releaseArgs += @("--archive", $_.FullName)
 }

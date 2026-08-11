@@ -4,7 +4,7 @@ This project is a local, single-operator inspection workstation. It is not an in
 
 ## Trust boundaries
 
-Uploads, archives, model bundles, reports, logs, and deletion requests are untrusted inputs. Images are size-bounded, decoder-verified, dimension-bounded, and checked for trailing polyglot data. Archive iteration rejects links, path traversal, duplicate names, excessive file counts, and excessive expanded bytes. Model files are loaded only after manifest hash verification.
+Uploads, archives, model bundles, reports, logs, and deletion requests are untrusted inputs. Multipart requests have a total receive-level limit before framework parsing or spooling; file count is capped at the parser boundary, and each image read is independently bounded. Parser and validation copies use a dedicated disk-backed spool root rather than the 64 MiB container tmpfs. Startup fails closed unless that root has at least twice the total request limit plus one maximum-file allowance free. Images are decoder-verified, dimension-bounded, and checked for trailing polyglot data. Archive iteration rejects links, path traversal, duplicate names, excessive file counts, and excessive expanded bytes. Model files are loaded only after manifest hash verification.
 
 Runtime data, uploads, databases, model weights, checkpoints, official MVTec data, private predictions, and credentials remain outside Git and release images. Public UI assets are deterministic project-generated synthetic fixtures with manifest hashes.
 
@@ -14,7 +14,7 @@ Public API errors contain a stable code, safe message, and sanitized request ID.
 
 ## Retention and deletion
 
-The intended default upload retention is seven days. Explicit batch deletion resolves immutable database references, proves each final path remains beneath the configured artifact root, refuses symbolic links, preserves content-addressed files still referenced by another job, unlinks only individual files, and records an idempotent audit tombstone. It never recursively deletes a configured root.
+The default upload retention is seven days and the worker performs a scheduled scan. Scheduled and explicit batch deletion resolve immutable database references for source images, anomaly maps, and overlays; prove each final path remains beneath the configured artifact root; refuse symbolic links; preserve content-addressed files still referenced by another active job; unlink only individual files; and record an idempotent audit tombstone. A tombstone immediately revokes that job's artifact routes even when a shared physical blob remains available to another job. The scheduled scan also removes aged files that have no database reference, closing storage-orphan windows after failed transactions. Blob writes hold a reentrant cross-process lock through database commit, and every physical unlink uses the same lock-to-database order; reusing a digest also refreshes its age reservation. Explicit deletion is terminal-job-only. A failed scheduled deletion is logged and retried without terminating the worker. The service never recursively deletes a configured root.
 
 ## Accepted risks
 

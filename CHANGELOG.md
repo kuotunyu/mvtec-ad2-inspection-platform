@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- Formal product inference now persists distinct content-addressed PNG anomaly maps and overlays, exposes database-resolved artifact routes and hashes, and exercises the API → durable job → worker → report path in the real serving gate.
+- Worker leases renew from a separate heartbeat thread; prediction and audit dedupe constraints, durable worker liveness, real dashboard backlog, bounded multipart reads, review-dialog focus containment, and scheduled seven-day retention harden the workstation path.
+- Atomic job claims and lease-generation fences prevent stale workers from publishing evidence; transactional ingestion, optimistic review revision constraints, automatic legacy migrations, pre-parser request limits, terminal-only deletion, and retryable retention close restart and concurrency races.
+- Tombstones now revoke job-scoped artifact routes even when another job shares the same content-addressed blob; legacy migrations preserve and reconcile conflicting evidence, backfill audit idempotency keys, and a reentrant cross-process store lock coordinates publication commits with every physical unlink.
+- Multipart parser and validation copies now use a dedicated disk-backed spool volume, and API startup enforces capacity for both copies plus per-file headroom instead of relying on the 64 MiB container tmpfs.
+- Added an explicit NVIDIA Compose override while keeping the default synthetic Docker profile CPU-only and free of the ML extra.
+- Recorded the memory-bounded PatchCore conclusion `EFFICIENT_SEED42_ONLY`: useful efficiency/localization evidence, but no champion promotion because the multi-seed image-AUROC gate failed.
+
 ## 0.1.0-rc.1 - 2026-08-11
 
 Status: `PRIVATE-NO-GO`. The product and public release-candidate gates remain verified, but the frozen official private gate does not support a v1 release. This source snapshot is published as a GitHub pre-release, not as a v1 or production release.

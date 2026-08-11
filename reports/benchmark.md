@@ -1,6 +1,6 @@
 # MVTec AD 2 Public Benchmark
 
-This report is generated only from the canonical aggregate JSON artifacts. 
+This report is generated only from the canonical aggregate JSON artifacts.
 Raw images, anomaly maps, checkpoints, and private outputs are not included.
 
 - Public benchmark SHA-256: `9cf47070c75bbf66f5e9919c32b5847b886a2f02190ea844c55273bb5ac4f751`

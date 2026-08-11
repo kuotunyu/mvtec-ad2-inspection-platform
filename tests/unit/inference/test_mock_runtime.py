@@ -42,6 +42,20 @@ def test_mock_runtime_is_deterministic() -> None:
     assert first.input_sha256 == hashlib.sha256(image).hexdigest()
 
 
+def test_mock_runtime_produces_deterministic_spatial_evidence() -> None:
+    stream = BytesIO()
+    Image.new("RGB", (7, 5), (20, 80, 140)).save(stream, format="PNG")
+    loaded = MockRuntime.load(_manifest())
+
+    first = loaded.predict_with_map(stream.getvalue(), input_id="one")
+    second = loaded.predict_with_map(stream.getvalue(), input_id="one")
+
+    assert first.record == second.record
+    assert first.anomaly_map.mode == "L"
+    assert first.anomaly_map.size == (7, 5)
+    assert first.anomaly_map.tobytes() == second.anomaly_map.tobytes()
+
+
 def test_mock_runtime_rejects_wrong_contract() -> None:
     manifest = _manifest().model_copy(update={"prediction_contract_version": "9.0.0"})
     try:

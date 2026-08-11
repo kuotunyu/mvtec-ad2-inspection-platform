@@ -25,11 +25,14 @@ services:
       INSPECTION_DATABASE_URL: sqlite:////runtime/db/inspection.db
       INSPECTION_ARTIFACT_ROOT: /runtime/artifacts
       INSPECTION_MODEL_REGISTRY_ROOT: /models
+      INSPECTION_SPOOL_ROOT: /runtime/spool
+      TMPDIR: /runtime/spool
     ports:
       - "127.0.0.1:${INSPECTION_PORT:-8000}:8000"
     volumes:
       - inspection-db:/runtime/db
       - inspection-artifacts:/runtime/artifacts
+      - inspection-spool:/runtime/spool
       - ${INSPECTION_MODEL_ROOT:?set INSPECTION_MODEL_ROOT}:/models:ro
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health/ready', timeout=2)"]
@@ -60,3 +63,4 @@ services:
 volumes:
   inspection-db:
   inspection-artifacts:
+  inspection-spool:

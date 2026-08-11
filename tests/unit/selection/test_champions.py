@@ -288,3 +288,4 @@ def test_replication_freezes_one_champion_from_three_seeds_per_contender() -> No
         if item.family == champions.decisions[0].decision.winner
     )
     assert winner.run_identities[0] in markdown
+    assert all(line == line.rstrip() for line in markdown.splitlines())

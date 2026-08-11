@@ -13,6 +13,8 @@
 
 這是一個把 anomaly detection 研究接到可操作產品邊界的 local-first 專案：離線端比較 PatchCore、EfficientAD 與 Dinomaly，線上端提供可續跑 batch、視覺化證據、人工覆核與稽核報告。Repository 只用 `fixtures/public-demo` 產生公開畫面，不重新散布 MVTec 資料；官方 frozen private gate 的結論為 `PRIVATE-NO-GO`。
 
+目前公開版本是 source-only [`v0.1.0-rc.1` pre-release](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.0-rc.1)：適合作為研究與系統工程作品展示，但不是 production release，不附資料、weights 或部署。
+
 ---
 
 ## 專案重點
@@ -56,12 +58,12 @@
 flowchart TD
     subgraph InStage ["階段一：批次提交與任務註冊 (Batch Ingestion)"]
         direction LR
-        Batch[("工業檢測影像批次<br/>(PNG / TIFF / JPEG)")] --> Validate["檔案格式與完整性檢核<br/>(單檔損壞不中斷批次)"] --> Task[("SQLite 任務隊列<br/>(租約式任務註冊)")]
+        Batch[("工業檢測影像批次<br/>(PNG、JPEG、WebP)")] --> Validate["檔案格式與完整性檢核<br/>(單檔損壞不中斷批次)"] --> Task[("SQLite 任務隊列<br/>(租約式任務註冊)")]
     end
 
     subgraph WorkerStage ["階段二：Leased Worker GPU 推理與異常定位"]
         direction LR
-        Task --> Worker["Leased Background Worker<br/>(獨占租約與冪等續跑)"] --> Reg[("Model Registry 權重檢核<br/>(PatchCore / Dinomaly)")] --> GPU["RTX 4090 GPU 推理<br/>(產生 TIFF 異常熱力圖)"]
+        Task --> Worker["Leased Background Worker<br/>(獨立 heartbeat 與冪等續跑)"] --> Reg[("Model Registry 權重檢核<br/>(PatchCore / Dinomaly)")] --> GPU["Formal GPU / Synthetic CPU 推理<br/>(產生 PNG anomaly-map 與 overlay)"]
     end
 
     subgraph ReviewStage ["階段三：模型判定與人機協作覆核 (Human-in-the-Loop)"]
@@ -97,7 +99,7 @@ flowchart TD
 
 ![從 batch submission 到人工覆核的 synthetic workflow](docs/assets/workflow.svg)
 
-操作人員選擇 category 並送出 batch；其中一張影像損壞時，其餘有效影像仍會繼續。獨占 lease 的 worker 在 inference 前驗證指定 model bundle，將模型證據記為 `PASS` 或 `REVIEW`，並能在 lease 過期後 idempotent resume。最終處置由人員決定，所有報告分開保留模型判定與人工決策。
+操作人員選擇 category 並送出 batch；job、audit 與 images 在同一 transaction 公開，其中一張影像損壞時，其餘有效影像仍會繼續。獨占 lease 的 worker 在 inference 前驗證指定 model bundle，以獨立 heartbeat 續租，並用 worker、attempt generation、state 與到期時間做 database fence，才把 source、PNG anomaly-map、overlay 與 hashes 分別保存；租約失效後能 idempotent resume。模型證據只記為 `PASS` 或 `REVIEW`，最終處置由人員決定，所有報告分開保留模型判定與人工決策。
 
 本 Repository 的 screenshots 全由 `fixtures/public-demo` 產生，不含 MVTec pixels，也不代表已部署於 production。
 
@@ -118,6 +120,8 @@ flowchart TD
 - `can`、`vial`、`wallplugs`、`walnuts` 的 winner 是 PatchCore；`fabric`、`fruit_jelly`、`rice`、`sheet_metal` 的 winner 是 Dinomaly。
 - EfficientAD 是已 benchmark 的 candidate，但未被選為 champion。
 - 唯一一次獲授權的 frozen archive 通過官方 local validator 並由官方 server 評測；看到結果後沒有重建或重新提交。
+
+![由 committed public evidence 產生的各 category frozen champion mean AU-PRO](docs/assets/bench/champion-au-pro.svg)
 
 ---
 
@@ -160,7 +164,7 @@ flowchart TD
 
 ![由 React、FastAPI、SQLite、worker、artifact store 與 verified registry 組成的 local architecture](docs/assets/architecture.svg)
 
-API startup 不會 import training orchestration。Runtime databases、uploads、artifacts、datasets、checkpoints 與 real model bundles 全部位於 Git 之外。Docker 使用 digest-pinned multi-stage images、read-only root filesystem、unprivileged user、persistent runtime volumes 與 read-only model mount。
+API startup 不會 import training orchestration。Runtime databases、uploads、artifacts、datasets、checkpoints 與 real model bundles 全部位於 Git 之外。Docker 使用 digest-pinned multi-stage images、read-only root filesystem、unprivileged user、persistent runtime volumes 與 read-only model mount；multipart parser 與 validated-upload staging 共用獨立 disk-backed spool volume，啟動時會檢查其容量。預設 `compose.yaml` 是 CPU synthetic profile；formal NVIDIA worker 使用 `docker compose -f compose.yaml -f compose.gpu.yaml up --build`，且仍需外部 verified registry 與 NVIDIA Container Toolkit。
 
 詳細資料請見 [Architecture](docs/ARCHITECTURE.md)、[Case study](docs/CASE_STUDY.md)、[Model card](docs/MODEL_CARD.md)、[Data card](docs/DATA_CARD.md)、[Security](docs/SECURITY.md) 與 [Limitations](docs/LIMITATIONS.md)。
 

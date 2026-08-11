@@ -317,7 +317,7 @@ def main() -> int:
     parser.add_argument("--warmup", type=int, default=3)
     parser.add_argument("--repetitions", type=int, default=20)
     parser.add_argument("--cpu-repetitions", type=int, default=3)
-    parser.add_argument("--gpu-lock", type=Path, default=Path("D:/.mvtec-ad2-gpu.lock"))
+    parser.add_argument("--gpu-lock", type=Path, required=True)
     parser.add_argument("--code-sha")
     args = parser.parse_args()
     data_root = args.data_root or Path(os.environ["MVTECAD2_DATA_ROOT"])

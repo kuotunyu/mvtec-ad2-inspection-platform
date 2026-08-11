@@ -1,0 +1,10 @@
+services:
+  worker:
+    build:
+      context: .
+      dockerfile: deploy/docker/worker-gpu.Dockerfile
+      args:
+        SOURCE_REVISION: ${SOURCE_REVISION:-unknown}
+    environment:
+      INSPECTION_INFERENCE_DEVICE: cuda:0
+    gpus: all

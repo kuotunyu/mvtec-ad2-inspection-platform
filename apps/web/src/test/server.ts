@@ -9,6 +9,7 @@ export const handlers = [
   http.post("/api/v1/reviews/:id", () => HttpResponse.json(fixtures.resolvedReview, { status: 201 })),
   http.get("/api/v1/models", () => HttpResponse.json(fixtures.models)),
   http.get("/api/v1/evidence", () => HttpResponse.json(fixtures.publicOnlyEvidence)),
+  http.get("/api/v1/system/status", () => HttpResponse.json(fixtures.systemStatus)),
 ];
 
 export const server = setupServer(...handlers);

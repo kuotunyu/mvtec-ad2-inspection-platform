@@ -1,13 +1,18 @@
 from __future__ import annotations
 
 import hashlib
+from datetime import UTC, datetime
 from io import BytesIO
 from pathlib import Path
+from threading import Barrier, Thread
+from typing import Any
 
 from fastapi.testclient import TestClient
 from PIL import Image
+from sqlalchemy import Engine, event, func, select
 
 from apps.api.main import create_app
+from inspection_platform.db.models import AuditEvent, WorkerHeartbeat
 from inspection_platform.settings import Settings
 
 
@@ -79,3 +84,88 @@ def test_health_models_evidence_and_review_revision_contract(tmp_path: Path) -> 
     )
     assert conflict.status_code == 409
     assert conflict.json()["code"] == "review_revision_conflict"
+    with client.app.state.sessions() as session:
+        review_audits = session.scalar(
+            select(func.count())
+            .select_from(AuditEvent)
+            .where(
+                AuditEvent.action == "review.recorded",
+                AuditEvent.resource_id == image_id,
+            )
+        )
+    assert review_audits == 1
+
+
+def test_concurrent_review_revisions_return_one_conflict(tmp_path: Path) -> None:
+    client = _client(tmp_path)
+    created = client.post(
+        "/api/v1/jobs",
+        data={"category": "can"},
+        files=[("files", ("review.png", _png(), "image/png"))],
+    ).json()
+    image_id = client.get(f"/api/v1/jobs/{created['id']}").json()["images"][0]["id"]
+    engine = client.app.state.sessions.kw["bind"]
+    assert isinstance(engine, Engine)
+    revisions_read = Barrier(2)
+
+    def pause_after_revision_read(
+        _connection: Any,
+        _cursor: Any,
+        statement: str,
+        _parameters: Any,
+        _context: Any,
+        _executemany: bool,
+    ) -> None:
+        if statement.lstrip().upper().startswith("SELECT") and "FROM reviews" in statement:
+            revisions_read.wait(timeout=2)
+
+    event.listen(engine, "after_cursor_execute", pause_after_revision_read)
+    statuses: list[int] = []
+    errors: list[Exception] = []
+
+    def review(decision: str) -> None:
+        try:
+            response = client.post(
+                f"/api/v1/reviews/{image_id}",
+                json={"decision": decision, "expected_revision": 0},
+            )
+            statuses.append(response.status_code)
+        except Exception as exc:
+            errors.append(exc)
+
+    reviewers = [Thread(target=review, args=(decision,)) for decision in ("ACCEPT", "REJECT")]
+    for reviewer in reviewers:
+        reviewer.start()
+    for reviewer in reviewers:
+        reviewer.join(timeout=5)
+    event.remove(engine, "after_cursor_execute", pause_after_revision_read)
+
+    assert errors == []
+    assert sorted(statuses) == [201, 409]
+
+
+def test_system_status_reports_persisted_worker_liveness_and_queue(tmp_path: Path) -> None:
+    client = _client(tmp_path)
+    initial = client.get("/api/v1/system/status")
+    assert initial.status_code == 200
+    assert initial.json()["worker_status"] == "missing"
+    now = datetime.now(UTC)
+    with client.app.state.sessions() as session, session.begin():
+        session.add(
+            WorkerHeartbeat(
+                worker_id="worker-a",
+                started_at=now,
+                heartbeat_at=now,
+                status="idle",
+            )
+        )
+    client.post(
+        "/api/v1/jobs",
+        data={"category": "can"},
+        files=[("files", ("part.png", _png(), "image/png"))],
+    )
+    status = client.get("/api/v1/system/status").json()
+    assert status["backend_status"] == "ready"
+    assert status["worker_status"] == "current"
+    assert status["active_queue"] == 1
+    assert status["review_backlog"] == 0

@@ -42,7 +42,7 @@ def render_markdown(benchmark: PublicBenchmark, champions: ChampionsArtifact) ->
     lines = [
         "# MVTec AD 2 Public Benchmark",
         "",
-        "This report is generated only from the canonical aggregate JSON artifacts. ",
+        "This report is generated only from the canonical aggregate JSON artifacts.",
         "Raw images, anomaly maps, checkpoints, and private outputs are not included.",
         "",
         f"- Public benchmark SHA-256: `{benchmark.identity}`",

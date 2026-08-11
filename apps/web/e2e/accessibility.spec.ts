@@ -18,3 +18,11 @@ test("supports narrow viewport and 200 percent zoom", async ({ page }) => {
   await page.getByRole("button", { name: "Choose files" }).focus();
   await expect(page.getByRole("button", { name: "Choose files" })).toBeFocused();
 });
+
+test("review confirmation modal has no serious accessibility violations", async ({ page }) => {
+  await mockBackend(page); await page.goto("/review");
+  await page.getByRole("button", { name: "Reject" }).click();
+  await expect(page.getByRole("dialog", { name: "Confirm human rejection" })).toBeVisible();
+  const results = await new AxeBuilder({ page }).disableRules(["color-contrast"]).analyze();
+  expect(results.violations.filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))).toEqual([]);
+});

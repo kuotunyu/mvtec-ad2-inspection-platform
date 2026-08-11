@@ -34,6 +34,7 @@ class JobRepository:
                     action="job.created",
                     resource_id=job.id,
                     created_at=job.created_at,
+                    dedupe_key=f"job.created:{job.id}",
                 )
             )
             session.flush()

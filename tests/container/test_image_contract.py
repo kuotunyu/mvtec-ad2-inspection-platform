@@ -65,3 +65,28 @@ def test_release_scripts_fail_fast_on_native_command_errors() -> None:
     for name in ("docker_smoke.ps1", "run_system_tests.ps1"):
         source = (Path("scripts") / name).read_text(encoding="utf-8")
         assert "function Invoke-NativeChecked" in source
+
+
+def test_gpu_worker_profile_installs_ml_extra_and_requests_nvidia_device() -> None:
+    dockerfile = Path("deploy/docker/worker-gpu.Dockerfile").read_text(encoding="utf-8")
+    assert "uv sync --frozen --no-dev --extra ml --no-editable" in dockerfile
+    assert re.search(r"^USER\s+(?!0\b|root\b)\S+", dockerfile, re.MULTILINE)
+    compose = yaml.safe_load(Path("compose.gpu.yaml").read_text(encoding="utf-8"))
+    worker = compose["services"]["worker"]
+    assert worker["build"]["dockerfile"] == "deploy/docker/worker-gpu.Dockerfile"
+    assert worker["environment"]["INSPECTION_INFERENCE_DEVICE"] == "cuda:0"
+    assert worker["gpus"] == "all"
+
+
+def test_api_uses_dedicated_disk_backed_spool_volume() -> None:
+    compose = yaml.safe_load(Path("compose.yaml").read_text(encoding="utf-8"))
+    api = compose["services"]["api"]
+
+    assert api["environment"]["TMPDIR"] == "/runtime/spool"
+    assert api["environment"]["INSPECTION_SPOOL_ROOT"] == "/runtime/spool"
+    assert "inspection-spool:/runtime/spool" in api["volumes"]
+    assert "inspection-spool" in compose["volumes"]
+
+    dockerfile = Path("deploy/docker/api.Dockerfile").read_text(encoding="utf-8")
+    assert "TMPDIR=/runtime/spool" in dockerfile
+    assert 'VOLUME ["/runtime/db", "/runtime/artifacts", "/runtime/spool"]' in dockerfile

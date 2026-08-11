@@ -20,7 +20,7 @@ LABEL org.opencontainers.image.source="https://github.com/kuotunyu/mvtec-ad2-ins
       org.opencontainers.image.revision="${SOURCE_REVISION:-unknown}"
 RUN groupadd --gid 10001 inspection \
     && useradd --uid 10001 --gid inspection --no-create-home inspection \
-    && mkdir -p /runtime/db /runtime/artifacts \
+    && mkdir -p /runtime/db /runtime/artifacts /runtime/spool \
     && chown -R 10001:10001 /runtime
 WORKDIR /app
 COPY --from=python-build /app/.venv /app/.venv
@@ -32,9 +32,9 @@ COPY src/inspection_platform/db/migrations/ src/inspection_platform/db/migration
 COPY --from=web /web/dist apps/web/dist/
 COPY deploy/docker/entrypoint-api.sh /usr/local/bin/entrypoint-api
 RUN chmod 0555 /usr/local/bin/entrypoint-api
-ENV PATH="/app/.venv/bin:$PATH" PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+ENV PATH="/app/.venv/bin:$PATH" PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 TMPDIR=/runtime/spool
 USER 10001:10001
-VOLUME ["/runtime/db", "/runtime/artifacts"]
+VOLUME ["/runtime/db", "/runtime/artifacts", "/runtime/spool"]
 EXPOSE 8000
 HEALTHCHECK --interval=10s --timeout=3s --start-period=15s --retries=6 \
   CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health/ready', timeout=2)"
