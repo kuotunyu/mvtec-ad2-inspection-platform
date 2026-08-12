@@ -22,12 +22,12 @@ describe("Dashboard", () => {
       return new Response(JSON.stringify(payload), { headers: { "content-type": "application/json" } });
     }));
     renderApp("/");
-    expect(await screen.findByText("2 recent jobs")).toBeVisible();
-    expect(screen.getByText("1 image error")).toBeVisible();
-    const summary = screen.getByRole("region", { name: "Operations summary" });
-    expect(within(summary).getByText("Model review backlog")).toBeVisible();
+    expect(await screen.findByText("2 筆近期檢測")).toBeVisible();
+    expect(screen.getByText("1 張影像處理失敗")).toBeVisible();
+    const summary = screen.getByRole("region", { name: "作業摘要" });
+    expect(within(summary).getByText("待人工覆核")).toBeVisible();
     expect(await within(summary).findByText("03")).toBeVisible();
-    expect(await screen.findByText("Worker heartbeat: stale")).toBeVisible();
+    expect(await screen.findByText("Worker heartbeat：過期")).toBeVisible();
   });
 
   it("does not present partial recent-job counts as authoritative system health", async () => {
@@ -44,9 +44,9 @@ describe("Dashboard", () => {
     }));
 
     renderApp("/");
-    expect(await screen.findByText("1 recent jobs")).toBeVisible();
-    const summary = screen.getByRole("region", { name: "Operations summary" });
+    expect(await screen.findByText("1 筆近期檢測")).toBeVisible();
+    const summary = screen.getByRole("region", { name: "作業摘要" });
     expect(within(summary).getAllByText("—")).toHaveLength(3);
-    expect(within(summary).getByText("Status unavailable")).toBeVisible();
+    expect(within(summary).getByText("狀態無法取得")).toBeVisible();
   });
 });

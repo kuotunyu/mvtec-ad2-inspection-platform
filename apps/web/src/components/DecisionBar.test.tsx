@@ -8,7 +8,7 @@ describe("DecisionBar", () => {
     const user = userEvent.setup();
     const onChoose = vi.fn();
     render(<DecisionBar onChoose={onChoose} disabled={false} />);
-    await user.click(screen.getByRole("button", { name: "Reject" }));
+    await user.click(screen.getByRole("button", { name: "拒絕" }));
     expect(onChoose).toHaveBeenCalledWith("REJECT");
   });
 });

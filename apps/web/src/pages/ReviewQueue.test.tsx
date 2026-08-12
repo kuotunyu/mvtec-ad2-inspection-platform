@@ -12,10 +12,10 @@ describe("ReviewQueue", () => {
     vi.stubGlobal("fetch", vi.fn(async (_input: RequestInfo | URL, init: RequestInit = {}) => { requests.push(init); return new Response(JSON.stringify({ items: [item], total: 1 }), { headers: { "content-type": "application/json" } }); }));
     const user = userEvent.setup();
     renderApp("/review");
-    const workspace = await screen.findByRole("region", { name: "Review workspace" });
+    const workspace = await screen.findByRole("region", { name: "人工覆核工作區" });
     workspace.focus();
     await user.keyboard("r");
-    expect(screen.getByRole("dialog", { name: "Confirm human rejection" })).toBeVisible();
+    expect(screen.getByRole("dialog", { name: "確認人工拒絕" })).toBeVisible();
     expect(requests.filter((request) => request.method === "POST")).toHaveLength(0);
   });
 
@@ -23,19 +23,19 @@ describe("ReviewQueue", () => {
     vi.stubGlobal("fetch", vi.fn(async (_input: RequestInfo | URL, init: RequestInit = {}) => init.method === "POST" ? new Response(JSON.stringify({ code: "review_revision_conflict", message: "This item was reviewed elsewhere", request_id: "req-1" }), { status: 409, headers: { "content-type": "application/json" } }) : new Response(JSON.stringify({ items: [item], total: 1 }), { headers: { "content-type": "application/json" } })));
     const user = userEvent.setup();
     renderApp("/review");
-    await user.click(await screen.findByRole("button", { name: "Uncertain" }));
-    await user.click(screen.getByRole("button", { name: "Confirm uncertain" }));
-    expect(await screen.findByText("This item was reviewed elsewhere")).toBeVisible();
+    await user.click(await screen.findByRole("button", { name: "不確定" }));
+    await user.click(screen.getByRole("button", { name: "確認不確定" }));
+    expect(await screen.findByText("此項目已由其他操作員完成覆核")).toBeVisible();
   });
 
   it("traps focus, supports Escape, and restores the decision trigger", async () => {
     vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ items: [item], total: 1 }), { headers: { "content-type": "application/json" } })));
     const user = userEvent.setup();
     renderApp("/review");
-    const reject = await screen.findByRole("button", { name: "Reject" });
+    const reject = await screen.findByRole("button", { name: "拒絕" });
     await user.click(reject);
-    const cancel = screen.getByRole("button", { name: "Cancel" });
-    const confirm = screen.getByRole("button", { name: "Confirm reject" });
+    const cancel = screen.getByRole("button", { name: "取消" });
+    const confirm = screen.getByRole("button", { name: "確認拒絕" });
     expect(cancel).toHaveFocus();
     await user.tab({ shift: true });
     expect(confirm).toHaveFocus();

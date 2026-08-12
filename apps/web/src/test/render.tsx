@@ -3,7 +3,9 @@ import { render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { App } from "../app/App";
 
-export function renderApp(path = "/") {
+type InitialEntry = string | { pathname: string; state?: unknown };
+
+export function renderApp(path: InitialEntry = "/") {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
   return render(<QueryClientProvider client={client}><MemoryRouter initialEntries={[path]}><App /></MemoryRouter></QueryClientProvider>);
 }

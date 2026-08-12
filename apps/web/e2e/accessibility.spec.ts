@@ -14,15 +14,15 @@ for (const path of ["/", "/inspect", "/jobs/synthetic-job", "/review", "/evidenc
 test("supports narrow viewport and 200 percent zoom", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 }); await mockBackend(page); await page.goto("/inspect");
   await page.evaluate(() => { document.documentElement.style.zoom = "2"; });
-  await expect(page.getByRole("heading", { name: "New inspection" })).toBeVisible();
-  await page.getByRole("button", { name: "Choose files" }).focus();
-  await expect(page.getByRole("button", { name: "Choose files" })).toBeFocused();
+  await expect(page.getByRole("heading", { name: "建立檢測" })).toBeVisible();
+  await page.getByRole("button", { name: "選擇檔案" }).focus();
+  await expect(page.getByRole("button", { name: "選擇檔案" })).toBeFocused();
 });
 
 test("review confirmation modal has no serious accessibility violations", async ({ page }) => {
   await mockBackend(page); await page.goto("/review");
-  await page.getByRole("button", { name: "Reject" }).click();
-  await expect(page.getByRole("dialog", { name: "Confirm human rejection" })).toBeVisible();
+  await page.getByRole("button", { name: "拒絕" }).click();
+  await expect(page.getByRole("dialog", { name: "確認人工拒絕" })).toBeVisible();
   const results = await new AxeBuilder({ page }).disableRules(["color-contrast"]).analyze();
   expect(results.violations.filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))).toEqual([]);
 });

@@ -5,6 +5,19 @@ import { renderApp } from "../test/render";
 afterEach(() => vi.restoreAllMocks());
 
 describe("JobDetail", () => {
+  it("removes the queued announcement after a job reaches a terminal state", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({
+      id: "job-complete", category: "can", image_count: 2, status: "COMPLETED",
+      created_at: "2026-08-09T01:00:00Z", completed_count: 2, error_count: 0, revision: 1,
+      model_bundle_id: "bundle-123", images: [],
+    }), { headers: { "content-type": "application/json" } })));
+
+    renderApp({ pathname: "/jobs/job-complete", state: { queuedCount: 2 } });
+
+    expect(await screen.findByText("檢測已完成")).toBeVisible();
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+  });
+
   it("keeps successful results visible when one image failed", async () => {
     vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({
       id: "job-partial", category: "can", image_count: 2, status: "COMPLETED_WITH_ERRORS",
@@ -15,8 +28,8 @@ describe("JobDetail", () => {
       ],
     }), { headers: { "content-type": "application/json" } })));
     renderApp("/jobs/job-partial");
-    expect(await screen.findByText("Completed with 1 image error")).toBeVisible();
-    expect(screen.getByRole("img", { name: "Anomaly overlay for part-01" })).toBeVisible();
+    expect(await screen.findByText("已完成，1 張影像處理失敗")).toBeVisible();
+    expect(screen.getByRole("img", { name: "part-01 的 anomaly overlay" })).toBeVisible();
     expect(screen.getByText("Could not decode part-02")).toBeVisible();
   });
 });

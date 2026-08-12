@@ -105,10 +105,10 @@ flowchart TD
 
 ### 工作站巡覽
 
-| Operations overview | Secure batch intake |
+| 檢測作業總覽 | 安全批次匯入 |
 |---|---|
 | ![佇列、人工覆核與 champion coverage 總覽](docs/assets/screenshots/dashboard.webp) | ![依 category 選擇 frozen champion 的本機批次提交](docs/assets/screenshots/new-inspection.webp) |
-| **Human review workspace** | **Model & evidence** |
+| **人工覆核工作區** | **Model 與證據** |
 | ![分開呈現模型證據與人工處置的覆核工作區](docs/assets/screenshots/review.webp) | ![呈現 category champions、官方 gate、provenance 與限制的模型證據頁](docs/assets/screenshots/model-evidence.webp) |
 
 ---

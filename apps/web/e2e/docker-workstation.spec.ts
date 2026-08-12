@@ -24,25 +24,25 @@ test("real container workflow stays inside public response boundaries", async ({
   });
 
   await page.goto("/inspect");
-  await page.getByLabel("Inspection files").setInputFiles([
+  await page.getByLabel("檢測影像檔案").setInputFiles([
     path.resolve("../../fixtures/public-demo/images/clean-control.png"),
     path.resolve("../../fixtures/public-demo/images/scratch-review.png"),
   ]);
-  await page.getByRole("button", { name: "Start inspection" }).click();
-  await expect(page.getByText("Inspection completed")).toBeVisible({ timeout: 20_000 });
-  await page.getByRole("button", { name: /inspect evidence/i }).first().click();
-  await expect(page.getByLabel("Overlay reveal")).toBeVisible();
-  await page.getByRole("button", { name: "Close evidence" }).click();
+  await page.getByRole("button", { name: "開始檢測" }).click();
+  await expect(page.getByText("檢測已完成")).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /查看 .* 的檢測證據/ }).first().click();
+  await expect(page.getByLabel("Overlay 顯示比例")).toBeVisible();
+  await page.getByRole("button", { name: "關閉檢測證據" }).click();
   const download = page.waitForEvent("download");
   await page.getByRole("link", { name: "JSON" }).click();
   await download;
 
   await page.goto("/review");
-  await page.getByRole("button", { name: "Uncertain" }).click();
-  await page.getByRole("button", { name: "Confirm uncertain" }).click();
-  await expect(page.getByText(/Human decision saved/)).toBeVisible();
+  await page.getByRole("button", { name: "不確定" }).click();
+  await page.getByRole("button", { name: "確認不確定" }).click();
+  await expect(page.getByText(/已儲存 .* 的人工處置/)).toBeVisible();
   await page.goto("/evidence");
-  await expect(page.getByText("Private evaluation: NO-GO under lighting shift")).toBeVisible();
+  await expect(page.getByText("Private evaluation：NO-GO under lighting shift")).toBeVisible();
   await expect(page.getByText(/detected defect|confirmed defect/i)).toHaveCount(0);
   expect(failures).toEqual([]);
 });

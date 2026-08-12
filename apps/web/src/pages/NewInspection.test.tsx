@@ -13,9 +13,9 @@ describe("NewInspection", () => {
     renderApp("/inspect");
     await user.selectOptions(screen.getByLabelText("Component category"), "can");
     const files = [new File(["one"], "a.png", { type: "image/png" }), new File(["two"], "b.png", { type: "image/png" })];
-    await user.upload(screen.getByLabelText("Inspection files"), files);
-    await user.click(screen.getByRole("button", { name: "Start inspection" }));
-    expect(await screen.findByText("2 images queued")).toBeVisible();
+    await user.upload(screen.getByLabelText("檢測影像檔案"), files);
+    await user.click(screen.getByRole("button", { name: "開始檢測" }));
+    expect(await screen.findByText("2 張影像已加入佇列")).toBeVisible();
     expect(fetchMock.mock.calls.filter(([, init]) => init?.method === "POST")).toHaveLength(1);
   });
 });

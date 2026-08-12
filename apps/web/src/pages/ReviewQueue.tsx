@@ -10,9 +10,9 @@ import { type HistoryEntry, ReviewHistory } from "../components/ReviewHistory";
 import { ReviewWorkspace } from "../components/ReviewWorkspace";
 
 const decisionLabels: Record<ReviewDecision, string> = {
-  ACCEPT: "acceptance",
-  REJECT: "rejection",
-  UNCERTAIN: "uncertain",
+  ACCEPT: "接受",
+  REJECT: "拒絕",
+  UNCERTAIN: "不確定",
 };
 
 export function ReviewQueue() {
@@ -88,7 +88,7 @@ export function ReviewQueue() {
           createdAt: result.created_at,
         },
       ]);
-      setMessage(`Human decision saved for ${image.filename}.`);
+      setMessage(`已儲存 ${image.filename} 的人工處置。`);
       setNote("");
       close();
       await queryClient.invalidateQueries({ queryKey: queryKeys.reviews });
@@ -96,8 +96,8 @@ export function ReviewQueue() {
       close();
       setMessage(
         error instanceof ApiError && error.status === 409
-          ? "This item was reviewed elsewhere"
-          : "Decision was not saved. Check the connection and try again.",
+          ? "此項目已由其他操作員完成覆核"
+          : "無法儲存處置。請檢查連線後再試一次。",
       );
       if (error instanceof ApiError && error.status === 409) await reviews.refetch();
     } finally {
@@ -113,20 +113,18 @@ export function ReviewQueue() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="review-confirm-title"
-            aria-label={`Confirm human ${decisionLabels[decision]}`}
+            aria-label={`確認人工${decisionLabels[decision]}`}
           >
-            <span className="eyebrow">Human decision confirmation</span>
-            <h2 id="review-confirm-title">Confirm human {decisionLabels[decision]}</h2>
+            <h2 id="review-confirm-title">確認人工{decisionLabels[decision]}</h2>
             <p>
-              You are about to record <strong>{decision}</strong> for <strong>{image.filename}</strong>.
-              This creates a new audit revision.
+              即將為 <strong>{image.filename}</strong> 記錄 <strong>{decision}</strong>，並建立新的 audit revision。
             </p>
             <div>
               <button ref={cancelButton} type="button" className="button button--secondary" onClick={close}>
-                Cancel
+                取消
               </button>
               <button ref={confirmButton} type="button" className="button" disabled={saving} onClick={confirm}>
-                {saving ? "Saving…" : `Confirm ${decision.toLowerCase()}`}
+                {saving ? "儲存中…" : `確認${decisionLabels[decision]}`}
               </button>
             </div>
           </section>
@@ -139,31 +137,29 @@ export function ReviewQueue() {
     <div className="page">
       <header className="page-header">
         <div>
-          <span className="eyebrow">Human decision workspace</span>
-          <h1>Review queue</h1>
+          <h1>待覆核項目</h1>
           <p className="lede">
-            Resolve model REVIEW evidence deliberately. These actions are human audit decisions,
-            not model predictions.
+            逐項處理 Model REVIEW 證據。這些是人工 audit decision，不是 model prediction。
           </p>
         </div>
         <div className="queue-count">
           <strong className="numeric">{reviews.data?.total ?? "—"}</strong>
-          <span>unresolved</span>
+          <span>未處置</span>
         </div>
       </header>
       {message && <p className="review-message" role="status">{message}</p>}
       {reviews.isError ? (
-        <ErrorPanel message="The review queue could not be loaded." onRetry={() => reviews.refetch()} />
+        <ErrorPanel message="無法載入待覆核項目。" onRetry={() => reviews.refetch()} />
       ) : reviews.isLoading ? (
-        <p role="status">Loading review queue…</p>
+        <p role="status">正在載入待覆核項目…</p>
       ) : image ? (
         <>
           <ReviewWorkspace image={image} note={note} onNote={setNote} onChoose={choose} disabled={saving} />
           <ReviewHistory entries={history} />
         </>
       ) : (
-        <EmptyState title="Review queue is clear">
-          No unresolved model REVIEW items require a human decision.
+        <EmptyState title="待覆核項目已清空">
+          目前沒有需要人工處置的 Model REVIEW 證據。
         </EmptyState>
       )}
       {dialog}

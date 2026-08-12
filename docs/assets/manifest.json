@@ -1,11 +1,11 @@
 {
   "assets": {
     "architecture.svg": "0dc5c8201a06a539ee5c9a0e37ff31731fdc339fe0d454971bc9860bd2f85007",
-    "screenshots/dashboard.webp": "33ab59c871e76748b9673f6219323072aa5443cbeb3716a8cc032c027f3d0355",
-    "screenshots/job-evidence.webp": "cb08426d2f2b1b4e9d386fc378fd3c8eb7974a82ecc9dc91af77e9e06eeb9d80",
-    "screenshots/model-evidence.webp": "a7f111251e3ec2a46a13815a74b362ead75fce5861084243eec1f97ef801d1ec",
-    "screenshots/new-inspection.webp": "b7622ae895c747cce21c1d6a5111d778e4edd6c37ce6e5bc3d64a553cc940818",
-    "screenshots/review.webp": "dfbd42537364777e472389759f8baf39fdec4df040bb6af344d5fa27b29f7da0",
+    "screenshots/dashboard.webp": "3285390f0ec9986ea3c48babddd8990a0618a8efd25b0e51b60f0655e94dbd8d",
+    "screenshots/job-evidence.webp": "fc48e1624ee046e2dd207290378ab6ba6f1e68b27e9d7592c8abd977c12200c9",
+    "screenshots/model-evidence.webp": "c320ba6029b4566dd3b8197bbce4f76d0d961733c49bf1e359a11f67173d2161",
+    "screenshots/new-inspection.webp": "e9ace66bc89b74a2a008b473f6da347b675d5f7af8ef1bf58ad8d57ab071f865",
+    "screenshots/review.webp": "5bc5ccf0806108c0174e429bf0b4ee62eb1dd3310990183e06229d0e542972ed",
     "workflow.svg": "68f7b999df8c8e3b88fedf009d30a920e43941584bbe45b9567ffe5ac39639c0"
   },
   "fixture_scope": "synthetic-ci-only",
