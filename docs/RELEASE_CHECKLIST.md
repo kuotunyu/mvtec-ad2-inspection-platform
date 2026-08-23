@@ -1,10 +1,18 @@
 # Release Checklist
 
-## Candidate classification
+## Current stable candidate
 
-- Candidate: `0.1.0-rc.1`
-- Status: `PRIVATE-NO-GO`
-- Real-GPU evidence source: `f902c7b50cd79a2fdd954af4d23c46af4c488bc7`
+- Software version: `0.1.0`
+- Software status: source-only stable candidate; not yet tagged or published
+- Model-validation status: `PRIVATE-NO-GO`
+- Stable publication: Not performed; requires separate authorization
+- Exact-candidate GPU requirement: All eight frozen bundles must pass against the final candidate SHA before stable publication.
+
+Stable describes the reproducible portfolio artifact and local workstation contract, not production deployment or private model quality. Historical result manifests remain immutable evidence of the RC-era evaluation sources; they are not rewritten to impersonate the final stable candidate.
+
+## Historical published RC snapshot
+
+- Historical real-GPU evidence source: `f902c7b50cd79a2fdd954af4d23c46af4c488bc7`
 - Published source snapshot: `82918727d6d9ed7c6555556d73b24b3acb2e7b9b`
 - Annotated tag: `v0.1.0-rc.1`
 - GitHub pre-release: [source-only portfolio snapshot](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.0-rc.1)
@@ -13,9 +21,11 @@
 - Official submission performed: Yes, exactly once
 - Official private status: `DONE`
 
-The public benchmark, product, Docker, security, documentation, clean-export, and eight-category real GPU serving gates pass. The frozen official result does not support a v1 release. The explicitly authorized publication is therefore labeled as a source-only `PRIVATE-NO-GO` pre-release, not a production release.
+The RC public benchmark, product, Docker, security, documentation, clean-export, and eight-category real GPU serving gates passed. The frozen official result did not support a v1 release. The authorized RC publication is therefore labeled as a source-only `PRIVATE-NO-GO` pre-release, not a production release.
 
-## Completed local gates
+The champion comparison uses exactly three seeds. Its paired bootstrap intervals are descriptive, without multiplicity correction, and `test_public` participated in iterative model selection rather than serving as an independent final holdout. A source-code stable release can certify the reproducible portfolio artifact and workstation contract, but it cannot change the independent `PRIVATE-NO-GO` model verdict or imply production model quality.
+
+## Historical RC gates
 
 - [x] Experiment verifier passes against the completed official submission handoff.
 - [x] Backend verifier passes.

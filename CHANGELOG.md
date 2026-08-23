@@ -1,7 +1,13 @@
 # Changelog
 
-## Unreleased
+## 0.1.0 - Stable candidate (unreleased)
 
+Software status: source-only stable candidate for a reproducible portfolio workstation. Model-validation status remains `PRIVATE-NO-GO`; no stable tag, GitHub Release, deployment, model publication, or additional official submission has been performed.
+
+- Review queue filtering and total counts now run in bounded SQL queries after pending-item selection, so reviewed leading pages cannot hide later work.
+- The React intake reads file-count and per-file byte limits from the typed runtime API contract and fails closed when those limits are unavailable.
+- Public model-selection documentation now states the three-seed, descriptive-bootstrap, no-multiplicity-correction, and non-holdout limitations explicitly.
+- Python package, frontend package, OpenAPI, and Docker image metadata consistently identify version `0.1.0`.
 - Formal product inference now persists distinct content-addressed PNG anomaly maps and overlays, exposes database-resolved artifact routes and hashes, and exercises the API → durable job → worker → report path in the real serving gate.
 - Worker leases renew from a separate heartbeat thread; prediction and audit dedupe constraints, durable worker liveness, real dashboard backlog, bounded multipart reads, review-dialog focus containment, and scheduled seven-day retention harden the workstation path.
 - Atomic job claims and lease-generation fences prevent stale workers from publishing evidence; transactional ingestion, optimistic review revision constraints, automatic legacy migrations, pre-parser request limits, terminal-only deletion, and retryable retention close restart and concurrency races.

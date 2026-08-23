@@ -96,12 +96,19 @@ def render_markdown(benchmark: PublicBenchmark, champions: ChampionsArtifact) ->
             "",
             "## Limitations",
             "",
-            "- Public results selected contenders and category champions; private results "
-            "have not selected or tuned them.",
+            "- Champion comparisons contain exactly three seeds (17, 42, and 2026). "
+            "Their paired bootstrap intervals describe uncertainty within those repeats; "
+            "they are not formal inferential guarantees, and no multiplicity correction "
+            "was applied.",
+            "- Public results selected contenders and category champions through iterative "
+            "evaluation, so `test_public` is not an independent final holdout. Private "
+            "results have not selected or tuned them.",
+            "- The independent official private validation is `PRIVATE-NO-GO`; this report "
+            "does not establish private generalization or production model quality.",
             "- GPU latency is batch-size-1 model execution on the recorded local CUDA "
             "environment; setup time is reported separately in JSON.",
             "- Peak VRAM is the maximum allocated during the frozen public prediction run.",
-            "- CPU latency and official private/private-mixed results are not evaluated "
+            "- CPU latency and official private/private-mixed metrics are not evaluated "
             "in this artifact.",
             "",
         ]

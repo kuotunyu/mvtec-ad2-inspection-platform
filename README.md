@@ -13,7 +13,7 @@
 
 這是一個把 anomaly detection 研究接到可操作產品邊界的 local-first 專案：離線端比較 PatchCore、EfficientAD 與 Dinomaly，線上端提供可續跑 batch、視覺化證據、人工覆核與稽核報告。Repository 只用 `fixtures/public-demo` 產生公開畫面，不重新散布 MVTec 資料；官方 frozen private gate 的結論為 `PRIVATE-NO-GO`。
 
-目前公開版本是 source-only [`v0.1.0-rc.1` pre-release](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.0-rc.1)：適合作為研究與系統工程作品展示，但不是 production release，不附資料、weights 或部署。
+目前已發布版本仍是 source-only [`v0.1.0-rc.1` pre-release](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.0-rc.1)；此 source tree 準備為 `v0.1.0` stable candidate，但尚未建立 stable tag 或 GitHub Release。這裡的 stable 只代表可重現的求職作品與 workstation contract，不改變模型的 `PRIVATE-NO-GO` 結論，也不代表 production deployment；公開內容不附資料、weights 或部署。
 
 ---
 
@@ -120,6 +120,8 @@ flowchart TD
 - `can`、`vial`、`wallplugs`、`walnuts` 的 winner 是 PatchCore；`fabric`、`fruit_jelly`、`rice`、`sheet_metal` 的 winner 是 Dinomaly。
 - EfficientAD 是已 benchmark 的 candidate，但未被選為 champion。
 - 唯一一次獲授權的 frozen archive 通過官方 local validator 並由官方 server 評測；看到結果後沒有重建或重新提交。
+
+Champion 比較只有 seeds 17、42、2026 三個獨立重複；paired bootstrap intervals 用來描述這三次結果的選模不確定性，不是正式推論保證，也沒有做 multiplicity correction。`test_public` 曾參與 iterative screening 與 champion selection，因此不是完全獨立 holdout；唯一獨立的 official private validation 仍是 `PRIVATE-NO-GO`，本專案不據此宣稱 private 泛化或 production model quality。
 
 ![由 committed public evidence 產生的各 category frozen champion mean AU-PRO](docs/assets/bench/champion-au-pro.svg)
 
