@@ -49,6 +49,7 @@ from .schemas import (
     ErrorResponse,
     EvidenceResponse,
     ImageResponse,
+    IngestionLimitsResponse,
     JobDetailResponse,
     JobListResponse,
     JobResponse,
@@ -171,7 +172,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     sessions = create_engine_and_session(configured)
     repositories = Repositories(sessions)
     artifact_store = ArtifactStore(configured.artifact_root)
-    app = FastAPI(title="MVTec AD 2 Inspection API", version="1.0.0")
+    app = FastAPI(title="MVTec AD 2 Inspection API", version="0.1.0")
     app.add_middleware(
         RequestBodyLimitMiddleware,
         max_bytes=configured.max_archive_uncompressed_bytes,
@@ -275,6 +276,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 for prediction in predictions
             ),
             image_errors=sum(bool(prediction.payload.get("error")) for prediction in predictions),
+            ingestion_limits=IngestionLimitsResponse(
+                max_archive_files=configured.max_archive_files,
+                max_upload_bytes=configured.max_upload_bytes,
+            ),
         )
 
     @app.post("/api/jobs", status_code=201, response_model=JobResponse, include_in_schema=False)
@@ -638,27 +643,28 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.get("/api/v1/reviews", response_model=ReviewQueueResponse)
     def review_queue() -> ReviewQueueResponse:
         with sessions() as session:
-            images = list(
-                session.scalars(select(InspectionImage).order_by(InspectionImage.id).limit(100))
+            pending = (
+                Prediction.payload["model_outcome"].as_string() == "REVIEW",
+                ~select(Review.id).where(Review.image_id == InspectionImage.id).exists(),
             )
-            items: list[ImageResponse] = []
-            for image in images:
-                prediction = session.scalar(
-                    select(Prediction).where(Prediction.image_id == image.id)
+            total = (
+                session.scalar(
+                    select(func.count())
+                    .select_from(InspectionImage)
+                    .join(Prediction, Prediction.image_id == InspectionImage.id)
+                    .where(*pending)
                 )
-                review = session.scalar(
-                    select(Review)
-                    .where(Review.image_id == image.id)
-                    .order_by(Review.revision.desc())
-                    .limit(1)
-                )
-                if (
-                    prediction
-                    and prediction.payload.get("model_outcome") == "REVIEW"
-                    and review is None
-                ):
-                    items.append(image_response(image, prediction, None))
-            return ReviewQueueResponse(items=items, total=len(items))
+                or 0
+            )
+            rows = session.execute(
+                select(InspectionImage, Prediction)
+                .join(Prediction, Prediction.image_id == InspectionImage.id)
+                .where(*pending)
+                .order_by(InspectionImage.id)
+                .limit(100)
+            )
+            items = [image_response(image, prediction, None) for image, prediction in rows]
+            return ReviewQueueResponse(items=items, total=total)
 
     @app.post(
         "/api/v1/reviews/{image_id}",

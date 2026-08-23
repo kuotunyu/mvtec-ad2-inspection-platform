@@ -202,6 +202,10 @@ export async function mockBackend(
         active_queue: 0,
         review_backlog: 1,
         image_errors: 0,
+        ingestion_limits: {
+          max_archive_files: 1_000,
+          max_upload_bytes: 25 * 1024 * 1024,
+        },
       }),
     }),
   );

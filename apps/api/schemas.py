@@ -73,6 +73,11 @@ class ReviewQueueResponse(BaseModel):
     total: int
 
 
+class IngestionLimitsResponse(BaseModel):
+    max_archive_files: int = Field(gt=0)
+    max_upload_bytes: int = Field(gt=0)
+
+
 class SystemStatusResponse(BaseModel):
     backend_status: Literal["ready"]
     worker_status: Literal["current", "stale", "missing"]
@@ -80,6 +85,7 @@ class SystemStatusResponse(BaseModel):
     active_queue: int
     review_backlog: int
     image_errors: int
+    ingestion_limits: IngestionLimitsResponse
 
 
 class ModelSummary(BaseModel):

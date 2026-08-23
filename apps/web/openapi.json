@@ -280,6 +280,26 @@
         "title": "ImageResponse",
         "type": "object"
       },
+      "IngestionLimitsResponse": {
+        "properties": {
+          "max_archive_files": {
+            "exclusiveMinimum": 0.0,
+            "title": "Max Archive Files",
+            "type": "integer"
+          },
+          "max_upload_bytes": {
+            "exclusiveMinimum": 0.0,
+            "title": "Max Upload Bytes",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "max_archive_files",
+          "max_upload_bytes"
+        ],
+        "title": "IngestionLimitsResponse",
+        "type": "object"
+      },
       "JobDetailResponse": {
         "properties": {
           "category": {
@@ -658,6 +678,9 @@
             "title": "Image Errors",
             "type": "integer"
           },
+          "ingestion_limits": {
+            "$ref": "#/components/schemas/IngestionLimitsResponse"
+          },
           "review_backlog": {
             "title": "Review Backlog",
             "type": "integer"
@@ -689,7 +712,8 @@
           "worker_status",
           "active_queue",
           "review_backlog",
-          "image_errors"
+          "image_errors",
+          "ingestion_limits"
         ],
         "title": "SystemStatusResponse",
         "type": "object"
@@ -738,7 +762,7 @@
   },
   "info": {
     "title": "MVTec AD 2 Inspection API",
-    "version": "1.0.0"
+    "version": "0.1.0"
   },
   "openapi": "3.1.0",
   "paths": {
