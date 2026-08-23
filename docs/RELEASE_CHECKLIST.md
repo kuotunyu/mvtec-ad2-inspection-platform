@@ -1,14 +1,14 @@
 # Release Checklist
 
-## Current stable candidate
+## v0.1.0 stable source contract
 
 - Software version: `0.1.0`
-- Software status: source-only stable candidate; not yet tagged or published
+- Source scope: reproducible portfolio artifact and local inspection-workstation contract
 - Model-validation status: `PRIVATE-NO-GO`
-- Stable publication: Not performed; requires separate authorization
+- External publication evidence: The `v0.1.0` Git tag and corresponding [GitHub Release](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.0) are the authoritative record of publication identity, source commit, and date.
 - Exact-candidate GPU requirement: All eight frozen bundles must pass against the final candidate SHA before stable publication.
 
-Stable describes the reproducible portfolio artifact and local workstation contract, not production deployment or private model quality. Historical result manifests remain immutable evidence of the RC-era evaluation sources; they are not rewritten to impersonate the final stable candidate.
+Source acceptance and external publication are separate: this checklist defines the stable software contract without asserting that the external tag or Release exists, and it does not record the exact-candidate GPU gate as passed until that gate runs against the final SHA. Stable describes the reproducible portfolio artifact and local workstation contract, not production deployment or private model quality. Historical result manifests remain immutable evidence of the RC-era evaluation sources; they are not rewritten to impersonate final stable evidence.
 
 ## Historical published RC snapshot
 
@@ -71,7 +71,7 @@ Do not perform these actions without explicit authorization and the required off
 6. Run `uv run python scripts/verify_claims.py`, the publication/security tests, and the full clean-export gate. Classify the result as `PRIVATE-NO-GO` or `V1-CANDIDATE` according to the frozen criteria.
 7. Request separate authorization for any commit of official aggregates and again for push, tag, GitHub Release, deployment, or model publication. The one-time `v0.1.0-rc.1` tag and source-only pre-release authorization recorded below does not authorize any future publication action.
 
-## Publication boundary
+## Historical RC publication closure
 
 - [x] Official submission authorized and completed.
 - [x] Official result sanitized and independently checked.
@@ -82,4 +82,4 @@ Do not perform these actions without explicit authorization and the required off
 - [x] Source-only GitHub pre-release published with `PRIVATE-NO-GO` labeling and no custom assets.
 - [x] No deployment, model publication, or additional official submission performed.
 
-The completed authorized scope is the public source repository `kuotunyu/mvtec-ad2-inspection-platform`, its `main` history through the published snapshot, the annotated tag `v0.1.0-rc.1`, and the matching source-only GitHub pre-release. Deployments, model publication, additional official submissions, and all future tags or Releases remain separately authorized actions.
+The completed historical RC authorization covered the public source repository `kuotunyu/mvtec-ad2-inspection-platform`, its `main` history through the RC snapshot, the annotated tag `v0.1.0-rc.1`, and the matching source-only GitHub pre-release. This is an RC closure record, not the current `v0.1.0` publication scope; stable publication, deployment, model publication, additional official submissions, and later tags or Releases require their own authorization records rather than inheriting the historical RC authorization.

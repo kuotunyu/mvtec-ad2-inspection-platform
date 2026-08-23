@@ -1,8 +1,8 @@
 # Changelog
 
-## 0.1.0 - Stable candidate (unreleased)
+## 0.1.0
 
-Software status: source-only stable candidate for a reproducible portfolio workstation. Model-validation status remains `PRIVATE-NO-GO`; no stable tag, GitHub Release, deployment, model publication, or additional official submission has been performed.
+Software scope: source-only stable contract for a reproducible portfolio workstation. Source acceptance and external publication evidence are separate: the [`v0.1.0` Git tag and GitHub Release](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.0) are authoritative for publication identity, source commit, and date. Model-validation status remains `PRIVATE-NO-GO`; this entry does not claim that the exact-candidate GPU serving gate passed and does not authorize deployment, model publication, or an additional official submission.
 
 - Review queue filtering and total counts now run in bounded SQL queries after pending-item selection, so reviewed leading pages cannot hide later work.
 - The React intake reads file-count and per-file byte limits from the typed runtime API contract and fails closed when those limits are unavailable.

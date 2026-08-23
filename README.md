@@ -13,7 +13,7 @@
 
 這是一個把 anomaly detection 研究接到可操作產品邊界的 local-first 專案：離線端比較 PatchCore、EfficientAD 與 Dinomaly，線上端提供可續跑 batch、視覺化證據、人工覆核與稽核報告。Repository 只用 `fixtures/public-demo` 產生公開畫面，不重新散布 MVTec 資料；官方 frozen private gate 的結論為 `PRIVATE-NO-GO`。
 
-目前已發布版本仍是 source-only [`v0.1.0-rc.1` pre-release](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.0-rc.1)；此 source tree 準備為 `v0.1.0` stable candidate，但尚未建立 stable tag 或 GitHub Release。這裡的 stable 只代表可重現的求職作品與 workstation contract，不改變模型的 `PRIVATE-NO-GO` 結論，也不代表 production deployment；公開內容不附資料、weights 或部署。
+此 source tree 定義 `v0.1.0` stable software／workstation contract；實際 publication identity、source commit 與日期以 [`v0.1.0` Git tag 和 GitHub Release](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.0) 為 authoritative external record。[`v0.1.0-rc.1`](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.0-rc.1) 保留為 historical pre-release。這裡的 stable 只代表可重現的求職作品與 workstation contract，不改變模型的 `PRIVATE-NO-GO` 結論，也不代表 production deployment；公開內容不附 data、weights 或 private artifacts，也不授權 deployment、model publication 或第二次 submission。
 
 ---
 
