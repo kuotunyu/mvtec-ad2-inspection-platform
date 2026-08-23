@@ -7,12 +7,14 @@ import yaml
 
 
 def test_images_run_as_non_root() -> None:
-    for name in ("api.Dockerfile", "worker.Dockerfile"):
+    for name in ("api.Dockerfile", "worker.Dockerfile", "worker-gpu.Dockerfile"):
         source = (Path("deploy/docker") / name).read_text(encoding="utf-8")
         assert re.search(r"^USER\s+(?!0\b|root\b)\S+", source, re.MULTILINE)
         assert "@sha256:" in source
         assert "HEALTHCHECK" in source
         assert "README.md LICENSE" in source
+        assert "ARG APP_VERSION=0.1.0" in source
+        assert 'org.opencontainers.image.version="${APP_VERSION}"' in source
 
 
 def test_api_image_includes_committed_evidence() -> None:
@@ -39,6 +41,7 @@ def test_compose_uses_explicit_read_only_registry_and_bounded_logs() -> None:
     compose = yaml.safe_load(Path("compose.yaml").read_text(encoding="utf-8"))
     assert set(compose["services"]) == {"api", "worker"}
     for service in compose["services"].values():
+        assert service["build"]["args"]["APP_VERSION"] == "${APP_VERSION:-0.1.0}"
         assert service["init"] is True
         assert service["restart"] == "on-failure:3"
         assert service["logging"]["options"]["max-size"] == "10m"
@@ -74,6 +77,7 @@ def test_gpu_worker_profile_installs_ml_extra_and_requests_nvidia_device() -> No
     compose = yaml.safe_load(Path("compose.gpu.yaml").read_text(encoding="utf-8"))
     worker = compose["services"]["worker"]
     assert worker["build"]["dockerfile"] == "deploy/docker/worker-gpu.Dockerfile"
+    assert worker["build"]["args"]["APP_VERSION"] == "${APP_VERSION:-0.1.0}"
     assert worker["environment"]["INSPECTION_INFERENCE_DEVICE"] == "cuda:0"
     assert worker["gpus"] == "all"
 

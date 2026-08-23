@@ -20,6 +20,7 @@ services:
       context: .
       dockerfile: deploy/docker/api.Dockerfile
       args:
+        APP_VERSION: ${APP_VERSION:-0.1.0}
         SOURCE_REVISION: ${SOURCE_REVISION:-unknown}
     environment:
       INSPECTION_DATABASE_URL: sqlite:////runtime/db/inspection.db
@@ -47,6 +48,7 @@ services:
       context: .
       dockerfile: deploy/docker/worker.Dockerfile
       args:
+        APP_VERSION: ${APP_VERSION:-0.1.0}
         SOURCE_REVISION: ${SOURCE_REVISION:-unknown}
     depends_on:
       api:
