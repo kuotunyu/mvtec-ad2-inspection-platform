@@ -27,7 +27,7 @@ _FORBIDDEN_SUFFIXES = {
     ".sqlite3",
 }
 _PRIVATE_ROOTS = {"artifacts", "checkpoints", "data", "runtime", "runs", "uploads"}
-_IMAGE_SUFFIXES = {".bmp", ".jpeg", ".jpg", ".png", ".tif", ".tiff", ".webp"}
+_IMAGE_SUFFIXES = {".bmp", ".gif", ".jpeg", ".jpg", ".png", ".tif", ".tiff", ".webp"}
 _TEXT_SUFFIXES = {
     ".css",
     ".html",

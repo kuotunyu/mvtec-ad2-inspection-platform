@@ -50,6 +50,17 @@ def test_public_boundary_allows_hash_manifested_documentation_images(tmp_path: P
     assert report.ok
 
 
+def test_public_boundary_rejects_unmanifested_documentation_gif(tmp_path: Path) -> None:
+    animation = tmp_path / "docs/assets/demo-workflow.gif"
+    animation.parent.mkdir(parents=True)
+    animation.write_bytes(b"GIF89a synthetic walkthrough")
+
+    report = verify_paths(tmp_path, [animation.relative_to(tmp_path)])
+
+    assert not report.ok
+    assert "unmanifested_image" in report.error_codes
+
+
 @pytest.mark.parametrize("corrupt_character", ["\ufffd", "\ue6ed"])
 def test_public_boundary_rejects_corrupt_unicode_text(
     tmp_path: Path, corrupt_character: str
