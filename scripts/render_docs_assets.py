@@ -12,9 +12,20 @@ from tempfile import TemporaryDirectory
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
+DEMO_ASSET_NAME = "demo-workflow.gif"
+DEMO_FRAME_NAMES = (
+    "new-inspection",
+    "dashboard",
+    "job-evidence",
+    "review",
+    "model-evidence",
+)
+DEMO_FRAME_SIZE = (960, 640)
+DEMO_FRAME_DURATION_MS = 900
 ASSET_NAMES = (
     "architecture.svg",
     "workflow.svg",
+    DEMO_ASSET_NAME,
     "screenshots/dashboard.webp",
     "screenshots/new-inspection.webp",
     "screenshots/job-evidence.webp",
@@ -37,6 +48,33 @@ def _write_svg_assets(target: Path) -> None:
         _architecture_svg() + "\n", encoding="utf-8", newline="\n"
     )
     (target / "workflow.svg").write_text(_workflow_svg() + "\n", encoding="utf-8", newline="\n")
+
+
+def _write_demo_animation(target: Path) -> None:
+    frames: list[Image.Image] = []
+    for name in DEMO_FRAME_NAMES:
+        with Image.open(target / "screenshots" / f"{name}.webp") as source:
+            frame = source.convert("RGB").resize(DEMO_FRAME_SIZE, Image.Resampling.LANCZOS)
+        frame = frame.convert("P", palette=Image.Palette.ADAPTIVE, colors=128)
+        # Static WebP inputs carry a loop hint that must not leak into the one-shot GIF.
+        frame.info.clear()
+        frames.append(frame)
+
+    output = target / DEMO_ASSET_NAME
+    temporary = target / f".{DEMO_ASSET_NAME}.tmp"
+    try:
+        frames[0].save(
+            temporary,
+            format="GIF",
+            save_all=True,
+            append_images=frames[1:],
+            duration=DEMO_FRAME_DURATION_MS,
+            disposal=2,
+            optimize=True,
+        )
+        temporary.replace(output)
+    finally:
+        temporary.unlink(missing_ok=True)
 
 
 def _write_generated(target: Path) -> None:
@@ -67,6 +105,7 @@ def _write_generated(target: Path) -> None:
                     quality=86,
                     method=6,
                 )
+    _write_demo_animation(target)
     manifest = {
         "assets": {
             name: hashlib.sha256((target / name).read_bytes()).hexdigest() for name in ASSET_NAMES

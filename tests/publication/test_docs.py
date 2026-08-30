@@ -3,6 +3,8 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+from PIL import Image
+
 PUBLIC_DOCS = (
     Path("README.md"),
     Path("docs/ARCHITECTURE.md"),
@@ -29,12 +31,24 @@ def test_public_document_set_and_assets_are_complete() -> None:
         "docs/assets/screenshots/job-evidence.webp",
         "docs/assets/screenshots/review.webp",
         "docs/assets/screenshots/model-evidence.webp",
+        "docs/assets/demo-workflow.gif",
         "docs/assets/manifest.json",
     ):
         assert Path(asset).is_file()
     readme = Path("README.md").read_text(encoding="utf-8")
     assert "synthetic" in readme.lower()
     assert "private-no-go" in readme.lower()
+
+
+def test_committed_demo_workflow_is_bounded_and_plays_once() -> None:
+    animation_path = Path("docs/assets/demo-workflow.gif")
+    assert animation_path.stat().st_size < 4 * 1024 * 1024
+
+    with Image.open(animation_path) as animation:
+        assert animation.format == "GIF"
+        assert animation.size == (960, 640)
+        assert animation.n_frames == 5
+        assert "loop" not in animation.info
 
 
 def test_docs_never_call_review_a_defect() -> None:

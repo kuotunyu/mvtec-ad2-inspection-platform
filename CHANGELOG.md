@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Added a deterministic, manifest-bound synthetic workflow animation to the GitHub portfolio front door. It reuses only project-generated public fixtures, plays once, and makes no model-quality or deployment claim.
+
 ## 0.1.1 - 2026-08-30
 
 Source-only maintenance release for the reproducible portfolio workstation. The [`v0.1.1` Git tag and GitHub Release](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.1) identify this software snapshot. Model-validation status remains `PRIVATE-NO-GO`; the release does not authorize or claim deployment, model publication, an additional official submission, or measured standard-versus-lighting drift.
