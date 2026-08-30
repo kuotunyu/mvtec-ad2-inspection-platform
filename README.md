@@ -1,42 +1,42 @@
 # MVTec AD 2 Industrial Inspection Platform
 
+[![CI](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/actions/workflows/ci.yml)
 ![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
+![PyTorch 2.13](https://img.shields.io/badge/PyTorch-2.13-EE4C2C?logo=pytorch&logoColor=white)
 ![FastAPI 0.141.1](https://img.shields.io/badge/FastAPI-0.141.1-009688?logo=fastapi&logoColor=white)
 ![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
-![PyTorch 2.13](https://img.shields.io/badge/PyTorch-2.13-EE4C2C?logo=pytorch&logoColor=white)
-[![CI](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-![以 synthetic 資料呈現異常證據與人工覆核的工業檢測工作站](docs/assets/screenshots/job-evidence.webp)
+> **AI/ML 系統工程作品集：** 可重現的工業異常檢測研究、可恢復的檢測流程，以及可稽核的機器學習證據。<br>
+> **AI/ML systems portfolio:** reproducible industrial anomaly-detection research, a fault-tolerant inspection workflow, and audit-ready evidence.
 
-> Industrial anomaly detection research + evidence-driven inspection workstation
+這個 local-first 專案展示如何把電腦視覺實驗推進到可操作的產品邊界：依明確 metric contract 選模、用 durable worker 執行推論、讓人員覆核異常證據，並把決策保存為可稽核報告。
 
-這是一個把 anomaly detection 研究接到可操作產品邊界的 local-first 專案：離線端比較 PatchCore、EfficientAD 與 Dinomaly，線上端提供可續跑 batch、視覺化證據、人工覆核與稽核報告。Repository 只用 `fixtures/public-demo` 產生公開畫面，不重新散布 MVTec 資料；官方 frozen private gate 的結論為 `PRIVATE-NO-GO`。
+I built it to take computer-vision experiments beyond a notebook: compare and freeze models under an explicit metric contract, serve them through a durable worker, present anomaly evidence for human review, and preserve every decision in auditable reports.
 
-此 source tree 定義 `v0.1.0` stable software／workstation contract；實際 publication identity、source commit 與日期以 [`v0.1.0` Git tag 和 GitHub Release](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.0) 為 authoritative external record。[`v0.1.0-rc.1`](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.0-rc.1) 保留為 historical pre-release。這裡的 stable 只代表可重現的求職作品與 workstation contract，不改變模型的 `PRIVATE-NO-GO` 結論，也不代表 production deployment；公開內容不附 data、weights 或 private artifacts，也不授權 deployment、model publication 或第二次 submission。
+![Synthetic anomaly evidence and human review in the industrial inspection workstation](docs/assets/screenshots/review.webp)
 
----
+## 專案重點 — Why this project stands out
 
-## 專案重點
-
-- **可追溯模型選擇：** 8 個 category-specific champions <!-- claim:8|reports/champions.json|/champions|len -->，選自 56 次 formal public runs <!-- claim:56|reports/public_benchmark.json|/runs|len -->；每個公開數字都連結 committed machine-readable evidence。
-- **資源受限研究：** 以固定 gate 依序測試解析度與 coreset 取捨；成功降低 PatchCore artifact 與推論成本，但 multi-seed image AUROC 未通過重現性門檻，因此不更換 champion。
-- **完整產品流程：** React 工作站、FastAPI、SQLite、leased worker、model registry、人工覆核與報告匯出。
-- **離線漂移契約：** 直接比較既有 `PredictionRecord.anomaly_score` 分佈，產出 deterministic、版本化且帶來源 digest 的 PSI report；門檻只標為 heuristic。
-- **Fail-closed 邊界：** 驗證 model identity、uploads、recovery、reports 與 deletion，並以 synthetic fixtures 完成 end-to-end 測試。
-- **誠實揭露：** 官方結果不支持 v1 release，因此維持 `PRIVATE-NO-GO`，不以 private 結果 retune 或重新提交。
-
----
-
-## 面試導覽
-
-| 想檢視的能力 | 程式碼入口 | 可追溯證據 |
+| Signal | What is demonstrated | Start here |
 |---|---|---|
-| Anomaly detection 與模型選擇 | [`experiments/`](experiments)、[`reports/`](reports) | [Model selection](docs/MODEL_SELECTION.md)、[benchmark](reports/benchmark.md) |
-| Anomaly-score distribution drift | [`src/inspection_platform/drift/`](src/inspection_platform/drift)、[`experiments/drift/`](experiments/drift) | [`tests/unit/drift/`](tests/unit/drift)、[Limitations](docs/LIMITATIONS.md) |
-| Backend、worker 與資料契約 | [`apps/api/`](apps/api)、[`src/inspection_platform/`](src/inspection_platform) | [Architecture](docs/ARCHITECTURE.md)、[`tests/system/`](tests/system) |
-| React 工作站與人機協作 | [`apps/web/src/`](apps/web/src) | [`apps/web/e2e/`](apps/web/e2e)、下方工作站巡覽 |
-| Reproducibility、security 與 release engineering | [`compose.yaml`](compose.yaml)、[`.github/workflows/ci.yml`](.github/workflows/ci.yml)、[`scripts/`](scripts) | [Reproducibility](docs/REPRODUCIBILITY.md)、[Release checklist](docs/RELEASE_CHECKLIST.md) |
+| **Reproducible CV research** | 8 category-specific champions <!-- claim:8|reports/champions.json|/champions|len --> selected from 56 formal public runs <!-- claim:56|reports/public_benchmark.json|/runs|len --> across PatchCore, EfficientAD, and Dinomaly, with every published number linked to committed evidence | [Model selection](docs/MODEL_SELECTION.md) · [Benchmark](reports/benchmark.md) |
+| **Production-shaped ML systems** | FastAPI, SQLite, a leased worker, verified model registry, idempotent recovery, and content-addressed evidence publication | [Architecture](docs/ARCHITECTURE.md) · [`tests/system/`](tests/system) |
+| **Human-centered AI product** | React batch inspection, anomaly-map comparison, explicit human disposition, and JSON/CSV/HTML audit exports | [Product workflow](#產品流程) · [`apps/web/e2e/`](apps/web/e2e) |
+| **Engineering trust** | CI, Docker, security and release gates, versioned evidence contracts, and an explicit `PRIVATE-NO-GO` verdict instead of private-result retuning | [Reproducibility](docs/REPRODUCIBILITY.md) · [Release checklist](docs/RELEASE_CHECKLIST.md) |
+
+## 90 秒面試導覽 — 90-second interview tour
+
+Choose the route closest to the role you are hiring for; each path connects implementation to reviewable evidence.
+
+| Role signal | Code path | Evidence path |
+|---|---|---|
+| **Computer Vision / ML** | [`experiments/`](experiments) · [`reports/`](reports) | [Selection methodology](docs/MODEL_SELECTION.md) · [Resource-bounded study](#memory-bounded-patchcore-研究亮點) |
+| **ML systems / MLOps** | [`src/inspection_platform/`](src/inspection_platform) · [`experiments/drift/`](experiments/drift) | [Architecture](docs/ARCHITECTURE.md) · [Drift contract](#離線-anomaly-score-distribution-drift) |
+| **AI product engineering** | [`apps/api/`](apps/api) · [`apps/web/src/`](apps/web/src) | [System tests](tests/system) · [Browser workflow](apps/web/e2e) |
+| **Reliability / security** | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) · [`scripts/`](scripts) | [Security](docs/SECURITY.md) · [Reproducibility](docs/REPRODUCIBILITY.md) |
+
+> **Portfolio status:** `v0.1.0` is a stable source/workstation contract, not a production deployment. The independent official verdict remains `PRIVATE-NO-GO`; the repository contains no MVTec data, weights, raw private predictions, or private-result retuning. The [`v0.1.0` tag and GitHub Release](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.0) are the authoritative publication record; [`v0.1.0-rc.1`](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.0-rc.1) remains historical.
 
 ---
 
