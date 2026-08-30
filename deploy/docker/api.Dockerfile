@@ -15,7 +15,7 @@ RUN uv sync --frozen --no-dev --no-editable && rm /app/.venv/.gitignore
 
 FROM python:3.12-slim@sha256:229a2c5bfa27522db7815ea81f9bed70af17ccb9de9fc7ad142b1877b5830d36
 ARG SOURCE_REVISION=unknown
-ARG APP_VERSION=0.1.0
+ARG APP_VERSION=0.1.1
 LABEL org.opencontainers.image.source="https://github.com/kuotunyu/mvtec-ad2-inspection-platform" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.version="${APP_VERSION}" \

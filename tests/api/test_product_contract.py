@@ -313,4 +313,4 @@ def test_system_status_exposes_runtime_ingestion_limits(tmp_path: Path) -> None:
 def test_openapi_version_matches_stable_candidate_package(tmp_path: Path) -> None:
     client = _client(tmp_path)
 
-    assert client.get("/openapi.json").json()["info"]["version"] == "0.1.0"
+    assert client.get("/openapi.json").json()["info"]["version"] == "0.1.1"
