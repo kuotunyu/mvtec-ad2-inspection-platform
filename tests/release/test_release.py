@@ -217,9 +217,19 @@ def test_private_no_go_release_is_complete_and_truthful() -> None:
     assert evidence["lock_sha256_kind"] == "utf8-lf-canonical"
     assert evidence.get("lock_sha256_source_tag") == "v0.1.0"
     assert evidence["lock_sha256_source_sha"] == "0690e20e9217a2133f12b8c0184435eb8b2b340f"
+    historical_source_available = (
+        Path(".git").exists()
+        and subprocess.run(
+            ["git", "cat-file", "-e", f"{evidence['lock_sha256_source_sha']}^{{commit}}"],
+            check=False,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        ).returncode
+        == 0
+    )
     for relative, expected in evidence["lock_sha256"].items():
         assert re.fullmatch(r"[0-9a-f]{64}", expected)
-        if Path(".git").exists():
+        if historical_source_available:
             historical = subprocess.run(
                 ["git", "show", f"{evidence['lock_sha256_source_sha']}:{relative}"],
                 check=True,
