@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added an offline publication gate for repository-local Markdown links, images, and GitHub-style anchors, including exact-case checks that behave consistently on Windows and Linux.
 - Added a deterministic, manifest-bound synthetic workflow animation to the GitHub portfolio front door. It reuses only project-generated public fixtures, plays once, and makes no model-quality or deployment claim.
 
 ## 0.1.1 - 2026-08-30
