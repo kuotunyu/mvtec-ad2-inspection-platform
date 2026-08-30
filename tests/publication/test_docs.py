@@ -49,6 +49,11 @@ def test_committed_demo_workflow_is_bounded_and_plays_once() -> None:
         assert animation.size == (960, 640)
         assert animation.n_frames == 5
         assert "loop" not in animation.info
+        durations: list[int] = []
+        for index in range(animation.n_frames):
+            animation.seek(index)
+            durations.append(animation.info["duration"])
+    assert durations == [900] * 5
 
 
 def test_docs_never_call_review_a_defect() -> None:

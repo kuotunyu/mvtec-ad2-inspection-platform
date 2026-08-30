@@ -16,7 +16,7 @@ I built it to take computer-vision experiments beyond a notebook: compare and fr
 
 ![Deterministic synthetic walkthrough from inspection intake through evidence review](docs/assets/demo-workflow.gif)
 
-*Deterministic 4.5-second synthetic walkthrough: intake → job evidence → human review → model evidence. It uses only project-generated public fixtures and demonstrates product behavior, not real model quality or a production deployment. Static views remain available in [工作站巡覽](#工作站巡覽).*
+*Deterministic 4.5-second synthetic walkthrough: intake → dashboard → job evidence → human review → model evidence. It uses only project-generated public fixtures and demonstrates product behavior, not real model quality or a production deployment. Static views remain available in [工作站巡覽](#工作站巡覽).*
 
 ## 專案重點 — Why this project stands out
 

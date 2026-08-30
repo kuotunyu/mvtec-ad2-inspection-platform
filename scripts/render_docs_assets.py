@@ -22,6 +22,7 @@ DEMO_FRAME_NAMES = (
 )
 DEMO_FRAME_SIZE = (960, 640)
 DEMO_FRAME_DURATION_MS = 900
+DEMO_BACKGROUND = (7, 18, 24)
 ASSET_NAMES = (
     "architecture.svg",
     "workflow.svg",
@@ -50,11 +51,19 @@ def _write_svg_assets(target: Path) -> None:
     (target / "workflow.svg").write_text(_workflow_svg() + "\n", encoding="utf-8", newline="\n")
 
 
-def _write_demo_animation(target: Path) -> None:
+def _write_demo_animation(target: Path, *, screenshot_root: Path | None = None) -> None:
+    screenshot_root = screenshot_root or target / "screenshots"
     frames: list[Image.Image] = []
     for name in DEMO_FRAME_NAMES:
-        with Image.open(target / "screenshots" / f"{name}.webp") as source:
-            frame = source.convert("RGB").resize(DEMO_FRAME_SIZE, Image.Resampling.LANCZOS)
+        with Image.open(screenshot_root / f"{name}.webp") as source:
+            content = source.convert("RGB")
+        content.thumbnail(DEMO_FRAME_SIZE, Image.Resampling.LANCZOS)
+        frame = Image.new("RGB", DEMO_FRAME_SIZE, DEMO_BACKGROUND)
+        offset = (
+            (DEMO_FRAME_SIZE[0] - content.width) // 2,
+            (DEMO_FRAME_SIZE[1] - content.height) // 2,
+        )
+        frame.paste(content, offset)
         frame = frame.convert("P", palette=Image.Palette.ADAPTIVE, colors=128)
         # Static WebP inputs carry a loop hint that must not leak into the one-shot GIF.
         frame.info.clear()
@@ -75,6 +84,18 @@ def _write_demo_animation(target: Path) -> None:
         temporary.replace(output)
     finally:
         temporary.unlink(missing_ok=True)
+
+
+def _demo_animation_stale(destination: Path) -> bool:
+    try:
+        with TemporaryDirectory(prefix="mvtec-demo-check-") as temporary:
+            candidate = Path(temporary)
+            _write_demo_animation(candidate, screenshot_root=destination / "screenshots")
+            return (candidate / DEMO_ASSET_NAME).read_bytes() != (
+                destination / DEMO_ASSET_NAME
+            ).read_bytes()
+    except OSError:
+        return True
 
 
 def _write_generated(target: Path) -> None:
@@ -152,6 +173,9 @@ def main() -> int:
         stale_manifest = _manifest_stale(destination)
         if stale_manifest:
             print("stale documentation asset manifest: " + ", ".join(stale_manifest))
+            return 1
+        if _demo_animation_stale(destination):
+            print("stale documentation demo animation")
             return 1
         print("documentation asset manifest is current")
         return 0

@@ -80,7 +80,7 @@ def test_demo_animation_preserves_workflow_order_and_plays_once(tmp_path: Path) 
         durations: list[int] = []
         for index in range(animation.n_frames):
             animation.seek(index)
-            actual_colors.append(animation.convert("RGB").getpixel((0, 0)))
+            actual_colors.append(animation.convert("RGB").getpixel((480, 320)))
             durations.append(animation.info["duration"])
     assert actual_colors == list(colors)
     assert durations == [900] * len(colors)
@@ -99,3 +99,53 @@ def test_demo_animation_fails_closed_when_a_workflow_frame_is_missing(tmp_path: 
         writer(tmp_path)
 
     assert not (tmp_path / "demo-workflow.gif").exists()
+
+
+def test_demo_animation_contains_tall_frame_without_distortion(tmp_path: Path) -> None:
+    frame_names = (
+        "new-inspection",
+        "dashboard",
+        "job-evidence",
+        "review",
+        "model-evidence",
+    )
+    screenshot_root = tmp_path / "screenshots"
+    screenshot_root.mkdir()
+    colors = ((255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0))
+    for name, color in zip(frame_names[:-1], colors, strict=True):
+        Image.new("RGB", (60, 40), color).save(screenshot_root / f"{name}.webp", lossless=True)
+    Image.new("RGB", (30, 40), (255, 0, 255)).save(
+        screenshot_root / "model-evidence.webp", lossless=True
+    )
+
+    render_docs_assets._write_demo_animation(tmp_path)
+
+    with Image.open(tmp_path / "demo-workflow.gif") as animation:
+        animation.seek(4)
+        frame = animation.convert("RGB")
+        assert frame.getpixel((0, 0)) == (7, 18, 24)
+        assert frame.getpixel((480, 320)) == (255, 0, 255)
+
+
+def test_demo_source_check_detects_a_changed_workflow_frame(tmp_path: Path) -> None:
+    frame_names = (
+        "new-inspection",
+        "dashboard",
+        "job-evidence",
+        "review",
+        "model-evidence",
+    )
+    screenshot_root = tmp_path / "screenshots"
+    screenshot_root.mkdir()
+    for name in frame_names:
+        Image.new("RGB", (60, 40), (255, 255, 255)).save(
+            screenshot_root / f"{name}.webp", lossless=True
+        )
+    render_docs_assets._write_demo_animation(tmp_path)
+    source_check = getattr(render_docs_assets, "_demo_animation_stale", None)
+    assert callable(source_check), "manifest check must bind the GIF to its source frames"
+    assert not source_check(tmp_path)
+
+    Image.new("RGB", (60, 40), (0, 0, 0)).save(screenshot_root / "review.webp", lossless=True)
+
+    assert source_check(tmp_path)
