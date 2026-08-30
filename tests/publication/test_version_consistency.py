@@ -62,3 +62,31 @@ def test_release_version_is_consistent_across_public_build_surfaces() -> None:
     }
 
     assert versions == dict.fromkeys(versions, RELEASE_VERSION)
+
+
+def test_citation_metadata_matches_release_identity() -> None:
+    citation = yaml.safe_load(Path("CITATION.cff").read_text(encoding="utf-8"))
+
+    assert citation == {
+        "cff-version": "1.2.0",
+        "message": "If you use this software, please cite it using these metadata.",
+        "type": "software",
+        "title": "MVTec AD 2 Industrial Inspection Platform",
+        "version": RELEASE_VERSION,
+        "date-released": "2026-08-30",
+        "authors": [
+            {
+                "name": "kuotunyu",
+                "email": "61350295+kuotunyu@users.noreply.github.com",
+            }
+        ],
+        "repository-code": "https://github.com/kuotunyu/mvtec-ad2-inspection-platform",
+        "license": "MIT",
+        "keywords": [
+            "anomaly detection",
+            "computer vision",
+            "industrial inspection",
+            "machine learning",
+            "MLOps",
+        ],
+    }

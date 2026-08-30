@@ -1,0 +1,17 @@
+cff-version: "1.2.0"
+message: "If you use this software, please cite it using these metadata."
+type: software
+title: "MVTec AD 2 Industrial Inspection Platform"
+version: "0.1.1"
+date-released: "2026-08-30"
+authors:
+  - name: "kuotunyu"
+    email: "61350295+kuotunyu@users.noreply.github.com"
+repository-code: "https://github.com/kuotunyu/mvtec-ad2-inspection-platform"
+license: MIT
+keywords:
+  - "anomaly detection"
+  - "computer vision"
+  - "industrial inspection"
+  - "machine learning"
+  - MLOps

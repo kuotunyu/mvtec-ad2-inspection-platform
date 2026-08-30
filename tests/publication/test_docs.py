@@ -7,6 +7,8 @@ from PIL import Image
 
 PUBLIC_DOCS = (
     Path("README.md"),
+    Path("CONTRIBUTING.md"),
+    Path(".github/pull_request_template.md"),
     Path("docs/ARCHITECTURE.md"),
     Path("docs/CASE_STUDY.md"),
     Path("docs/MODEL_CARD.md"),

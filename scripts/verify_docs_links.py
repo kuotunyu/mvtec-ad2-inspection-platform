@@ -276,6 +276,12 @@ def _markdown_anchors(path: Path) -> frozenset[str]:
 def public_markdown_documents(root: Path) -> tuple[Path, ...]:
     resolved_root = root.resolve()
     documents = [Path("README.md"), Path("CHANGELOG.md")]
+    for optional_document in (
+        Path("CONTRIBUTING.md"),
+        Path(".github/pull_request_template.md"),
+    ):
+        if (resolved_root / optional_document).is_file():
+            documents.append(optional_document)
     docs_root = resolved_root / "docs"
     if docs_root.is_dir():
         documents.extend(
