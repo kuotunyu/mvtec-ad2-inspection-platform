@@ -49,7 +49,8 @@ def write_contract(path: Path, contract: BaseModel) -> Path:
             stream.write("\n")
             stream.flush()
             os.fsync(stream.fileno())
-        os.replace(temporary, resolved)
+        os.link(temporary, resolved)
+        temporary.unlink()
     except BaseException:
         temporary.unlink(missing_ok=True)
         raise

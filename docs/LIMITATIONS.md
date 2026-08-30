@@ -4,6 +4,8 @@
 - `PASS` and `REVIEW` are model outcomes. Final acceptance or rejection is a human responsibility.
 - Public benchmark measurements do not guarantee factory performance, and the recorded latency/VRAM applies only to the tested workstation environment.
 - Lighting, camera, pose, scale, material, background, and product-lot shifts can invalidate calibration.
+- The anomaly-score drift component is an offline evidence generator, not a daemon, dashboard, alerting service, retraining system, or production monitor. Its PSI severity bands are heuristics rather than calibrated acceptance gates, and the report separately exposes whether sample size is adequate for interpretation.
+- The repository contains no publishable standard-versus-lighting per-sample score distributions, so it commits no measured drift report. Drift tests use synthetic canonical prediction artifacts to verify the detector and report contract only; they do not establish observed MVTec AD 2 or factory drift.
 - MVTec AD 2 is a research dataset with non-commercial terms and is not redistributed.
 - Synthetic demo results prove product plumbing, determinism, recovery, accessibility, and boundary handling—not real model quality.
 - The default deployment is a trusted single-user workstation. Authentication, TLS termination, centralized authorization, and multi-tenant isolation are outside scope.
