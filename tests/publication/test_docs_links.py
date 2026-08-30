@@ -237,6 +237,39 @@ def test_cli_discovers_public_docs_but_ignores_internal_plans(tmp_path: Path) ->
     assert result.stderr == ""
 
 
+def test_cli_discovers_root_contributing_guide(tmp_path: Path) -> None:
+    (tmp_path / "README.md").write_text("# Project\n", encoding="utf-8")
+    (tmp_path / "CHANGELOG.md").write_text("# Changelog\n", encoding="utf-8")
+    (tmp_path / "CONTRIBUTING.md").write_text(
+        "[Broken](missing-guide.md)\n",
+        encoding="utf-8",
+    )
+
+    result = _run_verifier(tmp_path)
+
+    assert result.returncode == 1
+    assert result.stderr == ""
+    assert result.stdout == ("CONTRIBUTING.md:1: missing-guide.md: local target does not exist\n")
+
+
+def test_cli_discovers_pull_request_template(tmp_path: Path) -> None:
+    (tmp_path / ".github").mkdir()
+    (tmp_path / "README.md").write_text("# Project\n", encoding="utf-8")
+    (tmp_path / "CHANGELOG.md").write_text("# Changelog\n", encoding="utf-8")
+    (tmp_path / ".github" / "pull_request_template.md").write_text(
+        "[Broken](missing-checklist.md)\n",
+        encoding="utf-8",
+    )
+
+    result = _run_verifier(tmp_path)
+
+    assert result.returncode == 1
+    assert result.stderr == ""
+    assert result.stdout == (
+        ".github/pull_request_template.md:1: missing-checklist.md: local target does not exist\n"
+    )
+
+
 def test_cli_requires_default_readme_and_changelog(tmp_path: Path) -> None:
     (tmp_path / "README.md").write_text("# Project\n", encoding="utf-8")
 
