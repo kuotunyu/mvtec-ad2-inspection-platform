@@ -4,6 +4,7 @@ import hashlib
 import io
 import json
 import re
+import subprocess
 import tarfile
 import tomllib
 from pathlib import Path
@@ -214,6 +215,33 @@ def test_private_no_go_release_is_complete_and_truthful() -> None:
         assert re.fullmatch(r"[0-9a-f]{64}", row["bundle_identity"])
         assert re.fullmatch(r"[0-9a-f]{64}", row["manifest_sha256"])
     assert evidence["lock_sha256_kind"] == "utf8-lf-canonical"
+    assert evidence.get("lock_sha256_source_tag") == "v0.1.0"
+    assert evidence["lock_sha256_source_sha"] == "0690e20e9217a2133f12b8c0184435eb8b2b340f"
+    for relative, expected in evidence["lock_sha256"].items():
+        assert re.fullmatch(r"[0-9a-f]{64}", expected)
+        if Path(".git").exists():
+            historical = subprocess.run(
+                ["git", "show", f"{evidence['lock_sha256_source_sha']}:{relative}"],
+                check=True,
+                stdout=subprocess.PIPE,
+            ).stdout.replace(b"\r\n", b"\n")
+            assert hashlib.sha256(historical).hexdigest() == expected
+
+
+def test_source_maintenance_release_is_bound_to_current_lockfiles() -> None:
+    artifact = Path("docs/assets/evidence/source-release.json")
+    assert artifact.is_file()
+    evidence = json.loads(artifact.read_text(encoding="utf-8"))
+
+    assert evidence["software_version"] == "0.1.1"
+    assert evidence["release_scope"] == "source-only-maintenance"
+    assert evidence["model_validation_status"] == "PRIVATE-NO-GO"
+    assert evidence["exact_candidate_gpu_gate"] == {
+        "performed": False,
+        "last_evidence_release": "v0.1.0",
+    }
+    assert evidence["lock_sha256_kind"] == "utf8-lf-canonical"
+    assert set(evidence["lock_sha256"]) == {"apps/web/package-lock.json", "uv.lock"}
     for relative, expected in evidence["lock_sha256"].items():
         canonical = Path(relative).read_text(encoding="utf-8").replace("\r\n", "\n")
         assert hashlib.sha256(canonical.encode()).hexdigest() == expected

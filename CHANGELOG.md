@@ -1,12 +1,15 @@
 # Changelog
 
-## Unreleased
+## 0.1.1 - 2026-08-30
 
-These source changes were made after `v0.1.0`. They do not constitute a new release, version bump, deployment authorization, model publication, or additional official submission. Model-validation status remains `PRIVATE-NO-GO`.
+Source-only maintenance release for the reproducible portfolio workstation. The [`v0.1.1` Git tag and GitHub Release](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.1) identify this software snapshot. Model-validation status remains `PRIVATE-NO-GO`; the release does not authorize or claim deployment, model publication, an additional official submission, or measured standard-versus-lighting drift.
+
+No exact-candidate real-GPU serving gate was rerun for this maintenance release, and no new GPU compatibility or model-quality claim is made. `v0.1.0` remains the last release with recorded 8/8 exact-candidate GPU serving evidence. The frozen model, preprocessing, threshold, and prediction contracts are unchanged.
 
 - Worker readiness files now use the operating system's temporary directory instead of a Unix-only `/tmp` path, preserving the existing lifecycle contract on Windows and Unix-like systems.
 - Added a deterministic offline anomaly-score drift detector, versioned JSON report contract, and CLI over the canonical `anomaly_score` artifact field. PSI severity bands are explicitly heuristic, and no measured standard-versus-lighting report is published without eligible per-sample score distributions.
 - Refined the bilingual GitHub portfolio front door so recruiters and AI, ML, and computer-vision engineers can identify the project scope and evidence boundaries quickly.
+- Aligned Python, Web, FastAPI/OpenAPI, Compose, Docker, and lockfile metadata at `0.1.1`, with a publication test that fails if maintained version surfaces drift apart.
 
 ## 0.1.0
 

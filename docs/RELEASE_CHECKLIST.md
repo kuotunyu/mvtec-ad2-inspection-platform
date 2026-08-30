@@ -1,6 +1,19 @@
 # Release Checklist
 
-## v0.1.0 stable source contract
+## v0.1.1 source-only maintenance release
+
+- Software version: `0.1.1`
+- Source scope: maintenance update to the reproducible portfolio artifact and local inspection-workstation contract
+- Model-validation status: `PRIVATE-NO-GO`
+- External publication evidence: The `v0.1.1` Git tag and corresponding [GitHub Release](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.1) are the authoritative record of publication identity, source commit, and date.
+- Release assets: GitHub-generated source archives only; no custom dataset, weights, checkpoints, predictions, drift scores, or private evidence
+- Current source-lock evidence: [`docs/assets/evidence/source-release.json`](assets/evidence/source-release.json), separate from the historical exact-candidate GPU evidence
+
+The 2026-08-30 authorization covers the version-maintenance commits, branch and PR publication, protected integration to `main`, one annotated `v0.1.1` tag, and the matching source-only GitHub Release. It does not authorize a deployment, hosted service, model publication, real-score retrieval, retraining, threshold changes, an additional official submission, or access to private predictions and raw official responses.
+
+The maintenance changes do not alter frozen model selection, preprocessing, thresholds, prediction semantics, or official conclusions. No exact-candidate real-GPU serving gate was rerun, so `v0.1.1` makes no new GPU compatibility or model-quality claim. `v0.1.0` remains the last release with recorded 8/8 exact-candidate GPU serving evidence. Before the tag is pushed, the exact source candidate must pass version consistency, Python and frontend verification, Docker and browser system tests, package/archive verification, publication/security tests, claims verification, and the Git public-boundary gate.
+
+## v0.1.0 stable source contract and exact-candidate GPU evidence
 
 - Software version: `0.1.0`
 - Source scope: reproducible portfolio artifact and local inspection-workstation contract
@@ -82,4 +95,4 @@ Do not perform these actions without explicit authorization and the required off
 - [x] Source-only GitHub pre-release published with `PRIVATE-NO-GO` labeling and no custom assets.
 - [x] No deployment, model publication, or additional official submission performed.
 
-The completed historical RC authorization covered the public source repository `kuotunyu/mvtec-ad2-inspection-platform`, its `main` history through the RC snapshot, the annotated tag `v0.1.0-rc.1`, and the matching source-only GitHub pre-release. This is an RC closure record, not the current `v0.1.0` publication scope; stable publication, deployment, model publication, additional official submissions, and later tags or Releases require their own authorization records rather than inheriting the historical RC authorization.
+The completed historical RC authorization covered the public source repository `kuotunyu/mvtec-ad2-inspection-platform`, its `main` history through the RC snapshot, the annotated tag `v0.1.0-rc.1`, and the matching source-only GitHub pre-release. This is an RC closure record, not authorization for any later publication scope; deployment, model publication, additional official submissions, and later tags or Releases require their own authorization records rather than inheriting the historical RC authorization.

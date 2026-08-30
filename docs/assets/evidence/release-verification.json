@@ -90,6 +90,8 @@
     "uv.lock": "d518766a14bf787967c7216bc651f410f65555e14e2a5daf4b3a4c5b7ae72a16"
   },
   "lock_sha256_kind": "utf8-lf-canonical",
+  "lock_sha256_source_sha": "0690e20e9217a2133f12b8c0184435eb8b2b340f",
+  "lock_sha256_source_tag": "v0.1.0",
   "model_bundles": {
     "can": {
       "bundle_identity": "d846b26e3eff9c9c86d2f72f8f6516fd671cc3773f46fe1d1a7bf1831eafb007",

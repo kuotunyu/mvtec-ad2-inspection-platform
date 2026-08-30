@@ -1,0 +1,15 @@
+{
+  "exact_candidate_gpu_gate": {
+    "last_evidence_release": "v0.1.0",
+    "performed": false
+  },
+  "lock_sha256": {
+    "apps/web/package-lock.json": "c58b2477c87a733fb01aa6097ed99cb058bf0d9c7fa4ba75f3139bfbbc889f82",
+    "uv.lock": "3b4a22955400f3c672d74b33b4c030f816959564c296ea2634d7827dabb4154b"
+  },
+  "lock_sha256_kind": "utf8-lf-canonical",
+  "model_validation_status": "PRIVATE-NO-GO",
+  "release_scope": "source-only-maintenance",
+  "schema_version": "1.0.0",
+  "software_version": "0.1.1"
+}
