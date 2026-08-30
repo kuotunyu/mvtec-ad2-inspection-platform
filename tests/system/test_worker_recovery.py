@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
+from pathlib import Path
 from threading import Event, Thread
 from time import monotonic, sleep
 
 from pytest import MonkeyPatch
 from sqlalchemy import func, select
 
+import inspection_platform.worker.service as worker_service
 from inspection_platform.db.models import AuditEvent, Job, Prediction
 from inspection_platform.inference.runtime import InferenceRuntime
 from inspection_platform.registry.repository import ModelRegistry
@@ -14,6 +16,18 @@ from inspection_platform.retention import DeletionScopeError
 from inspection_platform.worker.service import WorkerService
 
 from .conftest import SystemHarness
+
+
+def test_worker_ready_file_uses_platform_temp_directory(
+    system_harness: SystemHarness, monkeypatch: MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(worker_service, "gettempdir", lambda: str(tmp_path), raising=False)
+    stop = Event()
+    stop.set()
+
+    WorkerService(system_harness.settings, worker_id="portable-worker").serve(stop)
+
+    assert (tmp_path / "inspection-worker.ready").read_text(encoding="utf-8") == "portable-worker"
 
 
 def test_expired_worker_recovery_is_idempotent(system_harness: SystemHarness) -> None:

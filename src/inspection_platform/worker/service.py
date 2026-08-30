@@ -6,6 +6,7 @@ import socket
 from datetime import UTC, datetime, timedelta
 from io import BytesIO
 from pathlib import Path
+from tempfile import gettempdir
 from threading import Event
 from time import monotonic
 from typing import Any, cast
@@ -263,7 +264,7 @@ class WorkerService:
                 )
 
     def serve(self, stop: Event) -> None:
-        ready = Path("/tmp/inspection-worker.ready")
+        ready = Path(gettempdir()) / "inspection-worker.ready"
         ready.write_text(self.worker_id, encoding="utf-8")
         LOGGER.info("worker heartbeat", extra={"worker_id": self.worker_id})
         next_retention_scan = monotonic()
