@@ -243,7 +243,7 @@ def test_source_maintenance_release_is_bound_to_current_lockfiles() -> None:
     assert artifact.is_file()
     evidence = json.loads(artifact.read_text(encoding="utf-8"))
 
-    assert evidence["software_version"] == "0.1.1"
+    assert evidence["software_version"] == "0.1.2"
     assert evidence["release_scope"] == "source-only-maintenance"
     assert evidence["model_validation_status"] == "PRIVATE-NO-GO"
     assert evidence["exact_candidate_gpu_gate"] == {

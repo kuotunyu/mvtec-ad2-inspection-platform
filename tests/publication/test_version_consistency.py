@@ -11,7 +11,7 @@ import yaml
 from apps.api.main import create_app
 from inspection_platform import __version__
 
-RELEASE_VERSION = "0.1.1"
+RELEASE_VERSION = "0.1.2"
 
 
 def _docker_default(path: str) -> str:
@@ -73,7 +73,7 @@ def test_citation_metadata_matches_release_identity() -> None:
         "type": "software",
         "title": "MVTec AD 2 Industrial Inspection Platform",
         "version": RELEASE_VERSION,
-        "date-released": "2026-08-30",
+        "date-released": "2026-09-03",
         "authors": [
             {
                 "name": "kuotunyu",
