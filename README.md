@@ -25,7 +25,7 @@ I built it to take computer-vision experiments beyond a notebook: compare and fr
 | **Reproducible CV research** | 8 category-specific champions <!-- claim:8|reports/champions.json|/champions|len --> selected from 56 formal public runs <!-- claim:56|reports/public_benchmark.json|/runs|len --> across PatchCore, EfficientAD, and Dinomaly, with every published number linked to committed evidence | [Model selection](docs/MODEL_SELECTION.md) · [Benchmark](reports/benchmark.md) |
 | **Production-shaped ML systems** | FastAPI, SQLite, a leased worker, verified model registry, idempotent recovery, and content-addressed evidence publication | [Architecture](docs/ARCHITECTURE.md) · [`tests/system/`](tests/system) |
 | **Human-centered AI product** | React batch inspection, anomaly-map comparison, explicit human disposition, and JSON/CSV/HTML audit exports | [Product workflow](#產品流程) · [`apps/web/e2e/`](apps/web/e2e) |
-| **Engineering trust** | CI, Docker, security and release gates, versioned evidence contracts, and an explicit `PRIVATE-NO-GO` verdict instead of private-result retuning | [Reproducibility](docs/REPRODUCIBILITY.md) · [Release checklist](docs/RELEASE_CHECKLIST.md) |
+| **Engineering trust** | CI, Docker, security and release gates, versioned evidence contracts, an explicit `PRIVATE-NO-GO` verdict instead of private-result retuning, and a pre-registered serving gate that refused this project's own largest quality gain | [被自己門檻否決的改進](#解析度前沿品質改善卻仍不-promotion) · [Release checklist](docs/RELEASE_CHECKLIST.md) |
 
 ## 90 秒面試導覽 — 90-second interview tour
 
@@ -156,11 +156,34 @@ uv run python -m experiments.drift.cli `
 
 ---
 
+## 解析度前沿：品質改善卻仍不 promotion
+
+這一段是整個專案我最想被檢視的部分，因為它記錄了一個**預先訂好的門檻否決我自己最好結果**的完整過程。
+
+假設很直觀：提高輸入解析度應該改善細小瑕疵的 localization。第一次嘗試在 24 GiB RTX 4090 上 fitting 階段就 OOM，沒有任何可比較的指標，只留下 `RESOURCE_LIMIT_EXCEEDED`。中間的 640 x 640 frontier probe 改善了 AU-PRO 卻讓 image AUROC 退步、延遲翻倍，分類為 `PROMISING` 但不 promotion。
+
+後來這個 study 在 80 GiB A100 上以**完全相同的程式、seed 與 config** 完成，唯一改變的是硬體。訓練峰值為 **44,593 MiB** <!-- claim:44,593|reports/high_resolution_patchcore_cloud_environment.json|/training_peak_vram_mib/can|,.0f --> 與 **31,741 MiB** <!-- claim:31,741|reports/high_resolution_patchcore_cloud_environment.json|/training_peak_vram_mib/wallplugs|,.0f -->，證實 24 GiB 的機器本來就不可能容納任一個 category。
+
+品質假設成立了，而且是這個專案從單純改變幾何得到的最大增益：
+
+| Category | AU-PRO | pixel AUROC | image AUROC | GPU p95 | 推論 VRAM |
+|---|---|---|---|---|---|
+| `can` | 0.3113 → 0.4109（**+0.0995** <!-- claim:0.0995|reports/high_resolution_patchcore_cloud.json|/comparisons/0/au_pro_delta|.4f -->） | +0.0545 | −0.0123 | **708.7 ms** <!-- claim:708.7|reports/high_resolution_patchcore_cloud.json|/comparisons/0/candidate/gpu_p95_latency_ms|.1f --> | 4,669 MiB |
+| `wallplugs` | 0.5286 → 0.6837（**+0.1551** <!-- claim:0.1551|reports/high_resolution_patchcore_cloud.json|/comparisons/1/au_pro_delta|.4f -->） | +0.0259 | +0.0104 | **508.5 ms** <!-- claim:508.5|reports/high_resolution_patchcore_cloud.json|/comparisons/1/candidate/gpu_p95_latency_ms|.1f --> | 3,383 MiB |
+
+但 verdict 仍然是 `RESOURCE_LIMIT_EXCEEDED`，champion 一個都沒換。原因是 GPU p95 latency 超過了**在看到任何結果之前**就寫死在 `classify_study` 裡的 500 ms serving cap。
+
+這是 latency 的失敗，不是 memory 的失敗。推論 VRAM 遠低於 12,288 MiB 上限，per-image failure rate 為零。而且這個延遲代價是結構性的，不是雲端硬體的假象：memory bank 約大 2.1 倍、每張查詢影像貢獻 2.25 倍的 patch，最近鄰搜尋因此約 4.8 倍的距離計算量，實測比值為 6.7 與 6.2。換回原本的 workstation 結論一樣。
+
+**如果當初沒有把門檻寫死，我很可能會說服自己這是個該採用的改進。** 我選擇照原規則判定而不是放寬門檻，這件事本身比任何指標都更能說明我如何做工程決策。
+
+誠實的限制：這是 single-seed 證據；A100 的 latency 與 VRAM 不可與本 Repository 其他地方記錄的 RTX 4090 數字相比，品質 delta 才與硬體無關；要 promotion 需要另一個預先註冊的 multi-seed study，以及一份 candidate 真的能滿足的 serving contract。完整設計與 sanitized 證據見 [Model selection](docs/MODEL_SELECTION.md)、[study report](reports/high_resolution_patchcore_cloud.json) 與[硬體 provenance](reports/high_resolution_patchcore_cloud_environment.json)。
+
+---
+
 ## Memory-bounded PatchCore 研究亮點
 
-高解析度不是免費的品質提升：768 x 768 candidates 在 24 GiB RTX 4090 fitting 階段 OOM，640 x 640 frontier 雖改善 localization，卻增加延遲並降低 image AUROC。後續固定的 coreset ladder 先測 0.01，再依 gate 執行 0.02 rescue。
-
-同一個 768 x 768 study 後來在 80 GiB A100 上以完全相同的程式、seed 與 config 完成，訓練峰值為 43.5 GiB 與 31.0 GiB，證實 24 GiB workstation 本來就不可能容納。兩個 category 的 pixel localization 都明顯改善，`can` 的 AU-PRO 增加 **0.0995** <!-- claim:0.0995|reports/high_resolution_patchcore_cloud.json|/comparisons/0/au_pro_delta|.4f -->，`wallplugs` 增加 **0.1551** <!-- claim:0.1551|reports/high_resolution_patchcore_cloud.json|/comparisons/1/au_pro_delta|.4f -->，image AUROC 大致持平。但 GPU p95 latency 為 **708.7 ms** <!-- claim:708.7|reports/high_resolution_patchcore_cloud.json|/comparisons/0/candidate/gpu_p95_latency_ms|.1f --> 與 **508.5 ms** <!-- claim:508.5|reports/high_resolution_patchcore_cloud.json|/comparisons/1/candidate/gpu_p95_latency_ms|.1f -->，雙雙超過預先宣告的 500 ms serving cap，因此 verdict 仍是 `RESOURCE_LIMIT_EXCEEDED`，champion 不變。這是 latency 而非 memory 的失敗：inference VRAM 遠低於 12,288 MiB 上限。看到有利的品質結果後仍照原規則判定，而不是放寬門檻。A100 的 latency 與 VRAM 不可與 RTX 4090 baseline 相比；品質 delta 則與硬體無關。
+在固定的 640 x 640 幾何下降低 memory-bank 比例，先測 coreset 0.01，再依預先訂好的 gate 執行 0.02 rescue。
 
 0.02 seed-42 candidate 的 AU-PRO 相對 baseline 增加 **0.0854** <!-- claim:0.0854|reports/memory_bounded_patchcore.json|/probes/1/comparison/au_pro_delta|.4f -->、GPU p95 為 **78.4 ms** <!-- claim:78.4|reports/memory_bounded_patchcore.json|/probes/1/comparison/candidate/gpu_p95_latency_ms|.1f -->，artifact 為 **330,255,411 bytes** <!-- claim:330,255,411|reports/memory_bounded_patchcore.json|/probes/1/comparison/candidate/artifact_size_bytes|,d -->。但 seeds 17 與 2026 的 image AUROC 都明顯退步，因此最終 verdict 是 `EFFICIENT_SEED42_ONLY`，不更換 frozen champion，也不推論 private performance。完整設計、重現方式與限制見 [Model selection](docs/MODEL_SELECTION.md)、[Experiment runbook](docs/EXPERIMENT_RUNBOOK.md) 與 [sanitized report](reports/memory_bounded_patchcore.json)。
 
