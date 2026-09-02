@@ -1,5 +1,18 @@
 # Release Checklist
 
+## v0.1.2 source-only maintenance release
+
+- Software version: `0.1.2`
+- Source scope: maintenance update to the reproducible portfolio artifact and local inspection-workstation contract, adding the completed 768 x 768 study evidence, its hardware provenance, and the hosted-GPU research tooling
+- Model-validation status: `PRIVATE-NO-GO`
+- External publication evidence: The `v0.1.2` Git tag and corresponding [GitHub Release](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.2) are the authoritative record of publication identity, source commit, and date.
+- Release assets: GitHub-generated source archives only; no custom dataset, weights, checkpoints, predictions, drift scores, or private evidence
+- Current source-lock evidence: [`docs/assets/evidence/source-release.json`](assets/evidence/source-release.json), separate from the historical exact-candidate GPU evidence
+
+The 2026-09-03 authorization covers the version-maintenance commits, branch and PR publication, protected integration to `main`, one annotated `v0.1.2` tag, and the matching source-only GitHub Release. It does not authorize a deployment, hosted service, model publication, real-score retrieval, retraining, threshold changes, an additional official submission, or access to private predictions and raw official responses.
+
+The maintenance changes do not alter frozen model selection, preprocessing, thresholds, prediction semantics, or official conclusions. The 768 x 768 study completed on an 80 GiB cloud GPU is single-seed, `test_public`-only evidence whose frozen verdict is `RESOURCE_LIMIT_EXCEEDED` on the 500 ms serving cap, so it promotes no champion. No exact-candidate real-GPU serving gate was rerun, so `v0.1.2` makes no new GPU compatibility or model-quality claim; `v0.1.0` remains the last release with recorded 8/8 exact-candidate GPU serving evidence. Before the tag is pushed, the exact source candidate must pass version consistency, Python and frontend verification, Docker and browser system tests, package/archive verification, publication/security tests, claims verification, and the Git public-boundary gate.
+
 ## v0.1.1 source-only maintenance release
 
 - Software version: `0.1.1`

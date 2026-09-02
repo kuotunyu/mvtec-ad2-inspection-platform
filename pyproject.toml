@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mvtec-ad2-inspection-platform"
-version = "0.1.1"
+version = "0.1.2"
 description = "Reproducible MVTec AD 2 benchmarking and industrial inspection workstation"
 readme = "README.md"
 license = { file = "LICENSE" }

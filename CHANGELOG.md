@@ -1,6 +1,10 @@
 # Changelog
 
-## Unreleased
+## 0.1.2 - 2026-09-03
+
+Source-only maintenance release for the reproducible portfolio workstation. The [`v0.1.2` Git tag and GitHub Release](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.2) identify this software snapshot. Model-validation status remains `PRIVATE-NO-GO`; the release does not authorize or claim deployment, model publication, an additional official submission, or a champion change.
+
+No exact-candidate real-GPU serving gate was rerun for this maintenance release, and no new GPU compatibility or model-quality claim is made. `v0.1.0` remains the last release with recorded 8/8 exact-candidate GPU serving evidence. The frozen model, preprocessing, threshold, and prediction contracts are unchanged. The completed 768 x 768 study recorded below is public-only single-seed research evidence whose frozen verdict refused the candidate; it does not alter the champion matrix.
 
 - Completed the pre-registered 768 x 768 PatchCore study on an 80 GiB cloud GPU after it exhausted the 24 GiB workstation, using the identical unmodified study code, seed, and configuration. Both categories improved public pixel localization, by 0.0995 AU-PRO for `can` and 0.1551 for `wallplugs`, with image AUROC roughly unchanged. The frozen verdict remains `RESOURCE_LIMIT_EXCEEDED` because GPU p95 latency of 708.7 ms and 508.5 ms exceeded the pre-declared 500 ms serving cap, so the champion matrix is unchanged. Hardware provenance is recorded in a sidecar bound to the study report's canonical digest, and the earlier workstation report is preserved unmodified.
 - Added tooling to run a frozen research study on a hosted GPU: a sanitized hardware-provenance capture script, a generated Colab notebook with memory, clean-worktree, and toolchain gates, and a runbook procedure covering the git bundle and the scrubbed subprocess environment.

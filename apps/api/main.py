@@ -172,7 +172,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     sessions = create_engine_and_session(configured)
     repositories = Repositories(sessions)
     artifact_store = ArtifactStore(configured.artifact_root)
-    app = FastAPI(title="MVTec AD 2 Inspection API", version="0.1.1")
+    app = FastAPI(title="MVTec AD 2 Inspection API", version="0.1.2")
     app.add_middleware(
         RequestBodyLimitMiddleware,
         max_bytes=configured.max_archive_uncompressed_bytes,
