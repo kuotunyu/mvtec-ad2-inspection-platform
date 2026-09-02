@@ -1,0 +1,22 @@
+{
+  "environment": {
+    "anomalib": "2.5.0",
+    "cuda_runtime": "13.0",
+    "gpu_driver": "580.82.07",
+    "gpu_memory_mib": 81920,
+    "gpu_name": "NVIDIA A100-SXM4-80GB",
+    "platform": "Linux",
+    "python": "3.12.13",
+    "torch": "2.13.0+cu130"
+  },
+  "evaluation_scope": "test_public-only",
+  "schema_version": "1.0.0",
+  "study": "patchcore-512-vs-768-can-wallplugs-seed42",
+  "study_report_sha256": "2dadb64b624fb63590eb3e89e94cffe115a47271a6b9c48d3330707644ffe601",
+  "submitted": false,
+  "training_peak_vram_mib": {
+    "can": 44593.03564453125,
+    "wallplugs": 31741.03564453125
+  },
+  "verdict": "RESOURCE_LIMIT_EXCEEDED"
+}

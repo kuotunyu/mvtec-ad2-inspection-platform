@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Completed the pre-registered 768 x 768 PatchCore study on an 80 GiB cloud GPU after it exhausted the 24 GiB workstation, using the identical unmodified study code, seed, and configuration. Both categories improved public pixel localization, by 0.0995 AU-PRO for `can` and 0.1551 for `wallplugs`, with image AUROC roughly unchanged. The frozen verdict remains `RESOURCE_LIMIT_EXCEEDED` because GPU p95 latency of 708.7 ms and 508.5 ms exceeded the pre-declared 500 ms serving cap, so the champion matrix is unchanged. Hardware provenance is recorded in a sidecar bound to the study report's canonical digest, and the earlier workstation report is preserved unmodified.
+- Added tooling to run a frozen research study on a hosted GPU: a sanitized hardware-provenance capture script, a generated Colab notebook with memory, clean-worktree, and toolchain gates, and a runbook procedure covering the git bundle and the scrubbed subprocess environment.
+
 - Added an offline publication gate for repository-local Markdown links, images, and GitHub-style anchors, including exact-case checks that behave consistently on Windows and Linux.
 - Added a deterministic, manifest-bound synthetic workflow animation to the GitHub portfolio front door. It reuses only project-generated public fixtures, plays once, and makes no model-quality or deployment claim.
 

@@ -26,6 +26,39 @@ frozen result is `RESOURCE_LIMIT_EXCEEDED`. No private evidence or submission
 was used, and the category champions above remain unchanged. Sanitized evidence
 is recorded in `reports/high_resolution_patchcore.json`.
 
+The identical unmodified study was later completed on an 80 GiB A100, which
+resolved the memory limit without changing the pre-registered design, the seed,
+the configs, or the classification rules. Measured training peaks were 43.5 GiB
+for `can` and 31.0 GiB for `wallplugs`, so neither fit could ever have completed
+on the 24 GiB workstation.
+
+Both categories improved pixel localization substantially. `can` gained 0.0995
+AU-PRO and 0.0545 pixel AUROC while image AUROC moved by -0.0123; `wallplugs`
+gained 0.1551 AU-PRO and 0.0259 pixel AUROC while image AUROC moved by +0.0104.
+Those AU-PRO gains are the largest this project has measured from a geometry
+change alone.
+
+The frozen classification is nevertheless `RESOURCE_LIMIT_EXCEEDED`, and it is a
+latency failure rather than a memory failure. Inference peaks were 4,669 MiB and
+3,383 MiB, far below the 12,288 MiB cap, but GPU p95 latency reached 708.7 ms
+for `can` and 508.5 ms for `wallplugs`, both above the pre-declared 500 ms cap.
+The rule was applied as written rather than relaxed after seeing a favorable
+quality result, so the champion matrix above is unchanged.
+
+That latency cost is structural rather than an artifact of the cloud device. The
+memory bank grows about 2.1 times and each query image contributes 2.25 times as
+many patches, so nearest-neighbor search performs roughly 4.8 times the distance
+computations; the observed ratios were 6.7 and 6.2. Latency and VRAM in this
+study were measured on the A100 and are not comparable with the RTX 4090
+baseline figures recorded elsewhere in this repository, while the AU-PRO and
+AUROC deltas are deterministic and hardware independent.
+
+Sanitized aggregate evidence is in `reports/high_resolution_patchcore_cloud.json`,
+and the hardware provenance bound to that report's digest is in
+`reports/high_resolution_patchcore_cloud_environment.json`. This is single-seed
+evidence. Promotion would require a separately pre-registered multi-seed study
+and a serving contract that the candidate can satisfy.
+
 ## Resource-informed 640 x 640 frontier
 
 Measured 512 x 512 training footprints ruled out another useful `can` probe,
