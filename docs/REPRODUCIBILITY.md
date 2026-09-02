@@ -28,6 +28,13 @@ npm --prefix apps/web run verify
 npm --prefix apps/web run e2e
 ```
 
+When an API route or schema changes, regenerate the committed contract before running the gates. `tests/api` fails if `apps/web/openapi.json` drifts from the application, and `api:check` fails if the generated client drifts from the schema:
+
+```powershell
+uv run python scripts/export_openapi.py --output apps/web/openapi.json
+npm --prefix apps/web run api:generate
+```
+
 Build the deterministic registry twice when investigating reproducibility; `tests/integration/test_demo_bundle.py` compares the entire byte tree.
 
 ```powershell
