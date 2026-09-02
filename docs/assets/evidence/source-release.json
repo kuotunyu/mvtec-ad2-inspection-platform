@@ -4,12 +4,12 @@
     "performed": false
   },
   "lock_sha256": {
-    "apps/web/package-lock.json": "c58b2477c87a733fb01aa6097ed99cb058bf0d9c7fa4ba75f3139bfbbc889f82",
-    "uv.lock": "3b4a22955400f3c672d74b33b4c030f816959564c296ea2634d7827dabb4154b"
+    "apps/web/package-lock.json": "87252a47c97d99147333277776ec34c240ae433db5a02214498c692c34ca03a1",
+    "uv.lock": "674698b79574c06d6c6adc1e2ac1550ff1c831feb0dc047655cba7ec0bc2cdbe"
   },
   "lock_sha256_kind": "utf8-lf-canonical",
   "model_validation_status": "PRIVATE-NO-GO",
   "release_scope": "source-only-maintenance",
   "schema_version": "1.0.0",
-  "software_version": "0.1.1"
+  "software_version": "0.1.2"
 }
