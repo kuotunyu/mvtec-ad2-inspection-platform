@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from datetime import UTC, datetime
 from io import BytesIO
 from pathlib import Path
@@ -314,3 +315,12 @@ def test_openapi_version_matches_stable_candidate_package(tmp_path: Path) -> Non
     client = _client(tmp_path)
 
     assert client.get("/openapi.json").json()["info"]["version"] == "0.1.1"
+
+
+def test_committed_openapi_schema_matches_application(tmp_path: Path) -> None:
+    client = _client(tmp_path)
+    committed = json.loads(Path("apps/web/openapi.json").read_text(encoding="utf-8"))
+
+    assert client.get("/openapi.json").json() == committed, (
+        "regenerate with scripts/export_openapi.py and npm run api:generate"
+    )
