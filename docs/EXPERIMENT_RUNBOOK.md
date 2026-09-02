@@ -131,3 +131,45 @@ acquiring the GPU lease. After interruption, resume only with the identical
 formal command; completed identities are hash-verified and reused. Raw outputs
 remain under the external root. The study cannot change frozen champions or
 read private evidence, submit, push, tag, release, deploy, or publish.
+
+## Complete the high-resolution study on a cloud GPU
+
+The fixed 768 x 768 study exhausted the local 24 GiB GPU during coreset fitting.
+In Anomalib 2.5, PatchCore holds every training embedding on the device and then
+concatenates the store into a memory bank, so the training peak is about twice
+the embedding total. That is roughly 46 GB for `can` and 33 GB for `wallplugs`
+at 768 x 768, which needs a GPU with at least 60 GB.
+
+[`notebooks/colab_high_resolution_patchcore.ipynb`](../notebooks/colab_high_resolution_patchcore.ipynb)
+runs the identical unmodified study on such a GPU. It refuses to continue unless
+the device reports at least 60,000 MiB, the cloned worktree is clean, the staged
+dataset manifest matches the frozen digest, and a subprocess confirms that torch
+sees the GPU. Torch is never imported in the notebook kernel, because the GPU
+lease treats any other CUDA-holding Python process as a conflict.
+
+Only `train/good`, `validation/good`, and `test_public` are staged. The private
+splits are never read by this study and must not be copied to cloud storage.
+
+Regenerate the notebook from its source of truth after editing the generator,
+and verify that the committed copy is current:
+
+```powershell
+uv run python scripts/build_study_notebook.py
+uv run python scripts/build_study_notebook.py --check
+```
+
+After the run, record the hardware provenance beside the study report. The
+sidecar binds the report's canonical digest to the GPU identity and the
+per-category training peak, and it refuses to write any filesystem path:
+
+```powershell
+uv run python scripts/capture_study_environment.py `
+  --study-report $env:MVTECAD2_HIGHRES_RUNS_ROOT\evidence\high-resolution-patchcore.json `
+  --runs-root $env:MVTECAD2_HIGHRES_RUNS_ROOT `
+  --output $env:MVTECAD2_HIGHRES_RUNS_ROOT\evidence\cloud-environment.json
+```
+
+Quality deltas for AU-PRO, image AUROC, and pixel AUROC are deterministic and
+remain comparable with the frozen 512 x 512 baseline. Latency and VRAM recorded
+by a cloud run describe different hardware from every other performance figure
+in this repository and must not be compared with the RTX 4090 baseline.
