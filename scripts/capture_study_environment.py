@@ -96,13 +96,21 @@ def candidate_run_identities(report: Mapping[str, Any]) -> dict[str, str]:
     return identities
 
 
-def training_peaks(runs_root: Path, identities: Mapping[str, str]) -> dict[str, float]:
-    """Read each candidate run's recorded training peak VRAM in MiB."""
+def training_peaks(runs_root: Path, identities: Mapping[str, str]) -> dict[str, float | None]:
+    """Read each candidate run's recorded training peak VRAM in MiB.
 
-    peaks: dict[str, float] = {}
+    A run that did not complete has no measured peak, because the worker records the
+    peak only on success. Such runs are reported as ``None`` rather than rejected, so a
+    resource-limit verdict can still carry hardware provenance.
+    """
+
+    peaks: dict[str, float | None] = {}
     for category, identity in sorted(identities.items()):
         record = json.loads((runs_root / identity / "record.json").read_text(encoding="utf-8"))
         peak = record.get("peak_vram_mib")
+        if peak is None and record.get("status") != "completed":
+            peaks[category] = None
+            continue
         if isinstance(peak, bool) or not isinstance(peak, int | float) or peak <= 0:
             raise ValueError(f"run record for {category} lacks a positive peak_vram_mib")
         peaks[category] = float(peak)

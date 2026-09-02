@@ -48,12 +48,16 @@ def _report(**overrides: object) -> dict[str, object]:
     return payload
 
 
-def _runs_root(tmp_path: Path, peaks: dict[str, float]) -> Path:
+def _runs_root(tmp_path: Path, peaks: dict[str, float | None]) -> Path:
     identities = {"can": _CAN_RUN, "wallplugs": _WALLPLUGS_RUN}
     for category, peak in peaks.items():
         run_dir = tmp_path / identities[category]
         run_dir.mkdir(parents=True)
-        (run_dir / "record.json").write_text(json.dumps({"peak_vram_mib": peak}), encoding="utf-8")
+        status = "completed" if peak is not None else "failed"
+        record = {"peak_vram_mib": peak, "status": status}
+        if peak is None:
+            record["error"] = "OutOfMemoryError: CUDA out of memory"
+        (run_dir / "record.json").write_text(json.dumps(record), encoding="utf-8")
     return tmp_path
 
 
@@ -129,15 +133,45 @@ def test_candidate_run_identities_rejects_a_duplicated_category() -> None:
         candidate_run_identities(report)
 
 
-def test_training_peaks_rejects_a_missing_or_zero_peak(tmp_path: Path) -> None:
+def test_training_peaks_rejects_a_zero_peak_on_a_completed_run(tmp_path: Path) -> None:
     runs_root = _runs_root(tmp_path, {"can": 46600.0})
     (runs_root / _WALLPLUGS_RUN).mkdir(parents=True)
     (runs_root / _WALLPLUGS_RUN / "record.json").write_text(
-        json.dumps({"peak_vram_mib": 0}), encoding="utf-8"
+        json.dumps({"peak_vram_mib": 0, "status": "completed"}), encoding="utf-8"
     )
 
     with pytest.raises(ValueError, match="positive peak_vram_mib"):
         training_peaks(runs_root, {"can": _CAN_RUN, "wallplugs": _WALLPLUGS_RUN})
+
+
+def test_training_peaks_reports_none_for_a_run_that_did_not_complete(tmp_path: Path) -> None:
+    runs_root = _runs_root(tmp_path, {"can": None, "wallplugs": 33200.0})
+
+    peaks = training_peaks(runs_root, {"can": _CAN_RUN, "wallplugs": _WALLPLUGS_RUN})
+
+    assert peaks == {"can": None, "wallplugs": 33200.0}
+
+
+def test_sidecar_carries_provenance_for_a_resource_limit_verdict(tmp_path: Path) -> None:
+    report = _report(
+        comparisons=[],
+        failures=[
+            {"category": "can", "candidate_run_identity": _CAN_RUN},
+            {"category": "wallplugs", "candidate_run_identity": _WALLPLUGS_RUN},
+        ],
+        verdict="RESOURCE_LIMIT_EXCEEDED",
+    )
+    runs_root = _runs_root(tmp_path, {"can": None, "wallplugs": None})
+
+    payload = build_sidecar(
+        report=report,
+        runs_root=runs_root,
+        environment=build_environment(gpu=_gpu, versions=_versions),
+    )
+
+    assert payload["verdict"] == "RESOURCE_LIMIT_EXCEEDED"
+    assert payload["training_peak_vram_mib"] == {"can": None, "wallplugs": None}
+    assert payload["environment"]["gpu_name"] == "NVIDIA A100-SXM4-80GB"
 
 
 def test_sidecar_rejects_a_submitted_report(tmp_path: Path) -> None:
