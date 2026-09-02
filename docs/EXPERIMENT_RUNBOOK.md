@@ -145,7 +145,11 @@ runs the identical unmodified study on such a GPU. It refuses to continue unless
 the device reports at least 60,000 MiB, the cloned worktree is clean, the staged
 dataset manifest matches the frozen digest, and a subprocess confirms that torch
 sees the GPU. Torch is never imported in the notebook kernel, because the GPU
-lease treats any other CUDA-holding Python process as a conflict.
+lease treats any other CUDA-holding Python process as a conflict. Every study
+subprocess also receives a scrubbed environment: `PYTHONPATH`, `PYTHONHOME`,
+`PYTHONSTARTUP`, and `MPLBACKEND` are removed and `MPLBACKEND=Agg` is set,
+because the hosted kernel exports an inline matplotlib backend that the pinned
+environment cannot import.
 
 Only `train/good`, `validation/good`, and `test_public` are staged. The private
 splits are never read by this study and must not be copied to cloud storage.

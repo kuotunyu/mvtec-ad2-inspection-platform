@@ -41,6 +41,10 @@ import subprocess
 import sys
 
 os.environ["GIT_TERMINAL_PROMPT"] = "0"
+SCRUB = ("PYTHONPATH", "PYTHONHOME", "PYTHONSTARTUP", "MPLBACKEND")
+STUDY_ENV = {{key: value for key, value in os.environ.items() if key not in SCRUB}}
+STUDY_ENV["MPLBACKEND"] = "Agg"
+STUDY_ENV["PYTHONNOUSERSITE"] = "1"
 
 STAGE = pathlib.Path("/content/drive/MyDrive/mvtec-ad2-colab")
 DATA = pathlib.Path("/content/data/mvtec-ad-2")
@@ -140,17 +144,19 @@ _GATE_TORCH = """probe = subprocess.run(
         "run",
         "python",
         "-c",
-        "import torch;"
+        "import matplotlib, torch;"
         "print(torch.__version__, torch.version.cuda, torch.cuda.is_available(),"
-        " torch.cuda.get_device_name(0))",
+        " torch.cuda.get_device_name(0), matplotlib.get_backend())",
     ],
     cwd=REPO,
+    env=STUDY_ENV,
     text=True,
     capture_output=True,
     check=True,
 ).stdout.strip()
 print(probe)
 assert "True" in probe, "gate 3 failed: torch cannot see the GPU"
+assert probe.lower().endswith("agg"), "gate 3 failed: kernel matplotlib backend leaked"
 print("gate 3 passed: torch verified in a subprocess, kernel holds no CUDA context")
 """
 
@@ -171,7 +177,14 @@ _COMMAND = """COMMAND = [
     "--gpu-lock",
     str(GPU_LOCK),
 ]
-dry = subprocess.run([*COMMAND, "--dry-run"], cwd=REPO, text=True, capture_output=True, check=True)
+dry = subprocess.run(
+    [*COMMAND, "--dry-run"],
+    cwd=REPO,
+    env=STUDY_ENV,
+    text=True,
+    capture_output=True,
+    check=True,
+)
 print(dry.stdout.strip())
 print("dry run resolved both run identities without acquiring the GPU")
 """
@@ -181,6 +194,7 @@ with LOG.open("w", encoding="utf-8") as stream:
     process = subprocess.Popen(
         COMMAND,
         cwd=REPO,
+        env=STUDY_ENV,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,
@@ -218,6 +232,7 @@ subprocess.run(
         str(SIDECAR),
     ],
     cwd=REPO,
+    env=STUDY_ENV,
     check=True,
 )
 print("hardware provenance captured")
