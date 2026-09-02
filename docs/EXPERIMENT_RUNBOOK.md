@@ -150,6 +150,17 @@ lease treats any other CUDA-holding Python process as a conflict.
 Only `train/good`, `validation/good`, and `test_public` are staged. The private
 splits are never read by this study and must not be copied to cloud storage.
 
+Stage the repository as a git bundle beside the data. GitHub throttles anonymous
+git traffic from shared cloud addresses and answers with an authentication
+challenge, so an HTTPS clone from a hosted notebook is unreliable. The bundle
+also pins the exact commit the study runs against, and the notebook prefers it
+whenever the file is present:
+
+```powershell
+git bundle create mvtec-ad2-inspection-platform.bundle HEAD main
+git bundle verify mvtec-ad2-inspection-platform.bundle
+```
+
 Regenerate the notebook from its source of truth after editing the generator,
 and verify that the committed copy is current:
 
