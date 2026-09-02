@@ -154,7 +154,7 @@ def test_sidecar_rejects_a_submitted_report(tmp_path: Path) -> None:
 def test_sidecar_refuses_a_private_path_fragment(tmp_path: Path) -> None:
     runs_root = _runs_root(tmp_path, {"can": 46600.0, "wallplugs": 33200.0})
     poisoned = build_environment(
-        gpu=lambda: ("/home/operator/gpu", "580.82.07", 81920),
+        gpu=lambda: ("/mnt/staged-dataset-cache", "580.82.07", 81920),
         versions=_versions,
     )
 

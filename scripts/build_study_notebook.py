@@ -14,6 +14,7 @@ NOTEBOOK_PATH = Path("notebooks/colab_high_resolution_patchcore.ipynb")
 DATASET_MANIFEST_SHA256 = "557fd46fcfaa1c2618be315bced7f9f0ba381d8f45119929a200a9d12d1895bf"
 MINIMUM_VRAM_MIB = 60000
 STAGED_PNG_COUNTS = {"can": 710, "wallplugs": 566}
+_STAGED_COUNTS_LITERAL = json.dumps(STAGED_PNG_COUNTS)
 
 _INTRO = """# Cloud high-resolution PatchCore study
 
@@ -27,7 +28,7 @@ another resource limit, is a publishable outcome.
 Run the cells in order. Three gates stop the notebook early if a precondition fails.
 """
 
-_SETUP = """import json
+_SETUP = f"""import json
 import pathlib
 import shutil
 import subprocess
@@ -42,10 +43,12 @@ GPU_LOCK = pathlib.Path("/content/mvtec-ad2-gpu.lock")
 STUDY_REPORT = RUNS / "evidence" / "high-resolution-patchcore.json"
 SIDECAR = pathlib.Path("/content/high_resolution_patchcore_cloud_environment.json")
 REF = "main"
+MINIMUM_VRAM_MIB = {MINIMUM_VRAM_MIB}
+FROZEN_MANIFEST_SHA256 = "{DATASET_MANIFEST_SHA256}"
 print("paths configured")
 """
 
-_GATE_GPU = f"""query = subprocess.run(
+_GATE_GPU = """probe = subprocess.run(
     [
         "nvidia-smi",
         "--query-gpu=name,memory.total,driver_version",
@@ -54,28 +57,29 @@ _GATE_GPU = f"""query = subprocess.run(
     text=True,
     capture_output=True,
     check=True,
-).stdout.strip().splitlines()[0]
+)
+query = probe.stdout.strip().splitlines()[0]
 name, total_mib, driver = (part.strip() for part in query.split(",", maxsplit=2))
 print(name, total_mib, "MiB", driver)
-assert int(total_mib) >= {MINIMUM_VRAM_MIB}, (
-    f"gate 1 failed: need >= {MINIMUM_VRAM_MIB} MiB, got {{total_mib}}. "
+assert int(total_mib) >= MINIMUM_VRAM_MIB, (
+    f"gate 1 failed: need >= {MINIMUM_VRAM_MIB} MiB, got {total_mib}. "
     "Reconnect to an 80 GB A100, an H100, or the 96 GB Blackwell runtime."
 )
 print("gate 1 passed: VRAM is sufficient for the 768 x 768 can fit")
 """
 
-_MOUNT = f"""from google.colab import drive
+_MOUNT = """from google.colab import drive
 
 drive.mount("/content/drive")
 
 for name in ("can-public.tar", "wallplugs-public.tar", "dataset-manifest.json"):
-    assert (STAGE / name).is_file(), f"missing staged input: {{name}}"
+    assert (STAGE / name).is_file(), f"missing staged input: {name}"
 
 shutil.copy2(STAGE / "dataset-manifest.json", MANIFEST)
 manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
-assert (
-    manifest["canonical_sha256"] == "{DATASET_MANIFEST_SHA256}"
-), "staged dataset manifest is not the frozen manifest"
+assert manifest["canonical_sha256"] == FROZEN_MANIFEST_SHA256, (
+    "staged dataset manifest is not the frozen manifest"
+)
 print("staged inputs verified against the frozen dataset manifest")
 """
 
@@ -83,7 +87,7 @@ _EXTRACT = f"""DATA.mkdir(parents=True, exist_ok=True)
 for archive in ("can-public.tar", "wallplugs-public.tar"):
     subprocess.run(["tar", "-x", "-f", str(STAGE / archive), "-C", str(DATA)], check=True)
 
-for category, expected in {STAGED_PNG_COUNTS!r}.items():
+for category, expected in {_STAGED_COUNTS_LITERAL}.items():
     found = len(list((DATA / category).rglob("*.png")))
     assert found == expected, f"{{category}}: expected {{expected}} PNG files, found {{found}}"
     assert not (DATA / category / "test_private").exists(), "private split must not be staged"
@@ -193,9 +197,8 @@ else:
     print("no runs root to synchronize")
 """
 
-_CAPTURE = """assert STUDY_REPORT.is_file(), (
-    "study did not produce a report; inspect /content/study.log"
-)
+_CAPTURE = """
+assert STUDY_REPORT.is_file(), "study did not produce a report; inspect /content/study.log"
 subprocess.run(
     [
         "uv",
