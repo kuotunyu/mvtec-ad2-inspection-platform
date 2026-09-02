@@ -254,3 +254,62 @@ def test_committed_high_resolution_result_is_public_only_and_keeps_champions() -
     assert all(item.error_kind == "oom" for item in report.failures)
     assert champions["champions"]["can"] == "patchcore"
     assert champions["champions"]["wallplugs"] == "patchcore"
+
+
+def test_committed_cloud_result_completed_but_failed_the_serving_gate() -> None:
+    payload = json.loads(
+        Path("reports/high_resolution_patchcore_cloud.json").read_text(encoding="utf-8")
+    )
+    claimed_identity = payload.pop("canonical_sha256")
+    report = HighResolutionStudyReport.model_validate(payload)
+    champions = json.loads(Path("reports/champions.json").read_text(encoding="utf-8"))
+
+    assert report.identity == claimed_identity
+    assert report.scope == "test_public-only"
+    assert report.submitted is False
+    assert report.verdict == "RESOURCE_LIMIT_EXCEEDED"
+    assert report.failures == ()
+    assert tuple(item.category for item in report.comparisons) == STUDY_CATEGORIES
+
+    for comparison in report.comparisons:
+        assert comparison.au_pro_delta > 0.02
+        assert comparison.candidate.gpu_p95_latency_ms > 500.0
+        assert comparison.candidate.peak_vram_mib < 12_288.0
+        assert comparison.candidate.per_image_failure_rate == 0.0
+
+    assert champions["champions"]["can"] == "patchcore"
+    assert champions["champions"]["wallplugs"] == "patchcore"
+
+
+def test_committed_4090_resource_limit_report_is_unchanged() -> None:
+    payload = json.loads(Path("reports/high_resolution_patchcore.json").read_text(encoding="utf-8"))
+
+    assert payload["canonical_sha256"] == (
+        "2a54b716ca8782beae998222e7e39d1cd2168bcd63a0a3cc955d07c7fad70544"
+    )
+    assert payload["verdict"] == "RESOURCE_LIMIT_EXCEEDED"
+    assert payload["comparisons"] == []
+    assert [item["error_kind"] for item in payload["failures"]] == ["oom", "oom"]
+
+
+def test_cloud_environment_sidecar_binds_to_its_study_report() -> None:
+    report = json.loads(
+        Path("reports/high_resolution_patchcore_cloud.json").read_text(encoding="utf-8")
+    )
+    sidecar = json.loads(
+        Path("reports/high_resolution_patchcore_cloud_environment.json").read_text(encoding="utf-8")
+    )
+
+    assert sidecar["study_report_sha256"] == report["canonical_sha256"]
+    assert sidecar["study"] == report["study"]
+    assert sidecar["verdict"] == report["verdict"]
+    assert sidecar["evaluation_scope"] == "test_public-only"
+    assert sidecar["submitted"] is False
+    assert sidecar["environment"]["gpu_name"] == "NVIDIA A100-SXM4-80GB"
+    assert sidecar["environment"]["gpu_memory_mib"] == 81920
+
+    peaks = sidecar["training_peak_vram_mib"]
+    assert set(peaks) == set(STUDY_CATEGORIES)
+    assert all(value > 24 * 1024 for value in peaks.values()), (
+        "both fits must exceed the 24 GiB workstation that could not run this study"
+    )
