@@ -26,13 +26,25 @@ change a threshold, submit to the official server, publish, deploy, or tag. Any 
 another resource limit, is a publishable outcome.
 
 Run the cells in order. Three gates stop the notebook early if a precondition fails.
+
+The repository is cloned from `mvtec-ad2-inspection-platform.bundle` in the Drive folder when that
+file is present. GitHub throttles anonymous git traffic from shared cloud addresses, and the bundle
+also pins the exact commit the study runs against. Create it locally with
+`git bundle create mvtec-ad2-inspection-platform.bundle HEAD main`.
 """
 
 _SETUP = f"""import json
+import os
 import pathlib
 import shutil
 import subprocess
 import sys
+
+os.environ["GIT_TERMINAL_PROMPT"] = "0"
+SCRUB = ("PYTHONPATH", "PYTHONHOME", "PYTHONSTARTUP", "MPLBACKEND")
+STUDY_ENV = {{key: value for key, value in os.environ.items() if key not in SCRUB}}
+STUDY_ENV["MPLBACKEND"] = "Agg"
+STUDY_ENV["PYTHONNOUSERSITE"] = "1"
 
 STAGE = pathlib.Path("/content/drive/MyDrive/mvtec-ad2-colab")
 DATA = pathlib.Path("/content/data/mvtec-ad-2")
@@ -42,6 +54,8 @@ RUNS = pathlib.Path("/content/runs")
 GPU_LOCK = pathlib.Path("/content/mvtec-ad2-gpu.lock")
 STUDY_REPORT = RUNS / "evidence" / "high-resolution-patchcore.json"
 SIDECAR = pathlib.Path("/content/high_resolution_patchcore_cloud_environment.json")
+BUNDLE = STAGE / "mvtec-ad2-inspection-platform.bundle"
+REMOTE = "https://github.com/kuotunyu/mvtec-ad2-inspection-platform.git"
 REF = "main"
 MINIMUM_VRAM_MIB = {MINIMUM_VRAM_MIB}
 FROZEN_MANIFEST_SHA256 = "{DATASET_MANIFEST_SHA256}"
@@ -94,33 +108,28 @@ for category, expected in {_STAGED_COUNTS_LITERAL}.items():
 print("dataset extracted with the expected public split counts")
 """
 
-_CLONE = """if not REPO.exists():
-    subprocess.run(
-        [
-            "git",
-            "clone",
-            "https://github.com/kuotunyu/mvtec-ad2-inspection-platform.git",
-            str(REPO),
-        ],
-        check=True,
-    )
-subprocess.run(["git", "-C", str(REPO), "fetch", "--all", "--tags"], check=True)
-subprocess.run(["git", "-C", str(REPO), "checkout", "--detach", REF], check=True)
+_CLONE = """def _git(*args):
+    result = subprocess.run(["git", *args], text=True, capture_output=True)
+    if result.returncode != 0:
+        joined = " ".join(args)
+        raise RuntimeError(f"git {joined} failed with exit {result.returncode}\\n{result.stderr}")
+    return result.stdout
 
-status = subprocess.run(
-    ["git", "-C", str(REPO), "status", "--porcelain"],
-    text=True,
-    capture_output=True,
-    check=True,
-).stdout
+
+if REPO.exists() and not (REPO / ".git").is_dir():
+    shutil.rmtree(REPO)
+if not REPO.exists():
+    if BUNDLE.is_file():
+        _git("clone", str(BUNDLE), str(REPO))
+        print("cloned from the staged bundle, which pins the commit")
+    else:
+        _git("clone", REMOTE, str(REPO))
+        print("cloned over HTTPS")
+
+_git("-C", str(REPO), "checkout", "--detach", f"origin/{REF}")
+status = _git("-C", str(REPO), "status", "--porcelain")
 assert status.strip() == "", f"gate 2 failed: worktree is not clean\\n{status}"
-
-head = subprocess.run(
-    ["git", "-C", str(REPO), "rev-parse", "HEAD"],
-    text=True,
-    capture_output=True,
-    check=True,
-).stdout.strip()
+head = _git("-C", str(REPO), "rev-parse", "HEAD").strip()
 print("gate 2 passed: clean worktree at", head)
 """
 
@@ -135,17 +144,19 @@ _GATE_TORCH = """probe = subprocess.run(
         "run",
         "python",
         "-c",
-        "import torch;"
+        "import matplotlib, torch;"
         "print(torch.__version__, torch.version.cuda, torch.cuda.is_available(),"
-        " torch.cuda.get_device_name(0))",
+        " torch.cuda.get_device_name(0), matplotlib.get_backend())",
     ],
     cwd=REPO,
+    env=STUDY_ENV,
     text=True,
     capture_output=True,
     check=True,
 ).stdout.strip()
 print(probe)
 assert "True" in probe, "gate 3 failed: torch cannot see the GPU"
+assert probe.lower().endswith("agg"), "gate 3 failed: kernel matplotlib backend leaked"
 print("gate 3 passed: torch verified in a subprocess, kernel holds no CUDA context")
 """
 
@@ -166,7 +177,14 @@ _COMMAND = """COMMAND = [
     "--gpu-lock",
     str(GPU_LOCK),
 ]
-dry = subprocess.run([*COMMAND, "--dry-run"], cwd=REPO, text=True, capture_output=True, check=True)
+dry = subprocess.run(
+    [*COMMAND, "--dry-run"],
+    cwd=REPO,
+    env=STUDY_ENV,
+    text=True,
+    capture_output=True,
+    check=True,
+)
 print(dry.stdout.strip())
 print("dry run resolved both run identities without acquiring the GPU")
 """
@@ -176,6 +194,7 @@ with LOG.open("w", encoding="utf-8") as stream:
     process = subprocess.Popen(
         COMMAND,
         cwd=REPO,
+        env=STUDY_ENV,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,
@@ -213,6 +232,7 @@ subprocess.run(
         str(SIDECAR),
     ],
     cwd=REPO,
+    env=STUDY_ENV,
     check=True,
 )
 print("hardware provenance captured")
