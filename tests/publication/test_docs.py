@@ -20,6 +20,9 @@ PUBLIC_DOCS = (
     Path("docs/MODEL_SELECTION.md"),
     Path("docs/RELEASE_CHECKLIST.md"),
     Path("docs/REMOTE_SETUP.md"),
+    Path("docs/PROJECT_GUIDE.md"),
+    Path("docs/RESOLUTION_STUDY.md"),
+    Path("docs/DRIFT.md"),
 )
 
 
@@ -66,13 +69,15 @@ def test_docs_never_call_review_a_defect() -> None:
 def test_public_readme_is_zh_tw_front_door_and_publication_is_authorized() -> None:
     readme = Path("README.md").read_text(encoding="utf-8")
     for required in (
-        "## 專案重點",
-        "## 公開內容與證據邊界",
-        "## 產品流程",
-        "## Memory-bounded PatchCore 研究亮點",
-        "## 官方 private gate",
-        "## 已驗證的本機 serving 效能",
-        "## 執行 synthetic local demo",
+        "## 重點結果",
+        "## 快速開始",
+        "## 運作方式",
+        "## 結果",
+        "本機 serving 實測",
+        "### 縮小 memory bank",
+        "### 官方 private 評測",
+        "## 適用範圍與限制",
+        "## 延伸閱讀",
         "EFFICIENT_SEED42_ONLY",
         "PRIVATE-NO-GO",
         "MVTec 原始資料",

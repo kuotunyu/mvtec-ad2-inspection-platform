@@ -2,60 +2,39 @@
 
 [![CI](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/actions/workflows/ci.yml)
 ![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
-![PyTorch 2.13](https://img.shields.io/badge/PyTorch-2.13-EE4C2C?logo=pytorch&logoColor=white)
-![FastAPI 0.141.1](https://img.shields.io/badge/FastAPI-0.141.1-009688?logo=fastapi&logoColor=white)
-![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> **AI/ML 系統工程作品集：** 可重現的工業異常檢測研究、可恢復的檢測流程，以及可稽核的機器學習證據。<br>
-> **AI/ML systems portfolio:** reproducible industrial anomaly-detection research, a fault-tolerant inspection workflow, and audit-ready evidence.
+把一批產品照片上傳後，系統會排隊用異常檢測模型標出可疑區域，交給品管人員逐張覆核，並把模型判定與人工決定分開存成可稽核的報告；背景 worker 中途當機，重啟後會從中斷處接續，不重算、也不重複寫入。
 
-這個 local-first 專案展示如何把電腦視覺實驗推進到可操作的產品邊界：依明確 metric contract 選模、用 durable worker 執行推論、讓人員覆核異常證據，並把決策保存為可稽核報告。
-
-I built it to take computer-vision experiments beyond a notebook: compare and freeze models under an explicit metric contract, serve them through a durable worker, present anomaly evidence for human review, and preserve every decision in auditable reports.
+> **TL;DR** — A local-first visual-inspection workstation: upload a batch → queued inference by a crash-safe leased worker (FastAPI + SQLite) → human review in a React UI → JSON/CSV/HTML audit reports. The models behind it come from a reproducible anomalib study (PatchCore / EfficientAD / Dinomaly) on MVTec AD 2.
 
 ![Deterministic synthetic walkthrough from inspection intake through evidence review](docs/assets/demo-workflow.gif)
 
-*Deterministic 4.5-second synthetic walkthrough: intake → dashboard → job evidence → human review → model evidence. It uses only project-generated public fixtures and demonstrates product behavior, not real model quality or a production deployment. Static views remain available in [工作站巡覽](#工作站巡覽).*
+*4.5 秒示範流程：批次匯入 → 作業總覽 → 檢測證據 → 人工覆核 → 模型證據。畫面全部來自專案自行產生的 synthetic 影像，展示的是產品流程，不是真實模型品質。*
 
-## 專案重點 — Why this project stands out
+## 重點結果
 
-| Signal | What is demonstrated | Start here |
-|---|---|---|
-| **Reproducible CV research** | 8 category-specific champions <!-- claim:8|reports/champions.json|/champions|len --> selected from 56 formal public runs <!-- claim:56|reports/public_benchmark.json|/runs|len --> across PatchCore, EfficientAD, and Dinomaly, with every published number linked to committed evidence | [Model selection](docs/MODEL_SELECTION.md) · [Benchmark](reports/benchmark.md) |
-| **Production-shaped ML systems** | FastAPI, SQLite, a leased worker, verified model registry, idempotent recovery, and content-addressed evidence publication | [Architecture](docs/ARCHITECTURE.md) · [`tests/system/`](tests/system) |
-| **Human-centered AI product** | React batch inspection, anomaly-map comparison, explicit human disposition, and JSON/CSV/HTML audit exports | [Product workflow](#產品流程) · [`apps/web/e2e/`](apps/web/e2e) |
-| **Engineering trust** | CI, Docker, security and release gates, versioned evidence contracts, an explicit `PRIVATE-NO-GO` verdict instead of private-result retuning, and a pre-registered serving gate that refused this project's own largest quality gain | [被自己門檻否決的改進](#解析度前沿品質改善卻仍不-promotion) · [Release checklist](docs/RELEASE_CHECKLIST.md) |
+- **當機也接得回來的檢測流程**：FastAPI + SQLite 佇列；worker 以租約（lease）獨占任務、用獨立 heartbeat 續租。租約失效後由下一個 worker 接手，已完成的影像不重算，過期 worker 的寫入會被資料庫擋下；一張影像損壞也不會中斷整批。由 [`tests/system/`](tests/system) 與 Playwright [`apps/web/e2e/`](apps/web/e2e) 驗證。
+- **8 個產品類別都有實際跑得動的模型**：單張 RTX 4090、batch size 1，每張影像的 GPU p95 延遲為 65.8 <!-- claim:65.8|docs/assets/evidence/serving-benchmark.json|/categories/sheet_metal/gpu/p95_latency_ms|.1f -->–259.8 ms <!-- claim:259.8|docs/assets/evidence/serving-benchmark.json|/categories/walnuts/gpu/p95_latency_ms|.1f -->，峰值 VRAM 為 2388.0 <!-- claim:2388.0|docs/assets/evidence/serving-benchmark.json|/categories/fruit_jelly/gpu/peak_reserved_vram_mib|.1f -->–4610.0 MiB <!-- claim:4610.0|docs/assets/evidence/serving-benchmark.json|/categories/walnuts/gpu/peak_reserved_vram_mib|.1f -->。
+- **可追溯的選模研究**：比較 PatchCore、EfficientAD、Dinomaly，從 56 次正式 public 實驗 <!-- claim:56|reports/public_benchmark.json|/runs|len --> 逐類別選出 8 個模型 <!-- claim:8|reports/champions.json|/champions|len -->（PatchCore 與 Dinomaly 各 4 類），每個數字都能對回 repo 內的證據檔。
+- **提高解析度沒有被採用**：768 x 768 讓 AU-PRO 提升 +0.0995 <!-- claim:0.0995|reports/high_resolution_patchcore_cloud.json|/comparisons/0/au_pro_delta|.4f -->（`can`）與 +0.1551 <!-- claim:0.1551|reports/high_resolution_patchcore_cloud.json|/comparisons/1/au_pro_delta|.4f -->（`wallplugs`），但 GPU p95 延遲 708.7 ms <!-- claim:708.7|reports/high_resolution_patchcore_cloud.json|/comparisons/0/candidate/gpu_p95_latency_ms|.1f --> 與 508.5 ms <!-- claim:508.5|reports/high_resolution_patchcore_cloud.json|/comparisons/1/candidate/gpu_p95_latency_ms|.1f --> 超過實驗前就訂好的 500 ms 上限，所以照原規則不換模型。
 
-## 90 秒面試導覽 — 90-second interview tour
+**連結：** [Release v0.1.2](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.2) · [Case study](docs/CASE_STUDY.md) · [Architecture](docs/ARCHITECTURE.md) · [選模方法](docs/MODEL_SELECTION.md)。本專案沒有線上 demo，也不發布模型權重；請用下面的本機 demo 體驗完整流程。
 
-Choose the route closest to the role you are hiring for; each path connects implementation to reviewable evidence.
+## 快速開始
 
-| Role signal | Code path | Evidence path |
-|---|---|---|
-| **Computer Vision / ML** | [`experiments/`](experiments) · [`reports/`](reports) | [Selection methodology](docs/MODEL_SELECTION.md) · [Resource-bounded study](#memory-bounded-patchcore-研究亮點) |
-| **ML systems / MLOps** | [`src/inspection_platform/`](src/inspection_platform) · [`experiments/drift/`](experiments/drift) | [Architecture](docs/ARCHITECTURE.md) · [Drift contract](#離線-anomaly-score-distribution-drift) |
-| **AI product engineering** | [`apps/api/`](apps/api) · [`apps/web/src/`](apps/web/src) | [System tests](tests/system) · [Browser workflow](apps/web/e2e) |
-| **Reliability / security** | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) · [`scripts/`](scripts) | [Security](docs/SECURITY.md) · [Reproducibility](docs/REPRODUCIBILITY.md) |
+這個 synthetic 本機 demo 只需要 Python 3.12、`uv` 與 Docker；不下載 MVTec AD 2、不執行 GPU 訓練，也不需要 real model weights。
 
-> **Portfolio status:** `v0.1.2` is the latest source-only maintenance release for the stable workstation contract, not a production deployment. It adds the completed 768 x 768 study evidence and the hosted-GPU research tooling. The independent official verdict remains `PRIVATE-NO-GO`; the repository contains no MVTec data, weights, raw private predictions, or private-result retuning. The [`v0.1.2` tag and GitHub Release](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.2) are the authoritative software publication record. No new exact-candidate GPU gate or model-quality claim is attached to this maintenance release; [`v0.1.0`](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.0) remains the last release with recorded 8/8 exact-candidate GPU serving evidence, and [`v0.1.0-rc.1`](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.0-rc.1) remains historical.
+```powershell
+uv sync --frozen
+$env:INSPECTION_MODEL_ROOT = Join-Path ([IO.Path]::GetTempPath()) "mvtec-ad2-demo-models"
+uv run python scripts/build_demo_bundle.py --output $env:INSPECTION_MODEL_ROOT
+docker compose up -d --build --wait
+```
 
----
+開啟 `http://127.0.0.1:8000`。以 `docker compose down` 停止服務；只有在確定要刪除該 Compose project 的 demo database 與 artifacts 時才加上 `--volumes`。
 
-## 公開內容與證據邊界
-
-| 範圍 | Repository 中的內容 | 可以解讀成什麼 |
-|---|---|---|
-| Synthetic public demo | 專案自行生成的影像、mock bundles、screenshots 與 CPU/Docker 測試 | 產品流程、恢復能力、安全邊界與 UI 可實際執行；不代表真實模型品質 |
-| 使用者自行取得的 MVTec AD 2 | 下載、manifest 與外部路徑操作程式；不含原始影像或 masks | 可在接受官方授權後重現研究；Repository 本身不提供資料 |
-| 已完成研究 | Sanitized public aggregates、champion matrix、資源限制與 serving evidence | 可追溯比較、選模、效能與工程取捨 |
-| 未公開或未宣稱 | 不含 weights、checkpoints、raw private predictions 或第二次 submission | 不宣稱 production readiness、商用授權或有效的官方 thresholded F1 |
-
----
-
-## 系統架構與 Pipeline
-
-### 端到端工業檢測與人機協作流程
+## 運作方式
 
 ```mermaid
 %%{init: {'themeVariables': {'fontSize': '18px'}}}%%
@@ -97,109 +76,21 @@ flowchart TD
     style ReviewStage fill:#f4fbf7,stroke:#0ca678,stroke-width:2px,color:#0ca678,stroke-dasharray: 4 4
 ```
 
----
+操作人員選擇產品類別並送出一批影像；job、稽核紀錄與影像在同一個 transaction 內建立，其中一張影像損壞時，其餘有效影像照常處理。Worker 取得獨占租約後，先驗證指定的 model bundle 才開始推論，並以獨立 heartbeat 續租；每次寫入都要通過 worker、attempt generation、狀態與租約到期時間的資料庫檢查，過期的 worker 因此無法寫入結果，接手的 worker 會從中斷處接續（idempotent resume）。原圖、PNG anomaly map、overlay 與各自的 hash 分開保存。模型只給出 `PASS` 或 `REVIEW`，最終處置由人員決定，JSON/CSV/HTML 報告把兩者分開記錄。
 
-## 產品流程
-
-![從 batch submission 到人工覆核的 synthetic workflow](docs/assets/workflow.svg)
-
-操作人員選擇 category 並送出 batch；job、audit 與 images 在同一 transaction 公開，其中一張影像損壞時，其餘有效影像仍會繼續。獨占 lease 的 worker 在 inference 前驗證指定 model bundle，以獨立 heartbeat 續租，並用 worker、attempt generation、state 與到期時間做 database fence，才把 source、PNG anomaly-map、overlay 與 hashes 分別保存；租約失效後能 idempotent resume。模型證據只記為 `PASS` 或 `REVIEW`，最終處置由人員決定，所有報告分開保留模型判定與人工決策。
-
-本 Repository 的 screenshots 全由 `fixtures/public-demo` 產生，不含 MVTec pixels，也不代表已部署於 production。
-
-### 工作站巡覽
+Docker 使用 digest-pinned multi-stage images、read-only root filesystem 與非特權使用者；執行期的 database、uploads、artifacts 與 model bundles 全部在 Git 之外。預設 `compose.yaml` 是 CPU synthetic profile；正式的 NVIDIA worker 使用 `docker compose -f compose.yaml -f compose.gpu.yaml up --build`，另需外部已驗證的 model registry 與 NVIDIA Container Toolkit。元件細節與架構圖見 [Architecture](docs/ARCHITECTURE.md)。
 
 | 檢測作業總覽 | 安全批次匯入 |
 |---|---|
 | ![佇列、人工覆核與 champion coverage 總覽](docs/assets/screenshots/dashboard.webp) | ![依 category 選擇 frozen champion 的本機批次提交](docs/assets/screenshots/new-inspection.webp) |
 | **人工覆核工作區** | **Model 與證據** |
-| ![分開呈現模型證據與人工處置的覆核工作區](docs/assets/screenshots/review.webp) | ![呈現 category champions、官方 gate、provenance 與限制的模型證據頁](docs/assets/screenshots/model-evidence.webp) |
+| ![分開呈現模型證據與人工處置的覆核工作區](docs/assets/screenshots/review.webp) | ![呈現 category champions、官方評測結果、provenance 與限制的模型證據頁](docs/assets/screenshots/model-evidence.webp) |
 
----
+## 結果
 
-## 證據，而非 leaderboard 宣稱
+### 平台：本機 serving 實測
 
-- Frozen champion matrix 位於 [reports/champions.json](reports/champions.json)，可讀摘要位於 [reports/benchmark.md](reports/benchmark.md)。
-- Public selection 依 approved metric contract 同時考量 image AUROC、pixel AU-PRO、confidence intervals、latency、VRAM 與 artifact size。
-- `can`、`vial`、`wallplugs`、`walnuts` 的 winner 是 PatchCore；`fabric`、`fruit_jelly`、`rice`、`sheet_metal` 的 winner 是 Dinomaly。
-- EfficientAD 是已 benchmark 的 candidate，但未被選為 champion。
-- 唯一一次獲授權的 frozen archive 通過官方 local validator 並由官方 server 評測；看到結果後沒有重建或重新提交。
-
-Champion 比較只有 seeds 17、42、2026 三個獨立重複；paired bootstrap intervals 用來描述這三次結果的選模不確定性，不是正式推論保證，也沒有做 multiplicity correction。`test_public` 曾參與 iterative screening 與 champion selection，因此不是完全獨立 holdout；唯一獨立的 official private validation 仍是 `PRIVATE-NO-GO`，本專案不據此宣稱 private 泛化或 production model quality。
-
-![由 committed public evidence 產生的各 category frozen champion mean AU-PRO](docs/assets/bench/champion-au-pro.svg)
-
----
-
-## 離線 anomaly-score distribution drift
-
-[`inspection_platform.drift`](src/inspection_platform/drift) 提供 deterministic PSI 核心；[`experiments.drift`](experiments/drift) 的 evidence generator 直接載入既有 `PredictionArtifact`，不建立另一條推論管線。它要求 baseline 與 current 具有完全相同的 category 集合、model family、config digest、bundle identity 與 prediction-record contract，任何不一致都會 fail closed。分箱會對 baseline 樣本數封頂、移除重複 quantile edges，並以明確的三桶策略處理 constant baseline。
-
-機器可讀 report 使用 schema version `1.0.0`，按 category 記錄 baseline/current 描述統計、樣本數、histogram、PSI、sample-size adequacy、來源 artifact SHA-256 與 generator version。空桶穩定化規則固定為把每個 share floor 到 `1e-6` 後重新正規化，report 也記錄這個 policy。它不回寫 raw scores、prediction records、input paths 或資料內容。`low`（PSI < 0.1）、`moderate`（0.1 ≤ PSI < 0.25）與 `high`（PSI ≥ 0.25）只是常見 heuristic bands，**不是已校準的 production gate**。
-
-CLI 需要使用者已獲准存取、由既有 pipeline 產生的 canonical prediction artifacts；輸出路徑不可預先存在：
-
-```powershell
-uv sync --frozen --extra ml
-$baselineArtifacts = @("<standard-category-a.json>", "<standard-category-b.json>")
-$currentArtifacts = @("<comparison-category-a.json>", "<comparison-category-b.json>")
-$driftReport = Join-Path ([IO.Path]::GetTempPath()) "mvtec-ad2-drift-report.json"
-uv run python -m experiments.drift.cli `
-  --baseline-artifact $baselineArtifacts `
-  --current-artifact $currentArtifacts `
-  --baseline-description "approved standard-lighting artifacts" `
-  --current-description "approved comparison-lighting artifacts" `
-  --output $driftReport
-```
-
-目前 source tree 沒有可發布的 standard-vs-lighting per-sample `anomaly_score` distributions；被追蹤的 public artifacts 只有 aggregates 與外部 prediction digests。因此 Repository **沒有**提交 `reports/drift_report.json`，也不宣稱量到真實 lighting drift。`tests/unit/drift/` 只用 synthetic canonical artifacts 驗證 detector、report 與 CLI contract。若未來取得可發布且經授權的 per-sample artifacts，可依上列命令產生證據；這個 handoff 不授權讀取 private predictions、重跑模型、重訓或再次 submission。
-
----
-
-## 解析度前沿：品質改善卻仍不 promotion
-
-這一段是整個專案我最想被檢視的部分，因為它記錄了一個**預先訂好的門檻否決我自己最好結果**的完整過程。
-
-假設很直觀：提高輸入解析度應該改善細小瑕疵的 localization。第一次嘗試在 24 GiB RTX 4090 上 fitting 階段就 OOM，沒有任何可比較的指標，只留下 `RESOURCE_LIMIT_EXCEEDED`。中間的 640 x 640 frontier probe 改善了 AU-PRO 卻讓 image AUROC 退步、延遲翻倍，分類為 `PROMISING` 但不 promotion。
-
-後來這個 study 在 80 GiB A100 上以**完全相同的程式、seed 與 config** 完成，唯一改變的是硬體。訓練峰值為 **44,593 MiB** <!-- claim:44,593|reports/high_resolution_patchcore_cloud_environment.json|/training_peak_vram_mib/can|,.0f --> 與 **31,741 MiB** <!-- claim:31,741|reports/high_resolution_patchcore_cloud_environment.json|/training_peak_vram_mib/wallplugs|,.0f -->，證實 24 GiB 的機器本來就不可能容納任一個 category。
-
-品質假設成立了，而且是這個專案從單純改變幾何得到的最大增益：
-
-| Category | AU-PRO | pixel AUROC | image AUROC | GPU p95 | 推論 VRAM |
-|---|---|---|---|---|---|
-| `can` | 0.3113 → 0.4109（**+0.0995** <!-- claim:0.0995|reports/high_resolution_patchcore_cloud.json|/comparisons/0/au_pro_delta|.4f -->） | +0.0545 | −0.0123 | **708.7 ms** <!-- claim:708.7|reports/high_resolution_patchcore_cloud.json|/comparisons/0/candidate/gpu_p95_latency_ms|.1f --> | 4,669 MiB |
-| `wallplugs` | 0.5286 → 0.6837（**+0.1551** <!-- claim:0.1551|reports/high_resolution_patchcore_cloud.json|/comparisons/1/au_pro_delta|.4f -->） | +0.0259 | +0.0104 | **508.5 ms** <!-- claim:508.5|reports/high_resolution_patchcore_cloud.json|/comparisons/1/candidate/gpu_p95_latency_ms|.1f --> | 3,383 MiB |
-
-但 verdict 仍然是 `RESOURCE_LIMIT_EXCEEDED`，champion 一個都沒換。原因是 GPU p95 latency 超過了**在看到任何結果之前**就寫死在 `classify_study` 裡的 500 ms serving cap。
-
-這是 latency 的失敗，不是 memory 的失敗。推論 VRAM 遠低於 12,288 MiB 上限，per-image failure rate 為零。而且這個延遲代價是結構性的，不是雲端硬體的假象：memory bank 約大 2.1 倍、每張查詢影像貢獻 2.25 倍的 patch，最近鄰搜尋因此約 4.8 倍的距離計算量，實測比值為 6.7 與 6.2。換回原本的 workstation 結論一樣。
-
-**如果當初沒有把門檻寫死，我很可能會說服自己這是個該採用的改進。** 我選擇照原規則判定而不是放寬門檻，這件事本身比任何指標都更能說明我如何做工程決策。
-
-誠實的限制：這是 single-seed 證據；A100 的 latency 與 VRAM 不可與本 Repository 其他地方記錄的 RTX 4090 數字相比，品質 delta 才與硬體無關；要 promotion 需要另一個預先註冊的 multi-seed study，以及一份 candidate 真的能滿足的 serving contract。完整設計與 sanitized 證據見 [Model selection](docs/MODEL_SELECTION.md)、[study report](reports/high_resolution_patchcore_cloud.json) 與[硬體 provenance](reports/high_resolution_patchcore_cloud_environment.json)。
-
----
-
-## Memory-bounded PatchCore 研究亮點
-
-在固定的 640 x 640 幾何下降低 memory-bank 比例，先測 coreset 0.01，再依預先訂好的 gate 執行 0.02 rescue。
-
-0.02 seed-42 candidate 的 AU-PRO 相對 baseline 增加 **0.0854** <!-- claim:0.0854|reports/memory_bounded_patchcore.json|/probes/1/comparison/au_pro_delta|.4f -->、GPU p95 為 **78.4 ms** <!-- claim:78.4|reports/memory_bounded_patchcore.json|/probes/1/comparison/candidate/gpu_p95_latency_ms|.1f -->，artifact 為 **330,255,411 bytes** <!-- claim:330,255,411|reports/memory_bounded_patchcore.json|/probes/1/comparison/candidate/artifact_size_bytes|,d -->。但 seeds 17 與 2026 的 image AUROC 都明顯退步，因此最終 verdict 是 `EFFICIENT_SEED42_ONLY`，不更換 frozen champion，也不推論 private performance。完整設計、重現方式與限制見 [Model selection](docs/MODEL_SELECTION.md)、[Experiment runbook](docs/EXPERIMENT_RUNBOOK.md) 與 [sanitized report](reports/memory_bounded_patchcore.json)。
-
----
-
-## 官方 private gate
-
-官方 server 回傳的 AucPro_0.05 average：`private` 為 **31.24** <!-- claim:31.24|docs/assets/evidence/official-private-result.json|/metrics/private/auc_pro_0_05/average|.2f -->，`private_mixed` 為 **29.81** <!-- claim:29.81|docs/assets/evidence/official-private-result.json|/metrics/private_mixed/auc_pro_0_05/average|.2f -->。依預先承諾的規則，material mixed-lighting failure 必須揭露而不能事後調整，因此分類為 `PRIVATE-NO-GO`。
-
-提交的 archive 包含全部 4,090 張 TIFF anomaly maps，但沒有 optional thresholded PNGs。官方 ClassF1 與 SegF1 因此為零，不能解讀成 thresholded-map performance 的有效量測。經審查的 per-category aggregates 與 evidence hashes 位於 [official-private-result.json](docs/assets/evidence/official-private-result.json)；raw server evidence 保留在 Git 之外。
-
----
-
-## 已驗證的本機 serving 效能
-
-8 個 frozen champions 都在記錄的 RTX 4090 workstation 上通過 clean-process product inference。每個 category 使用 batch size **1** <!-- claim:1|docs/assets/evidence/serving-benchmark.json|/configuration/batch_size|d -->、**3** 次 warmups <!-- claim:3|docs/assets/evidence/serving-benchmark.json|/configuration/warmup_repetitions|d --> 與 **20** 次 timed GPU repetitions <!-- claim:20|docs/assets/evidence/serving-benchmark.json|/configuration/gpu_repetitions|d -->。以下是本機量測，不是 production guarantee。
+8 個選定模型都在記錄的 RTX 4090 workstation 上通過 clean-process product inference。每個 category 使用 batch size **1** <!-- claim:1|docs/assets/evidence/serving-benchmark.json|/configuration/batch_size|d -->、**3** 次 warmups <!-- claim:3|docs/assets/evidence/serving-benchmark.json|/configuration/warmup_repetitions|d --> 與 **20** 次 timed GPU repetitions <!-- claim:20|docs/assets/evidence/serving-benchmark.json|/configuration/gpu_repetitions|d -->。
 
 | Category | Model family | GPU p50（ms） | GPU p95（ms） | Peak reserved VRAM（MiB） | Bundle bytes |
 |---|---|---:|---:|---:|---:|
@@ -212,43 +103,61 @@ uv run python -m experiments.drift.cli `
 | wallplugs | PatchCore | 134.9 <!-- claim:134.9|docs/assets/evidence/serving-benchmark.json|/categories/wallplugs/gpu/p50_latency_ms|.1f --> | 144.1 <!-- claim:144.1|docs/assets/evidence/serving-benchmark.json|/categories/wallplugs/gpu/p95_latency_ms|.1f --> | 3274.0 <!-- claim:3274.0|docs/assets/evidence/serving-benchmark.json|/categories/wallplugs/gpu/peak_reserved_vram_mib|.1f --> | 2,511,287,351 <!-- claim:2,511,287,351|docs/assets/evidence/serving-benchmark.json|/categories/wallplugs/artifact_size_bytes|,d --> |
 | walnuts | PatchCore | 239.7 <!-- claim:239.7|docs/assets/evidence/serving-benchmark.json|/categories/walnuts/gpu/p50_latency_ms|.1f --> | 259.8 <!-- claim:259.8|docs/assets/evidence/serving-benchmark.json|/categories/walnuts/gpu/p95_latency_ms|.1f --> | 4610.0 <!-- claim:4610.0|docs/assets/evidence/serving-benchmark.json|/categories/walnuts/gpu/peak_reserved_vram_mib|.1f --> | 3,560,713,271 <!-- claim:3,560,713,271|docs/assets/evidence/serving-benchmark.json|/categories/walnuts/artifact_size_bytes|,d --> |
 
-完整 sanitized artifact 另記錄 cold start、mean confidence intervals、throughput、CPU fallback、RSS、software versions、bundle identities 與 evidence hash manifest。
+[完整量測檔](docs/assets/evidence/serving-benchmark.json)另記錄 cold start、mean confidence intervals、throughput、CPU fallback、RSS、software versions、bundle identities 與各檔案的 hash。
 
----
+### 模型研究：逐類別選模
 
-## 架構
+- 選模依核定的 metric contract，同時考量 image AUROC、pixel AU-PRO、confidence intervals、latency、VRAM 與 artifact size（見[選模方法](docs/MODEL_SELECTION.md)）。
+- `can`、`vial`、`wallplugs`、`walnuts` 選出 PatchCore；`fabric`、`fruit_jelly`、`rice`、`sheet_metal` 選出 Dinomaly。EfficientAD 完成了同樣的 benchmark，但沒有在任何類別勝出。
+- 各類別的選定結果在 [reports/champions.json](reports/champions.json)，可讀摘要在 [reports/benchmark.md](reports/benchmark.md)。
 
-![由 React、FastAPI、SQLite、worker、artifact store 與 verified registry 組成的 local architecture](docs/assets/architecture.svg)
+![由 committed public evidence 產生的各 category frozen champion mean AU-PRO](docs/assets/bench/champion-au-pro.svg)
 
-API startup 不會 import training orchestration。Runtime databases、uploads、artifacts、datasets、checkpoints 與 real model bundles 全部位於 Git 之外。Docker 使用 digest-pinned multi-stage images、read-only root filesystem、unprivileged user、persistent runtime volumes 與 read-only model mount；multipart parser 與 validated-upload staging 共用獨立 disk-backed spool volume，啟動時會檢查其容量。預設 `compose.yaml` 是 CPU synthetic profile；formal NVIDIA worker 使用 `docker compose -f compose.yaml -f compose.gpu.yaml up --build`，且仍需外部 verified registry 與 NVIDIA Container Toolkit。
+### 提高解析度：定位變準，但延遲超標，所以不採用
 
-詳細資料請見 [Architecture](docs/ARCHITECTURE.md)、[Case study](docs/CASE_STUDY.md)、[Model card](docs/MODEL_CARD.md)、[Data card](docs/DATA_CARD.md)、[Security](docs/SECURITY.md) 與 [Limitations](docs/LIMITATIONS.md)。
+把 PatchCore 輸入提高到 768 x 768，在 24 GiB RTX 4090 上 fitting 階段就 OOM；同一份程式、seed 與 config 改在 80 GiB A100 上完成，訓練峰值為 **44,593 MiB** <!-- claim:44,593|reports/high_resolution_patchcore_cloud_environment.json|/training_peak_vram_mib/can|,.0f --> 與 **31,741 MiB** <!-- claim:31,741|reports/high_resolution_patchcore_cloud_environment.json|/training_peak_vram_mib/wallplugs|,.0f -->。
 
----
+| Category | AU-PRO | pixel AUROC | image AUROC | GPU p95 | 推論 VRAM |
+|---|---|---|---|---|---|
+| `can` | 0.3113 → 0.4109（**+0.0995** <!-- claim:0.0995|reports/high_resolution_patchcore_cloud.json|/comparisons/0/au_pro_delta|.4f -->） | +0.0545 | −0.0123 | **708.7 ms** <!-- claim:708.7|reports/high_resolution_patchcore_cloud.json|/comparisons/0/candidate/gpu_p95_latency_ms|.1f --> | 4,669 MiB |
+| `wallplugs` | 0.5286 → 0.6837（**+0.1551** <!-- claim:0.1551|reports/high_resolution_patchcore_cloud.json|/comparisons/1/au_pro_delta|.4f -->） | +0.0259 | +0.0104 | **508.5 ms** <!-- claim:508.5|reports/high_resolution_patchcore_cloud.json|/comparisons/1/candidate/gpu_p95_latency_ms|.1f --> | 3,383 MiB |
 
-## 執行 synthetic local demo
+定位品質確實變好，是本專案單純改變輸入幾何得到的最大增益；但 GPU p95 延遲超過實驗前就寫進 `classify_study` 的 500 ms serving 上限，所以一個模型都沒換（報告中的判定代碼為 `RESOURCE_LIMIT_EXCEEDED`）。這是延遲問題而不是記憶體問題：memory bank 與每張影像的 patch 數都隨解析度變大，最近鄰搜尋約需 4.8 倍的距離計算量。完整過程見 [解析度與 memory bank 研究](docs/RESOLUTION_STUDY.md) 與 [study report](reports/high_resolution_patchcore_cloud.json)。
 
-這個預設路徑只需要 Python 3.12、`uv` 與 Docker；不下載 MVTec AD 2、不執行 GPU 訓練，也不需要 real model weights。
+### 縮小 memory bank：只在一個 seed 成立，所以不採用
 
-```powershell
-uv sync --frozen
-$env:INSPECTION_MODEL_ROOT = Join-Path ([IO.Path]::GetTempPath()) "mvtec-ad2-demo-models"
-uv run python scripts/build_demo_bundle.py --output $env:INSPECTION_MODEL_ROOT
-docker compose up -d --build --wait
-```
+在固定的 640 x 640 下把 coreset 比例降到 0.02，seed 42 的 AU-PRO 相對 baseline 增加 **0.0854** <!-- claim:0.0854|reports/memory_bounded_patchcore.json|/probes/1/comparison/au_pro_delta|.4f -->、GPU p95 為 **78.4 ms** <!-- claim:78.4|reports/memory_bounded_patchcore.json|/probes/1/comparison/candidate/gpu_p95_latency_ms|.1f -->，artifact 為 **330,255,411 bytes** <!-- claim:330,255,411|reports/memory_bounded_patchcore.json|/probes/1/comparison/candidate/artifact_size_bytes|,d -->。但 seeds 17 與 2026 的 image AUROC 都明顯退步，因此不更換選定模型（[報告](reports/memory_bounded_patchcore.json)中的判定代碼為 `EFFICIENT_SEED42_ONLY`）。
 
-開啟 `http://127.0.0.1:8000`。以 `docker compose down` 停止服務；只有在確定要刪除該 Compose project 的 demo database 與 artifacts 時才加上 `--volumes`。
+### 官方 private 評測
 
-完整驗證與 real-model preparation 請依 [Reproducibility](docs/REPRODUCIBILITY.md) 和 [Remote setup](docs/REMOTE_SETUP.md) 操作。文件中的命令不會自行 push、publish、upload 或 submit。
+唯一一次獲授權的提交通過官方 local validator 後由官方 server 評測：官方 private 評測平均 AucPro_0.05 為 **31.24** <!-- claim:31.24|docs/assets/evidence/official-private-result.json|/metrics/private/auc_pro_0_05/average|.2f -->，混合光源的 `private_mixed` 為 **29.81** <!-- claim:29.81|docs/assets/evidence/official-private-result.json|/metrics/private_mixed/auc_pro_0_05/average|.2f -->，未通過本專案提交前就訂好的標準，因此沒有把這組模型當成可正式發布的成果；看到結果後也沒有回頭調整或再次提交（證據檔的 `verdict` 欄位記為 `PRIVATE-NO-GO`）。
 
----
+提交的 archive 包含全部 4,090 張 TIFF anomaly maps，但沒有 optional thresholded PNGs，官方 ClassF1 與 SegF1 因此為零，不能解讀成 thresholded-map performance 的有效量測。各類別的數字在 [official-private-result.json](docs/assets/evidence/official-private-result.json)；raw server evidence 保留在 Git 之外。
 
-## 判定語意
+## 適用範圍與限制
 
-`PASS` 表示 frozen model score 低於其記錄 threshold；`REVIEW` 表示證據應由人員檢閱。兩者都不是 defect type、root cause 或 automatic reject decision。
+- **Demo 是 synthetic 的**：截圖、GIF 與預設 demo 全由 `fixtures/public-demo` 產生，不含 MVTec pixels；它證明流程、恢復與邊界處理可以實際執行，不代表真實模型品質，也不是 production 部署。
+- **Repository 不含資料與權重**：沒有 MVTec 原始資料、weights、checkpoints 或 raw private predictions；要重現研究，需自行依官方授權取得 MVTec AD 2。
+- **選模的統計強度有限**：只有 seeds 17、42、2026 三次獨立重複；paired bootstrap intervals 只描述這三次結果的不確定性，不是正式推論保證，也沒有做 multiplicity correction。`test_public` 參與過 iterative screening 與選模，不是獨立 holdout；唯一獨立的評測就是上面的官方 private 結果，本專案不據此宣稱 private 泛化或 production model quality。
+- **效能數字只適用於量測環境**：serving 數字是單一 RTX 4090 workstation 的本機量測，不是 production guarantee。768 x 768 研究是 single-seed，其 latency 與 VRAM 在 A100 上量測，不可與 RTX 4090 的數字相比，只有品質差異與硬體無關。
+- **`PASS` / `REVIEW` 不是瑕疵判定**：`PASS` 表示 model score 低於其記錄的 threshold，`REVIEW` 表示應由人員檢閱；兩者都不是 defect type、root cause 或 automatic reject decision。
+- **Drift 工具沒有實測報告**：[離線 anomaly-score drift 工具](docs/DRIFT.md)只用 synthetic artifacts 驗證，Repository 沒有提交實測的 lighting drift report，PSI 分級也不是已校準的 production 門檻。
+- **版本**：[`v0.1.2`](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.2) 是 source-only 維護版，沒有重跑 GPU serving 檢查；[`v0.1.0`](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.0) 是最後一次記錄 8/8 GPU serving 實測的版本，[`v0.1.0-rc.1`](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.0-rc.1) 為歷史版本。
 
----
+完整清單見 [Limitations](docs/LIMITATIONS.md)。
 
-## License 與資料邊界
+## 重現
+
+完整驗證（Python、frontend、Docker 檢查）與 real-model preparation 請依 [Reproducibility](docs/REPRODUCIBILITY.md) 和 [Remote setup](docs/REMOTE_SETUP.md) 操作；README 的數字可用 `uv run python scripts/verify_claims.py` 對回證據檔。文件中的命令不會自行 push、publish、upload 或 submit。
+
+## License 與資料
 
 Project source code 依 [MIT License](LICENSE) 提供。本 Repository 不重新散布 MVTec 原始資料；MVTec AD 2 data 另依 CC BY-NC-SA 4.0 授權。由該資料訓練的 model artifacts 僅視為 research／non-commercial portfolio artifacts，重用前請閱讀 [MODEL_CARD.md](docs/MODEL_CARD.md)。
+
+## 延伸閱讀
+
+- [專案導覽](docs/PROJECT_GUIDE.md)：依職務方向的閱讀路線、版本狀態、公開內容範圍、產品流程圖
+- [Case study](docs/CASE_STUDY.md) · [Architecture](docs/ARCHITECTURE.md) · [Security](docs/SECURITY.md)
+- [選模方法](docs/MODEL_SELECTION.md) · [Experiment runbook](docs/EXPERIMENT_RUNBOOK.md) · [解析度與 memory bank 研究](docs/RESOLUTION_STUDY.md)
+- [Model card](docs/MODEL_CARD.md) · [Data card](docs/DATA_CARD.md) · [Limitations](docs/LIMITATIONS.md)
+- [離線 anomaly-score drift 工具](docs/DRIFT.md) · [Release checklist](docs/RELEASE_CHECKLIST.md) · [Changelog](CHANGELOG.md)
