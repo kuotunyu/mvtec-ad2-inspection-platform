@@ -19,7 +19,7 @@
 - **可追溯的選模研究**：比較 PatchCore、EfficientAD、Dinomaly，從 56 次正式 public 實驗 <!-- claim:56|reports/public_benchmark.json|/runs|len --> 逐類別選出 8 個模型 <!-- claim:8|reports/champions.json|/champions|len -->（PatchCore 與 Dinomaly 各 4 類），每個數字都能對回 repo 內的證據檔。
 - **提高解析度沒有被採用**：768 x 768 讓 AU-PRO 提升 +0.0995 <!-- claim:0.0995|reports/high_resolution_patchcore_cloud.json|/comparisons/0/au_pro_delta|.4f -->（`can`）與 +0.1551 <!-- claim:0.1551|reports/high_resolution_patchcore_cloud.json|/comparisons/1/au_pro_delta|.4f -->（`wallplugs`），但 GPU p95 延遲 708.7 ms <!-- claim:708.7|reports/high_resolution_patchcore_cloud.json|/comparisons/0/candidate/gpu_p95_latency_ms|.1f --> 與 508.5 ms <!-- claim:508.5|reports/high_resolution_patchcore_cloud.json|/comparisons/1/candidate/gpu_p95_latency_ms|.1f --> 超過實驗前就訂好的 500 ms 上限，所以照原規則不換模型。
 
-**連結：** [Release v0.1.2](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.2) · [Case study](docs/CASE_STUDY.md) · [Architecture](docs/ARCHITECTURE.md) · [選模方法](docs/MODEL_SELECTION.md)。本專案沒有線上 demo，也不發布模型權重；請用下面的本機 demo 體驗完整流程。
+**連結：** [Release v0.1.2](https://github.com/kuotunyu/mvtec-ad2-inspection-platform/releases/tag/v0.1.2) · [Case study](docs/CASE_STUDY.md) · [Architecture](docs/ARCHITECTURE.md) · [選模方法](docs/MODEL_SELECTION.md)。[線上 demo（Hugging Face Space）](https://huggingface.co/spaces/steven0226/mvtec-ad2-inspection-platform)使用 synthetic 影像與 mock 模型，只展示「上傳 → 排隊 → 當機可接續的 worker → 人工覆核 → 報告」這條流程，不代表真實模型品質。本專案仍不發布模型權重；也可以用下面的本機 demo 體驗完整流程。
 
 ## 快速開始
 
