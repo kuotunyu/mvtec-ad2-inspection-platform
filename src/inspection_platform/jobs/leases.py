@@ -2,8 +2,10 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
+from typing import Any, cast
 
 from sqlalchemy import or_, select, update
+from sqlalchemy.engine import CursorResult
 from sqlalchemy.orm import Session
 
 from inspection_platform.db.models import Job
@@ -58,35 +60,43 @@ def renew_lease(
     lease_seconds: int = LEASE_SECONDS,
     expected_attempt: int | None = None,
 ) -> bool:
+    observed = _utc(now)
+    owned = [
+        Job.id == job_id,
+        Job.state == "RUNNING",
+        Job.worker_id == worker_id,
+        Job.lease_expires_at > observed,
+    ]
+    if expected_attempt is not None:
+        owned.append(Job.attempt == expected_attempt)
     with session_factory() as session, session.begin():
-        job = session.get(Job, job_id)
-        if (
-            job is None
-            or job.state != "RUNNING"
-            or job.worker_id != worker_id
-            or (expected_attempt is not None and job.attempt != expected_attempt)
-            or job.lease_expires_at is None
-            or job.lease_expires_at <= _utc(now)
-        ):
-            return False
-        job.heartbeat_at = _utc(now)
-        job.lease_expires_at = _utc(now) + timedelta(seconds=lease_seconds)
-        return True
+        renewed = cast(
+            CursorResult[Any],
+            session.execute(
+                update(Job)
+                .where(*owned)
+                .values(
+                    heartbeat_at=observed,
+                    lease_expires_at=observed + timedelta(seconds=lease_seconds),
+                )
+                .execution_options(synchronize_session=False)
+            ),
+        )
+        return renewed.rowcount == 1
 
 
 def recover_expired_leases(session_factory: Callable[[], Session], now: datetime) -> int:
     with session_factory() as session, session.begin():
-        jobs = list(
-            session.scalars(
-                select(Job).where(Job.state == "RUNNING", Job.lease_expires_at <= _utc(now))
-            )
+        recovered = cast(
+            CursorResult[Any],
+            session.execute(
+                update(Job)
+                .where(Job.state == "RUNNING", Job.lease_expires_at <= _utc(now))
+                .values(state="queued", worker_id=None, lease_expires_at=None, heartbeat_at=None)
+                .execution_options(synchronize_session=False)
+            ),
         )
-        for job in jobs:
-            job.state = "queued"
-            job.worker_id = None
-            job.lease_expires_at = None
-            job.heartbeat_at = None
-        return len(jobs)
+        return recovered.rowcount
 
 
 __all__ = ["claim_next_job", "recover_expired_leases", "renew_lease"]
